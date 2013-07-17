@@ -12,17 +12,19 @@ package parsing
 
 import scala.io.Source
 
-/** An XML Parser that preserves `CDATA` blocks and knows about
+/**
+ * An XML Parser that preserves `CDATA` blocks and knows about
  *  [[scala.xml.parsing.XhtmlEntities]].
  *
  *  @author (c) David Pollak, 2007 WorldWide Conferencing, LLC.
  */
-class XhtmlParser(val input: Source) extends ConstructingHandler with MarkupParser with ExternalSources  {
+class XhtmlParser(val input: Source) extends ConstructingHandler with MarkupParser with ExternalSources {
   val preserveWS = true
   ent ++= XhtmlEntities()
 }
 
-/** Convenience method that instantiates, initializes and runs an `XhtmlParser`.
+/**
+ * Convenience method that instantiates, initializes and runs an `XhtmlParser`.
  *
  *  @author Burak Emir
  */

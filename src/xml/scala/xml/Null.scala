@@ -12,7 +12,8 @@ package xml
 import Utility.isNameStart
 import scala.collection.Iterator
 
-/** Essentially, every method in here is a dummy, returning Zero[T].
+/**
+ * Essentially, every method in here is a dummy, returning Zero[T].
  *  It provides a backstop for the unusual collection defined by MetaData,
  *  sort of a linked list of tails.
  *
@@ -38,15 +39,15 @@ case object Null extends MetaData {
   override def length(i: Int) = i
 
   override def strict_==(other: Equality) = other match {
-    case x: MetaData  => x.length == 0
-    case _            => false
+    case x: MetaData => x.length == 0
+    case _           => false
   }
   override protected def basisForHashCode: Seq[Any] = Nil
 
   def apply(namespace: String, scope: NamespaceBinding, key: String) = null
   def apply(key: String) =
     if (isNameStart(key.head)) null
-    else throw new IllegalArgumentException("not a valid attribute name '"+key+"', so can never match !")
+    else throw new IllegalArgumentException("not a valid attribute name '" + key + "', so can never match !")
 
   protected def toString1(sb: StringBuilder) = ()
   override protected def toString1(): String = ""

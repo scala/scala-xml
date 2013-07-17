@@ -25,8 +25,8 @@ import scala.xml.parsing.{ ExternalSources, MarkupHandler, MarkupParser }
  *  @author Paul Phillips
  */
 class XMLEventReader(src: Source)
-extends scala.collection.AbstractIterator[XMLEvent]
-   with ProducerConsumerIterator[XMLEvent] {
+  extends scala.collection.AbstractIterator[XMLEvent]
+  with ProducerConsumerIterator[XMLEvent] {
 
   // We implement a pull parser as an iterator, but since we may be operating on
   // a stream (e.g. XML over a network) there may be arbitrarily long periods when
@@ -83,12 +83,12 @@ extends scala.collection.AbstractIterator[XMLEvent]
     // MarkupParser.document() otherwise NodeSeq.Empty
     private var ignoreWritten = false
     final def elem(pos: Int, pre: String, label: String, attrs: MetaData, pscope: NamespaceBinding, empty: Boolean, nodes: NodeSeq): NodeSeq =
-      if (level == 1 && !ignoreWritten) {ignoreWritten = true; <ignore/> } else NodeSeq.Empty
+      if (level == 1 && !ignoreWritten) { ignoreWritten = true; <ignore/> } else NodeSeq.Empty
 
-    def procInstr(pos: Int, target: String, txt: String)  = setEvent(EvProcInstr(target, txt))
-    def comment(pos: Int, txt: String)                    = setEvent(EvComment(txt))
-    def entityRef(pos: Int, n: String)                    = setEvent(EvEntityRef(n))
-    def text(pos: Int, txt:String)                        = setEvent(EvText(txt))
+    def procInstr(pos: Int, target: String, txt: String) = setEvent(EvProcInstr(target, txt))
+    def comment(pos: Int, txt: String) = setEvent(EvComment(txt))
+    def entityRef(pos: Int, n: String) = setEvent(EvEntityRef(n))
+    def text(pos: Int, txt: String) = setEvent(EvText(txt))
 
     override def run() {
       curInput = input
@@ -116,8 +116,9 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
   val MaxQueueSize = -1
 
   def interruptibly[T](body: => T): Option[T] = try Some(body) catch {
-    case _: InterruptedException    => Thread.currentThread.interrupt(); None
-    case _: ClosedChannelException  => None
+    case _: InterruptedException   =>
+      Thread.currentThread.interrupt(); None
+    case _: ClosedChannelException => None
   }
 
   private[this] lazy val queue =

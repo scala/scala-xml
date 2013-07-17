@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** In an attempt to contain the damage being inflicted on consistency by the
+/**
+ * In an attempt to contain the damage being inflicted on consistency by the
  *  ad hoc `equals` methods spread around `xml`, the logic is centralized and
  *  all the `xml` classes go through the `xml.Equality trait`.  There are two
  *  forms of `xml` comparison.
@@ -42,25 +43,26 @@ package xml
 object Equality {
   def asRef(x: Any): AnyRef = x.asInstanceOf[AnyRef]
 
-  /** Note - these functions assume strict equality has already failed.
+  /**
+   * Note - these functions assume strict equality has already failed.
    */
   def compareBlithely(x1: AnyRef, x2: String): Boolean = x1 match {
-    case x: Atom[_]   => x.data == x2
-    case x: NodeSeq   => x.text == x2
-    case _            => false
+    case x: Atom[_] => x.data == x2
+    case x: NodeSeq => x.text == x2
+    case _          => false
   }
   def compareBlithely(x1: AnyRef, x2: Node): Boolean = x1 match {
-    case x: NodeSeq if x.length == 1  => x2 == x(0)
-    case _                            => false
+    case x: NodeSeq if x.length == 1 => x2 == x(0)
+    case _                           => false
   }
   def compareBlithely(x1: AnyRef, x2: AnyRef): Boolean = {
     if (x1 == null || x2 == null)
       return (x1 eq x2)
 
     x2 match {
-      case s: String  => compareBlithely(x1, s)
-      case n: Node    => compareBlithely(x1, n)
-      case _          => false
+      case s: String => compareBlithely(x1, s)
+      case n: Node   => compareBlithely(x1, n)
+      case _         => false
     }
   }
 }
@@ -72,26 +74,29 @@ trait Equality extends scala.Equals {
   def strict_==(other: Equality): Boolean
   def strict_!=(other: Equality) = !strict_==(other)
 
-  /** We insist we're only equal to other `xml.Equality` implementors,
+  /**
+   * We insist we're only equal to other `xml.Equality` implementors,
    *  which heads off a lot of inconsistency up front.
    */
   override def canEqual(other: Any): Boolean = other match {
-    case x: Equality    => true
-    case _              => false
+    case x: Equality => true
+    case _           => false
   }
 
-  /** It's be nice to make these final, but there are probably
+  /**
+   * It's be nice to make these final, but there are probably
    *  people out there subclassing the XML types, especially when
    *  it comes to equals.  However WE at least can pretend they
    *  are final since clearly individual classes cannot be trusted
    *  to maintain a semblance of order.
    */
-  override def hashCode()         = basisForHashCode.##
+  override def hashCode() = basisForHashCode.##
   override def equals(other: Any) = doComparison(other, blithe = false)
-  final def xml_==(other: Any)    = doComparison(other, blithe = true)
-  final def xml_!=(other: Any)    = !xml_==(other)
+  final def xml_==(other: Any) = doComparison(other, blithe = true)
+  final def xml_!=(other: Any) = !xml_==(other)
 
-  /** The "blithe" parameter expresses the caller's unconcerned attitude
+  /**
+   * The "blithe" parameter expresses the caller's unconcerned attitude
    *  regarding the usual constraints on equals.  The method is thereby
    *  given carte blanche to declare any two things equal.
    */

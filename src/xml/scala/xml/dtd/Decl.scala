@@ -18,10 +18,11 @@ sealed abstract class MarkupDecl extends Decl {
   def buildString(sb: StringBuilder): StringBuilder
 }
 
-/** an element declaration
+/**
+ * an element declaration
  */
 case class ElemDecl(name: String, contentModel: ContentModel)
-extends MarkupDecl {
+  extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb append "<!ELEMENT " append name append ' '
 
@@ -30,14 +31,15 @@ extends MarkupDecl {
   }
 }
 
-case class AttListDecl(name: String, attrs:List[AttrDecl])
-extends MarkupDecl {
+case class AttListDecl(name: String, attrs: List[AttrDecl])
+  extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
-    sb append "<!ATTLIST " append name append '\n' append attrs.mkString("","\n",">")
+    sb append "<!ATTLIST " append name append '\n' append attrs.mkString("", "\n", ">")
   }
 }
 
-/** an attribute declaration. at this point, the tpe is a string. Future
+/**
+ * an attribute declaration. at this point, the tpe is a string. Future
  *  versions might provide a way to access the attribute types more
  *  directly.
  */
@@ -71,14 +73,14 @@ case class ParameterEntityDecl(name: String, entdef: EntityDef) extends EntityDe
 }
 
 /** an unparsed entity declaration */
-case class UnparsedEntityDecl( name:String, extID:ExternalID, notation:String ) extends EntityDecl {
+case class UnparsedEntityDecl(name: String, extID: ExternalID, notation: String) extends EntityDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb append "<!ENTITY " append name append ' '
     extID buildString sb append " NDATA " append notation append '>'
   }
 }
 /** a notation declaration */
-case class NotationDecl( name:String, extID:ExternalID ) extends MarkupDecl {
+case class NotationDecl(name: String, extID: ExternalID) extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb append "<!NOTATION " append name append ' '
     extID buildString sb
@@ -89,22 +91,22 @@ sealed abstract class EntityDef {
   def buildString(sb: StringBuilder): StringBuilder
 }
 
-case class IntDef(value:String) extends EntityDef {
+case class IntDef(value: String) extends EntityDef {
   private def validateValue() {
     var tmp = value
-    var ix  = tmp indexOf '%'
+    var ix = tmp indexOf '%'
     while (ix != -1) {
       val iz = tmp.indexOf(';', ix)
-      if(iz == -1 && iz == ix + 1)
+      if (iz == -1 && iz == ix + 1)
         throw new IllegalArgumentException("no % allowed in entity value, except for parameter-entity-references")
       else {
         val n = tmp.substring(ix, iz)
 
         if (!Utility.isName(n))
-          throw new IllegalArgumentException("internal entity def: \""+n+"\" must be an XML Name")
+          throw new IllegalArgumentException("internal entity def: \"" + n + "\" must be an XML Name")
 
-        tmp = tmp.substring(iz+1, tmp.length)
-        ix  = tmp indexOf '%'
+        tmp = tmp.substring(iz + 1, tmp.length)
+        ix = tmp indexOf '%'
       }
     }
   }
@@ -115,21 +117,19 @@ case class IntDef(value:String) extends EntityDef {
 
 }
 
-case class ExtDef(extID:ExternalID) extends EntityDef {
+case class ExtDef(extID: ExternalID) extends EntityDef {
   override def buildString(sb: StringBuilder): StringBuilder =
     extID buildString sb
 }
 
-
 /** a parsed entity reference */
-case class PEReference(ent:String) extends MarkupDecl {
-  if( !Utility.isName( ent ))
+case class PEReference(ent: String) extends MarkupDecl {
+  if (!Utility.isName(ent))
     throw new IllegalArgumentException("ent must be an XML Name")
 
   override def buildString(sb: StringBuilder): StringBuilder =
     sb append '%' append ent append ';'
 }
-
 
 // default declarations for attributes
 

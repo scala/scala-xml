@@ -6,13 +6,12 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
 package pull
 
-/** An XML event for pull parsing.  All events received during
+/**
+ * An XML event for pull parsing.  All events received during
  * parsing will be one of the subclasses of this trait.
  */
 trait XMLEvent
@@ -38,7 +37,8 @@ case class EvElemEnd(pre: String, label: String) extends XMLEvent
  */
 case class EvText(text: String) extends XMLEvent
 
-/** An entity reference was encountered.
+/**
+ * An entity reference was encountered.
  * @param entity the name of the entity, e.g. `gt` when encountering the entity `&gt;`
  */
 case class EvEntityRef(entity: String) extends XMLEvent

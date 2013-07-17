@@ -26,7 +26,7 @@ object MetaData {
    *
    * Duplicates can be removed with `normalize`.
    */
-  @tailrec  // temporarily marked final so it will compile under -Xexperimental
+  @tailrec // temporarily marked final so it will compile under -Xexperimental
   final def concatenate(attribs: MetaData, new_tail: MetaData): MetaData =
     if (attribs eq Null) new_tail
     else concatenate(attribs.next, attribs copy new_tail)
@@ -61,7 +61,8 @@ object MetaData {
 
 }
 
-/** This class represents an attribute and at the same time a linked list of
+/**
+ * This class represents an attribute and at the same time a linked list of
  *  attributes. Every instance of this class is either
  *  - an instance of `UnprefixedAttribute key,value` or
  *  - an instance of `PrefixedAttribute namespace_prefix,key,value` or
@@ -74,12 +75,13 @@ object MetaData {
  *  @author Burak Emir <bqe@google.com>
  */
 abstract class MetaData
-extends AbstractIterable[MetaData]
-   with Iterable[MetaData]
-   with Equality
-   with Serializable {
+  extends AbstractIterable[MetaData]
+  with Iterable[MetaData]
+  with Equality
+  with Serializable {
 
-  /** Updates this MetaData with the MetaData given as argument. All attributes that occur in updates
+  /**
+   * Updates this MetaData with the MetaData given as argument. All attributes that occur in updates
    *  are part of the resulting MetaData. If an attribute occurs in both this instance and
    *  updates, only the one in updates is part of the result (avoiding duplicates). For prefixed
    *  attributes, namespaces are resolved using the given scope, which defaults to TopScope.
@@ -98,7 +100,8 @@ extends AbstractIterable[MetaData]
    */
   def apply(key: String): Seq[Node]
 
-  /** convenience method, same as `apply(namespace, owner.scope, key)`.
+  /**
+   * convenience method, same as `apply(namespace, owner.scope, key)`.
    *
    *  @param namespace_uri namespace uri of key
    *  @param owner the element owning this attribute list
@@ -117,7 +120,8 @@ extends AbstractIterable[MetaData]
    */
   def apply(namespace_uri: String, scp: NamespaceBinding, k: String): Seq[Node]
 
-  /** returns a copy of this MetaData item with next field set to argument.
+  /**
+   * returns a copy of this MetaData item with next field set to argument.
    */
   def copy(next: MetaData): MetaData
 
@@ -133,12 +137,12 @@ extends AbstractIterable[MetaData]
   def isPrefixed: Boolean
 
   override def canEqual(other: Any) = other match {
-    case _: MetaData  => true
-    case _            => false
+    case _: MetaData => true
+    case _           => false
   }
   override def strict_==(other: Equality) = other match {
-    case m: MetaData  => this.asAttrMap == m.asAttrMap
-    case _            => false
+    case m: MetaData => this.asAttrMap == m.asAttrMap
+    case _           => false
   }
   protected def basisForHashCode: Seq[Any] = List(this.asAttrMap)
 
@@ -153,7 +157,8 @@ extends AbstractIterable[MetaData]
   /** returns value of this MetaData item */
   def value: Seq[Node]
 
-  /** Returns a String containing "prefix:key" if the first key is
+  /**
+   * Returns a String containing "prefix:key" if the first key is
    *  prefixed, and "key" otherwise.
    */
   def prefixedKey = this match {
@@ -161,7 +166,8 @@ extends AbstractIterable[MetaData]
     case _                            => key
   }
 
-  /** Returns a Map containing the attributes stored as key/value pairs.
+  /**
+   * Returns a Map containing the attributes stored as key/value pairs.
    */
   def asAttrMap: Map[String, String] =
     (iterator map (x => (x.prefixedKey, x.value.text))).toMap
@@ -181,7 +187,8 @@ extends AbstractIterable[MetaData]
   final def get(uri: String, owner: Node, key: String): Option[Seq[Node]] =
     get(uri, owner.scope, key)
 
-  /** gets value of qualified (prefixed) attribute with given key.
+  /**
+   * gets value of qualified (prefixed) attribute with given key.
    *
    * @param  uri namespace of key
    * @param  scope a namespace scp (usually of the element owning this attribute list)

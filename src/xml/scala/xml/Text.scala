@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** The class `Text` implements an XML node for text (PCDATA).
+/**
+ * The class `Text` implements an XML node for text (PCDATA).
  *  It is used in both non-bound and bound XML representations.
  *
  *  @author Burak Emir
@@ -17,14 +18,16 @@ package xml
  */
 class Text(data: String) extends Atom[String](data) {
 
-  /** Returns text, with some characters escaped according to the XML
+  /**
+   * Returns text, with some characters escaped according to the XML
    *  specification.
    */
   override def buildString(sb: StringBuilder): StringBuilder =
     Utility.escape(data, sb)
 }
 
-/** This singleton object contains the `apply`and `unapply` methods for
+/**
+ * This singleton object contains the `apply`and `unapply` methods for
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir

@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** This object provides an extractor method to match a qualified node with
+/**
+ * This object provides an extractor method to match a qualified node with
  *  its namespace URI
  *
  *  @author  Burak Emir

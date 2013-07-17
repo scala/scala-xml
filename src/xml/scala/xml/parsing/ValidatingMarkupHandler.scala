@@ -6,8 +6,6 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
 package parsing
@@ -16,7 +14,7 @@ import scala.xml.dtd._
 
 abstract class ValidatingMarkupHandler extends MarkupHandler {
 
-  var rootLabel:String = _
+  var rootLabel: String = _
   var qStack: List[Int] = Nil
   var qCurrent: Int = -1
 
@@ -25,27 +23,27 @@ abstract class ValidatingMarkupHandler extends MarkupHandler {
 
   final override val isValidating = true
 
-  override def endDTD(n:String) = {
+  override def endDTD(n: String) = {
     rootLabel = n
   }
-  override def elemStart(pos: Int, pre: String, label: String, attrs: MetaData, scope:NamespaceBinding) {
+  override def elemStart(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding) {
 
-    def advanceDFA(dm:DFAContentModel) = {
+    def advanceDFA(dm: DFAContentModel) = {
       val trans = dm.dfa.delta(qCurrent)
       log("advanceDFA(dm): " + dm)
       log("advanceDFA(trans): " + trans)
       trans.get(ContentModel.ElemName(label)) match {
-          case Some(qNew) => qCurrent = qNew
-          case _          => reportValidationError(pos, "DTD says, wrong element, expected one of "+trans.keys)
+        case Some(qNew) => qCurrent = qNew
+        case _          => reportValidationError(pos, "DTD says, wrong element, expected one of " + trans.keys)
       }
     }
     // advance in current automaton
-    log("[qCurrent = "+qCurrent+" visiting "+label+"]")
+    log("[qCurrent = " + qCurrent + " visiting " + label + "]")
 
     if (qCurrent == -1) { // root
       log("  checking root")
       if (label != rootLabel)
-        reportValidationError(pos, "this element should be "+rootLabel)
+        reportValidationError(pos, "this element should be " + rootLabel)
     } else {
       log("  checking node")
       declCurrent.contentModel match {
@@ -54,14 +52,14 @@ abstract class ValidatingMarkupHandler extends MarkupHandler {
           reportValidationError(pos, "DTD says, no elems, no text allowed here")
         case PCDATA =>
           reportValidationError(pos, "DTD says, no elements allowed here")
-        case m @ MIXED(r) =>
+        case m@MIXED(r) =>
           advanceDFA(m)
-        case e @ ELEMENTS(r) =>
+        case e@ELEMENTS(r) =>
           advanceDFA(e)
       }
     }
     // push state, decl
-    qStack    =    qCurrent :: qStack
+    qStack = qCurrent :: qStack
     declStack = declCurrent :: declStack
 
     declCurrent = lookupElemDecl(label)
@@ -72,9 +70,9 @@ abstract class ValidatingMarkupHandler extends MarkupHandler {
   override def elemEnd(pos: Int, pre: String, label: String) {
     log("  elemEnd")
     qCurrent = qStack.head
-    qStack   = qStack.tail
+    qStack = qStack.tail
     declCurrent = declStack.head
-    declStack   = declStack.tail
+    declStack = declStack.tail
     log("    qCurrent now" + qCurrent)
     log("    declCurrent now" + declCurrent)
   }

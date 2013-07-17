@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** This singleton object contains the `apply` and `unapply` methods for
+/**
+ * This singleton object contains the `apply` and `unapply` methods for
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir
@@ -41,14 +42,15 @@ object Attribute {
     }
 }
 
-/** The `Attribute` trait defines the interface shared by both
+/**
+ * The `Attribute` trait defines the interface shared by both
  *  [[scala.xml.PrefixedAttribute]] and [[scala.xml.UnprefixedAttribute]].
  *
  *  @author  Burak Emir
  *  @version 1.0
  */
 abstract trait Attribute extends MetaData {
-  def pre: String        // will be null if unprefixed
+  def pre: String // will be null if unprefixed
   val key: String
   val value: Seq[Node]
   val next: MetaData
@@ -85,7 +87,8 @@ abstract trait Attribute extends MetaData {
     else 1 + next.size
   }
 
-  /** Appends string representation of only this attribute to stringbuffer.
+  /**
+   * Appends string representation of only this attribute to stringbuffer.
    */
   protected def toString1(sb: StringBuilder) {
     if (value == null)

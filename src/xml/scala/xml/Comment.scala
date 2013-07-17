@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** The class `Comment` implements an XML node for comments.
+/**
+ * The class `Comment` implements an XML node for comments.
  *
  * @author Burak Emir
  * @param commentText the text contained in this node, may not contain "--"
@@ -19,12 +20,13 @@ case class Comment(commentText: String) extends SpecialNode {
   def label = "#REM"
   override def text = ""
   final override def doCollectNamespaces = false
-  final override def doTransform         = false
+  final override def doTransform = false
 
   if (commentText contains "--")
     throw new IllegalArgumentException("text contains \"--\"")
 
-  /** Appends &quot;<!-- text -->&quot; to this string buffer.
+  /**
+   * Appends &quot;<!-- text -->&quot; to this string buffer.
    */
   override def buildString(sb: StringBuilder) =
     sb append "<!--" append commentText append "-->"

@@ -20,18 +20,18 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
   def determinize: DetWordAutom[T] = {
     // for assigning numbers to bitsets
-    var indexMap    = scala.collection.Map[immutable.BitSet, Int]()
+    var indexMap = scala.collection.Map[immutable.BitSet, Int]()
     var invIndexMap = scala.collection.Map[Int, immutable.BitSet]()
     var ix = 0
 
     // we compute the dfa with states = bitsets
-    val q0 = immutable.BitSet(0)            // the set { 0 }
-    val sink = immutable.BitSet.empty       // the set { }
+    val q0 = immutable.BitSet(0) // the set { 0 }
+    val sink = immutable.BitSet.empty // the set { }
 
-    var states = Set(q0, sink)    // initial set of sets
-    val delta    = new mutable.HashMap[immutable.BitSet, mutable.HashMap[T, immutable.BitSet]]
-    var deftrans = mutable.Map(q0 -> sink, sink -> sink)  // initial transitions
-    var finals: mutable.Map[immutable.BitSet, Int]  = mutable.Map()
+    var states = Set(q0, sink) // initial set of sets
+    val delta = new mutable.HashMap[immutable.BitSet, mutable.HashMap[T, immutable.BitSet]]
+    var deftrans = mutable.Map(q0 -> sink, sink -> sink) // initial transitions
+    var finals: mutable.Map[immutable.BitSet, Int] = mutable.Map()
     val rest = new mutable.Stack[immutable.BitSet]
 
     rest.push(sink, q0)
@@ -48,7 +48,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
       }
     }
 
-    addFinal(q0)                          // initial state may also be a final state
+    addFinal(q0) // initial state may also be a final state
 
     while (!rest.isEmpty) {
       val P = rest.pop()
@@ -96,9 +96,9 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
       defaultR(q) = qDef
     }
 
-    finals foreach { case (k,v) => finalsR(indexMap(k)) = v }
+    finals foreach { case (k, v) => finalsR(indexMap(k)) = v }
 
-    new DetWordAutom [T] {
+    new DetWordAutom[T] {
       val nstates = nstatesR
       val delta = deltaR
       val default = defaultR

@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** A hack to group XML nodes in one node for output.
+/**
+ * A hack to group XML nodes in one node for output.
  *
  *  @author  Burak Emir
  *  @version 1.0
@@ -23,20 +24,21 @@ final case class Group(nodes: Seq[Node]) extends Node {
   }
 
   override def strict_==(other: Equality) = other match {
-    case Group(xs)  => nodes sameElements xs
-    case _          => false
+    case Group(xs) => nodes sameElements xs
+    case _         => false
   }
 
   override protected def basisForHashCode = nodes
 
-  /** Since Group is very much a hack it throws an exception if you
+  /**
+   * Since Group is very much a hack it throws an exception if you
    *  try to do anything with it.
    */
   private def fail(msg: String) = throw new UnsupportedOperationException("class Group does not support method '%s'" format msg)
 
-  def label                           = fail("label")
-  override def attributes             = fail("attributes")
-  override def namespace              = fail("namespace")
-  override def child                  = fail("child")
-  def buildString(sb: StringBuilder)  = fail("toString(StringBuilder)")
+  def label = fail("label")
+  override def attributes = fail("attributes")
+  override def namespace = fail("namespace")
+  override def child = fail("child")
+  def buildString(sb: StringBuilder) = fail("toString(StringBuilder)")
 }

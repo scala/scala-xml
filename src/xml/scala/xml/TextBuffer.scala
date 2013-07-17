@@ -6,7 +6,6 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 
@@ -16,16 +15,17 @@ object TextBuffer {
   def fromString(str: String): TextBuffer = new TextBuffer() append str
 }
 
-/** The class `TextBuffer` is for creating text nodes without surplus
+/**
+ * The class `TextBuffer` is for creating text nodes without surplus
  *  whitespace. All occurrences of one or more whitespace in strings
  *  appended with the `append` method will be replaced by a single space
  *  character, and leading and trailing space will be removed completely.
  */
-class TextBuffer
-{
+class TextBuffer {
   val sb = new StringBuilder()
 
-  /** Appends this string to the text buffer, trimming whitespaces as needed.
+  /**
+   * Appends this string to the text buffer, trimming whitespaces as needed.
    */
   def append(cs: Seq[Char]): this.type = {
     cs foreach { c =>
@@ -35,7 +35,8 @@ class TextBuffer
     this
   }
 
-  /** Returns an empty sequence if text is only whitespace.
+  /**
+   * Returns an empty sequence if text is only whitespace.
    *
    *  @return the text without whitespaces.
    */

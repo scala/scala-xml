@@ -6,20 +6,20 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 package dtd
 
-/** Scanner for regexps (content models in DTD element declarations)
+/**
+ * Scanner for regexps (content models in DTD element declarations)
  *  todo: cleanup
  */
 class Scanner extends Tokens with parsing.TokenTests {
 
   final val ENDCH = '\u0000'
 
-  var token:Int = END
-  var value:String = _
+  var token: Int = END
+  var value: String = _
 
   private var it: Iterator[Char] = null
   private var c: Char = 'z'
@@ -28,7 +28,7 @@ class Scanner extends Tokens with parsing.TokenTests {
   final def initScanner(s: String) {
     value = ""
     it = (s).iterator
-    token = 1+END
+    token = 1 + END
     next()
     nextToken()
   }
@@ -39,13 +39,13 @@ class Scanner extends Tokens with parsing.TokenTests {
   }
 
   // todo: see XML specification... probably isLetter,isDigit is fine
-  final def isIdentChar = ( ('a' <= c && c <= 'z')
-                           || ('A' <= c && c <= 'Z'))
+  final def isIdentChar = (('a' <= c && c <= 'z')
+    || ('A' <= c && c <= 'Z'))
 
   final def next() = if (it.hasNext) c = it.next() else c = ENDCH
 
   final def acc(d: Char) {
-    if (c == d) next() else scala.sys.error("expected '"+d+"' found '"+c+"' !")
+    if (c == d) next() else scala.sys.error("expected '" + d + "' found '" + c + "' !")
   }
 
   final def accS(ds: Seq[Char]) { ds foreach acc }
@@ -55,16 +55,24 @@ class Scanner extends Tokens with parsing.TokenTests {
       while (isSpace(c)) c = it.next()
       S
     } else c match {
-      case '('   => next(); LPAREN
-      case ')'   => next(); RPAREN
-      case ','   => next(); COMMA
-      case '*'   => next(); STAR
-      case '+'   => next(); PLUS
-      case '?'   => next(); OPT
-      case '|'   => next(); CHOICE
-      case '#'   => next(); accS( "PCDATA" ); TOKEN_PCDATA
+      case '('   =>
+        next(); LPAREN
+      case ')'   =>
+        next(); RPAREN
+      case ','   =>
+        next(); COMMA
+      case '*'   =>
+        next(); STAR
+      case '+'   =>
+        next(); PLUS
+      case '?'   =>
+        next(); OPT
+      case '|'   =>
+        next(); CHOICE
+      case '#'   =>
+        next(); accS("PCDATA"); TOKEN_PCDATA
       case ENDCH => END
-      case _     =>
+      case _ =>
         if (isNameStart(c)) name; // NAME
         else scala.sys.error("unexpected character:" + c)
     }

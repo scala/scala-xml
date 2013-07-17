@@ -6,12 +6,9 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
 package dtd
-
 
 case class ValidationException(e: String) extends Exception(e)
 
@@ -20,17 +17,17 @@ case class ValidationException(e: String) extends Exception(e)
  */
 object MakeValidationException {
   def fromFixedAttribute(k: String, value: String, actual: String) =
-    ValidationException("value of attribute " + k + " FIXED to \""+
-                        value+"\", but document tries \""+actual+"\"")
+    ValidationException("value of attribute " + k + " FIXED to \"" +
+      value + "\", but document tries \"" + actual + "\"")
 
   def fromNonEmptyElement() =
     new ValidationException("element should be *empty*")
 
   def fromUndefinedElement(label: String) =
-    new ValidationException("element \""+ label +"\" not allowed here")
+    new ValidationException("element \"" + label + "\" not allowed here")
 
   def fromUndefinedAttribute(key: String) =
-    new ValidationException("attribute " + key +" not allowed here")
+    new ValidationException("attribute " + key + " not allowed here")
 
   def fromMissingAttribute(allKeys: Set[String]) = {
     val sb = new StringBuilder("missing value for REQUIRED attribute")

@@ -6,12 +6,12 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 package dtd
 
-/** an ExternalIDs - either PublicID or SystemID
+/**
+ * an ExternalIDs - either PublicID or SystemID
  *
  *  @author Burak Emir
  */
@@ -38,7 +38,8 @@ sealed abstract class ExternalID extends parsing.TokenTests {
   def publicId: String
 }
 
-/** a system identifier
+/**
+ * a system identifier
  *
  *  @author Burak Emir
  *  @param  systemId the system identifier literal
@@ -50,8 +51,8 @@ case class SystemID(systemId: String) extends ExternalID {
     throw new IllegalArgumentException("can't use both \" and ' in systemId")
 }
 
-
-/** a public identifier (see http://www.w3.org/QA/2002/04/valid-dtd-list.html).
+/**
+ * a public identifier (see http://www.w3.org/QA/2002/04/valid-dtd-list.html).
  *
  *  @author Burak Emir
  *  @param  publicId the public identifier literal
@@ -74,7 +75,8 @@ case class PublicID(publicId: String, systemId: String) extends ExternalID {
   def child = Nil
 }
 
-/** A marker used when a `DocType` contains no external id.
+/**
+ * A marker used when a `DocType` contains no external id.
  *
  *  @author Michael Bayne
  */

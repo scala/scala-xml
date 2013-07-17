@@ -11,7 +11,8 @@ package xml.dtd.impl
 
 import scala.collection.{ mutable, immutable }
 
-/** A deterministic automaton. States are integers, where
+/**
+ * A deterministic automaton. States are integers, where
  *  0 is always the only initial state. Transitions are represented
  *  in the delta function. A default transitions is one that
  *  is taken when no other transition can be taken.
@@ -28,8 +29,8 @@ private[dtd] abstract class DetWordAutom[T <: AnyRef] {
   val delta: Array[mutable.Map[T, Int]]
   val default: Array[Int]
 
-  def isFinal(q: Int)        = finals(q) != 0
-  def isSink(q: Int)         = delta(q).isEmpty && default(q) == q
+  def isFinal(q: Int) = finals(q) != 0
+  def isSink(q: Int) = delta(q).isEmpty && default(q) == q
   def next(q: Int, label: T) = delta(q).getOrElse(label, default(q))
 
   override def toString() = {

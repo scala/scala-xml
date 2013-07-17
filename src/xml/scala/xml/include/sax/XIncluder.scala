@@ -15,7 +15,8 @@ import org.xml.sax.{ ContentHandler, XMLReader, Locator, Attributes }
 import org.xml.sax.ext.LexicalHandler
 import java.io.{ File, OutputStream, OutputStreamWriter, Writer, IOException }
 
-/** XIncluder is a SAX `ContentHandler` that writes its XML document onto
+/**
+ * XIncluder is a SAX `ContentHandler` that writes its XML document onto
  * an output stream after resolving all `xinclude:include` elements.
  *
  * Based on Eliotte Rusty Harold's SAXXIncluder.
@@ -29,10 +30,9 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   def startDocument() {
     try {
       out.write("<?xml version='1.0' encoding='"
-                + encoding + "'?>\r\n")
-    }
-    catch {
-      case e:IOException =>
+        + encoding + "'?>\r\n")
+    } catch {
+      case e: IOException =>
         throw new SAXException("Write failed", e)
     }
   }
@@ -40,14 +40,13 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   def endDocument() {
     try {
       out.flush()
-    }
-    catch {
-      case e:IOException =>
+    } catch {
+      case e: IOException =>
         throw new SAXException("Flush failed", e)
     }
   }
 
-  def startPrefixMapping(prefix: String , uri: String) {}
+  def startPrefixMapping(prefix: String, uri: String) {}
 
   def endPrefixMapping(prefix: String) {}
 
@@ -66,18 +65,16 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
         i += 1
       }
       out.write(">")
-    }
-    catch {
-      case e:IOException =>
+    } catch {
+      case e: IOException =>
         throw new SAXException("Write failed", e)
     }
   }
 
-  def endElement(namespaceURI: String, localName:String, qualifiedName: String) {
+  def endElement(namespaceURI: String, localName: String, qualifiedName: String) {
     try {
       out.write("</" + qualifiedName + ">")
-    }
-    catch {
+    } catch {
       case e: IOException =>
         throw new SAXException("Write failed", e)
     }
@@ -87,8 +84,8 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   // encoding using character references????
   def characters(ch: Array[Char], start: Int, length: Int) {
     try {
-      var  i = 0; while (i < length) {
-        val c = ch(start+i)
+      var i = 0; while (i < length) {
+        val c = ch(start + i)
         if (c == '&') out.write("&amp;")
         else if (c == '<') out.write("&lt;")
         // This next fix is normally not necessary.
@@ -98,14 +95,13 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
         else out.write(c.toInt)
         i += 1
       }
-    }
-    catch {
+    } catch {
       case e: IOException =>
         throw new SAXException("Write failed", e)
     }
   }
 
-  def  ignorableWhitespace(ch: Array[Char], start: Int , length: Int) {
+  def ignorableWhitespace(ch: Array[Char], start: Int, length: Int) {
     this.characters(ch, start, length)
   }
 
@@ -113,9 +109,8 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   def processingInstruction(target: String, data: String) {
     try {
       out.write("<?" + target + " " + data + "?>")
-    }
-    catch {
-      case e:IOException =>
+    } catch {
+      case e: IOException =>
         throw new SAXException("Write failed", e)
     }
   }
@@ -123,9 +118,8 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   def skippedEntity(name: String) {
     try {
       out.write("&" + name + ";")
-    }
-    catch {
-      case e:IOException =>
+    } catch {
+      case e: IOException =>
         throw new SAXException("Write failed", e)
     }
   }
@@ -143,9 +137,8 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
       else if (systemID != null) id = " SYSTEM \"" + systemID + '"'
       try {
         out.write("<!DOCTYPE " + name + id + ">\r\n")
-      }
-      catch {
-        case e:IOException =>
+      } catch {
+        case e: IOException =>
           throw new SAXException("Error while writing DOCTYPE", e)
       }
     }
@@ -177,8 +170,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
         out.write("<!--")
         out.write(ch, start, length)
         out.write("-->")
-      }
-      catch {
+      } catch {
         case e: IOException =>
           throw new SAXException("Write failed", e)
       }

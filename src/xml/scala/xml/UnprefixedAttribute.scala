@@ -6,11 +6,11 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 
-/** Unprefixed attributes have the null namespace, and no prefix field
+/**
+ * Unprefixed attributes have the null namespace, and no prefix field
  *
  *  @author Burak Emir
  */
@@ -18,8 +18,7 @@ class UnprefixedAttribute(
   val key: String,
   val value: Seq[Node],
   next1: MetaData)
-extends Attribute
-{
+  extends Attribute {
   final val pre = null
   val next = if (value ne null) next1 else next1.remove(key)
 

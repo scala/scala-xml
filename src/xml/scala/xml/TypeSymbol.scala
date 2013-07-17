@@ -6,10 +6,7 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
-
 
 abstract class TypeSymbol

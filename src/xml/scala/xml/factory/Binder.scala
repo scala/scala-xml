@@ -6,8 +6,6 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
 package factory
@@ -21,7 +19,7 @@ abstract class Binder(val preserveWS: Boolean) extends ValidatingMarkupHandler {
 
   var result: NodeBuffer = new NodeBuffer()
 
-  def reportSyntaxError(pos:Int, str:String) = {}
+  def reportSyntaxError(pos: Int, str: String) = {}
 
   final def procInstr(pos: Int, target: String, txt: String) =
     ProcInstr(target, txt)
@@ -35,16 +33,16 @@ abstract class Binder(val preserveWS: Boolean) extends ValidatingMarkupHandler {
   final def text(pos: Int, txt: String) =
     Text(txt)
 
-  final def traverse(n:Node): Unit = n match {
-    case x:ProcInstr =>
+  final def traverse(n: Node): Unit = n match {
+    case x: ProcInstr =>
       result &+ procInstr(0, x.target, x.text)
-    case x:Comment   =>
+    case x: Comment =>
       result &+ comment(0, x.text)
-    case x:Text      =>
+    case x: Text =>
       result &+ text(0, x.data)
-    case x:EntityRef =>
+    case x: EntityRef =>
       result &+ entityRef(0, x.entityName)
-    case x:Elem =>
+    case x: Elem =>
       elemStart(0, x.prefix, x.label, x.attributes, x.scope)
       val old = result
       result = new NodeBuffer()

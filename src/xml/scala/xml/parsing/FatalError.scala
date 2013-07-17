@@ -6,12 +6,11 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
 package parsing
 
-/** !!! This is poorly named, but I guess it's in the API.
+/**
+ * !!! This is poorly named, but I guess it's in the API.
  */
 case class FatalError(msg: String) extends java.lang.RuntimeException(msg)

@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** The class `Atom` provides an XML node for text (`PCDATA`).
+/**
+ * The class `Atom` provides an XML node for text (`PCDATA`).
  *  It is used in both non-bound and bound XML representations.
  *
  *  @author Burak Emir
@@ -17,7 +18,7 @@ package xml
  */
 class Atom[+A](val data: A) extends SpecialNode with Serializable {
   if (data == null)
-    throw new IllegalArgumentException("cannot construct "+getClass.getSimpleName+" with null")
+    throw new IllegalArgumentException("cannot construct " + getClass.getSimpleName + " with null")
 
   override protected def basisForHashCode: Seq[Any] = Seq(data)
 
@@ -32,11 +33,12 @@ class Atom[+A](val data: A) extends SpecialNode with Serializable {
   }
 
   final override def doCollectNamespaces = false
-  final override def doTransform         = false
+  final override def doTransform = false
 
   def label = "#PCDATA"
 
-  /** Returns text, with some characters escaped according to the XML
+  /**
+   * Returns text, with some characters escaped according to the XML
    *  specification.
    */
   def buildString(sb: StringBuilder): StringBuilder =

@@ -11,7 +11,8 @@ package xml.dtd.impl
 
 import scala.collection.{ immutable, mutable }
 
-/** A nondeterministic automaton. States are integers, where
+/**
+ * A nondeterministic automaton. States are integers, where
  *  0 is always the only initial state. Transitions are represented
  *  in the delta function. Default transitions are transitions that
  *  are taken when no other transitions can be applied.
@@ -51,7 +52,7 @@ private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
   private def finalStates = 0 until nstates filter isFinal
   override def toString = {
 
-    val finalString = Map(finalStates map (j => j -> finals(j)) : _*).toString
+    val finalString = Map(finalStates map (j => j -> finals(j)): _*).toString
     val deltaString = (0 until nstates)
       .map(i => "   %d->%s\n    _>%s\n".format(i, delta(i), default(i))).mkString
 

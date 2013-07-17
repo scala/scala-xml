@@ -6,12 +6,11 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml.dtd.impl
 
-/** Pointed regular hedge expressions, a useful subclass of regular hedge expressions.
+/**
+ * Pointed regular hedge expressions, a useful subclass of regular hedge expressions.
  *
  *  @author  Burak Emir
  *  @version 1.0
@@ -22,11 +21,11 @@ private[dtd] abstract class PointedHedgeExp extends Base {
   type _regexpT <: RegExp
   type _labelT
 
-  case class  Node(label: _labelT, r: _regexpT) extends RegExp {
+  case class Node(label: _labelT, r: _regexpT) extends RegExp {
     final val isNullable = false
   }
 
-  case class  TopIter(r1: _regexpT, r2: _regexpT) extends RegExp {
+  case class TopIter(r1: _regexpT, r2: _regexpT) extends RegExp {
     final val isNullable = r1.isNullable && r2.isNullable //?
   }
 

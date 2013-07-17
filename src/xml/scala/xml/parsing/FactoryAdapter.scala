@@ -18,7 +18,7 @@ import org.xml.sax.helpers.DefaultHandler
 // can be mixed into FactoryAdapter if desired
 trait ConsoleErrorHandler extends DefaultHandler {
   // ignore warning, crimson warns even for entity resolution!
-  override def warning(ex: SAXParseException): Unit = { }
+  override def warning(ex: SAXParseException): Unit = {}
   override def error(ex: SAXParseException): Unit = printError("Error", ex)
   override def fatalError(ex: SAXParseException): Unit = printError("Fatal Error", ex)
 
@@ -31,30 +31,33 @@ trait ConsoleErrorHandler extends DefaultHandler {
     }
 }
 
-/** SAX adapter class, for use with Java SAX parser. Keeps track of
+/**
+ * SAX adapter class, for use with Java SAX parser. Keeps track of
  *  namespace bindings, without relying on namespace handling of the
  *  underlying SAX parser.
  */
 abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node] {
   var rootElem: Node = null
 
-  val buffer      = new StringBuilder()
+  val buffer = new StringBuilder()
   val attribStack = new mutable.Stack[MetaData]
-  val hStack      = new mutable.Stack[Node]   // [ element ] contains siblings
-  val tagStack    = new mutable.Stack[String]
-  var scopeStack  = new mutable.Stack[NamespaceBinding]
+  val hStack = new mutable.Stack[Node] // [ element ] contains siblings
+  val tagStack = new mutable.Stack[String]
+  var scopeStack = new mutable.Stack[NamespaceBinding]
 
-  var curTag : String = null
+  var curTag: String = null
   var capture: Boolean = false
 
   // abstract methods
 
-  /** Tests if an XML element contains text.
+  /**
+   * Tests if an XML element contains text.
    * @return true if element named `localName` contains text.
    */
   def nodeContainsText(localName: String): Boolean // abstract
 
-  /** creates an new non-text(tree) node.
+  /**
+   * creates an new non-text(tree) node.
    * @param elemName
    * @param attribs
    * @param chIter
@@ -63,14 +66,16 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
   def createNode(pre: String, elemName: String, attribs: MetaData,
                  scope: NamespaceBinding, chIter: List[Node]): Node // abstract
 
-  /** creates a Text node.
+  /**
+   * creates a Text node.
    * @param text
    * @return a new Text node.
    */
   def createText(text: String): Text // abstract
 
-  /** creates a new processing instruction node.
-  */
+  /**
+   * creates a new processing instruction node.
+   */
   def createProcInstr(target: String, data: String): Seq[ProcInstr]
 
   //
@@ -79,11 +84,12 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
 
   val normalizeWhitespace = false
 
-  /** Characters.
-  * @param ch
-  * @param offset
-  * @param length
-  */
+  /**
+   * Characters.
+   * @param ch
+   * @param offset
+   * @param length
+   */
   override def characters(ch: Array[Char], offset: Int, length: Int): Unit = {
     if (!capture) return
     // compliant: report every character
@@ -115,40 +121,39 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
     _localName: String,
     qname: String,
     attributes: Attributes): Unit =
-  {
-    captureText()
-    tagStack push curTag
-    curTag = qname
+    {
+      captureText()
+      tagStack push curTag
+      curTag = qname
 
-    val localName = splitName(qname)._2
-    capture = nodeContainsText(localName)
+      val localName = splitName(qname)._2
+      capture = nodeContainsText(localName)
 
-    hStack push null
-    var m: MetaData = Null
-    var scpe: NamespaceBinding =
-      if (scopeStack.isEmpty) TopScope
-      else scopeStack.top
+      hStack push null
+      var m: MetaData = Null
+      var scpe: NamespaceBinding =
+        if (scopeStack.isEmpty) TopScope
+        else scopeStack.top
 
-    for (i <- 0 until attributes.getLength()) {
-      val qname = attributes getQName i
-      val value = attributes getValue i
-      val (pre, key) = splitName(qname)
-      def nullIfEmpty(s: String) = if (s == "") null else s
+      for (i <- 0 until attributes.getLength()) {
+        val qname = attributes getQName i
+        val value = attributes getValue i
+        val (pre, key) = splitName(qname)
+        def nullIfEmpty(s: String) = if (s == "") null else s
 
-      if (pre == "xmlns" || (pre == null && qname == "xmlns")) {
-        val arg = if (pre == null) null else key
-        scpe = new NamespaceBinding(arg, nullIfEmpty(value), scpe)
+        if (pre == "xmlns" || (pre == null && qname == "xmlns")) {
+          val arg = if (pre == null) null else key
+          scpe = new NamespaceBinding(arg, nullIfEmpty(value), scpe)
+        } else
+          m = Attribute(Option(pre), key, Text(value), m)
       }
-      else
-        m = Attribute(Option(pre), key, Text(value), m)
+
+      scopeStack push scpe
+      attribStack push m
     }
 
-    scopeStack push scpe
-    attribStack push m
-  }
-
-
-  /** captures text, possibly normalizing whitespace
+  /**
+   * captures text, possibly normalizing whitespace
    */
   def captureText(): Unit = {
     if (capture && buffer.length > 0)
@@ -157,13 +162,14 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
     buffer.clear()
   }
 
-  /** End element.
+  /**
+   * End element.
    * @param uri
    * @param _localName
    * @param qname
    * @throws org.xml.sax.SAXException if ..
    */
-  override def endElement(uri: String , _localName: String, qname: String): Unit = {
+  override def endElement(uri: String, _localName: String, qname: String): Unit = {
     captureText()
     val metaData = attribStack.pop()
 
@@ -179,8 +185,9 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
     capture = curTag != null && nodeContainsText(curTag) // root level
   }
 
-  /** Processing instruction.
-  */
+  /**
+   * Processing instruction.
+   */
   override def processingInstruction(target: String, data: String) {
     hStack pushAll createProcInstr(target, data)
   }

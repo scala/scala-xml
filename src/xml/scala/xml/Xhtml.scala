@@ -7,8 +7,7 @@ import Utility.{ sbToString, isAtomAndNotText }
 
 /* (c) David Pollak  2007 WorldWide Conferencing, LLC */
 
-object Xhtml
-{
+object Xhtml {
   /**
    * Convenience function: same as toXhtml(node, false, false)
    *
@@ -24,7 +23,8 @@ object Xhtml
    */
   def toXhtml(nodeSeq: NodeSeq): String = sbToString(sb => sequenceToXML(nodeSeq: Seq[Node], sb = sb))
 
-  /** Elements which we believe are safe to minimize if minimizeTags is true.
+  /**
+   * Elements which we believe are safe to minimize if minimizeTags is true.
    *  See http://www.w3.org/TR/xhtml1/guidelines.html#C_3
    */
   private val minimizableElements =
@@ -38,39 +38,39 @@ object Xhtml
     decodeEntities: Boolean = false,
     preserveWhitespace: Boolean = false,
     minimizeTags: Boolean = true): Unit =
-  {
-    def decode(er: EntityRef) = XhtmlEntities.entMap.get(er.entityName) match {
-      case Some(chr) if chr.toInt >= 128  => sb.append(chr)
-      case _                              => er.buildString(sb)
-    }
-    def shortForm =
-      minimizeTags &&
-      (x.child == null || x.child.length == 0) &&
-      (minimizableElements contains x.label)
+    {
+      def decode(er: EntityRef) = XhtmlEntities.entMap.get(er.entityName) match {
+        case Some(chr) if chr.toInt >= 128 => sb.append(chr)
+        case _                             => er.buildString(sb)
+      }
+      def shortForm =
+        minimizeTags &&
+          (x.child == null || x.child.length == 0) &&
+          (minimizableElements contains x.label)
 
-    x match {
-      case c: Comment                       => if (!stripComments) c buildString sb
-      case er: EntityRef if decodeEntities  => decode(er)
-      case x: SpecialNode                   => x buildString sb
-      case g: Group                         =>
-        g.nodes foreach { toXhtml(_, x.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }
+      x match {
+        case c: Comment                      => if (!stripComments) c buildString sb
+        case er: EntityRef if decodeEntities => decode(er)
+        case x: SpecialNode                  => x buildString sb
+        case g: Group =>
+          g.nodes foreach { toXhtml(_, x.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }
 
-      case _  =>
-        sb.append('<')
-        x.nameToString(sb)
-        if (x.attributes ne null) x.attributes.buildString(sb)
-        x.scope.buildString(sb, pscope)
-
-        if (shortForm) sb.append(" />")
-        else {
-          sb.append('>')
-          sequenceToXML(x.child, x.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-          sb.append("</")
+        case _ =>
+          sb.append('<')
           x.nameToString(sb)
-          sb.append('>')
-        }
+          if (x.attributes ne null) x.attributes.buildString(sb)
+          x.scope.buildString(sb, pscope)
+
+          if (shortForm) sb.append(" />")
+          else {
+            sb.append('>')
+            sequenceToXML(x.child, x.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+            sb.append("</")
+            x.nameToString(sb)
+            sb.append('>')
+          }
+      }
     }
-  }
 
   /**
    * Amounts to calling toXhtml(node, ...) with the given parameters on each node.
@@ -83,15 +83,15 @@ object Xhtml
     decodeEntities: Boolean = false,
     preserveWhitespace: Boolean = false,
     minimizeTags: Boolean = true): Unit =
-  {
-    if (children.isEmpty)
-      return
+    {
+      if (children.isEmpty)
+        return
 
-    val doSpaces = children forall isAtomAndNotText // interleave spaces
-    for (c <- children.take(children.length - 1)) {
-      toXhtml(c, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-      if (doSpaces) sb append ' '
+      val doSpaces = children forall isAtomAndNotText // interleave spaces
+      for (c <- children.take(children.length - 1)) {
+        toXhtml(c, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+        if (doSpaces) sb append ' '
+      }
+      toXhtml(children.last, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
     }
-    toXhtml(children.last, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-  }
 }

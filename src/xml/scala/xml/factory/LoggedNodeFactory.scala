@@ -10,21 +10,22 @@ package scala
 package xml
 package factory
 
-/** This class logs what the nodefactory is actually doing.
+/**
+ * This class logs what the nodefactory is actually doing.
  *  If you want to see what happens during loading, use it like this:
-{{{
-object testLogged extends App {
-  val x = new scala.xml.parsing.NoBindingFactoryAdapter
-              with scala.xml.factory.LoggedNodeFactory[scala.xml.Elem] {
-            override def log(s: String) = println(s)
-          }
-
-  Console.println("Start")
-  val doc = x.load(new java.net.URL("http://example.com/file.xml"))
-  Console.println("End")
-  Console.println(doc)
-}
-}}}
+ * {{{
+ * object testLogged extends App {
+ * val x = new scala.xml.parsing.NoBindingFactoryAdapter
+ * with scala.xml.factory.LoggedNodeFactory[scala.xml.Elem] {
+ * override def log(s: String) = println(s)
+ * }
+ *
+ * Console.println("Start")
+ * val doc = x.load(new java.net.URL("http://example.com/file.xml"))
+ * Console.println("End")
+ * Console.println(doc)
+ * }
+ * }}}
  *
  *  @author  Burak Emir
  *  @version 1.0
@@ -32,16 +33,16 @@ object testLogged extends App {
 @deprecated("This trait will be removed.", "2.11")
 trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
   // configuration values
-  val logNode      = true
-  val logText      = false
-  val logComment   = false
+  val logNode = true
+  val logText = false
+  val logComment = false
   val logProcInstr = false
 
-  final val NONE  = 0
+  final val NONE = 0
   final val CACHE = 1
-  final val FULL  = 2
+  final val FULL = 2
   /** 0 = no logging, 1 = cache hits, 2 = detail */
-  val logCompressLevel  = 1
+  val logCompressLevel = 1
 
   // methods of NodeFactory
 
@@ -49,7 +50,7 @@ trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
   override def makeNode(pre: String, label: String, attrSeq: MetaData,
                         scope: NamespaceBinding, children: Seq[Node]): A = {
     if (logNode)
-      log("[makeNode for "+label+"]")
+      log("[makeNode for " + label + "]")
 
     val hash = Utility.hashCode(pre, label, attrSeq.##, scope.##, children)
 
@@ -61,7 +62,7 @@ trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
       log(" children :"+children+" hash "+children.hashCode());
     }
     */
-    if (!cache.get( hash ).isEmpty && (logCompressLevel >= CACHE))
+    if (!cache.get(hash).isEmpty && (logCompressLevel >= CACHE))
       log("[cache hit !]")
 
     super.makeNode(pre, label, attrSeq, scope, children)
@@ -69,19 +70,19 @@ trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
 
   override def makeText(s: String) = {
     if (logText)
-      log("[makeText:\""+s+"\"]")
+      log("[makeText:\"" + s + "\"]")
     super.makeText(s)
   }
 
   override def makeComment(s: String): Seq[Comment] = {
     if (logComment)
-      log("[makeComment:\""+s+"\"]")
+      log("[makeComment:\"" + s + "\"]")
     super.makeComment(s)
   }
 
   override def makeProcInstr(t: String, s: String): Seq[ProcInstr] = {
     if (logProcInstr)
-      log("[makeProcInstr:\""+t+" "+ s+"\"]")
+      log("[makeProcInstr:\"" + t + " " + s + "\"]")
     super.makeProcInstr(t, s)
   }
 

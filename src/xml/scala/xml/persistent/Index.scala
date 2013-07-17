@@ -6,12 +6,11 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
 package persistent
 
-/** an Index returns some unique key that is part of a node
+/**
+ * an Index returns some unique key that is part of a node
  */
-abstract class Index[A] extends Function1[Node,A] {}
+abstract class Index[A] extends Function1[Node, A] {}

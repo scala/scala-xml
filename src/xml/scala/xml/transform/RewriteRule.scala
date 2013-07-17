@@ -6,13 +6,12 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
 package transform
 
-/** A RewriteRule, when applied to a term, yields either
+/**
+ * A RewriteRule, when applied to a term, yields either
  *  the result of rewriting the term or the term itself if the rule
  *  is not applied.
  *

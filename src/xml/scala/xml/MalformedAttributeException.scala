@@ -6,10 +6,7 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
-
 
 case class MalformedAttributeException(msg: String) extends RuntimeException(msg)

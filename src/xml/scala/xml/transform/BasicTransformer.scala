@@ -6,29 +6,29 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml
 package transform
 
-/** A class for XML transformations.
+/**
+ * A class for XML transformations.
  *
  *  @author  Burak Emir
  *  @version 1.0
  */
-abstract class BasicTransformer extends Function1[Node,Node]
-{
+abstract class BasicTransformer extends Function1[Node, Node] {
   protected def unchanged(n: Node, ns: Seq[Node]) =
     ns.length == 1 && (ns.head == n)
 
-  /** Call transform(Node) for each node in ns, append results
+  /**
+   * Call transform(Node) for each node in ns, append results
    *  to NodeBuffer.
    */
   def transform(it: Iterator[Node], nb: NodeBuffer): Seq[Node] =
     it.foldLeft(nb)(_ ++= transform(_)).toSeq
 
-  /** Call transform(Node) to each node in ns, yield ns if nothing changes,
+  /**
+   * Call transform(Node) to each node in ns, yield ns if nothing changes,
    *  otherwise a new sequence of concatenated results.
    */
   def transform(ns: Seq[Node]): Seq[Node] = {
@@ -40,13 +40,13 @@ abstract class BasicTransformer extends Function1[Node,Node]
 
   def transform(n: Node): Seq[Node] = {
     if (n.doTransform) n match {
-      case Group(xs)  => Group(transform(xs)) // un-group the hack Group tag
-      case _          =>
+      case Group(xs) => Group(transform(xs)) // un-group the hack Group tag
+      case _ =>
         val ch = n.child
         val nch = transform(ch)
 
         if (ch eq nch) n
-        else           Elem(n.prefix, n.label, n.attributes, n.scope, nch: _*)
+        else Elem(n.prefix, n.label, n.attributes, n.scope, nch: _*)
     }
     else n
   }

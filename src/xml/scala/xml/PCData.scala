@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** This class (which is not used by all XML parsers, but always used by the
+/**
+ * This class (which is not used by all XML parsers, but always used by the
  *  XHTML one) represents parseable character data, which appeared as CDATA
  *  sections in the input and is to be preserved as CDATA section in the output.
  *
@@ -18,7 +19,8 @@ package xml
  */
 class PCData(data: String) extends Atom[String](data) {
 
-  /** Returns text, with some characters escaped according to the XML
+  /**
+   * Returns text, with some characters escaped according to the XML
    *  specification.
    *
    *  @param  sb the input string buffer associated to some XML element
@@ -28,7 +30,8 @@ class PCData(data: String) extends Atom[String](data) {
     sb append "<![CDATA[%s]]>".format(data)
 }
 
-/** This singleton object contains the `apply`and `unapply` methods for
+/**
+ * This singleton object contains the `apply`and `unapply` methods for
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir

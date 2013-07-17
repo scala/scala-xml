@@ -6,7 +6,6 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 package persistent
@@ -14,7 +13,8 @@ package persistent
 import scala.collection.mutable
 import java.io.File
 
-/** A persistent store with set semantics. This class allows to add and remove
+/**
+ * A persistent store with set semantics. This class allows to add and remove
  *  trees, but never contains two structurally equal trees.
  *
  *  @author Burak Emir
@@ -33,9 +33,9 @@ class SetStorage(file: File) extends CachedFileStorage(file) {
 
   /* forwarding methods to hashset*/
 
-  def += (e: Node): Unit = synchronized { this.dirty = true; theSet += e }
+  def +=(e: Node): Unit = synchronized { this.dirty = true; theSet += e }
 
-  def -= (e: Node): Unit = synchronized { this.dirty = true; theSet -= e }
+  def -=(e: Node): Unit = synchronized { this.dirty = true; theSet -= e }
 
   def nodes = synchronized { theSet.iterator }
 

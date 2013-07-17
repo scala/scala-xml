@@ -6,12 +6,12 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 package dtd
 
-/** An XML node for document type declaration.
+/**
+ * An XML node for document type declaration.
  *
  *  @author Burak Emir
  *
@@ -21,7 +21,7 @@ package dtd
  */
 case class DocType(name: String, extID: ExternalID, intSubset: Seq[dtd.Decl]) {
   if (!Utility.isName(name))
-    throw new IllegalArgumentException(name+" must be an XML Name")
+    throw new IllegalArgumentException(name + " must be an XML Name")
 
   /** returns "&lt;!DOCTYPE + name + extID? + ("["+intSubSet+"]")? >" */
   final override def toString() = {

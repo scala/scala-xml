@@ -6,12 +6,11 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml.dtd.impl
 
-/** This runtime exception is thrown if an attempt to instantiate a
+/**
+ * This runtime exception is thrown if an attempt to instantiate a
  *  syntactically incorrect expression is detected.
  *
  *  @author  Burak Emir

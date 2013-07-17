@@ -6,11 +6,11 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 
-/** top level namespace scope. only contains the predefined binding
+/**
+ * top level namespace scope. only contains the predefined binding
  *  for the &quot;xml&quot; prefix which is bound to
  *  &quot;http://www.w3.org/XML/1998/namespace&quot;
  */

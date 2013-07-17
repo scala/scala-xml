@@ -6,12 +6,11 @@
 **                          |/                                          **
 \*                                                                      */
 
-
-
 package scala
 package xml.dtd.impl
 
-/** Basic regular expressions.
+/**
+ * Basic regular expressions.
  *
  *  @author  Burak Emir
  *  @version 1.0

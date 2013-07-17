@@ -33,9 +33,9 @@ object ContentModel extends WordExp {
   def getLabels(r: RegExp): Set[String] = {
     def traverse(r: RegExp): Set[String] = r match { // !!! check for match translation problem
       case Letter(ElemName(name)) => Set(name)
-      case Star(  x @ _  ) => traverse( x ) // bug if x@_*
-      case Sequ( xs @ _* ) => Set(xs flatMap traverse: _*)
-      case Alt(  xs @ _* ) => Set(xs flatMap traverse: _*)
+      case Star(x@_)              => traverse(x) // bug if x@_*
+      case Sequ(xs@_*)            => Set(xs flatMap traverse: _*)
+      case Alt(xs@_*)             => Set(xs flatMap traverse: _*)
     }
 
     traverse(r)
@@ -60,23 +60,22 @@ object ContentModel extends WordExp {
   }
 
   def buildString(r: RegExp, sb: StringBuilder): StringBuilder =
-    r match {  // !!! check for match translation problem
+    r match { // !!! check for match translation problem
       case Eps =>
         sb
-      case Sequ(rs @ _*) =>
-        sb.append( '(' ); buildString(rs, sb, ','); sb.append( ')' )
-      case Alt(rs @ _*) =>
-        sb.append( '(' ); buildString(rs, sb, '|');  sb.append( ')' )
+      case Sequ(rs@_*) =>
+        sb.append('('); buildString(rs, sb, ','); sb.append(')')
+      case Alt(rs@_*) =>
+        sb.append('('); buildString(rs, sb, '|'); sb.append(')')
       case Star(r: RegExp) =>
-        sb.append( '(' ); buildString(r, sb); sb.append( ")*" )
+        sb.append('('); buildString(r, sb); sb.append(")*")
       case Letter(ElemName(name)) =>
         sb.append(name)
     }
 
 }
 
-sealed abstract class ContentModel
-{
+sealed abstract class ContentModel {
   override def toString(): String = sbToString(buildString)
   def buildString(sb: StringBuilder): StringBuilder
 }
@@ -104,7 +103,7 @@ case class MIXED(r: ContentModel.RegExp) extends DFAContentModel {
   import ContentModel.{ Alt, RegExp }
 
   override def buildString(sb: StringBuilder): StringBuilder = {
-    val newAlt = r match { case Alt(rs @ _*) => Alt(rs drop 1: _*) }
+    val newAlt = r match { case Alt(rs@_*) => Alt(rs drop 1: _*) }
 
     sb append "(#PCDATA|"
     ContentModel.buildString(newAlt: RegExp, sb)

@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** An XML node for unparsed content. It will be output verbatim, all bets
+/**
+ * An XML node for unparsed content. It will be output verbatim, all bets
  *  are off regarding wellformedness etc.
  *
  *  @author Burak Emir
@@ -17,14 +18,16 @@ package xml
  */
 class Unparsed(data: String) extends Atom[String](data) {
 
-  /** Returns text, with some characters escaped according to XML
+  /**
+   * Returns text, with some characters escaped according to XML
    *  specification.
    */
   override def buildString(sb: StringBuilder): StringBuilder =
     sb append data
 }
 
-/** This singleton object contains the `apply`and `unapply` methods for
+/**
+ * This singleton object contains the `apply`and `unapply` methods for
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir

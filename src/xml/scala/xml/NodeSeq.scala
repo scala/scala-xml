@@ -14,7 +14,8 @@ import mutable.{ Builder, ListBuffer }
 import generic.{ CanBuildFrom }
 import scala.language.implicitConversions
 
-/** This object ...
+/**
+ * This object ...
  *
  *  @author  Burak Emir
  *  @version 1.0
@@ -34,7 +35,8 @@ object NodeSeq {
   implicit def seqToNodeSeq(s: Seq[Node]): NodeSeq = fromSeq(s)
 }
 
-/** This class implements a wrapper around `Seq[Node]` that adds XPath
+/**
+ * This class implements a wrapper around `Seq[Node]` that adds XPath
  *  and comprehension methods.
  *
  *  @author  Burak Emir
@@ -66,8 +68,8 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   protected def basisForHashCode: Seq[Any] = theSeq
 
   override def canEqual(other: Any) = other match {
-    case _: NodeSeq   => true
-    case _            => false
+    case _: NodeSeq => true
+    case _          => false
   }
 
   override def strict_==(other: Equality) = other match {
@@ -75,7 +77,8 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     case _          => false
   }
 
-  /** Projection function, which returns  elements of `this` sequence based
+  /**
+   * Projection function, which returns  elements of `this` sequence based
    *  on the string `that`. Use:
    *   - `this \ "foo"` to get a list of all elements that are labelled with `"foo"`;
    *   - `\ "_"` to get a list of all elements (wildcard);
@@ -99,15 +102,14 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
         else if (that(1) == '{') {
           val i = that indexOf '}'
           if (i == -1) fail
-          val (uri, key) = (that.substring(2,i), that.substring(i+1, that.length()))
+          val (uri, key) = (that.substring(2, i), that.substring(i + 1, that.length()))
           if (uri == "" || key == "") fail
           else y.attribute(uri, key)
-        }
-        else y.attribute(that drop 1)
+        } else y.attribute(that drop 1)
 
       attr match {
-        case Some(x)  => Group(x)
-        case _        => NodeSeq.Empty
+        case Some(x) => Group(x)
+        case _       => NodeSeq.Empty
       }
     }
 
@@ -115,14 +117,15 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
       NodeSeq fromSeq (this flatMap (_.child) filter cond)
 
     that match {
-      case ""                                         => fail
-      case "_"                                        => makeSeq(!_.isAtom)
-      case _ if (that(0) == '@' && this.length == 1)  => atResult
-      case _                                          => makeSeq(_.label == that)
+      case ""                                        => fail
+      case "_"                                       => makeSeq(!_.isAtom)
+      case _ if (that(0) == '@' && this.length == 1) => atResult
+      case _                                         => makeSeq(_.label == that)
     }
   }
 
-  /** Projection function, which returns elements of `this` sequence and of
+  /**
+   * Projection function, which returns elements of `this` sequence and of
    *  all its subsequences, based on the string `that`. Use:
    *   - `this \\ 'foo` to get a list of all elements that are labelled with `"foo"`;
    *   - `\\ "_"` to get a list of all elements (wildcard);
@@ -137,16 +140,17 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
    *
    *  The document order is preserved.
    */
-  def \\ (that: String): NodeSeq = {
+  def \\(that: String): NodeSeq = {
     def filt(cond: (Node) => Boolean) = this flatMap (_.descendant_or_self) filter cond
     that match {
-      case "_"                  => filt(!_.isAtom)
-      case _ if that(0) == '@'  => filt(!_.isAtom) flatMap (_ \ that)
-      case _                    => filt(x => !x.isAtom && x.label == that)
+      case "_"                 => filt(!_.isAtom)
+      case _ if that(0) == '@' => filt(!_.isAtom) flatMap (_ \ that)
+      case _                   => filt(x => !x.isAtom && x.label == that)
     }
   }
 
-  /** Convenience method which returns string text of the named attribute. Use:
+  /**
+   * Convenience method which returns string text of the named attribute. Use:
    *   - `that \@ "foo"` to get the string text of attribute `"foo"`;
    */
   def \@(attributeName: String): String = (this \ ("@" + attributeName)).text

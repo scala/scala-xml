@@ -11,7 +11,8 @@ package xml
 
 import Utility.sbToString
 
-/** The class `NamespaceBinding` represents namespace bindings
+/**
+ * The class `NamespaceBinding` represents namespace bindings
  *  and scopes. The binding for the default namespace is treated as a null
  *  prefix. the absent namespace is represented with the null uri. Neither
  *  prefix nor uri may be empty, which is not checked.
@@ -20,15 +21,15 @@ import Utility.sbToString
  *  @version 1.0
  */
 @SerialVersionUID(0 - 2518644165573446725L)
-case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBinding) extends AnyRef with Equality
-{
+case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBinding) extends AnyRef with Equality {
   if (prefix == "")
     throw new IllegalArgumentException("zero length prefix not allowed")
 
   def getURI(_prefix: String): String =
     if (prefix == _prefix) uri else parent getURI _prefix
 
-  /** Returns some prefix that is mapped to the URI.
+  /**
+   * Returns some prefix that is mapped to the URI.
    *
    * @param _uri the input URI
    * @return the prefix that is mapped to the input URI, or null
@@ -44,7 +45,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
       if ((x == null) || (x eq stop)) Nil
       else x.prefix :: prefixList(x.parent)
     def fromPrefixList(l: List[String]): NamespaceBinding = l match {
-      case Nil => stop
+      case Nil     => stop
       case x :: xs => new NamespaceBinding(x, this.getURI(x), fromPrefixList(xs))
     }
     val ps0 = prefixList(this).reverse
@@ -54,13 +55,13 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
   }
 
   override def canEqual(other: Any) = other match {
-    case _: NamespaceBinding  => true
-    case _                    => false
+    case _: NamespaceBinding => true
+    case _                   => false
   }
 
   override def strict_==(other: Equality) = other match {
-    case x: NamespaceBinding  => (prefix == x.prefix) && (uri == x.uri) && (parent == x.parent)
-    case _                    => false
+    case x: NamespaceBinding => (prefix == x.prefix) && (uri == x.uri) && (parent == x.parent)
+    case _                   => false
   }
 
   def basisForHashCode: Seq[Any] = List(prefix, uri, parent)
@@ -72,7 +73,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
   }
 
   private def doBuildString(sb: StringBuilder, stop: NamespaceBinding) {
-    if ((this == null) || (this eq stop)) return    // contains?
+    if ((this == null) || (this eq stop)) return // contains?
 
     val s = " xmlns%s=\"%s\"".format(
       (if (prefix != null) ":" + prefix else ""),

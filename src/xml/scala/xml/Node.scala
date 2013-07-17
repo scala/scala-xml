@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** This singleton object contains the `unapplySeq` method for
+/**
+ * This singleton object contains the `unapplySeq` method for
  *  convenient deconstruction.
  *
  *  @author  Burak Emir
@@ -40,13 +41,14 @@ abstract class Node extends NodeSeq {
   /** label of this node. I.e. "foo" for &lt;foo/&gt;) */
   def label: String
 
-  /** used internally. Atom/Molecule = -1 PI = -2 Comment = -3 EntityRef = -5
+  /**
+   * used internally. Atom/Molecule = -1 PI = -2 Comment = -3 EntityRef = -5
    */
   def isAtom = this.isInstanceOf[Atom[_]]
 
   /** The logic formerly found in typeTag$, as best I could infer it. */
-  def doCollectNamespaces = true  // if (tag >= 0) DO collect namespaces
-  def doTransform         = true  // if (tag < 0) DO NOT transform
+  def doCollectNamespaces = true // if (tag >= 0) DO collect namespaces
+  def doTransform = true // if (tag < 0) DO NOT transform
 
   /**
    *  method returning the namespace bindings of this node. by default, this
@@ -108,7 +110,8 @@ abstract class Node extends NodeSeq {
    */
   def child: Seq[Node]
 
-  /** Children which do not stringify to "" (needed for equality)
+  /**
+   * Children which do not stringify to "" (needed for equality)
    */
   def nonEmptyChildren: Seq[Node] = child filterNot (_.toString == "")
 
@@ -117,7 +120,7 @@ abstract class Node extends NodeSeq {
    * includes all text nodes, element nodes, comments and processing instructions.
    */
   def descendant: List[Node] =
-    child.toList.flatMap { x => x::x.descendant }
+    child.toList.flatMap { x => x :: x.descendant }
 
   /**
    * Descendant axis (all descendants of this node, including thisa node)
@@ -126,9 +129,9 @@ abstract class Node extends NodeSeq {
   def descendant_or_self: List[Node] = this :: descendant
 
   override def canEqual(other: Any) = other match {
-    case x: Group   => false
-    case x: Node    => true
-    case _          => false
+    case x: Group => false
+    case x: Node  => true
+    case _        => false
   }
 
   override protected def basisForHashCode: Seq[Any] =
@@ -136,13 +139,13 @@ abstract class Node extends NodeSeq {
 
   override def strict_==(other: Equality) = other match {
     case _: Group => false
-    case x: Node  =>
+    case x: Node =>
       (prefix == x.prefix) &&
-      (label == x.label) &&
-      (attributes == x.attributes) &&
-      // (scope == x.scope)               // note - original code didn't compare scopes so I left it as is.
-      (nonEmptyChildren sameElements x.nonEmptyChildren)
-    case _        =>
+        (label == x.label) &&
+        (attributes == x.attributes) &&
+        // (scope == x.scope)               // note - original code didn't compare scopes so I left it as is.
+        (nonEmptyChildren sameElements x.nonEmptyChildren)
+    case _ =>
       false
   }
 
@@ -193,6 +196,7 @@ abstract class Node extends NodeSeq {
    * doc\DocGenerator.scala:1219: error: object creation impossible, since there is a deferred declaration of method text in class Node of type => String which is not implemented in a subclass
    * new SpecialNode {
    * ^
-   * }}} */
+   * }}}
+   */
   override def text: String = super.text
 }

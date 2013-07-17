@@ -9,7 +9,8 @@
 package scala
 package xml
 
-/** `SpecialNode` is a special XML node which represents either text
+/**
+ * `SpecialNode` is a special XML node which represents either text
  *  `(PCDATA)`, a comment, a `PI`, or an entity ref.
  *
  *  `SpecialNode`s also play the role of [[scala.xml.pull.XMLEvent]]s for

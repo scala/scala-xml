@@ -6,26 +6,26 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 package dtd
 
 import scala.collection.mutable
 
-/** A document type declaration.
+/**
+ * A document type declaration.
  *
  *  @author Burak Emir
  */
 abstract class DTD {
-  var externalID: ExternalID            = null
-  var decls: List[Decl]                 = Nil
-  def notations: Seq[NotationDecl]      = Nil
+  var externalID: ExternalID = null
+  var decls: List[Decl] = Nil
+  def notations: Seq[NotationDecl] = Nil
   def unparsedEntities: Seq[EntityDecl] = Nil
 
-  var elem: mutable.Map[String, ElemDecl]    = new mutable.HashMap[String, ElemDecl]()
+  var elem: mutable.Map[String, ElemDecl] = new mutable.HashMap[String, ElemDecl]()
   var attr: mutable.Map[String, AttListDecl] = new mutable.HashMap[String, AttListDecl]()
-  var ent:  mutable.Map[String, EntityDecl]  = new mutable.HashMap[String, EntityDecl]()
+  var ent: mutable.Map[String, EntityDecl] = new mutable.HashMap[String, EntityDecl]()
 
   override def toString() =
     "DTD [\n%s%s]".format(

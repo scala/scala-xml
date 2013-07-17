@@ -16,7 +16,8 @@ import Utility.Escapes.{ pairs => unescape }
 
 import Utility.SU
 
-/** This is not a public trait - it contains common code shared
+/**
+ * This is not a public trait - it contains common code shared
  *  between the library level XML parser and the compiler's.
  *  All members should be accessed through those.
  */
@@ -24,16 +25,17 @@ private[scala] trait MarkupParserCommon extends TokenTests {
   protected def unreachable = scala.sys.error("Cannot be reached.")
 
   // type HandleType       // MarkupHandler, SymbolicXMLBuilder
-  type InputType        // Source, CharArrayReader
-  type PositionType     // Int, Position
-  type ElementType      // NodeSeq, Tree
-  type NamespaceType    // NamespaceBinding, Any
-  type AttributesType   // (MetaData, NamespaceBinding), mutable.Map[String, Tree]
+  type InputType // Source, CharArrayReader
+  type PositionType // Int, Position
+  type ElementType // NodeSeq, Tree
+  type NamespaceType // NamespaceBinding, Any
+  type AttributesType // (MetaData, NamespaceBinding), mutable.Map[String, Tree]
 
   def mkAttributes(name: String, pscope: NamespaceType): AttributesType
   def mkProcInstr(position: PositionType, name: String, text: String): ElementType
 
-  /** parse a start or empty tag.
+  /**
+   * parse a start or empty tag.
    *  [40] STag         ::= '<' Name { S Attribute } [S]
    *  [44] EmptyElemTag ::= '<' Name { S Attribute } [S]
    */
@@ -44,7 +46,8 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     (name, mkAttributes(name, pscope))
   }
 
-  /** '<?' ProcInstr ::= Name [S ({Char} - ({Char}'>?' {Char})]'?>'
+  /**
+   * '<?' ProcInstr ::= Name [S ({Char} - ({Char}'>?' {Char})]'?>'
    *
    * see [15]
    */
@@ -54,8 +57,9 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     xTakeUntil(mkProcInstr(_, n, _), () => tmppos, "?>")
   }
 
-  /** attribute value, terminated by either `'` or `"`. value may not contain `<`.
-   @param endCh either `'` or `"`
+  /**
+   * attribute value, terminated by either `'` or `"`. value may not contain `<`.
+   * @param endCh either `'` or `"`
    */
   def xAttributeValue(endCh: Char): String = {
     val buf = new StringBuilder
@@ -79,13 +83,14 @@ private[scala] trait MarkupParserCommon extends TokenTests {
   private def takeUntilChar(it: Iterator[Char], end: Char): String = {
     val buf = new StringBuilder
     while (it.hasNext) it.next() match {
-      case `end`  => return buf.toString
-      case ch     => buf append ch
+      case `end` => return buf.toString
+      case ch    => buf append ch
     }
     scala.sys.error("Expected '%s'".format(end))
   }
 
-  /** [42]  '<' xmlEndTag ::=  '<' '/' Name S? '>'
+  /**
+   * [42]  '<' xmlEndTag ::=  '<' '/' Name S? '>'
    */
   def xEndTag(startName: String) {
     xToken('/')
@@ -96,7 +101,8 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     xToken('>')
   }
 
-  /** actually, Name ::= (Letter | '_' | ':') (NameChar)*  but starting with ':' cannot happen
+  /**
+   * actually, Name ::= (Letter | '_' | ':') (NameChar)*  but starting with ':' cannot happen
    *  Name ::= (Letter | '_') (NameChar)*
    *
    *  see  [5] of XML 1.0 specification
@@ -116,23 +122,23 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     while (isNameChar(ch))
 
     if (buf.last == ':') {
-      reportSyntaxError( "name cannot end in ':'" )
+      reportSyntaxError("name cannot end in ':'")
       buf.toString dropRight 1
-    }
-    else buf.toString
+    } else buf.toString
   }
 
   private def attr_unescape(s: String) = s match {
-    case "lt"     => "<"
-    case "gt"     => ">"
-    case "amp"    => "&"
-    case "apos"   => "'"
-    case "quot"   => "\""
-    case "quote"  => "\""
-    case _        => "&" + s + ";"
+    case "lt"    => "<"
+    case "gt"    => ">"
+    case "amp"   => "&"
+    case "apos"  => "'"
+    case "quot"  => "\""
+    case "quote" => "\""
+    case _       => "&" + s + ";"
   }
 
-  /** Replaces only character references right now.
+  /**
+   * Replaces only character references right now.
    *  see spec 3.3.3
    */
   private def normalizeAttributeValue(attval: String): String = {
@@ -141,7 +147,8 @@ private[scala] trait MarkupParserCommon extends TokenTests {
 
     while (it.hasNext) buf append (it.next() match {
       case ' ' | '\t' | '\n' | '\r' => " "
-      case '&' if it.head == '#'    => it.next() ; xCharRef(it)
+      case '&' if it.head == '#'    =>
+        it.next(); xCharRef(it)
       case '&'                      => attr_unescape(takeUntilChar(it, ';'))
       case c                        => c
     })
@@ -149,7 +156,8 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     buf.toString
   }
 
-  /** CharRef ::= "&#" '0'..'9' {'0'..'9'} ";"
+  /**
+   * CharRef ::= "&#" '0'..'9' {'0'..'9'} ";"
    *            | "&#x" '0'..'9'|'A'..'F'|'a'..'f' { hexdigit } ";"
    *
    * see [66]
@@ -167,7 +175,8 @@ private[scala] trait MarkupParserCommon extends TokenTests {
   /** Create a lookahead reader which does not influence the input */
   def lookahead(): BufferedIterator[Char]
 
-  /** The library and compiler parsers had the interesting distinction of
+  /**
+   * The library and compiler parsers had the interesting distinction of
    *  different behavior for nextch (a function for which there are a total
    *  of two plausible behaviors, so we know the design space was fully
    *  explored.) One of them returned the value of nextch before the increment
@@ -221,7 +230,8 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     finally setter(saved)
   }
 
-  /** Take characters from input stream until given String "until"
+  /**
+   * Take characters from input stream until given String "until"
    *  is seen.  Once seen, the accumulated characters are passed
    *  along with the current Position to the supplied handler function.
    */
@@ -229,24 +239,25 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     handler: (PositionType, String) => T,
     positioner: () => PositionType,
     until: String): T =
-  {
-    val sb = new StringBuilder
-    val head = until.head
-    val rest = until.tail
+    {
+      val sb = new StringBuilder
+      val head = until.head
+      val rest = until.tail
 
-    while (true) {
-      if (ch == head && peek(rest))
-        return handler(positioner(), sb.toString)
-      else if (ch == SU)
-        truncatedError("")  // throws TruncatedXMLControl in compiler
+      while (true) {
+        if (ch == head && peek(rest))
+          return handler(positioner(), sb.toString)
+        else if (ch == SU)
+          truncatedError("") // throws TruncatedXMLControl in compiler
 
-      sb append ch
-      nextch()
+        sb append ch
+        nextch()
+      }
+      unreachable
     }
-    unreachable
-  }
 
-  /** Create a non-destructive lookahead reader and see if the head
+  /**
+   * Create a non-destructive lookahead reader and see if the head
    *  of the input would match the given String.  If yes, return true
    *  and drop the entire String from input; if no, return false
    *  and leave input unchanged.

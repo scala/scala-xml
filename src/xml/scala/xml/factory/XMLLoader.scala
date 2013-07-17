@@ -6,7 +6,6 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package scala
 package xml
 package factory
@@ -16,11 +15,11 @@ import parsing.{ FactoryAdapter, NoBindingFactoryAdapter }
 import java.io.{ InputStream, Reader, File, FileDescriptor }
 import java.net.URL
 
-/** Presents collection of XML loading methods which use the parser
+/**
+ * Presents collection of XML loading methods which use the parser
  *  created by "def parser".
  */
-trait XMLLoader[T <: Node]
-{
+trait XMLLoader[T <: Node] {
   import scala.xml.Source._
   def adapter: FactoryAdapter = new NoBindingFactoryAdapter()
 
@@ -31,7 +30,8 @@ trait XMLLoader[T <: Node]
     f.newSAXParser()
   }
 
-  /** Loads XML from the given InputSource, using the supplied parser.
+  /**
+   * Loads XML from the given InputSource, using the supplied parser.
    *  The methods available in scala.xml.XML use the XML parser in the JDK.
    */
   def loadXML(source: InputSource, parser: SAXParser): T = {
@@ -45,17 +45,17 @@ trait XMLLoader[T <: Node]
   }
 
   /** Loads XML from the given file, file descriptor, or filename. */
-  def loadFile(file: File): T          = loadXML(fromFile(file), parser)
-  def loadFile(fd: FileDescriptor): T  = loadXML(fromFile(fd), parser)
-  def loadFile(name: String): T        = loadXML(fromFile(name), parser)
+  def loadFile(file: File): T = loadXML(fromFile(file), parser)
+  def loadFile(fd: FileDescriptor): T = loadXML(fromFile(fd), parser)
+  def loadFile(name: String): T = loadXML(fromFile(name), parser)
 
   /** loads XML from given InputStream, Reader, sysID, InputSource, or URL. */
-  def load(is: InputStream): T         = loadXML(fromInputStream(is), parser)
-  def load(reader: Reader): T          = loadXML(fromReader(reader), parser)
-  def load(sysID: String): T           = loadXML(fromSysId(sysID), parser)
-  def load(source: InputSource): T     = loadXML(source, parser)
-  def load(url: URL): T                = loadXML(fromInputStream(url.openStream()), parser)
+  def load(is: InputStream): T = loadXML(fromInputStream(is), parser)
+  def load(reader: Reader): T = loadXML(fromReader(reader), parser)
+  def load(sysID: String): T = loadXML(fromSysId(sysID), parser)
+  def load(source: InputSource): T = loadXML(source, parser)
+  def load(url: URL): T = loadXML(fromInputStream(url.openStream()), parser)
 
   /** Loads XML from the given String. */
-  def loadString(string: String): T    = loadXML(fromString(string), parser)
+  def loadString(string: String): T = loadXML(fromString(string), parser)
 }
