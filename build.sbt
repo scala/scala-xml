@@ -2,7 +2,7 @@ organization := "org.scala-lang"
 
 name := "scala-xml"
 
-version := "1.0-RC1"
+version := "1.0-RC2"
 
 scalaVersion := "2.11.0-M4"
 
