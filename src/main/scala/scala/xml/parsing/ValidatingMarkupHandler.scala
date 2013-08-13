@@ -30,22 +30,22 @@ abstract class ValidatingMarkupHandler extends MarkupHandler {
 
     def advanceDFA(dm: DFAContentModel) = {
       val trans = dm.dfa.delta(qCurrent)
-      log("advanceDFA(dm): " + dm)
-      log("advanceDFA(trans): " + trans)
+      // println("advanceDFA(dm): " + dm)
+      // println("advanceDFA(trans): " + trans)
       trans.get(ContentModel.ElemName(label)) match {
         case Some(qNew) => qCurrent = qNew
         case _          => reportValidationError(pos, "DTD says, wrong element, expected one of " + trans.keys)
       }
     }
     // advance in current automaton
-    log("[qCurrent = " + qCurrent + " visiting " + label + "]")
+    // println("[qCurrent = " + qCurrent + " visiting " + label + "]")
 
     if (qCurrent == -1) { // root
-      log("  checking root")
+      // println("  checking root")
       if (label != rootLabel)
         reportValidationError(pos, "this element should be " + rootLabel)
     } else {
-      log("  checking node")
+      // println("  checking node")
       declCurrent.contentModel match {
         case ANY =>
         case EMPTY =>
@@ -64,17 +64,17 @@ abstract class ValidatingMarkupHandler extends MarkupHandler {
 
     declCurrent = lookupElemDecl(label)
     qCurrent = 0
-    log("  done  now")
+    // println("  done  now")
   }
 
   override def elemEnd(pos: Int, pre: String, label: String) {
-    log("  elemEnd")
+    // println("  elemEnd")
     qCurrent = qStack.head
     qStack = qStack.tail
     declCurrent = declStack.head
     declStack = declStack.tail
-    log("    qCurrent now" + qCurrent)
-    log("    declCurrent now" + declCurrent)
+    // println("    qCurrent now" + qCurrent)
+    // println("    declCurrent now" + declCurrent)
   }
 
   final override def elemDecl(name: String, cmstr: String) {

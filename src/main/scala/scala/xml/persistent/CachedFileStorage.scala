@@ -77,20 +77,20 @@ abstract class CachedFileStorage(private val file1: File) extends Thread {
   private def load: Iterator[Node] = {
     import scala.io.Source
     import scala.xml.parsing.ConstructingParser
-    log("[load]\nloading " + theFile)
+    // println("[load]\nloading " + theFile)
     val src = Source.fromFile(theFile)
-    log("parsing " + theFile)
+    // println("parsing " + theFile)
     val res = ConstructingParser.fromSource(src, preserveWS = false).document.docElem(0)
     switch()
-    log("[load done]")
+    // println("[load done]")
     res.child.iterator
   }
 
   /** saves the XML to file */
   private def save() = if (this.dirty) {
-    log("[save]\ndeleting " + theFile)
+    // println("[save]\ndeleting " + theFile)
     theFile.delete()
-    log("creating new " + theFile)
+    // println("creating new " + theFile)
     theFile.createNewFile()
     val fos = new FileOutputStream(theFile)
     val c = fos.getChannel()
@@ -100,14 +100,14 @@ abstract class CachedFileStorage(private val file1: File) extends Thread {
     val w = Channels.newWriter(c, "utf-8")
     XML.write(w, storageNode, "utf-8", xmlDecl = true, doctype = null)
 
-    log("writing to " + theFile)
+    // println("writing to " + theFile)
 
     w.close
     c.close
     fos.close
     dirty = false
     switch()
-    log("[save done]")
+    // println("[save done]")
   }
 
   /**
@@ -115,7 +115,7 @@ abstract class CachedFileStorage(private val file1: File) extends Thread {
    * not `run`.
    */
   override def run = {
-    log("[run]\nstarting storage thread, checking every " + interval + " ms")
+    // println("[run]\nstarting storage thread, checking every " + interval + " ms")
     while (true) {
       Thread.sleep(this.interval.toLong)
       save()

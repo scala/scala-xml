@@ -19,7 +19,7 @@ import scala.collection.{ immutable, mutable }
  *  All states are reachable. Accepting states are those for which
  *  the partial function `finals` is defined.
  */
-@deprecated("This class will be removed", "2.10.0")
+// TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
   val nstates: Int
   val labels: Seq[T]

@@ -86,6 +86,5 @@ trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
     super.makeProcInstr(t, s)
   }
 
-  @deprecated("This method and its usages will be removed. Use a debugger to debug code.", "2.11")
   def log(msg: String): Unit = {}
 }

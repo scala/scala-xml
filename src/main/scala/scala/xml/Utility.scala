@@ -46,7 +46,8 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trim(x: Node): Node = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      Elem(pre, lab, md, scp, (child flatMap trimProper): _*)
+      val children = child flatMap trimProper
+      Elem(pre, lab, md, scp, children.isEmpty, children: _*)
   }
 
   /**
@@ -55,7 +56,8 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trimProper(x: Node): Seq[Node] = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      Elem(pre, lab, md, scp, (child flatMap trimProper): _*)
+      val children = child flatMap trimProper
+      Elem(pre, lab, md, scp, children.isEmpty, children: _*)
     case Text(s) =>
       new TextBuffer().append(s).toText
     case _ =>
@@ -76,7 +78,8 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def sort(n: Node): Node = n match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      Elem(pre, lab, sort(md), scp, (child map sort): _*)
+      val children = child map sort
+      Elem(pre, lab, sort(md), scp, children.isEmpty, children: _*)
     case _ => n
   }
 

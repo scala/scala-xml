@@ -48,8 +48,4 @@ object ConstructingParser {
 class ConstructingParser(val input: Source, val preserveWS: Boolean)
   extends ConstructingHandler
   with ExternalSources
-  with MarkupParser {
-
-  // default impl. of Logged
-  override def log(msg: String): Unit = {}
-}
+  with MarkupParser

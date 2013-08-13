@@ -11,7 +11,7 @@ package xml.dtd.impl
 
 import scala.collection.{ mutable, immutable }
 
-@deprecated("This class will be removed", "2.10.0")
+// TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) {
   import nfa.labels
 

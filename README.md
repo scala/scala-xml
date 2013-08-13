@@ -10,7 +10,7 @@ We're also looking forward to alternative implementations!
 To depend on scala-xml in SBT, add something like this to your build.sbt:
 
 ```
-libraryDependencies += "org.scala-lang" %% "scala-xml" % "1.0-RC1"
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0-RC2"
 ```
 
 (Assuming you're using a `scalaVersion` for which a scala-xml is published.
@@ -21,7 +21,7 @@ To support multiple Scala versions:
   - SBT 0.12:
 ```
 libraryDependencies <++= (scalaVersion) { sVer =>
-  if (sVer startsWith "2.11") Seq("org.scala-lang" %% "scala-xml" % "1.0-RC1")
+  if (sVer startsWith "2.11") Seq("org.scala-lang.modules" %% "scala-xml" % "1.0-RC2")
   else Seq.empty
 }
 ```
@@ -29,7 +29,7 @@ libraryDependencies <++= (scalaVersion) { sVer =>
   - SBT 0.13:
 ```
 libraryDependencies ++= (
-  if (scalaVersion.value startsWith "2.11") Seq("org.scala-lang" %% "scala-xml" % "1.0-RC1")
+  if (scalaVersion.value startsWith "2.11") Seq("org.scala-lang.modules" %% "scala-xml" % "1.0-RC2")
   else Seq.empty
 )
 ```
