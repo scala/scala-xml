@@ -2,20 +2,7 @@ organization := "org.scala-lang.modules"
 
 name := "scala-xml"
 
-version := "1.0-RC2"
-
-
-// dependencies:
-libraryDependencies += "org.apache.ant"                 % "ant"            % "1.8.4"
-
-libraryDependencies += "com.googlecode.java-diff-utils" % "diffutils"      % "1.3.0"
-
-libraryDependencies += "org.scala-lang"                 % "scalap"         % "2.11.0-M4"
-
-libraryDependencies += "org.scalacheck"                %% "scalacheck"     % "1.10.1"
-
-libraryDependencies += "org.scala-sbt"                  % "test-interface" % "1.0"
-
+version := "1.0-RC3"
 
 // standard stuff follows:
 scalaVersion := "2.11.0-M4"
