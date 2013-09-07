@@ -5,12 +5,12 @@ name := "scala-xml"
 version := "1.0-RC3"
 
 // standard stuff follows:
-scalaVersion := "2.11.0-M4"
+scalaVersion := "2.11.0-M5"
 
 // NOTE: not necessarily equal to scalaVersion
 // (e.g., during PR validation, we override scalaVersion to validate,
 // but don't rebuild scalacheck, so we don't want to rewire that dependency)
-scalaBinaryVersion := "2.11.0-M4"
+scalaBinaryVersion := "2.11.0-M5"
 
 // don't use for doc scope, scaladoc warnings are not to be reckoned with
 scalacOptions in compile ++= Seq("-optimize", "-Xfatal-warnings", "-feature", "-deprecation", "-unchecked", "-Xlint")
