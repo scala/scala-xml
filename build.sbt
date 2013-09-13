@@ -105,6 +105,13 @@ definedTests in Test += (
     }, true, Array())
   )
 
+osgiSettings
+
+OsgiKeys.bundleSymbolicName := s"${organization.value}.${name.value}"
+
+OsgiKeys.bundleVersion := version.value
+
+OsgiKeys.exportPackage := Seq(s"*;version=${version.value}")
 
 // TODO: mima
 // import com.typesafe.tools.mima.plugin.MimaPlugin.mimaDefaultSettings
