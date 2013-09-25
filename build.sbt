@@ -12,6 +12,8 @@ scalaVersion := "2.11.0-M5"
 // but don't rebuild scalacheck, so we don't want to rewire that dependency)
 scalaBinaryVersion := "2.11.0-M5"
 
+// default
+TestKeys.partestVersion := "1.0.0-RC6"
 
 // don't use for doc scope, scaladoc warnings are not to be reckoned with
 scalacOptions in compile ++= Seq("-optimize", "-Xfatal-warnings", "-feature", "-deprecation", "-unchecked", "-Xlint")
