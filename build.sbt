@@ -81,6 +81,8 @@ pomExtra := (
 // default value must be set here
 TestKeys.includeTestDependencies := true
 
+libraryDependencies ++= Seq("junit" % "junit" % "4.11" % "test", "com.novocode" % "junit-interface" % "0.10" % "test")
+
 // default
 TestKeys.partestVersion := "1.0.0-RC6"
 
