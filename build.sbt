@@ -83,12 +83,39 @@ TestKeys.includeTestDependencies := true
 
 libraryDependencies ++= Seq("junit" % "junit" % "4.11" % "test", "com.novocode" % "junit-interface" % "0.10" % "test")
 
+// Define custom Ivy configuration called "partest". Ivy configuration is analogous to Maven scope
+// and allows to group dependencies together, see:
+// http://www.scala-sbt.org/release/docs/Detailed-Topics/Library-Management#configurations
+// We define custom configuration so we can resolve partest through Ivy from Maven repository.
+// However, by putting partest dependency in custom configuration we can make sure that
+// it doesn't interfere with any other dependencies. Also, we can make sure that dependencies
+// resolved in partest configuration NOT included in generated pom. See makePomConfiguration
+// setting we define below.
+val partestConfiguration = config("partest")
+
+// Define configuration to be used to assemble the classpath for compiling and running
+// tests. We define it as an union of default test configuration (scope in Maven's speak)
+// and partest configuration.
+val testWithPartestConfiguration = Configurations.Test.extend(partestConfiguration)
+
+// register both configurations we defined so they are processed by `update` command
+ivyConfigurations ++= Seq(partestConfiguration, testWithPartestConfiguration)
+
+// override configuration used to assemble classpath for tests
+configuration in Test := testWithPartestConfiguration
+
+// Define configurations (scopes in Maven's speak) that are taken into account when
+// generating pom. By default sbt sets MakePomConfiguration.configurations to None which is
+// interpreted as "include dependencies in all configurations". That would include
+// dependencies in partest configuration which is not what we want: see comment above
+// where we define the partest configuration.
+makePomConfiguration := makePomConfiguration.value.copy(configurations = Some(Configurations.default))
+
 // default
 TestKeys.partestVersion := "1.0.0-RC6"
 
 // the actual partest the interface calls into -- must be binary version close enough to ours
 // so that it can link to the compiler/lib we're using (testing)
-// NOTE: not sure why, but the order matters (maybe due to the binary version conflicts for xml/parser combinators pulled in for scaladoc?)
 libraryDependencies ++= (
   if (TestKeys.includeTestDependencies.value) {
     /**
@@ -111,8 +138,8 @@ libraryDependencies ++= (
       dep.exclude("org.scala-lang.modules", "scala-xml_2.11.0-M5").
       exclude("org.scala-lang.modules", "scala-xml_2.11.0-M4").
       exclude("org.scalacheck", "scalacheck_2.11.0-M5")
-    Seq("org.scala-lang.modules" % "scala-partest-interface_2.11.0-M5" % "0.2"                         % "test",
-        "org.scala-lang.modules" % "scala-partest_2.11.0-M5"           % TestKeys.partestVersion.value % "test").
+    Seq("org.scala-lang.modules" % "scala-partest-interface_2.11.0-M5" % "0.2"                         % "partest",
+        "org.scala-lang.modules" % "scala-partest_2.11.0-M5"           % TestKeys.partestVersion.value % "partest").
       map(excludeScalaXml)
   }
   else Seq.empty
