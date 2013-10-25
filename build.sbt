@@ -5,12 +5,12 @@ name := "scala-xml"
 version := "1.0.0-SNAPSHOT"
 
 // standard stuff follows:
-scalaVersion := "2.11.0-M5"
+scalaVersion := "2.11.0-M6"
 
 // NOTE: not necessarily equal to scalaVersion
 // (e.g., during PR validation, we override scalaVersion to validate,
 // but don't rebuild scalacheck, so we don't want to rewire that dependency)
-scalaBinaryVersion := "2.11.0-M5"
+scalaBinaryVersion := "2.11.0-M6"
 
 
 // don't use for doc scope, scaladoc warnings are not to be reckoned with
@@ -108,11 +108,15 @@ libraryDependencies ++= (
      *
      */
     def excludeScalaXml(dep: ModuleID): ModuleID =
-      dep.exclude("org.scala-lang.modules", "scala-xml_2.11.0-M5").
-      exclude("org.scala-lang.modules", "scala-xml_2.11.0-M4").
+      dep.exclude("org.scala-lang.modules", "scala-xml_2.11.0-M4").
+      exclude("org.scala-lang.modules", "scala-xml_2.11.0-M5").
+      exclude("org.scala-lang.modules", "scala-xml_2.11.0-M6").
       exclude("org.scalacheck", "scalacheck_2.11.0-M5")
-    Seq("org.scala-lang.modules" % "scala-partest-interface_2.11.0-M5" % "0.2"                         % "test",
-        "org.scala-lang.modules" % "scala-partest_2.11.0-M5"           % TestKeys.partestVersion.value % "test").
+    Seq("org.scala-lang.modules" % "scala-partest-interface_2.11.0-M5" % "0.2"                         % "test" intransitive,
+        "org.scala-lang.modules" % "scala-partest_2.11.0-M5"           % TestKeys.partestVersion.value % "test" intransitive,
+        // diffutils is needed by partest
+        "com.googlecode.java-diff-utils" % "diffutils"      % "1.3.0" % "test",
+        "org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").
       map(excludeScalaXml)
   }
   else Seq.empty
