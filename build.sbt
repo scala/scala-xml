@@ -86,7 +86,7 @@ TestKeys.includeTestDependencies := true
 libraryDependencies ++= Seq("junit" % "junit" % "4.11" % "test", "com.novocode" % "junit-interface" % "0.10" % "test")
 
 // default
-TestKeys.partestVersion := "1.0.0-RC6"
+TestKeys.partestVersion := "1.0.0-RC7"
 
 // the actual partest the interface calls into -- must be binary version close enough to ours
 // so that it can link to the compiler/lib we're using (testing)
