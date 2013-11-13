@@ -114,8 +114,8 @@ libraryDependencies ++= (
       exclude("org.scala-lang.modules", "scala-xml_2.11.0-M5").
       exclude("org.scala-lang.modules", "scala-xml_2.11.0-M6").
       exclude("org.scalacheck", "scalacheck_2.11.0-M5")
-    Seq("org.scala-lang.modules" % "scala-partest-interface_2.11.0-M5" % "0.2"                         % "test" intransitive,
-        "org.scala-lang.modules" % "scala-partest_2.11.0-M5"           % TestKeys.partestVersion.value % "test" intransitive,
+    Seq("org.scala-lang.modules" % s"scala-partest-interface_${scalaBinaryVersion.value}" % "0.2"                         % "test" intransitive,
+        "org.scala-lang.modules" % s"scala-partest_${scalaBinaryVersion.value}"           % TestKeys.partestVersion.value % "test" intransitive,
         // diffutils is needed by partest
         "com.googlecode.java-diff-utils" % "diffutils"      % "1.3.0" % "test",
         "org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").
