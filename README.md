@@ -1,4 +1,4 @@
-scala-xml <img src="https://api.travis-ci.org/scala/scala-xml.png"/>
+scala-xml [<img src="https://api.travis-ci.org/scala/scala-xml.png"/>](https://travis-ci.org/scala/scala-xml)
 =========
 
 The standard Scala XML library.
