@@ -18,6 +18,11 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 // don't use for doc scope, scaladoc warnings are not to be reckoned with
 scalacOptions in compile ++= Seq("-optimize", "-Xfatal-warnings", "-feature", "-deprecation", "-unchecked", "-Xlint")
 
+libraryDependencies ++= Seq(
+  "org.scala-lang" % "scala-compiler" % scalaVersion.value % "test", // used in CompilerErrors test
+  "junit" % "junit" % "4.11" % "test",
+  "com.novocode" % "junit-interface" % "0.10" % "test")
+
 // Generate $name.properties to store our version as well as the scala version used to build
 resourceGenerators in Compile <+= Def.task {
   val props = new java.util.Properties
@@ -80,67 +85,6 @@ pomExtra := (
     </developer>
   </developers>
 )
-
-// default value must be set here
-TestKeys.includeTestDependencies := true
-
-libraryDependencies ++= Seq("junit" % "junit" % "4.11" % "test", "com.novocode" % "junit-interface" % "0.10" % "test")
-
-// default
-TestKeys.partestVersion := "1.0.0-RC7"
-
-// the actual partest the interface calls into -- must be binary version close enough to ours
-// so that it can link to the compiler/lib we're using (testing)
-// NOTE: not sure why, but the order matters (maybe due to the binary version conflicts for xml/parser combinators pulled in for scaladoc?)
-libraryDependencies ++= (
-  if (TestKeys.includeTestDependencies.value) {
-    /**
-     * Exclude all transitive dependencies of partest that include scala-.xml.
-     * This way we avoid having two (or more) versions of scala-xml on a classpath.
-     * This fixes problem described here:
-     * https://github.com/scala/scala-xml/pull/6#issuecomment-26614894
-     *
-     * Note that we are using ModuleID.exclude instead of more flexible ModuleID.excludeAll
-     * (describe here: http://www.scala-sbt.org/release/docs/Detailed-Topics/Library-Management#exclude-transitive-dependencies)
-     * because only plain excludes are incorporated in generated pom.xml. There are two ways
-     * to address this problem:
-     *
-     *   1. Figure out how to depend on partest in non-transitive way: not include that dependency
-     *      in generated pom.xml for scala-xml.
-     *   2. Declare dependencies in partest as provided so they are not includeded transitively.
-     *
-     */
-    def excludeScalaXml(dep: ModuleID): ModuleID =
-      dep.exclude("org.scala-lang.modules", "scala-xml_2.11.0-M4").
-      exclude("org.scala-lang.modules", "scala-xml_2.11.0-M5").
-      exclude("org.scala-lang.modules", "scala-xml_2.11.0-M6").
-      exclude("org.scalacheck", "scalacheck_2.11.0-M5")
-    Seq("org.scala-lang.modules" % s"scala-partest-interface_${scalaBinaryVersion.value}" % "0.2"                         % "test" intransitive,
-        "org.scala-lang.modules" % s"scala-partest_${scalaBinaryVersion.value}"           % TestKeys.partestVersion.value % "test" intransitive,
-        // diffutils is needed by partest
-        "com.googlecode.java-diff-utils" % "diffutils"      % "1.3.0" % "test",
-        "org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").
-      map(excludeScalaXml)
-  }
-  else Seq.empty
-)
-
-fork in Test := true
-
-javaOptions in Test += "-Xmx1G"
-
-testFrameworks += new TestFramework("scala.tools.partest.Framework")
-
-definedTests in Test += (
-  new sbt.TestDefinition(
-    "partest",
-    // marker fingerprint since there are no test classes
-    // to be discovered by sbt:
-    new sbt.testing.AnnotatedFingerprint {
-      def isModule = true
-      def annotationName = "partest"
-    }, true, Array())
-  )
 
 osgiSettings
 
