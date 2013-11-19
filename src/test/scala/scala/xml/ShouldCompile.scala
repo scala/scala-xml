@@ -63,7 +63,7 @@ class B {
 }
 
 // SI-5858
-object Test {
+object SI_5858 {
   new Elem(null, null, Null, TopScope, Nil: _*) // was ambiguous
 }
 
