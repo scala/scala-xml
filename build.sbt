@@ -1,14 +1,22 @@
+import VersionKeys.{snapshotScalaBinaryVersion,deriveBinaryVersion}
+
 organization := "org.scala-lang.modules"
 
 name := "scala-xml"
 
 version := "1.0.0-SNAPSHOT"
 
-// standard stuff follows:
 scalaVersion := "2.11.0-M7"
+
+snapshotScalaBinaryVersion := "2.11.0-M7"
+
+// DOUBLETHINK YOUR WAY OUT OF EDITING BELOW (THERE IS NO BELOW)
+
+scalaBinaryVersion := deriveBinaryVersion(scalaVersion.value, snapshotScalaBinaryVersion.value)
 
 // to allow compiling against snapshot versions of Scala
 resolvers += Resolver.sonatypeRepo("snapshots")
+
 
 libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-compiler" % scalaVersion.value % "test", // used in CompilerErrors test
