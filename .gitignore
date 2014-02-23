@@ -43,3 +43,7 @@ qbin
 .DS_Store
 
 target/
+
+# for temporary generated vi lock files
+.*.swp
+

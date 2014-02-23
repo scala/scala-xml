@@ -91,13 +91,20 @@ class XMLEventReader(src: Source)
     def text(pos: Int, txt: String) = setEvent(EvText(txt))
 
     override def run() {
-      curInput = input
-      interruptibly { this.initialize.document() }
-      setEvent(POISON)
+      try {
+        curInput = input
+        interruptibly {
+          this.initialize.document()
+        }
+        setEvent(POISON)
+      } catch {
+        case e: Throwable => setEvent(new EvError(e))
+      }
     }
   }
 }
 
+case class EvError(e: Throwable) extends XMLEvent
 // An iterator designed for one or more producers to generate
 // elements, and a single consumer to iterate.  Iteration will continue
 // until closeIterator() is called, after which point producers
@@ -138,11 +145,16 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
 
   // consumer/iterator interface - we need not synchronize access to buffer
   // because we required there to be only one consumer.
-  def hasNext = !eos && (buffer != null || fillBuffer)
-
+  def hasNext() = {
+    if (buffer.isInstanceOf[EvError])
+      throw buffer.asInstanceOf[EvError].e
+    !eos && (buffer != null || fillBuffer)
+  }
   def next() = {
-    if (eos()) throw new NoSuchElementException("ProducerConsumerIterator")
-    if (buffer == null) fillBuffer()
+    if (eos) throw new NoSuchElementException("ProducerConsumerIterator")
+    if (buffer.isInstanceOf[EvError])
+      throw buffer.asInstanceOf[EvError].e
+    if (buffer == null) fillBuffer
 
     drainBuffer()
   }
