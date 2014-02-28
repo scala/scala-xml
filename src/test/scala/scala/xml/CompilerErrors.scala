@@ -164,6 +164,11 @@ class CompilerErrors extends CompilerTesting {
 
 // TODO: factor out somewhere?
 class CompilerTesting {
+  // TODO: refine this; for now, just println -- the goal is to ensure we're testing the right version of scala-xml
+  // (it should print the same thing as the version in the sbt build)
+  // we used to always test the scala-xml jar that the compiler depends on, because it was part of the scala-tool ivy config
+  println(s"Testing scala-xml version ${Properties.versionNumberString}.")
+
   def errorMessages(errorSnippet: String, compileOptions: String = "")(code: String): List[String] = {
     import scala.tools.reflect._
     val m  = scala.reflect.runtime.currentMirror

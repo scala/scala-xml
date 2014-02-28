@@ -112,3 +112,8 @@ object XML extends XMLLoader[Elem] {
     w.write(Utility.serialize(node, minimizeTags = minimizeTags).toString)
   }
 }
+
+object Properties extends scala.util.PropertiesTrait {
+  protected def propCategory    = "scala-xml"
+  protected def pickJarBasedOn  = classOf[scala.xml.pull.XMLEventReader]
+}
