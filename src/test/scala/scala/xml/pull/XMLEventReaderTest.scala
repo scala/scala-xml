@@ -40,4 +40,22 @@ class XMLEventReaderTest {
     er.stop  // allow thread to be garbage-collected
   }
 
+ @Test(expected = classOf[Exception]) 
+ def missingTagTest: Unit = {
+   val data=
+      """<?xml version="1.0" ?>
+        |<verbosegc xmlns="http://www.ibm.com/j9/verbosegc">
+        |
+        |<initialized id="1" timestamp="2013-10-04T00:11:08.389">
+        |</initialized>
+        | 
+        |<exclusive-start id="2" timestamp="2013-10-04T00:11:09.185" intervalms="796.317">
+        |<response-info timems="0.007" idlems="0.007" threads="0" />
+        |</exclusive-start>
+        |""".stripMargin
+
+   val er = new XMLEventReader(Source.fromString(data))
+   while(er.hasNext) er.next()
+   er.stop()
+ }
 }
