@@ -149,7 +149,7 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
 
   def next() = {
     if (eos()) throw new NoSuchElementException("ProducerConsumerIterator")
-    if (buffer == null) fillBuffer
+    if (buffer == null) fillBuffer()
     if (buffer.isInstanceOf[ExceptionEvent]) throw buffer.asInstanceOf[ExceptionEvent].exception
 
     drainBuffer()
