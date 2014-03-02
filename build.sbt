@@ -18,8 +18,7 @@ libraryDependencies += "junit" % "junit" % "4.11" % "test"
 libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test"
 
 // used in CompilerErrors test
-// used in CompilerErrors test
-libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
+libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value % "test"
 
+// temporary workaround with scala-xml compiler dependency
 fork in Test := true
-
