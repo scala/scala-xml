@@ -123,8 +123,7 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
   val MaxQueueSize = -1
 
   def interruptibly[T](body: => T): Option[T] = try Some(body) catch {
-    case e: InterruptedException   =>
-      Thread.currentThread.interrupt(); None
+    case _: InterruptedException   => Thread.currentThread.interrupt(); None
     case _: ClosedChannelException => None
   }
 
@@ -145,9 +144,8 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
 
   // consumer/iterator interface - we need not synchronize access to buffer
   // because we required there to be only one consumer.
-  def hasNext() = {
-    !eos && (buffer != null || fillBuffer)
-  }
+  def hasNext() = !eos && (buffer != null || fillBuffer)
+  
   def next() = {
     if (eos) throw new NoSuchElementException("ProducerConsumerIterator")
     if (buffer == null) fillBuffer
