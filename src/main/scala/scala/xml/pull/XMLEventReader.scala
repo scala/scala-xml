@@ -123,7 +123,8 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
   val MaxQueueSize = -1
 
   def interruptibly[T](body: => T): Option[T] = try Some(body) catch {
-    case _: InterruptedException   => Thread.currentThread.interrupt(); None
+    case _: InterruptedException   => 
+      Thread.currentThread.interrupt(); None
     case _: ClosedChannelException => None
   }
 
