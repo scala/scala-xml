@@ -91,21 +91,19 @@ class XMLEventReader(src: Source)
     def text(pos: Int, txt: String) = setEvent(EvText(txt))
 
     override def run() {
+      curInput = input
       try {
-        curInput = input
-        interruptibly {
-          this.initialize.document()
-        }
-        setEvent(POISON)
+        interruptibly { this.initialize.document() }
       } catch {
-        case e: Exception => setEvent(new EvError(e))
+        case e:Exception => setEvent(ExceptionEvent(e))
       }
+      setEvent(POISON)
     }
   }
 }
 
-// a class to manage Parser thread internal exception back to XMLEventReader class users
-case class EvError(e: Exception) extends XMLEvent
+// An internal class used to propagate exception from helper threads to API end users.
+private case class ExceptionEvent(exception:Exception) extends XMLEvent
 
 // An iterator designed for one or more producers to generate
 // elements, and a single consumer to iterate.  Iteration will continue
@@ -125,7 +123,7 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
   val MaxQueueSize = -1
 
   def interruptibly[T](body: => T): Option[T] = try Some(body) catch {
-    case _: InterruptedException   =>
+    case e: InterruptedException   =>
       Thread.currentThread.interrupt(); None
     case _: ClosedChannelException => None
   }
@@ -148,15 +146,12 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
   // consumer/iterator interface - we need not synchronize access to buffer
   // because we required there to be only one consumer.
   def hasNext() = {
-    if (buffer.isInstanceOf[EvError])
-      throw buffer.asInstanceOf[EvError].e
     !eos && (buffer != null || fillBuffer)
   }
   def next() = {
     if (eos) throw new NoSuchElementException("ProducerConsumerIterator")
-    if (buffer.isInstanceOf[EvError])
-      throw buffer.asInstanceOf[EvError].e
     if (buffer == null) fillBuffer
+    if (buffer.isInstanceOf[ExceptionEvent]) throw buffer.asInstanceOf[ExceptionEvent].exception
 
     drainBuffer()
   }
