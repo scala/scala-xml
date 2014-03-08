@@ -92,11 +92,18 @@ class XMLEventReader(src: Source)
 
     override def run() {
       curInput = input
-      interruptibly { this.initialize.document() }
+      try {
+        interruptibly { this.initialize.document() }
+      } catch {
+        case e:Exception => setEvent(ExceptionEvent(e))
+      }
       setEvent(POISON)
     }
   }
 }
+
+// An internal class used to propagate exception from helper threads to API end users.
+private case class ExceptionEvent(exception:Exception) extends XMLEvent
 
 // An iterator designed for one or more producers to generate
 // elements, and a single consumer to iterate.  Iteration will continue
@@ -143,6 +150,7 @@ trait ProducerConsumerIterator[T >: Null] extends Iterator[T] {
   def next() = {
     if (eos()) throw new NoSuchElementException("ProducerConsumerIterator")
     if (buffer == null) fillBuffer()
+    if (buffer.isInstanceOf[ExceptionEvent]) throw buffer.asInstanceOf[ExceptionEvent].exception
 
     drainBuffer()
   }
