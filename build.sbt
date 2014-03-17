@@ -1,3 +1,5 @@
+import com.typesafe.tools.mima.plugin.{MimaPlugin, MimaKeys}
+
 scalaModuleSettings
 
 name                       := "scala-xml"
@@ -24,6 +26,16 @@ libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value
 // needed to fix classloader issues (see #20)
 // alternatively, manage the scala instance as shown below (commented)
 fork in Test := true
+
+MimaPlugin.mimaDefaultSettings
+
+MimaKeys.previousArtifact := Some(organization.value % s"${name.value}_2.11.0-RC1" % "1.0.0")
+
+// run mima during tests
+test in Test := {
+  MimaKeys.reportBinaryIssues.value
+  (test in Test).value
+}
 
 // ALTERNATIVE: manage the Scala instance ourselves to exclude the published scala-xml (scala-compiler depends on it)
 // since this dependency hides the classes we're testing
