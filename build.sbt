@@ -23,10 +23,6 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test"
 // used in CompilerErrors test
 libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml*")
 
-// needed to fix classloader issues (see #20)
-// alternatively, manage the scala instance as shown below (commented)
-fork in Test := true
-
 MimaPlugin.mimaDefaultSettings
 
 MimaKeys.previousArtifact := Some(organization.value % s"${name.value}_2.11.0-RC1" % "1.0.0")
@@ -36,14 +32,3 @@ test in Test := {
   MimaKeys.reportBinaryIssues.value
   (test in Test).value
 }
-
-// ALTERNATIVE: manage the Scala instance ourselves to exclude the published scala-xml (scala-compiler depends on it)
-// since this dependency hides the classes we're testing
-// managedScalaInstance := false
-//
-// ivyConfigurations    += Configurations.ScalaTool
-//
-// libraryDependencies ++= Seq(
-//    "org.scala-lang" % "scala-library" % scalaVersion.value,
-//    ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "scala-tool").exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
-// )
