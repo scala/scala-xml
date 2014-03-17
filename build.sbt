@@ -2,11 +2,11 @@ scalaModuleSettings
 
 name                       := "scala-xml"
 
-version                    := "1.0.0-SNAPSHOT"
+version                    := "1.0.1-SNAPSHOT"
 
-scalaVersion               := "2.11.0-M8"
+scalaVersion               := "2.11.0-RC1"
 
-snapshotScalaBinaryVersion := "2.11.0-M8"
+snapshotScalaBinaryVersion := "2.11.0-RC1"
 
 // important!! must come here (why?)
 scalaModuleOsgiSettings
