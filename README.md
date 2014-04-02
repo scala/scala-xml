@@ -16,4 +16,4 @@ libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.1"
 (Assuming you're using a `scalaVersion` for which a scala-xml is published.
 The first 2.11 milestone for which this is true is 2.11.0-M4.)
 
-To support multiple Scala versions, see the example in https://github.com/scala/scala-sbt-cross-compile.
+To support multiple Scala versions, see the example in https://github.com/scala/scala-module-dependency-sample.
