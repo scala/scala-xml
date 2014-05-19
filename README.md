@@ -10,7 +10,7 @@ We're also looking forward to alternative implementations!
 To depend on scala-xml in SBT, add something like this to your build.sbt:
 
 ```
-libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.1"
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.2"
 ```
 
 (Assuming you're using a `scalaVersion` for which a scala-xml is published.
