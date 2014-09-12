@@ -824,4 +824,16 @@ expected closing tag of foo
     }
   }
 
+  @UnitTest
+  def issue28: Unit = {
+    val x = <x:foo xmlns:x="gaga"/>
+    // val ns = new NamespaceBinding("x", "gaga", sc)
+    // val x = Elem("x", "foo", e, ns)
+    val pp = new xml.PrettyPrinter(80, 2)
+    // This assertion passed
+    assertEquals("""<x:foo xmlns:x="gaga"/>""", x.toString)
+    // This was the bug, producing an errant xmlns attribute
+    assertEquals("""<x:foo xmlns:x="gaga"/>""", pp.format(x))
+  }
+
 }
