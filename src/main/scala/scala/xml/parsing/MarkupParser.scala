@@ -10,6 +10,8 @@ package scala
 package xml
 package parsing
 
+import java.io.{ByteArrayOutputStream, PrintStream}
+
 import scala.io.Source
 import scala.xml.dtd._
 import Utility.Escapes.{ pairs => unescape }
@@ -936,7 +938,12 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     handle.notationDecl(notat, extID)
   }
 
-  def reportSyntaxError(pos: Int, str: String) { curInput.reportError(pos, str) }
+  def reportSyntaxError(pos: Int, str: String) {
+    val msg = new ByteArrayOutputStream()
+    curInput.reportError(pos, str, new PrintStream(msg))
+    throw FatalError(msg.toString("UTF-8"))
+  }
+
   def reportSyntaxError(str: String) { reportSyntaxError(pos, str) }
   def reportValidationError(pos: Int, str: String) { reportSyntaxError(pos, str) }
 
