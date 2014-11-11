@@ -633,7 +633,7 @@ class XMLTestJVM {
   import scala.xml.parsing._
   @UnitTest
   def dontLoop: Unit = {
-    val xml = "<!DOCTYPE xmeml SYSTEM> <xmeml> <sequence> </sequence> </xmeml> "
+    val xml = "<!DOCTYPE xmeml SYSTEM 'uri'> <xmeml> <sequence> </sequence> </xmeml> "
     val sink = new PrintStream(new ByteArrayOutputStream())
     (Console withOut sink) {
       (Console withErr sink) {
@@ -765,4 +765,49 @@ class XMLTestJVM {
     val formatted = pp.format(x)
     assertEquals(x, XML.loadString(formatted))
   }
+
+  @UnitTest(expected = classOf[FatalError])
+  def shouldThrowFatalErrorWhenCantFindRequestedXToken {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+
+    x.xToken('b')
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def shouldThrowFatalErrorWhenCantFindRequestedXCharData {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+
+    x.xCharData
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def shouldThrowFatalErrorWhenCantFindRequestedXComment {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+
+    x.xComment
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def shouldThrowFatalErrorWhenCantFindRequestedXmlProcInstr {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+
+    x.xmlProcInstr()
+  }
+
+  @Ignore("Ignored for future fix, currently throw OOE because of infinity MarkupParserCommon:66")
+  @UnitTest(expected = classOf[FatalError])
+  def shouldThrowFatalErrorWhenCantFindRequestedXAttributeValue {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+
+    x.xAttributeValue()
+  }
+
+  @Ignore("Ignored for future fix, currently return unexpected result")
+  @UnitTest(expected = classOf[FatalError])
+  def shouldThrowFatalErrorWhenCantFindRequestedXEntityValue {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+
+    assertEquals("a/>", x.xEntityValue())
+  }
+
 }
