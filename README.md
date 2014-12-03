@@ -1,10 +1,13 @@
 scala-xml [<img src="https://api.travis-ci.org/scala/scala-xml.png"/>](https://travis-ci.org/scala/scala-xml)
 =========
 
-The standard Scala XML library.
+The standard Scala XML library. Not actively maintained.
+
+Would you like to maintain this project? (Please open an issue/send an email!)
 
 As of Scala 2.11, this library is a separate jar that can be omitted from Scala projects that do not use XML.
-We're also looking forward to alternative implementations!
+
+The compiler was decoupled from this particular implementation using the same approach as for comprehensions (xml syntax is desugared into a set of method calls, which unfortunately is only defined by the implementation). Alternative implementations are welcome!
 
 API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/).
 
