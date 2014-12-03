@@ -7,7 +7,7 @@ Would you like to maintain this project? (Please open an issue/send an email!)
 
 As of Scala 2.11, this library is a separate jar that can be omitted from Scala projects that do not use XML.
 
-The compiler was decoupled from this particular implementation using the same approach as for comprehensions (xml syntax is desugared into a set of method calls, which unfortunately is only defined by the implementation). Alternative implementations are welcome!
+The compiler was decoupled from this particular implementation using the same approach as for comprehensions (xml syntax is desugared into a set of method calls, which unfortunately is only defined by the [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala)). Alternative implementations are welcome!
 
 API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/).
 
