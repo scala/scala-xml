@@ -219,7 +219,7 @@ object Utility extends AnyRef with parsing.TokenTests {
         case c: Comment if !stripComments => c buildString sb
         case s: SpecialNode               => s buildString sb
         case g: Group                     =>
-          for (c <- g.nodes) serialize(c, g.scope, sb, minimizeTags = minimizeTags); sb
+          for (c <- g.nodes) serialize(c, g.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags); sb
         case el: Elem =>
           // print tag with namespace declarations
           sb.append('<')
@@ -234,7 +234,7 @@ object Utility extends AnyRef with parsing.TokenTests {
           } else {
             // children, so use long form: <xyz ...>...</xyz>
             sb.append('>')
-            sequenceToXML(el.child, el.scope, sb, stripComments)
+            sequenceToXML(el.child, el.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
             sb.append("</")
             el.nameToString(sb)
             sb.append('>')
