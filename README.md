@@ -1,9 +1,11 @@
+Maintainer wanted!
+==================
+Would you like to maintain this project? (Please open an issue/send an email!)
+
 scala-xml [<img src="https://api.travis-ci.org/scala/scala-xml.png"/>](https://travis-ci.org/scala/scala-xml)
 =========
 
-The standard Scala XML library. Not actively maintained.
-
-Would you like to maintain this project? (Please open an issue/send an email!)
+The standard Scala XML library. Please file issues here instead of over at issues.scala-lang.org.
 
 As of Scala 2.11, this library is a separate jar that can be omitted from Scala projects that do not use XML.
 
