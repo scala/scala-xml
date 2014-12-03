@@ -15,7 +15,4 @@ To depend on scala-xml in SBT, add something like this to your build.sbt:
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.2"
 ```
 
-(Assuming you're using a `scalaVersion` for which a scala-xml is published.
-The first 2.11 milestone for which this is true is 2.11.0-M4.)
-
-To support multiple Scala versions, see the example in https://github.com/scala/scala-module-dependency-sample.
+Maven users, or sbt users looking to supportmultiple Scala versions, please see the more elaborate example in https://github.com/scala/scala-module-dependency-sample.
