@@ -601,7 +601,7 @@ expected closing tag of foo
     </wsdl:definitions>;
 
   def wsdlTemplate3(serviceName: String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ Text("target3") }>
+    <wsdl:definitions name={ serviceName } xmlns:tns={ new _root_.scala.xml.Text("target3") }>
     </wsdl:definitions>;
 
   def wsdlTemplate4(serviceName: String, targetNamespace: () => String): Node =
