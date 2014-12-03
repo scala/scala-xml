@@ -244,7 +244,7 @@ class PrettyPrinter(width: Int, step: Int) {
    *  @param pscope the namespace to prefix mapping
    *  @return      the formatted string
    */
-  def format(n: Node, pscope: NamespaceBinding = null): String =
+  def format(n: Node, pscope: NamespaceBinding = TopScope): String =
     sbToString(format(n, pscope, _))
 
   /**
