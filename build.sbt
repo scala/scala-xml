@@ -4,9 +4,9 @@ scalaModuleSettings
 
 name                       := "scala-xml"
 
-version                    := "1.0.2-SNAPSHOT"
+version                    := "1.0.3-SNAPSHOT"
 
-scalaVersion               := "2.11.0"
+scalaVersion               := "2.11.4"
 
 snapshotScalaBinaryVersion := "2.11"
 
