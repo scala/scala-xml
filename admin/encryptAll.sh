@@ -16,4 +16,4 @@ travis encrypt SECRET=$SECRET
 admin/encrypt.sh admin/secring.asc
 admin/encrypt.sh sensitive.sbt
 
-# rm sensitive.sbt admin/secring.asc
+echo "Remember to rm sensitive.sbt admin/secring.asc -- once you do, they cannot be recovered (except on Travis)!"
