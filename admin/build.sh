@@ -13,3 +13,5 @@ if [[ "$TRAVIS_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+)? ]]; then
   admin/decrypt.sh sensitive.sbt
   (cd admin/ && ./decrypt.sh secring.asc)
 fi
+
+sbt ++$TRAVIS_SCALA_VERSION $publishVersion clean update compile test $extraTarget
