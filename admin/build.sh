@@ -7,11 +7,12 @@
 
 if [[ "$TRAVIS_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+)? ]]; then
   echo "Going to release from tag $TRAVIS_TAG!"
-  export publishVersion="set every version := \"$(echo $TRAVIS_TAG | sed -e s/^v//)\""
+  myVer=$(echo $TRAVIS_TAG | sed -e s/^v//)
+  export publishVersion='set every scalaVersion := "'$myVer'"'
   export extraTarget="publish-signed"
   cat admin/gpg.sbt >> project/plugins.sbt
   admin/decrypt.sh sensitive.sbt
   (cd admin/ && ./decrypt.sh secring.asc)
 fi
 
-sbt ++$TRAVIS_SCALA_VERSION $publishVersion clean update compile test $extraTarget
+sbt ++$TRAVIS_SCALA_VERSION "$publishVersion" clean update compile test $extraTarget
