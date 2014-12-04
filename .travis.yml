@@ -1,6 +1,12 @@
 language: scala
+
+# Don't commit sensitive files, commit the encrypted version: admin/encrypt.sh $SENSITIVE # keep it secret, add $SENSITIVE.enc to the repo
+# On travis: admin/decrypt.sh $SENSITIVE
+env:
+  - secure: "whJQqI/7G+kUJoCCGQYbv3Y/T2Cx3EcBKfCyvMkZaVgo0wFEOUguh8I+4QqRyf9cC/uPmzwCzV9uwXsNDMcY78jouY05A+fCEnUol/9TuF5PWmXF6Yr/UmmYoCQe4pioXsbXa4uOy18kLzE0h2sOIrJ5A9NL8/58iVgl4E3pwvk="
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean update compile test
+  - admin/publishPrep.sh
+  - sbt ++$TRAVIS_SCALA_VERSION $publishVersion clean update compile test $extraTarget
 scala:
   - 2.11.4
 jdk:
