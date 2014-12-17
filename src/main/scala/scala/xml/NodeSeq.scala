@@ -96,8 +96,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   def \(that: String): NodeSeq = {
     def fail = throw new IllegalArgumentException(that)
     def atResult = {
-      lazy val y = this(0)
-      val attr =
+      this flatMap (y => {
         if (that.length == 1) fail
         else if (that(1) == '{') {
           val i = that indexOf '}'
@@ -106,12 +105,8 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
           if (uri == "" || key == "") fail
           else y.attribute(uri, key)
         } else y.attribute(that drop 1)
-
-      attr match {
-        case Some(x) => Group(x)
-        case _       => NodeSeq.Empty
-      }
-    }
+      })
+    }.flatten
 
     def makeSeq(cond: (Node) => Boolean) =
       NodeSeq fromSeq (this flatMap (_.child) filter cond)
@@ -119,7 +114,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     that match {
       case ""                                        => fail
       case "_"                                       => makeSeq(!_.isAtom)
-      case _ if (that(0) == '@' && this.length == 1) => atResult
+      case _ if that(0) == '@'                       => atResult
       case _                                         => makeSeq(_.label == that)
     }
   }
