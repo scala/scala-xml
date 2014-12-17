@@ -836,4 +836,21 @@ expected closing tag of foo
     assertEquals("""<x:foo xmlns:x="gaga"/>""", pp.format(x))
   }
 
+  @UnitTest
+  def issueSI9047AttributeFromSingleChildElementWorks: Unit = {
+    val x = <x><a b='1'/></x>
+
+    val b = x \ "a" \ "@b"
+
+    assertEquals(List("1"), b map (_.text))
+  }
+
+  @UnitTest
+  def issueSI9047AttributeMultipleChildElementsWorks: Unit = {
+    val x = <x><a b='1'/><a b='2'/></x>
+
+    val b = x \ "a" \ "@b"
+
+    assertEquals(List("1", "2"), b map (_.text))
+  }
 }
