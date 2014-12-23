@@ -63,7 +63,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
    */
   def xAttributeValue(endCh: Char): String = {
     val buf = new StringBuilder
-    while (ch != endCh) {
+    while (ch != endCh && !eof) {
       // well-formedness constraint
       if (ch == '<') return errorAndResult("'<' not allowed in attrib value", "")
       else if (ch == SU) truncatedError("")
