@@ -1,19 +1,21 @@
 package scala.xml
 
-import org.junit.{Test => UnitTest}
+import org.junit.{ Test => UnitTest }
 import org.junit.Ignore
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertEquals
-import scala.xml.parsing.ConstructingParser
+import org.junit.Assert._
 import java.io.StringWriter
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
+import java.io.PrintStream
 import scala.collection.Iterable
+import scala.io.{ Source => Input }
 import scala.xml.Utility.sort
+import scala.xml.parsing.{ ConstructingParser, FatalError }
+import scala.util.{ Try, Failure }
+import scala.language.postfixOps
 
 object XMLTest {
   val e: scala.xml.MetaData = Null //Node.NoAttributes
@@ -469,23 +471,27 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
-  def ioPosition = {
-    val out = new ByteArrayOutputStream
-    Console.withErr(out) {
-      Console.withOut(out) {
-        try {
-          xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<foo>"), false).document()
-        } catch {
-          case e: Exception => println(e.getMessage)
-        }
+  def ioPosition(): Unit = {
+    // io.Source that captures errors
+    class TestInput(text: String) extends Input {
+      val out = new ByteArrayOutputStream
+      val ps  = new PrintStream(out, true, "UTF8")
+      override val iter = Input fromString "<foo>"
+      override def report(pos: Int, msg: String, out: PrintStream) = super.report(pos, msg, ps)
+      def result: String = {
+        ps.flush()
+        out.toString("UTF8").replaceAllLiterally(0.toChar.toString, "*")
       }
     }
-    out.flush()
+    val src = new TestInput("<foo>")
+    Try(ConstructingParser.fromSource(src, false).document()) match {
+      case Failure(e: FatalError) => assertEquals("expected closing tag of foo", e.getMessage)
+      case _                      => fail("expected exception")
+    }
     assertEquals(
-      """:1:5: '/' expected instead of ' '    ^
-:1:5: name expected, but char ' ' cannot start a name    ^
-expected closing tag of foo
-""", out.toString)
+      """:1:5: '/' expected instead of '*'    ^
+:1:5: name expected, but char '*' cannot start a name    ^
+""", src.result)
   }
 
   def f(s: String) = {

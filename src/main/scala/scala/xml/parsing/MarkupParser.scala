@@ -264,8 +264,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
         theNode = m
     }
     if (1 != elemCount) {
-      reportSyntaxError("document must contain exactly one element")
-      Console.println(children.toList)
+      reportSyntaxError(s"document must contain exactly one element but has $elemCount")
     }
 
     doc.children = children
