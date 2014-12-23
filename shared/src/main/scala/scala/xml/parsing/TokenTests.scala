@@ -37,10 +37,10 @@ trait TokenTests {
 
   /**
    * {{{
-   *  NameChar ::= Letter | Digit | '.' | '-' | '_' | ':'
+   *  NameChar ::= Letter | Digit | '.' | '-' | '_' | ':' | #xB7
    *             | CombiningChar | Extender
    *  }}}
-   *  See [4] and Appendix B of XML 1.0 specification.
+   *  See [4] and [4a] of Appendix B of XML 1.0 specification.
    */
   def isNameChar(ch: Char) = {
     import java.lang.Character._
@@ -50,7 +50,7 @@ trait TokenTests {
       case COMBINING_SPACING_MARK |
         ENCLOSING_MARK | NON_SPACING_MARK |
         MODIFIER_LETTER | DECIMAL_DIGIT_NUMBER => true
-      case _ => ".-:" contains ch
+      case _ => ".-:·" contains ch
     })
   }
 

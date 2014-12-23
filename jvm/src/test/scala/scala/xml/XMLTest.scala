@@ -390,7 +390,7 @@ class XMLTestJVM {
   }
 
   @UnitTest
-  def t5052 {
+  def t5052 = {
     assertTrue(<elem attr={ null: String }/> xml_== <elem/>)
     assertTrue(<elem attr={ None }/> xml_== <elem/>)
     assertTrue(<elem/> xml_== <elem attr={ null: String }/>)
@@ -412,7 +412,7 @@ class XMLTestJVM {
   }
 
   @UnitTest
-  def t5843 {
+  def t5843 = {
     val foo = scala.xml.Attribute(null, "foo", "1", scala.xml.Null)
     val bar = scala.xml.Attribute(null, "bar", "2", foo)
     val ns = scala.xml.NamespaceBinding(null, "uri", scala.xml.TopScope)
@@ -444,7 +444,7 @@ class XMLTestJVM {
   }
 
   @UnitTest
-  def t7074 {
+  def t7074 = {
     assertEquals("""<a/>""", sort(<a/>) toString)
     assertEquals("""<a b="2" c="3" d="1"/>""", sort(<a d="1" b="2" c="3"/>) toString)
     assertEquals("""<a b="2" c="4" d="1" e="3" f="5"/>""", sort(<a d="1" b="2" e="3" c="4" f="5"/>) toString)
@@ -454,6 +454,12 @@ class XMLTestJVM {
     assertEquals("""<a a:b="2" a:c="4" a:d="1" a:e="3" a:f="5"/>""", sort(<a a:d="1" a:b="2" a:e="3" a:c="4" a:f="5"/>) toString)
     assertEquals("""<a a:b="5" a:c="4" a:d="3" a:e="2" a:f="1"/>""", sort(<a a:f="1" a:e="2" a:d="3" a:c="4" a:b="5"/>) toString)
     assertEquals("""<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>""", sort(<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>) toString)
+  }
+
+  @UnitTest
+  def t9060 = {
+    val expected = """<a xmlns:b·="http://example.com"/>"""
+    assertEquals(expected, XML.loadString(expected).toString)
   }
 
   @UnitTest
