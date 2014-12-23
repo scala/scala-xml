@@ -35,7 +35,28 @@ trait TokenTests {
   def isAlpha(c: Char) = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
   def isAlphaDigit(c: Char) = isAlpha(c) || (c >= '0' && c <= '9')
 
-  /**
+  def isNameChar(c: Char): Boolean = (
+    isNameStart(c) ||
+    (c >= '0' && c <= '9') ||
+    c == '-' ||
+    c == '.' ||
+    c == 0xB7 ||
+    (c >= 0x300 && c <= 0x36F) ||
+    (c >= 0x203F && c <= 0x2040)
+  )
+  def isNameStart(c: Char): Boolean = (
+         if (c < 0x00C0)  isAlpha(c) || c == ':' || c == '_'
+    else if (c < 0x0300)  c != 0xD7 && c != 0xF7
+    else if (c < 0x2000)  c >= 0x370 && c != 0x37E
+    else if (c < 0x3001)  c == 0x200C || c == 0x200D || (0x2070 to 0x218F contains c) ||
+                          (0x2C00 to 0x2FEF contains c)
+    else if (c < 0xD800)  true
+    else if (c < 0x10000) (0xF900 to 0xFDCF contains c) || (0xFDF0 to 0xFFFD contains c)
+    else                  false // codepoint < 0xF0000
+  )
+
+  /* Documenting that Appendix B is obsolete. And nested comments rock.
+  /*
    * {{{
    *  NameChar ::= Letter | Digit | '.' | '-' | '_' | ':'
    *             | CombiningChar | Extender
@@ -54,7 +75,7 @@ trait TokenTests {
     })
   }
 
-  /**
+  /*
    * {{{
    *  NameStart ::= ( Letter | '_' )
    *  }}}
@@ -74,6 +95,7 @@ trait TokenTests {
       case _ => ch == '_'
     }
   }
+   */
 
   /**
    * {{{

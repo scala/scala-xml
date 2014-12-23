@@ -273,6 +273,14 @@ object Utility extends AnyRef with parsing.TokenTests {
     case i  => Some(name.substring(0, i))
   }
 
+  object Qualified {
+    /** No ':' yields null namespace; leading or trailing yields empty string. */
+    def unapply(name: String): Option[(String, String)] = name indexOf ':' match {
+      case -1 => Some(null, name)
+      case i  => Some(name.substring(0, i), name.substring(i + 1)) // start out of range OK
+    }
+  }
+
   /**
    * Returns a hashcode for the given constituents of a node
    */
