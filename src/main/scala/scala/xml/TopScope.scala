@@ -28,4 +28,5 @@ object TopScope extends NamespaceBinding(null, null, null) {
 
   override def buildString(stop: NamespaceBinding) = ""
   override def buildString(sb: StringBuilder, ignore: NamespaceBinding) = {}
+  override protected def doBuildString(sb: StringBuilder, stop: NamespaceBinding) = {}
 }
