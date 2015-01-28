@@ -163,6 +163,15 @@ class XMLTest {
   }
 
   @UnitTest
+  def namespacesWithNestedXmls: Unit = {
+    val foo = <f:foo xmlns:f="fooUrl"></f:foo>
+    val bar = <b:bar xmlns:b="barUrl">{foo}</b:bar>
+    val expected = """<b:bar xmlns:b="barUrl"><f:foo xmlns:f="fooUrl"></f:foo></b:bar>"""
+    val actual = bar.toString
+    assertEquals(expected, actual)
+  }
+
+  @UnitTest
   def validationOfElements: Unit = {
     val vtor = new scala.xml.dtd.ElementValidator();
     {
