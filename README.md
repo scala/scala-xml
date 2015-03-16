@@ -13,6 +13,9 @@ The compiler was decoupled from this particular implementation using the same ap
 
 API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/).
 
+## Security best practices
+The XML spec has some features that are best turned off, to avoid unsavory things like file system access, DoS attacks,... Issue [#17](https://github.com/scala/scala-xml/issues/17) tracks the recommended way of configuring the xml parser used by scala-xml to avoid these. This is by no means an exhaustive list. We'll be happy to incorporate your suggestions -- just comment on the ticket!
+
 ## Adding an SBT dependency
 To depend on scala-xml in SBT, add something like this to your build.sbt:
 
