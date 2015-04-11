@@ -253,7 +253,7 @@ class PrettyPrinter(width: Int, step: Int) {
    *  @param nodes  the sequence of nodes to be serialized
    *  @param pscope the namespace to prefix mapping
    */
-  def formatNodes(nodes: Seq[Node], pscope: NamespaceBinding = null): String =
+  def formatNodes(nodes: Seq[Node], pscope: NamespaceBinding = TopScope): String =
     sbToString(formatNodes(nodes, pscope, _))
 
   /**
