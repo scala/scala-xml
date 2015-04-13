@@ -203,7 +203,7 @@ class PrettyPrinter(width: Int, step: Int) {
    * @param sb   the stringbuffer to append to
    */
   def format(n: Node, sb: StringBuilder) { // entry point
-    format(n, null, sb)
+    format(n, TopScope, sb)
   }
 
   def format(n: Node, pscope: NamespaceBinding, sb: StringBuilder) { // entry point
