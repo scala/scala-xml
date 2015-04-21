@@ -836,4 +836,25 @@ expected closing tag of foo
     assertEquals("""<x:foo xmlns:x="gaga"/>""", pp.format(x))
   }
 
+  @UnitTest
+  def nodeSeqNs: Unit = {
+    val x = {
+      <x:foo xmlns:x="abc"/><y:bar xmlns:y="def"/>
+    }
+    val pp = new PrettyPrinter(80, 2)
+    val expected = """<x:foo xmlns:x="abc"/><y:bar xmlns:y="def"/>"""
+    assertEquals(expected, pp.formatNodes(x))
+  }
+
+  @UnitTest
+  def nodeStringBuilder: Unit = {
+    val x = {
+        <x:foo xmlns:x="abc"/>
+    }
+    val pp = new PrettyPrinter(80, 2)
+    val expected = """<x:foo xmlns:x="abc"/>"""
+    val sb = new StringBuilder
+    pp.format(x, sb)
+    assertEquals(expected, sb.toString)
+  }
 }
