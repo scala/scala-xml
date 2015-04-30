@@ -4,11 +4,9 @@ scalaModuleSettings
 
 name                       := "scala-xml"
 
-version                    := "1.0.3-SNAPSHOT"
+version                    := "1.0.4-SNAPSHOT"
 
 scalaVersion               := "2.11.4"
-
-snapshotScalaBinaryVersion := "2.11"
 
 // important!! must come here (why?)
 scalaModuleOsgiSettings
@@ -23,12 +21,4 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test"
 // used in CompilerErrors test
 libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml*")
 
-MimaPlugin.mimaDefaultSettings
-
-MimaKeys.previousArtifact := Some(organization.value % s"${name.value}_2.11" % "1.0.1")
-
-// run mima during tests
-test in Test := {
-  MimaKeys.reportBinaryIssues.value
-  (test in Test).value
-}
+mimaPreviousVersion := Some("1.0.1")
