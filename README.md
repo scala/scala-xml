@@ -20,7 +20,7 @@ The XML spec has some features that are best turned off, to avoid unsavory thing
 To depend on scala-xml in SBT, add something like this to your build.sbt:
 
 ```
-libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.3"
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.4"
 ```
 
 Maven users, or sbt users looking to support multiple Scala versions, please see the more elaborate example in https://github.com/scala/scala-module-dependency-sample.
