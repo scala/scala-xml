@@ -54,8 +54,8 @@ private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
 
     val finalString = Map(finalStates map (j => j -> finals(j)): _*).toString
     val deltaString = (0 until nstates)
-      .map(i => "   %d->%s\n    _>%s\n".format(i, delta(i), default(i))).mkString
+      .map(i => "   " + i + "->" + delta(i) + "\n    _>" + default(i) + "\n").mkString
 
-    "[NondetWordAutom  nstates=%d  finals=%s  delta=\n%s".format(nstates, finalString, deltaString)
+    "[NondetWordAutom  nstates=" + nstates + "  finals=" + finalString + "  delta=\n" + deltaString
   }
 }

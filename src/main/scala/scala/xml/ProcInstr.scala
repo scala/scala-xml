@@ -35,5 +35,5 @@ case class ProcInstr(target: String, proctext: String) extends SpecialNode {
    *  to this stringbuffer.
    */
   override def buildString(sb: StringBuilder) =
-    sb append "<?%s%s?>".format(target, (if (proctext == "") "" else " " + proctext))
+    sb.append("<?" + target + (if (proctext == "") "" else " " + proctext) + "?>")
 }

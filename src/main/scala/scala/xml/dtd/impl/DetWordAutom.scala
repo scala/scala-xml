@@ -42,9 +42,9 @@ private[dtd] abstract class DetWordAutom[T <: AnyRef] {
     sb.append(" delta=\n")
 
     for (i <- 0 until nstates) {
-      sb append "%d->%s\n".format(i, delta(i))
+      sb.append(i + "->" + delta(i) + "\n")
       if (i < default.length)
-        sb append "_>%s\n".format(default(i))
+        sb.append("_>" + default(i) + "\n")
     }
     sb.toString
   }
