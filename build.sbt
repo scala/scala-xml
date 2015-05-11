@@ -6,7 +6,9 @@ name                       := "scala-xml"
 
 version                    := "1.0.5-SNAPSHOT"
 
-scalaVersion               := "2.11.4"
+scalaVersion               := crossScalaVersions.value.head
+
+crossScalaVersions         := Seq("2.11.6", "2.12.0-M1")
 
 // important!! must come here (why?)
 scalaModuleOsgiSettings
