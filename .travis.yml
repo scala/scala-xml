@@ -1,6 +1,6 @@
 language: scala
 
-script: sbt clean update test publishLocal
+script: sbt clean update +test +publishLocal
 jdk:
   - openjdk6
   - openjdk7
