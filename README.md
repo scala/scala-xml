@@ -1,6 +1,6 @@
 Maintainer wanted!
 ==================
-Would you like to maintain this project? (Please open an issue/send an email!)
+Would you like to maintain this project? (Please [get in touch](https://github.com/scala/scala#get-in-touch) with someone from the scala/scala core team!)
 
 scala-xml [<img src="https://img.shields.io/travis/scala/scala-xml.svg"/>](https://travis-ci.org/scala/scala-xml) [<img src="https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.11.svg?label=latest%20release%20for%202.11"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aorg.scala-lang.modules%20a%3Ascala-xml_2.11) [<img src="https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.12*.svg?label=latest%20release%20for%202.12"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aorg.scala-lang.modules%20a%3Ascala-xml_2.12*)
 =========
