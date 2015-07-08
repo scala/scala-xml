@@ -8,41 +8,49 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
 
+import java.io.PrintStream
 import scala.io.Source
+import scala.xml.parsing.FatalError
 
 class XMLEventReaderTest {
 
-  val src = Source.fromString("<hello><world/>!</hello>")
+  def reading(text: String)(f: XMLEventReader => Unit): Unit = {
+    val s = new Source {
+      override protected val iter = Source fromString text
+      override def report(pos: Int, msg: String, out: PrintStream) = ()
+    }
+    val r = new XMLEventReader(s)
+    try f(r)
+    finally r.stop()
+  }
 
   @Test
-  def pull: Unit = {
-    val er = new XMLEventReader(src)
-    assertTrue(er.next match {
+  def pull() = reading("<hello><world/>!</hello>") { r =>
+    assertTrue(r.next() match {
       case EvElemStart(_, "hello", _, _) => true
       case _ => false
     })
-    assertTrue(er.next match {
+    assertTrue(r.next() match {
       case EvElemStart(_, "world", _, _) => true
       case _ => false
     })
-    assertTrue(er.next match {
+    assertTrue(r.next() match {
       case EvElemEnd(_, "world") => true
       case _ => false
     })
-    assertTrue(er.next match {
+    assertTrue(r.next() match {
       case EvText("!") => true
       case _ => false
     })
-    assertTrue(er.next match {
+    assertTrue(r.next() match {
       case EvElemEnd(_, "hello") => true
       case _ => false
     })
-    er.stop  // allow thread to be garbage-collected
   }
 
- @Test(expected = classOf[Exception]) 
+ @Test(expected = classOf[FatalError]) //expected closing tag of verbosegc
  def missingTagTest: Unit = {
-   val data=
+   val data =
       """<?xml version="1.0" ?>
         |<verbosegc xmlns="http://www.ibm.com/j9/verbosegc">
         |
@@ -54,8 +62,8 @@ class XMLEventReaderTest {
         |</exclusive-start>
         |""".stripMargin
 
-   val er = new XMLEventReader(Source.fromString(data))
-   while(er.hasNext) er.next()
-   er.stop()
+   reading(data) { r =>
+     while (r.hasNext) r.next()
+   }
  }
 }

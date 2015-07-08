@@ -13,7 +13,9 @@ class UtilityTest {
   @Test
   def isNameStart: Unit = {
     assertTrue(Utility.isNameStart('b'))
-    assertFalse(Utility.isNameStart(':'))
+    // No indication of who relied on this behavior.
+    //assertFalse(Utility.isNameStart(':'))
+    assertTrue(Utility.isNameStart(':'))
   }
 
   @Test

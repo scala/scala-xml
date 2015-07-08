@@ -64,7 +64,9 @@ class B {
 
 // SI-5858
 object SI_5858 {
-  new Elem(null, null, Null, TopScope, Nil: _*) // was ambiguous
+  @deprecated("ignore me", since="")
+  def e =
+    new Elem(null, null, Null, TopScope, Nil: _*) // was ambiguous
 }
 
 class Floozy {

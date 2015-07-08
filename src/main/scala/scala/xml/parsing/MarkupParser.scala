@@ -264,8 +264,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
         theNode = m
     }
     if (1 != elemCount) {
-      reportSyntaxError("document must contain exactly one element")
-      Console.println(children.toList)
+      reportSyntaxError(s"document must contain exactly one element but has $elemCount")
     }
 
     doc.children = children
@@ -573,10 +572,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def element1(pscope: NamespaceBinding): NodeSeq = {
     val pos = this.pos
     val (qname, (aMap, scope)) = xTag(pscope)
-    val (pre, local) = Utility.prefix(qname) match {
-      case Some(p) => (p, qname drop p.length + 1)
-      case _       => (null, qname)
-    }
+    val Utility.Qualified(pre, local) = qname
     val ts = {
       if (ch == '/') { // empty element
         xToken("/>")
