@@ -8,7 +8,7 @@ version                    := "1.0.5-SNAPSHOT"
 
 scalaVersion               := crossScalaVersions.value.head
 
-crossScalaVersions         := Seq("2.11.7", "2.12.0-M1")
+crossScalaVersions         := Seq("2.11.7", "2.12.0-M2")
 
 //scalacOptions             ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_ -Xfatal-warnings -Xxml:coalescing".split("\\s+").to[Seq]
 scalacOptions             ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_ -Xxml:coalescing".split("\\s+").to[Seq]
