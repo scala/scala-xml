@@ -1,3 +1,6 @@
+# opt-in to Travis's newer/faster container-based infrastructure
+sudo: false
+
 language: scala
 
 env:
