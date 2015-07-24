@@ -1,5 +1,7 @@
 package scala.xml
 
+import language.postfixOps
+
 import org.junit.{Test => UnitTest}
 import org.junit.Ignore
 import org.junit.runner.RunWith

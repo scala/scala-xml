@@ -8,7 +8,20 @@ version                    := "1.0.5-SNAPSHOT"
 
 scalaVersion               := crossScalaVersions.value.head
 
-crossScalaVersions         := Seq("2.11.6", "2.12.0-M1")
+crossScalaVersions         := {
+  val java = System.getProperty("java.version")
+  if (java.startsWith("1.6."))
+    Seq("2.11.7", "2.12.0-M1")
+  else if (java.startsWith("1.8."))
+    Seq("2.12.0-M2")
+  else
+    sys.error(s"don't know what Scala versions to build on $java")
+}
+
+//reenable -Xfatal-warnings?
+scalacOptions             ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq]
+
+scalacOptions in Test      += "-Xxml:coalescing"
 
 // important!! must come here (why?)
 scalaModuleOsgiSettings

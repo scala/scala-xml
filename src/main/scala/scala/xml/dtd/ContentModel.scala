@@ -14,11 +14,21 @@ import scala.xml.dtd.impl._
 import scala.xml.Utility.sbToString
 import PartialFunction._
 
+/*
+@deprecated("Avoidance", since="2.10")
+trait ContentModelLaundry extends WordExp
+object ContentModelLaundry extends ContentModelLaundry {
+}
+*/
+
 object ContentModel extends WordExp {
+
   type _labelT = ElemName
   type _regexpT = RegExp
 
-  object Translator extends WordBerrySethi {
+  @deprecated("Avoidance", since="2.10")
+  trait Translator extends WordBerrySethi
+  object Translator extends Translator {
     override val lang: ContentModel.this.type = ContentModel.this
   }
 
@@ -72,13 +82,14 @@ object ContentModel extends WordExp {
       case Letter(ElemName(name)) =>
         sb.append(name)
     }
-
 }
 
 sealed abstract class ContentModel {
   override def toString(): String = sbToString(buildString)
   def buildString(sb: StringBuilder): StringBuilder
 }
+
+import ContentModel.RegExp
 
 case object PCDATA extends ContentModel {
   override def buildString(sb: StringBuilder): StringBuilder = sb.append("(#PCDATA)")
@@ -91,7 +102,7 @@ case object ANY extends ContentModel {
 }
 sealed abstract class DFAContentModel extends ContentModel {
   import ContentModel.{ ElemName, Translator }
-  def r: ContentModel.RegExp
+  def r: RegExp
 
   lazy val dfa: DetWordAutom[ElemName] = {
     val nfa = Translator.automatonFrom(r, 1)
@@ -99,8 +110,8 @@ sealed abstract class DFAContentModel extends ContentModel {
   }
 }
 
-case class MIXED(r: ContentModel.RegExp) extends DFAContentModel {
-  import ContentModel.{ Alt, RegExp }
+case class MIXED(r: RegExp) extends DFAContentModel {
+  import ContentModel.Alt
 
   override def buildString(sb: StringBuilder): StringBuilder = {
     val newAlt = r match { case Alt(rs@_*) => Alt(rs drop 1: _*) }
@@ -111,7 +122,7 @@ case class MIXED(r: ContentModel.RegExp) extends DFAContentModel {
   }
 }
 
-case class ELEMENTS(r: ContentModel.RegExp) extends DFAContentModel {
+case class ELEMENTS(r: RegExp) extends DFAContentModel {
   override def buildString(sb: StringBuilder): StringBuilder =
     ContentModel.buildString(r, sb)
 }

@@ -2,7 +2,6 @@ language: scala
 
 env:
   global:
-    - PUBLISH_JDK=openjdk6
     # PGP_PASSPHRASE
     - secure: "BYC1kEnHjNrINrHYWPGEuTTJ2V340/0ByzqeihLecjoZ75yrjWdsh6MI1JEUWgv5kb+58vLzib21JfnjsPK6Yb2bSXuCFCsEtJNh6RJKgxkWlCOzfTSh5I2wl7PCjRClRL6gseX2uTSvFjL4Z//pmxwxeXlLp7voQe4QAUq1+sE="
     # SONA_USER
@@ -14,7 +13,7 @@ script: admin/build.sh
 
 jdk:
   - openjdk6
-  - openjdk7
+  - oraclejdk8
 
 notifications:
   email: adriaan.moors@typesafe.com

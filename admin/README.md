@@ -19,7 +19,8 @@ To configure tag driven releases from Travis CI.
      Edit `.travis.yml` as prompted.
   4. Edit `.travis.yml` to use `./admin/build.sh` as the build script,
      and edit that script to use the tasks required for this project.
-  5. Edit `.travis.yml` to select which JDK will be used for publishing.
+  5. Edit `build.sbt` to select which JDK will be used for publishing
+     for which Scala versions.
 
 It is important to add comments in .travis.yml to identify the name
 of each environment variable encoded in a `:secure` section.
@@ -30,7 +31,6 @@ form:
 	language: scala
 	env:
 	  global:
-	    - PUBLISH_JDK=openjdk6
 	    # PGP_PASSPHRASE
 	    - secure: "XXXXXX"
 	    # SONA_USER
@@ -58,4 +58,3 @@ Be sure to use SBT 0.13.7 or higher to avoid [#1430](https://github.com/sbt/sbt/
   3. Log into https://oss.sonatype.org/ and identify the staging repository.
   4. Sanity check its contents
   5. Release staging repository to Maven and send out release announcement.
-
