@@ -22,11 +22,11 @@ class Foo {
 }
 
 // t2281
-class A {
+class t2281A {
   def f(x: Boolean) = if (x) <br/><br/> else <br/>
 }
 
-class B {
+class t2281B {
   def splitSentences(text: String): ArrayBuffer[String] = {
     val outarr = new ArrayBuffer[String]
     var outstr = new StringBuffer
