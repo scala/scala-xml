@@ -32,11 +32,10 @@ abstract class BasicTransformer extends Function1[Node, Node] {
    *  otherwise a new sequence of concatenated results.
    */
   def transform(ns: Seq[Node]): Seq[Node] = {
-    val (xs1, xs2) = ns span (n => unchanged(n, transform(n)))
-
-    if (xs2.isEmpty) ns
-    else xs1 ++ transform(xs2.head) ++ transform(xs2.tail)
-  }
+    val changed = ns flatMap transform
+    if (changed.length != ns.length || (changed, ns).zipped.exists(_ != _)) changed
+    else ns
+}
 
   def transform(n: Node): Seq[Node] = {
     if (n.doTransform) n match {
