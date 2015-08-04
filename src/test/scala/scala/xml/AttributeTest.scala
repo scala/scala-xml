@@ -65,4 +65,73 @@ class AttributeTest {
     assertEquals("apple", xml \@ "bar")
   }
 
+  @Test
+  def attributePathRootNoAttribute: Unit = {
+    val xml = <foo />
+    assertEquals(NodeSeq.Empty, xml \ "@bar")
+  }
+
+  @Test(expected=classOf[IllegalArgumentException])
+  def attributePathIllegalEmptyAttribute: Unit = {
+    val xml = <foo />
+    xml \ "@"
+  }
+
+  @Test
+  def attributePathRootWithOneAttribute: Unit = {
+    val xml = <foo bar="apple" />
+    assertEquals(Group(Text("apple")), xml \ "@bar")
+    // assertEquals(NodeSeq.fromSeq(Seq(Text("apple"))), xml \ "@bar")
+  }
+
+  @Test
+  def attributePathRootWithMissingAttributes: Unit = {
+    val xml = <foo bar="apple" />
+    assertEquals(NodeSeq.Empty, xml \ "@oops")
+  }
+
+  @Test
+  def attributePathDuplicateAttribute: Unit = {
+    val xml = Elem(null, "foo",
+      Attribute("bar", Text("apple"),
+        Attribute("bar", Text("orange"), Null)), TopScope)
+    assertEquals(Group(Text("apple")), xml \ "@bar")
+  }
+
+  @Test
+  def attributePathDescendantAttributes: Unit = {
+    val xml = <a><b bar="1" /><b bar="2" /></a>
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "@bar"))
+  }
+
+  @Test(expected=classOf[IllegalArgumentException])
+  def attributePathDescendantIllegalEmptyAttribute: Unit = {
+    val xml = <foo />
+    xml \\ "@"
+  }
+
+  @Test
+  def attributePathNoDescendantAttributes: Unit = {
+    val xml = <a><b bar="1" /><b bar="2" /></a>
+    assertEquals(NodeSeq.Empty, (xml \\ "@oops"))
+  }
+
+  @Test
+  def attributePathOneChildWithAttributes: Unit = {
+    val xml = <a><b bar="1" />></a>
+    assertEquals(Group(Seq(Text("1"))), (xml \ "b" \ "@bar"))
+  }
+
+  @Test
+  def attributePathTwoChildrenWithAttributes: Unit = {
+    val xml = <a><b bar="1" /><b bar="2" /></a>
+    val b = xml \ "b"
+    assertEquals(2, b.length)
+    assertEquals(NodeSeq.fromSeq(Seq(<b bar="1"/>, <b bar="2"/>)), b)
+    val barFail = b \ "@bar"
+    val barList =  b.map(_ \ "@bar")
+    assertEquals(NodeSeq.Empty, barFail)
+    assertEquals(List(Group(Seq(Text("1"))), Group(Seq(Text("2")))), barList)
+  }
+
 }
