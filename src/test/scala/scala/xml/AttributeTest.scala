@@ -104,6 +104,30 @@ class AttributeTest {
     assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "@bar"))
   }
 
+  @Test
+  def attributeDescendantPathChildAttributes: Unit = {
+    val xml = <a><b bar="1" /><b bar="2" /></a>
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \ "b" \\ "@bar"))
+  }
+
+  @Test
+  def attributeDescendantPathDescendantAttributes: Unit = {
+    val xml = <a><b bar="1" /><b bar="2" /></a>
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "b" \\ "@bar"))
+  }
+
+  @Test
+  def attributeChildDescendantPathDescendantAttributes: Unit = {
+    val xml = <x><a><b bar="1" /><b bar="2" /></a></x>
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \ "a" \\ "@bar"))
+  }
+
+  @Test
+  def attributeDescendantDescendantPathDescendantAttributes: Unit = {
+    val xml = <x><a><b bar="1" /><b bar="2" /></a></x>
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "b" \\ "@bar"))
+  }
+
   @Test(expected=classOf[IllegalArgumentException])
   def attributePathDescendantIllegalEmptyAttribute: Unit = {
     val xml = <foo />
