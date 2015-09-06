@@ -1,8 +1,3 @@
-Maintainer wanted!
-==================
-
-Would you like to maintain this project? (Please [get in touch](https://github.com/scala/scala#get-in-touch) with someone from the scala/scala core team!)
-
 scala-xml [<img src="https://img.shields.io/travis/scala/scala-xml.svg"/>](https://travis-ci.org/scala/scala-xml) [<img src="https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.11.svg?label=latest%20release%20for%202.11"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aorg.scala-lang.modules%20a%3Ascala-xml_2.11) [<img src="https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.12*.svg?label=latest%20release%20for%202.12"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aorg.scala-lang.modules%20a%3Ascala-xml_2.12*) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/scala/scala-xml)
 =========
 
@@ -14,6 +9,9 @@ If you are cross-building a project that uses scala-xml with Scala 2.10 and Scal
 The compiler was decoupled from this particular implementation using the same approach as for comprehensions (xml syntax is desugared into a set of method calls, which unfortunately is only defined by the [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala)). Alternative implementations are welcome!
 
 API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/).
+
+## Maintenance status
+This library is community-maintained. The lead maintainer is [@biswanaths](https://github.com/biswanaths).
 
 ## Security best practices
 The XML spec has some features that are best turned off, to avoid unsavory things like file system access, DoS attacks,... Issue [#17](https://github.com/scala/scala-xml/issues/17) tracks the recommended way of configuring the xml parser used by scala-xml to avoid these. This is by no means an exhaustive list. We'll be happy to incorporate your suggestions -- just comment on the ticket!
