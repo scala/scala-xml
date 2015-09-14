@@ -4,6 +4,7 @@ import scala.xml.transform._
 import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.experimental.theories.Theories
 import org.junit.experimental.theories.Theory
 import org.junit.experimental.theories.DataPoints
@@ -72,7 +73,7 @@ class ReuseNodesTest {
   def transformReferentialEquality(rt:RuleTransformer) = { 
     val original = <p><lost/></p>
     val tranformed = rt.transform(original)
-    assertTrue(original eq tranformed)
+    assertSame(original, tranformed)
   }
       
   @Theory
@@ -93,7 +94,7 @@ class ReuseNodesTest {
       case "changed" => // do nothing expect this node to be changed
         recursiveAssert(original.child,transformed.child)
       case _ => {
-        assertTrue(original eq transformed)
+        assertSame(original, transformed)
         // No need to check for children, node being immuatable 
         // children can't be different if parents are referentially equal
       }
