@@ -1,23 +1,22 @@
+# opt-in to Travis's newer/faster container-based infrastructure
+sudo: false
+
 language: scala
 
 env:
   global:
-    - PUBLISH_JDK=openjdk6 # admin/build.sh only publishes when running on this jdk
-# Don't commit sensitive files, instead commit a version encrypted with $SECRET,
-# this environment variable is encrypted with this repo's private key and stored below:
-# (See http://docs.travis-ci.com/user/environment-variables/#Secure-Variables.)
-    - secure: "whJQqI/7G+kUJoCCGQYbv3Y/T2Cx3EcBKfCyvMkZaVgo0wFEOUguh8I+4QqRyf9cC/uPmzwCzV9uwXsNDMcY78jouY05A+fCEnUol/9TuF5PWmXF6Yr/UmmYoCQe4pioXsbXa4uOy18kLzE0h2sOIrJ5A9NL8/58iVgl4E3pwvk="
+    # PGP_PASSPHRASE
+    - secure: "BYC1kEnHjNrINrHYWPGEuTTJ2V340/0ByzqeihLecjoZ75yrjWdsh6MI1JEUWgv5kb+58vLzib21JfnjsPK6Yb2bSXuCFCsEtJNh6RJKgxkWlCOzfTSh5I2wl7PCjRClRL6gseX2uTSvFjL4Z//pmxwxeXlLp7voQe4QAUq1+sE="
+    # SONA_USER
+    - secure: "OpBwPc1GNvauageYOH3RscAa7wpZxgpmqDz15aigIKLNWzAhAtVUx0MleZ8rQeoqml6nrAvlnzuVHjKL2lVcjMPpjUis7bcQ5UAGK7tZK8x+qZNQxXmpXu8+pENwQA2yFaqt/xy7K5jFOrHJHTRxcPnyVG1yKakPWz53PPYUwbc="
+    # SONA_PASS
+    - secure: "Xw7rI/qlML1nD2e2XwlakkhKAWNGZKqqE+Q3ntTvFpfHryl7KLCvVzJ4LIavnL6kGJaWOgy9vlSoEWn5g9nqHSfE31C/k5pY5nTMAKiwiJzfAS+r0asKXW2gmKhwtcTBkqyLVOZLCJSPVlFRQyfBJHY+Fs0L3KWcnMQgtBlyDhU="
 
-script:
-  - admin/build.sh
-scala:
-  - 2.11.4
+script: admin/build.sh
+
 jdk:
   - openjdk6
-  - openjdk7
-notifications:
-  email:
-    - adriaan.moors@typesafe.com
+  - oraclejdk8
 
-# if we get weird timeouts, see https://github.com/spray/spray/pull/233
-# 'set concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)'
+notifications:
+  email: adriaan.moors@typesafe.com

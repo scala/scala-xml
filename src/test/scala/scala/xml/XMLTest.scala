@@ -1,5 +1,7 @@
 package scala.xml
 
+import language.postfixOps
+
 import org.junit.{Test => UnitTest}
 import org.junit.Ignore
 import org.junit.runner.RunWith
@@ -852,5 +854,27 @@ expected closing tag of foo
     val b = x \ "a" \ "@b"
 
     assertEquals(List("1", "2"), b map (_.text))
+  }
+
+  @UnitTest
+  def nodeSeqNs: Unit = {
+    val x = {
+      <x:foo xmlns:x="abc"/><y:bar xmlns:y="def"/>
+    }
+    val pp = new PrettyPrinter(80, 2)
+    val expected = """<x:foo xmlns:x="abc"/><y:bar xmlns:y="def"/>"""
+    assertEquals(expected, pp.formatNodes(x))
+  }
+
+  @UnitTest
+  def nodeStringBuilder: Unit = {
+    val x = {
+        <x:foo xmlns:x="abc"/>
+    }
+    val pp = new PrettyPrinter(80, 2)
+    val expected = """<x:foo xmlns:x="abc"/>"""
+    val sb = new StringBuilder
+    pp.format(x, sb)
+    assertEquals(expected, sb.toString)
   }
 }
