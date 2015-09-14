@@ -9,11 +9,11 @@ import org.junit.experimental.theories.Theory
 import org.junit.experimental.theories.DataPoints
 import org.junit.runner.RunWith
 /**
- * This test verify that after the tranform, the resultant xml node
+ * This test verifies that after the transform, the resultant xml node
  * uses as many old nodes as possible. 
  * 
  * Three transformers class for case - 
- * One for orginal, one for modified, and one proposed which shows 
+ * One for original, one for modified, and one proposed which shows 
  * all are equivalent when it comes to reusing as many nodes as possible
  */
 object ReuseNodesTest {
@@ -83,13 +83,9 @@ class ReuseNodesTest {
   }
   
   def recursiveAssert(original:Seq[Node], transformed:Seq[Node]):Unit = {
-    (original.toList,transformed.toList) match {
-      case (Nil, Nil) => {}
-      case (x::xs,y::ys) => { 
-        recursiveAssert(x,y)
-        recursiveAssert(xs,ys)
-      }
-    } 
+    original zip transformed foreach { 
+      case (x, y) => recursiveAssert(x, y) 
+    }
   }
   
   def recursiveAssert(original:Node, transformed:Node):Unit = {
@@ -98,8 +94,8 @@ class ReuseNodesTest {
         recursiveAssert(original.child,transformed.child)
       case _ => {
         assertTrue(original eq transformed)
-        // No need to check for childrens, node being immuatable 
-        // childs can't be differnt if parents are refertially equal
+        // No need to check for children, node being immuatable 
+        // children can't be different if parents are referentially equal
       }
     }
   }
