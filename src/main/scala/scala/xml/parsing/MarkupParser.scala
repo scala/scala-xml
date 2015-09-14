@@ -443,7 +443,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     val ts = new NodeBuffer
     var exit = eof
     // todo: optimize seq repr.
-    def done = new NodeSeq { val theSeq = ts.toList }
+    def done = NodeSeq.fromSeq(ts.toList)
 
     while (!exit) {
       tmppos = pos
