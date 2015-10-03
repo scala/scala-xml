@@ -26,8 +26,8 @@ object MetaData {
    *
    * Duplicates can be removed with `normalize`.
    */
-  @tailrec // temporarily marked final so it will compile under -Xexperimental
-  final def concatenate(attribs: MetaData, new_tail: MetaData): MetaData =
+  @tailrec
+  def concatenate(attribs: MetaData, new_tail: MetaData): MetaData =
     if (attribs eq Null) new_tail
     else concatenate(attribs.next, attribs copy new_tail)
 
