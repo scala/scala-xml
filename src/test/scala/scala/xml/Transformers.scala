@@ -56,4 +56,25 @@ class Transformers {
         </contents>
       </root>)
   }
+
+  @Test
+  def preserveReferentialComplexityInLinearComplexity = { // SI-4528
+    var i = 0
+ 
+    val xmlNode = <a><b><c><h1>Hello Example</h1></c></b></a>
+
+    new RuleTransformer(new RewriteRule {
+      override def transform(n: Node): Seq[Node] = {
+        n match {
+          case t: Text if !t.text.trim.isEmpty => {
+            i += 1
+            Text(t.text + "!")
+          }
+          case _ => n
+        }
+      }
+    }).transform(xmlNode)
+
+    assertEquals(1, i)
+  }
 }
