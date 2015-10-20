@@ -93,7 +93,7 @@ object Utility extends AnyRef with parsing.TokenTests {
      * For reasons unclear escape and unescape are a long ways from
      * being logical inverses.
      */
-    val pairs = Map(
+    private val pairs = Map(
       "lt" -> '<',
       "gt" -> '>',
       "amp" -> '&',

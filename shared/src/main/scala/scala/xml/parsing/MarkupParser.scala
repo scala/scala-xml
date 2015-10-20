@@ -12,7 +12,7 @@ package parsing
 
 import scala.io.Source
 import scala.xml.dtd._
-import Utility.Escapes.{ pairs => unescape }
+import Utility.Escapes.unescMap
 
 /**
  * An XML parser.
@@ -470,11 +470,12 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
             case _ => // EntityRef
               val n = xName
               xToken(';')
-
-              if (unescape contains n) {
-                handle.entityRef(tmppos, n)
-                ts &+ unescape(n)
-              } else push(n)
+              unescMap.get(n) match {
+                case None => push(n)
+                case Some(theChar) =>
+                  handle.entityRef(tmppos, n)
+                  ts &+ theChar
+              }
           }
         case _ => // text content
           appendText(tmppos, ts, xText)
