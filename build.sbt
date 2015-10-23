@@ -10,9 +10,9 @@ scalaVersion               := crossScalaVersions.value.head
 
 crossScalaVersions         := {
   val java = System.getProperty("java.version")
-  if (java.startsWith("1.6."))
+  if (java.startsWith("1.6.") || java.startsWith("1.7."))
     Seq("2.11.7", "2.12.0-M1")
-  else if (java.startsWith("1.8."))
+  else if (java.startsWith("1.8.") || java.startsWith("1.9."))
     Seq("2.12.0-M2")
   else
     sys.error(s"don't know what Scala versions to build on $java")
