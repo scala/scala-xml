@@ -37,7 +37,7 @@ class XMLTest {
       Text(x.attributes("value").toString + y.attributes("bazValue").toString + "!")
     };
 
-    val pelems_2 = new NodeSeq { val theSeq = List(Text("38!"), Text("58!")) };
+    val pelems_2 = NodeSeq.fromSeq(List(Text("38!"), Text("58!")));
     assertTrue(pelems_1 sameElements pelems_2)
     assertTrue(Text("8") sameElements (p \\ "@bazValue"))
   }
@@ -94,7 +94,7 @@ class XMLTest {
     assertEquals(results1Expected, results1)
 
     {
-      val actual = for (t @ <book><title>Blabla</title></book> <- new NodeSeq { val theSeq = books.child }.toList)
+      val actual = for (t @ <book><title>Blabla</title></book> <- NodeSeq.fromSeq(books.child).toList)
         yield t
       val expected = List(<book><title>Blabla</title></book>)
       assertEquals(expected, actual)
@@ -312,7 +312,7 @@ class XMLTest {
       (parsedxml2 \\ "book") { n: Node => (n \ "title") xml_== "Data on ze web" } toString)
 
     assertTrue(
-      ((new NodeSeq { val theSeq = List(parsedxml2) }) \\ "_") sameElements List(
+      ((NodeSeq.fromSeq(List(parsedxml2))) \\ "_") sameElements List(
         Elem(null, "bib", e, sc,
           Elem(null, "book", e, sc,
             Elem(null, "author", e, sc, Text("Peter Buneman")),

@@ -74,7 +74,7 @@ class PatternMatching extends {
         <title>Baaaaaaalabla</title>
       </bks>;
 
-    assertTrue(new NodeSeq { val theSeq = books.child } match {
+    assertTrue(NodeSeq.fromSeq(books.child) match {
       case t @ Seq(<title>Blabla</title>) => false
       case _ => true
     })
