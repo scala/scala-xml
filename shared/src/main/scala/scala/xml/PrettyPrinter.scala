@@ -23,7 +23,9 @@ import Utility.sbToString
  *  @param width the width to fit the output into
  *  @param step  indentation
  */
-class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean = false) {
+class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
+
+  def this(width: Int, step: Int) = this(width, step, minimizeEmpty = false)
 
   val minimizeMode = if (minimizeEmpty) MinimizeMode.Always else MinimizeMode.Default
   class BrokenException() extends java.lang.Exception
