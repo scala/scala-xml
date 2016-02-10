@@ -555,4 +555,11 @@ class XMLTestJVM {
     assertEquals("<node/>", pp.format(x.copy(minimizeEmpty = true)))
   }
 
+  @UnitTest
+  def issue90: Unit = {
+    val pp = new xml.PrettyPrinter(80, 2, minimizeEmpty = true)
+    val x = <node><leaf></leaf></node>
+    assertEquals("<node>\n  <leaf/>\n</node>", pp.format(x))
+  }
+
 }

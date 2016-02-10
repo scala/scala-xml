@@ -23,8 +23,9 @@ import Utility.sbToString
  *  @param width the width to fit the output into
  *  @param step  indentation
  */
-class PrettyPrinter(width: Int, step: Int) {
+class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean = false) {
 
+  val minimizeMode = if (minimizeEmpty) MinimizeMode.Always else MinimizeMode.Default
   class BrokenException() extends java.lang.Exception
 
   class Item
@@ -150,7 +151,7 @@ class PrettyPrinter(width: Int, step: Int) {
     case _ =>
       val test = {
         val sb = new StringBuilder()
-        Utility.serialize(node, pscope, sb, stripComments = false)
+        Utility.serialize(node, pscope, sb, stripComments = false, minimizeTags = minimizeMode)
         if (doPreserve(node)) sb.toString
         else TextBuffer.fromString(sb.toString).toText(0).data
       }

@@ -51,4 +51,10 @@ class UtilityTest {
     </hi>.hashCode // Bug #777
   }
 
+  @Test
+  def issue90: Unit = {
+    val x = <node><leaf></leaf></node>
+    assertEquals("<node><leaf/></node>", Utility.serialize(x, minimizeTags = MinimizeMode.Always).toString)
+  }
+
 }
