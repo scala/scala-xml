@@ -56,13 +56,13 @@ trait TokenTests {
 
   /**
    * {{{
-   *  NameStart ::= ( Letter | '_' )
+   *  NameStart ::= ( Letter | '_' | ':' )
    *  }}}
    *  where Letter means in one of the Unicode general
    *  categories `{ Ll, Lu, Lo, Lt, Nl }`.
    *
    *  We do not allow a name to start with `:`.
-   *  See [3] and Appendix B of XML 1.0 specification
+   *  See [4] and Appendix B of XML 1.0 specification
    */
   def isNameStart(ch: Char) = {
     import java.lang.Character._
@@ -71,7 +71,7 @@ trait TokenTests {
       case LOWERCASE_LETTER |
         UPPERCASE_LETTER | OTHER_LETTER |
         TITLECASE_LETTER | LETTER_NUMBER => true
-      case _ => ch == '_'
+      case _ => ":_".contains(ch)
     }
   }
 
