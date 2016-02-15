@@ -838,6 +838,12 @@ expected closing tag of foo
     assertEquals("""<x:foo xmlns:x="gaga"/>""", pp.format(x))
   }
 
+  @UnitTest( expected = classOf[scala.xml.SAXParseException] )
+  def issue35: Unit = {
+    val broken = "<broken attribute='is truncated"
+    XML.loadString(broken)
+  }
+
   @UnitTest
   def nodeSeqNs: Unit = {
     val x = {
