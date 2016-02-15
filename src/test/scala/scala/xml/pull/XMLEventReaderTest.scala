@@ -1,4 +1,5 @@
-package scala.xml.pull
+package scala.xml
+package pull
 
 import org.junit.Test
 import org.junit.Ignore
@@ -38,6 +39,17 @@ class XMLEventReaderTest {
       case _ => false
     })
     er.stop  // allow thread to be garbage-collected
+  }
+
+  @Test
+  def issue35: Unit = {
+    val broken = "<broken attribute='is truncated"
+    val x = new Source {
+      val iter = broken.iterator
+      override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err) {}
+    }
+    val r = new XMLEventReader(x)
+    assertTrue(r.next.isInstanceOf[EvElemStart])
   }
 
  @Test(expected = classOf[Exception]) 
