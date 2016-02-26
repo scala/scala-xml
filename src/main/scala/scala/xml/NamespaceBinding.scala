@@ -72,7 +72,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
     shadowRedefined(stop).doBuildString(sb, stop)
   }
 
-  private def doBuildString(sb: StringBuilder, stop: NamespaceBinding) {
+  protected def doBuildString(sb: StringBuilder, stop: NamespaceBinding) {
     if ((this == null) || (this eq stop)) return // contains?
 
     val s = " xmlns%s=\"%s\"".format(

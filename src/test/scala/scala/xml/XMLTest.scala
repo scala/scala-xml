@@ -162,6 +162,23 @@ class XMLTest {
     for (n <- cuckoo \ "_") {
       assertEquals("http://cuckoo.com", n.namespace)
     }
+    val actual: String = new scala.xml.PrettyPrinter(80, 5).format(cuckoo)
+    val expected = """|<cuckoo xmlns="http://cuckoo.com">
+                      |     <foo/>
+                      |     <bar/>
+                      |</cuckoo>""".stripMargin
+    assertEquals(expected, actual)
+  }
+
+  @UnitTest
+  def namespacesWithNestedXmls: Unit = {
+    val foo = <f:foo xmlns:f="fooUrl"></f:foo>
+    val bar = <b:bar xmlns:b="barUrl">{foo}</b:bar>
+    val actual: String = new scala.xml.PrettyPrinter(80, 5).format(bar)
+    val expected = """|<b:bar xmlns:b="barUrl">
+                      |     <f:foo xmlns:f="fooUrl"></f:foo>
+                      |</b:bar>""".stripMargin
+    assertEquals(expected, actual)
   }
 
   @UnitTest
