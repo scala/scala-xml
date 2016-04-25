@@ -36,4 +36,4 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test"
 // used in CompilerErrors test
 libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml*")
 
-mimaPreviousVersion := Some("1.0.1")
+mimaPreviousVersion := Some("1.0.5")
