@@ -247,7 +247,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
       while (true) {
         if (ch == head && peek(rest))
           return handler(positioner(), sb.toString)
-        else if (ch == SU)
+        else if (ch == SU || eof)
           truncatedError("") // throws TruncatedXMLControl in compiler
 
         sb append ch
