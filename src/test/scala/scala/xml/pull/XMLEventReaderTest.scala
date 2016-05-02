@@ -5,6 +5,7 @@ import org.junit.Test
 import org.junit.Assert.{assertFalse, assertTrue}
 
 import scala.io.Source
+import scala.xml.parsing.FatalError
 
 class XMLEventReaderTest {
 
@@ -49,28 +50,32 @@ class XMLEventReaderTest {
     assertTrue(r.next.isInstanceOf[EvElemStart])
   }
 
-  @Test
+  @Test(expected = classOf[FatalError])
   def malformedCDATA: Unit = {
     val data = "<broken><![CDATA[A"
     val r = new XMLEventReader(toSource(data))
 
     assertTrue(r.next.isInstanceOf[EvElemStart])
+    // error when returning EvText of CDATA
+    r.next
   }
 
-  @Test
+  @Test(expected = classOf[FatalError])
   def malformedComment1: Unit = {
-    val data = "<broken><!"
+    val data = "<!"
     val r = new XMLEventReader(toSource(data))
 
-    assertTrue(r.next.isInstanceOf[EvElemStart])
+    // error when returning EvComment
+    r.next
   }
 
-  @Test
+  @Test(expected = classOf[FatalError])
   def malformedComment2: Unit = {
-    val data = "<broken><!-- comment "
+    val data = "<!-- comment "
     val r = new XMLEventReader(toSource(data))
 
-    assertTrue(r.next.isInstanceOf[EvElemStart])
+    // error when returning EvComment
+    r.next
   }
 
   @Test
