@@ -110,25 +110,13 @@ object Utility extends AnyRef with parsing.TokenTests {
   final def escape(text: String, s: StringBuilder): StringBuilder = {
     // Implemented per XML spec:
     // http://www.w3.org/International/questions/qa-controls
-    // imperative code 3x-4x faster than current implementation
-    // dpp (David Pollak) 2010/02/03
-    val len = text.length
-    var pos = 0
-    while (pos < len) {
-      text.charAt(pos) match {
-        case '<'  => s.append("&lt;")
-        case '>'  => s.append("&gt;")
-        case '&'  => s.append("&amp;")
-        case '"'  => s.append("&quot;")
-        case '\n' => s.append('\n')
-        case '\r' => s.append('\r')
-        case '\t' => s.append('\t')
-        case c    => if (c >= ' ') s.append(c)
+    text.iterator.foldLeft(s) { (s, c) =>
+      escMap.get(c) match {
+        case Some(str)                             => s ++= str
+        case _ => if c >= ' ' || "\n\r\t".contains(c) => s += c
+        case _ => s // noop
       }
-
-      pos += 1
     }
-    s
   }
 
   /**
