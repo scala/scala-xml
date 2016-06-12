@@ -265,7 +265,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     if (1 != elemCount) {
       reportSyntaxError("document must contain exactly one element")
-      Console.println(children.toList)
+      //Console.println(children.toList)
     }
 
     doc.children = children
@@ -389,7 +389,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def xComment: NodeSeq = {
     val sb: StringBuilder = new StringBuilder()
     xToken("--")
-    while (true) {
+    while (!eof) {
       if (ch == '-' && { sb.append(ch); nextch(); ch == '-' }) {
         sb.length = sb.length - 1
         nextch()
@@ -398,7 +398,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       } else sb.append(ch)
       nextch()
     }
-    throw FatalError("this cannot happen")
+    throw truncatedError("broken comment")
   }
 
   /* todo: move this into the NodeBuilder class */
@@ -678,10 +678,10 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
   def markupDecl1() = {
     def doInclude() = {
-      xToken('['); while (']' != ch) markupDecl(); nextch() // ']'
+      xToken('['); while (']' != ch && !eof) markupDecl(); nextch() // ']'
     }
     def doIgnore() = {
-      xToken('['); while (']' != ch) nextch(); nextch() // ']'
+      xToken('['); while (']' != ch && !eof) nextch(); nextch() // ']'
     }
     if ('?' == ch) {
       nextch()
@@ -747,7 +747,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
         case _ =>
           curInput.reportError(pos, "unexpected character '" + ch + "', expected some markupdecl")
-          while (ch != '>')
+          while (ch != '>' && !eof)
             nextch()
       }
     }
@@ -780,7 +780,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def intSubset() {
     //Console.println("(DEBUG) intSubset()")
     xSpace()
-    while (']' != ch)
+    while (']' != ch && !eof)
       markupDecl()
   }
 
@@ -792,7 +792,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     xSpace()
     val n = xName
     xSpace()
-    while ('>' != ch) {
+    while ('>' != ch && !eof) {
       //Console.println("["+ch+"]")
       putChar(ch)
       nextch()
@@ -817,7 +817,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     var attList: List[AttrDecl] = Nil
 
     // later: find the elemDecl for n
-    while ('>' != ch) {
+    while ('>' != ch && !eof) {
       val aname = xName
       xSpace()
       // could be enumeration (foo,bar) parse this later :-/
