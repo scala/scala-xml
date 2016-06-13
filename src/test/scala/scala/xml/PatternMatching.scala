@@ -93,21 +93,25 @@ class PatternMatching extends {
     assertTrue((body: AnyRef, "foo") match {
       case (node: Node, "bar") => false
       case (ser: Serializable, "foo") => true
+      case (_, _) => false
     })
 
     assertTrue((body, "foo") match {
       case (node: Node, "bar") => false
       case (ser: Serializable, "foo") => true
+      case (_, _) => false
     })
 
     assertTrue((body: AnyRef, "foo") match {
       case (node: Node, "foo") => true
       case (ser: Serializable, "foo") => false
+      case (_, _) => false
     })
 
     assertTrue((body: AnyRef, "foo") match {
       case (node: Node, "foo") => true
       case (ser: Serializable, "foo") => false
+      case (_, _) => false
     })
   }
 }
