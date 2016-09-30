@@ -47,7 +47,7 @@ object XMLLoaderSpec extends PropertiesFor("factory.XMLLoader")
       out,
       new java.io.OutputStreamWriter(
         out,
-        java.nio.charset.StandardCharsets.UTF_8.name
+        "UTF-8" // java.nio.charset.StandardCharsets.UTF_8.name
       )
     )
   }
@@ -59,7 +59,7 @@ object XMLLoaderSpec extends PropertiesFor("factory.XMLLoader")
   val genInputStream: Gen[java.io.InputStream] = for {
     inOut <- Arbitrary.arbitrary[StreamAndWriter]
     document <- Arbitrary.arbitrary[Document]
-    encoding <- Gen.const(java.nio.charset.StandardCharsets.UTF_8.name)
+    encoding <- Gen.const("UTF-8") // java.nio.charset.StandardCharsets.UTF_8.name
     xmlDecl <- Gen.const(true) // Gen.oneOf(true, false)
     doctype <- Arbitrary.arbitrary[dtd.DocType]
     minimizeTags <- Gen.oneOf(

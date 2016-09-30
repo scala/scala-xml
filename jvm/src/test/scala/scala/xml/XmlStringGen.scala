@@ -13,7 +13,7 @@ trait XmlStringGen extends DocumentGen {
 
   val genXmlString: Gen[String] = for {
     document <- Arbitrary.arbitrary[Document]
-    encoding <- Gen.const(java.nio.charset.StandardCharsets.UTF_8.name)
+    encoding <- Gen.const("UTF-8") // java.nio.charset.StandardCharsets.UTF_8.name
     xmlDecl <- xmlDeclGen("1.0", encoding)
   } yield {
     val str = xmlDecl + Group(document.children ++ Seq(document.docElem)).toString
