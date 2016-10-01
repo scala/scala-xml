@@ -37,3 +37,8 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test"
 libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml*")
 
 mimaPreviousVersion := Some("1.0.5")
+
+// You cannot disable JVM test forking when working on scala modules
+// that are distributed with the compiler because of an SBT
+// classloader leaking issue (scala/scala-xml#20 and #112).
+fork in Test := true
