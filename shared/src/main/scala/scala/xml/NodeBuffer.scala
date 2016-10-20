@@ -22,6 +22,8 @@ package xml
  */
 class NodeBuffer extends scala.collection.mutable.ArrayBuffer[Node] {
 
+  override def stringPrefix: String = "NodeBuffer"
+
   /**
    * Append given object to this buffer, returns reference on this
    * `NodeBuffer` for convenience. Some rules apply:
