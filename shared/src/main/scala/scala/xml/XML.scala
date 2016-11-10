@@ -74,7 +74,7 @@ object XML extends XMLLoader[Elem] {
    *  optionally with xmldecl and doctype declaration.
    *
    *  Note: default encoding was ISO-8859-1 (latin1) in pre-1.0.7 scala-xml versions.
-   *  If your code depends on charaters in non-ASCII latin1 range, specify
+   *  If your code depends on characters in non-ASCII latin1 range, specify
    *  ISO-8859-1 encoding explicitly.
    *
    *  @param filename the filename
