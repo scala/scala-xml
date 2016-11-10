@@ -63,7 +63,7 @@ object XML extends XMLLoader[Elem] {
   val preserve = "preserve"
   val space = "space"
   val lang = "lang"
-  val encoding = "ISO-8859-1"
+  val encoding = "UTF-8"
 
   /** Returns an XMLLoader whose load* methods will use the supplied SAXParser. */
   def withSAXParser(p: SAXParser): XMLLoader[Elem] =
@@ -82,7 +82,7 @@ object XML extends XMLLoader[Elem] {
   final def save(
     filename: String,
     node: Node,
-    enc: String = encoding,
+    enc: String = "UTF-8",
     xmlDecl: Boolean = false,
     doctype: dtd.DocType = null): Unit =
     {
