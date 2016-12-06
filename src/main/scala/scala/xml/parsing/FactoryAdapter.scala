@@ -24,8 +24,7 @@ trait ConsoleErrorHandler extends DefaultHandler {
 
   protected def printError(errtype: String, ex: SAXParseException): Unit =
     Console.withOut(Console.err) {
-      val s = "[%s]:%d:%d: %s".format(
-        errtype, ex.getLineNumber, ex.getColumnNumber, ex.getMessage)
+      val s = "[" + errtype + "]:" + ex.getLineNumber + ":" + ex.getColumnNumber + ": " + ex.getMessage
       Console.println(s)
       Console.flush()
     }

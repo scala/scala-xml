@@ -75,10 +75,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
   private def doBuildString(sb: StringBuilder, stop: NamespaceBinding) {
     if (List(null, stop, TopScope).contains(this)) return
 
-    val s = " xmlns%s=\"%s\"".format(
-      (if (prefix != null) ":" + prefix else ""),
-      (if (uri != null) uri else "")
-    )
+    val s = " xmlns" + (if (prefix != null) ":" + prefix else "") + "=\"" + (if (uri != null) uri else "") + "\""
     parent.doBuildString(sb append s, stop) // copy(ignore)
   }
 }

@@ -86,7 +86,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
       case `end` => return buf.toString
       case ch    => buf append ch
     }
-    scala.sys.error("Expected '%s'".format(end))
+    scala.sys.error("Expected '" + end + "'")
   }
 
   /**
@@ -205,7 +205,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
 
   def xToken(that: Char) {
     if (ch == that) nextch()
-    else xHandleError(that, "'%s' expected instead of '%s'".format(that, ch))
+    else xHandleError(that, "'" + that + "' expected instead of '" + ch + "'")
   }
   def xToken(that: Seq[Char]) { that foreach xToken }
 
