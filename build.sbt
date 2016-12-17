@@ -32,7 +32,7 @@ lazy val xml = crossProject.in(file("."))
       OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
       libraryDependencies += "junit" % "junit" % "4.11" % "test",
       libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test",
-      libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml*"),
+      libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaVersion.value}"),
       mimaPreviousVersion := Some("1.0.6")): _*)
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
 
