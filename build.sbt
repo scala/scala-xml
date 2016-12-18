@@ -13,7 +13,7 @@ crossScalaVersions         := {
   if (java.startsWith("1.6.") || java.startsWith("1.7."))
     Seq("2.11.8")
   else if (java.startsWith("1.8.") || java.startsWith("1.9."))
-    Seq("2.12.0-RC1")
+    Seq("2.12.1")
   else
     sys.error(s"don't know what Scala versions to build on $java")
 }
