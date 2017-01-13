@@ -3,15 +3,17 @@ scala-xml [<img src="https://img.shields.io/travis/scala/scala-xml.svg"/>](https
 
 The standard Scala XML library. Please file issues here instead of over at issues.scala-lang.org.
 
-As of Scala 2.11, this library is a separate jar that can be omitted from Scala projects that do not use XML.
-If you are cross-building a project that uses scala-xml with Scala 2.10 and Scala 2.11, take a look [this example](https://github.com/scala/scala-module-dependency-sample).
+Since Scala 2.11, this library is a separate jar that can be omitted from Scala projects that do not use XML.
+If you are cross-building a project that uses scala-xml with both Scala 2.10 and later Scala versions, take a look [this example](https://github.com/scala/scala-module-dependency-sample).
 
-The compiler was decoupled from this particular implementation using the same approach as for comprehensions (xml syntax is desugared into a set of method calls, which unfortunately is only defined by the [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala)). Alternative implementations are welcome!
+The compiler was decoupled from this particular implementation using the same approach as for comprehensions (XML syntax is desugared into a set of method calls, which unfortunately is only defined by the [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala)). Alternative implementations are welcome!
 
 API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/).
 
 ## Maintenance status
+
 This library is community-maintained. The lead maintainer is [@biswanaths](https://github.com/biswanaths).
 
 ## Security best practices
-The XML spec has some features that are best turned off, to avoid unsavory things like file system access, DoS attacks,... Issue [#17](https://github.com/scala/scala-xml/issues/17) tracks the recommended way of configuring the xml parser used by scala-xml to avoid these. This is by no means an exhaustive list. We'll be happy to incorporate your suggestions -- just comment on the ticket!
+
+The XML spec has some features that are best turned off, to avoid unsavory things like file system access, DoS attacks,... Issue [#17](https://github.com/scala/scala-xml/issues/17) tracks the recommended way of configuring the XML parser used by scala-xml to avoid these. This is by no means an exhaustive list. We'll be happy to incorporate your suggestions -- just comment on the ticket!

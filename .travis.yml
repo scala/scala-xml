@@ -19,4 +19,4 @@ jdk:
   - oraclejdk8
 
 notifications:
-  email: adriaan.moors@typesafe.com
+  email: adriaan.moors@lightbend.com
