@@ -1,5 +1,5 @@
-Copyright (c) 2002-2016 EPFL
-Copyright (c) 2011-2016 Lightbend, Inc.
+Copyright (c) 2002-2017 EPFL
+Copyright (c) 2011-2017	 Lightbend, Inc.
 
 All rights reserved.
 
