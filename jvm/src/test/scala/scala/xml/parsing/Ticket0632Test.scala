@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import scala.xml.JUnitAssertsForXML.assertEquals
 
-class Ticket0632Test {
+class Ticket0632TestJVM {
 
   import scala.io.Source.fromString
   import scala.xml.parsing.ConstructingParser.fromSource
@@ -18,8 +18,6 @@ class Ticket0632Test {
     val expected = "<foo x=\"&amp;\"/>"
     assertEquals(expected, parse("<foo x='&amp;'/>"))
     assertEquals(expected, xml.XML.loadString("<foo x='&amp;'/>"))
-    assertEquals(expected, <foo x="&amp;"/>)
-    assertEquals(expected, <foo x={ "&" }/>)
   }
 
   @Test
@@ -27,8 +25,6 @@ class Ticket0632Test {
     val expected = "<foo x=\"&amp;amp;\"/>"
     assertEquals(expected, xml.XML.loadString("<foo x='&amp;amp;'/>"))
     assertEquals(expected, parse("<foo x='&amp;amp;'/>"))
-    assertEquals(expected, <foo x="&amp;amp;"/>)
-    assertEquals(expected, <foo x={ "&amp;" }/>)
   }
 
   @Test
@@ -36,8 +32,6 @@ class Ticket0632Test {
     val expected = "<foo x=\"&amp;&amp;\"/>"
     assertEquals(expected, xml.XML.loadString("<foo x='&amp;&amp;'/>"))
     assertEquals(expected, parse("<foo x='&amp;&amp;'/>"))
-    assertEquals(expected, <foo x="&amp;&amp;"/>)
-    assertEquals(expected, <foo x={ "&&" }/>)
   }
 
 }

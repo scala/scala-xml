@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import scala.xml.JUnitAssertsForXML.assertEquals
 
-class PiParsingTest {
+class PiParsingTestJVM {
 
 
   import scala.io.Source.fromString
@@ -19,12 +19,6 @@ class PiParsingTest {
   def piNoWSparse: Unit = {
     val expected = "<foo>a<?pi?>b</foo>"
     assertEquals(expected, parseNoWS("<foo>a<?pi?>b</foo>"))
-  }
-
-  @Test
-  def piNoWSLiteral: Unit = {
-    val expected = "<foo>a<?pi?>b</foo>"
-    assertEquals(expected, <foo>a<?pi?>b</foo>)
   }
 
   @Test
@@ -43,11 +37,6 @@ class PiParsingTest {
   def piLoadString: Unit = {
     val expected = "<foo> a <?pi?> b </foo>"
     assertEquals(expected, xml.XML.loadString("<foo> a <?pi?> b </foo>"))
-  }
-  @Test
-  def piLiteral: Unit = {
-    val expected = "<foo> a <?pi?> b </foo>"
-    assertEquals(expected, <foo> a <?pi?> b </foo>)
   }
 
 }
