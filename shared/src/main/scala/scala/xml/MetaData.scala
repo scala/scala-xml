@@ -37,7 +37,7 @@ object MetaData {
    */
   def normalize(attribs: MetaData, scope: NamespaceBinding): MetaData = {
     def iterate(md: MetaData, normalized_attribs: MetaData, set: Set[String]): MetaData = {
-      lazy val key = getUniversalKey(md, scope)
+      def key = getUniversalKey(md, scope)
       if (md eq Null) normalized_attribs
       else if ((md.value eq null) || set(key)) iterate(md.next, normalized_attribs, set)
       else md copy iterate(md.next, normalized_attribs, set + key)
