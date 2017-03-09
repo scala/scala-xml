@@ -37,10 +37,18 @@ object MetaData {
    */
   def normalize(attribs: MetaData, scope: NamespaceBinding): MetaData = {
     def iterate(md: MetaData, normalized_attribs: MetaData, set: Set[String]): MetaData = {
-      def key = getUniversalKey(md, scope)
-      if (md eq Null) normalized_attribs
-      else if ((md.value eq null) || set(key)) iterate(md.next, normalized_attribs, set)
-      else md copy iterate(md.next, normalized_attribs, set + key)
+      if (md eq Null) {
+        normalized_attribs
+      } else if (md.value eq null) {
+        iterate(md.next, normalized_attribs, set)
+      } else {
+        val key = getUniversalKey(md, scope)
+        if (set(key)) {
+          iterate(md.next, normalized_attribs, set)
+        } else {
+          md copy iterate(md.next, normalized_attribs, set + key)
+        }
+      }
     }
     iterate(attribs, Null, Set())
   }
