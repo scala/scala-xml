@@ -12,7 +12,7 @@ API documentation is available [here](http://www.scala-lang.org/api/current/scal
 
 ## Maintenance status
 
-This library is community-maintained. The lead maintainer is [@biswanaths](https://github.com/biswanaths).
+This library is community-maintained. The lead maintainers are [@biswanaths](https://github.com/biswanaths) and [@aaron_s_hawley][https://github.com/ashawley].
 
 ## Security best practices
 
