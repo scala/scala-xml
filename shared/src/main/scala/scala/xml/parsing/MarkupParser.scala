@@ -405,10 +405,19 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def appendText(pos: Int, ts: NodeBuffer, txt: String): Unit = {
     if (preserveWS)
       ts &+ handle.text(pos, txt)
-    else
-      for (t <- TextBuffer.fromString(txt).toText) {
-        ts &+ handle.text(pos, t.text)
+    else {
+      // If 'txt' is just made up of one or more spaces and 'ts' is not empty
+      if (!ts.isEmpty && TextBuffer.fromString(txt).toText == Nil) {
+        // Check if the last node in 'ts' was an 'Atom' and the next node to be parsed is an entity or character ref
+        if(ts.last.isAtom && ch == '&')
+          ts &+ handle.text(pos, " ") // Append a text node consisting of a single space
       }
+      else {
+        for (t <- TextBuffer.fromString(txt).toText) {
+          ts &+ handle.text(pos, t.text)
+        }
+      }
+    }
   }
 
   /**

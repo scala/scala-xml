@@ -243,6 +243,12 @@ object Utility extends AnyRef with parsing.TokenTests {
       }
     }
 
+  // Checks if node when converted to string is an entity ref
+  def checkNodeForEntityRef(n: Node): Boolean = {
+    val st = n.toString 
+    st.startsWith("&") && st.endsWith(";")
+  }
+
   def sequenceToXML(
     children: Seq[Node],
     pscope: NamespaceBinding = TopScope,
@@ -256,10 +262,13 @@ object Utility extends AnyRef with parsing.TokenTests {
       else if (children forall isAtomAndNotText) { // add space
         val it = children.iterator
         val f = it.next()
+        var prev: Node = f
         serialize(f, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
         while (it.hasNext) {
           val x = it.next()
-          sb.append(' ')
+          // No need to append if space is between two EntityRefs. This is taken care in appendText in MarkupParser
+          if (!checkNodeForEntityRef(prev) && !checkNodeForEntityRef(x)) sb.append(' ')
+          prev = x
           serialize(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
         }
       } else children foreach { serialize(_, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }

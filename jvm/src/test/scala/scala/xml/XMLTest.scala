@@ -416,6 +416,58 @@ class XMLTestJVM {
   }
 
   @UnitTest
+  def preserveSpaceTextOptionDisabledIssue107: Unit = {
+    // This test is rhetorical, but is the argument for being
+    // consistent with entities.
+    val x = "<div>tt</div>"
+    val preserveWS = false
+    val d = ConstructingParser.fromSource(scala.io.Source.fromString(x), preserveWS).document
+    assertEquals(x, d.toString)
+  }
+
+  @UnitTest
+  def preserveNoSpaceBetweenEntitiesOptionDisabledIssue107: Unit = {
+    // This is the example given in the original post.
+    val x = "<div>&lt;&lt;</div>"
+    val preserveWS = false
+    val d = ConstructingParser.fromSource(scala.io.Source.fromString(x), preserveWS).document
+    // Should:
+    assertEquals(x, d.toString)
+    // But was adding a space:
+    // assertEquals("<div>&lt; &lt;</div>", d.toString)
+  }
+
+  @UnitTest
+  def preserveNoSpaceBetweenEntitiesOptionEnabledIssue107: Unit = {
+    val x = "<div>&lt;&lt;</div>"
+    // Shouldn't add space when this option is enabled, either.
+    val preserveWS = true
+    val d = ConstructingParser.fromSource(scala.io.Source.fromString(x), preserveWS).document
+    // Should:
+    assertEquals(x, d.toString)
+    // But was adding a space:
+    // assertEquals("<div>&lt; &lt;</div>", d.toString)
+  }
+
+  @UnitTest
+  def preserveSpaceBetweenEntitiesOptionEnabledIssue107: Unit = {
+    val x = "<div>&lt; &lt;</div>"
+    val preserveWS = true
+    val d = ConstructingParser.fromSource(scala.io.Source.fromString(x), preserveWS).document
+    // This was already correct in 1.0.5
+    assertEquals(x, d.toString)
+  }
+
+  @UnitTest
+  def preserveSpaceBetweenEntitiesOptionDisabledIssue107: Unit = {
+    val x = "<div>&lt; &lt;</div>"
+    val preserveWS = false
+    val d = ConstructingParser.fromSource(scala.io.Source.fromString(x), preserveWS).document
+    // This was already correct in 1.0.5
+    assertEquals(x, d.toString)
+  }
+
+  @UnitTest
   def t5843 {
     val foo = scala.xml.Attribute(null, "foo", "1", scala.xml.Null)
     val bar = scala.xml.Attribute(null, "bar", "2", foo)
