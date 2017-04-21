@@ -10,7 +10,6 @@ package scala
 package xml
 package parsing
 
-import java.io.{ InputStream, Reader, File, FileDescriptor, FileInputStream }
 import scala.collection.{ mutable, Iterator }
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler

@@ -9,8 +9,6 @@
 package scala
 package xml.dtd.impl
 
-import scala.collection.{ mutable, immutable }
-
 /**
  * A deterministic automaton. States are integers, where
  *  0 is always the only initial state. Transitions are represented
@@ -26,7 +24,7 @@ import scala.collection.{ mutable, immutable }
 private[dtd] abstract class DetWordAutom[T <: AnyRef] {
   val nstates: Int
   val finals: Array[Int]
-  val delta: Array[mutable.Map[T, Int]]
+  val delta: Array[scala.collection.mutable.Map[T, Int]]
   val default: Array[Int]
 
   def isFinal(q: Int) = finals(q) != 0

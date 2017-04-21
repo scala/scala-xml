@@ -1,11 +1,6 @@
 package scala.xml
 
 import org.junit.Test
-import org.junit.Ignore
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
 
 class AttributeTest {

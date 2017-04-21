@@ -10,10 +10,6 @@ package scala
 package xml
 package parsing
 
-import scala.io.Source
-import scala.annotation.switch
-import Utility.Escapes.{ pairs => unescape }
-
 import Utility.SU
 
 /**

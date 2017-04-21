@@ -3,17 +3,11 @@ package scala.xml
 import language.postfixOps
 
 import org.junit.{Test => UnitTest}
-import org.junit.Ignore
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
 // import scala.xml.parsing.ConstructingParser
 import java.io.StringWriter
-import java.io.BufferedOutputStream
-import java.io.ByteArrayOutputStream
-import java.io.StringReader
 import scala.collection.Iterable
 import scala.xml.Utility.sort
 
@@ -23,8 +17,6 @@ object XMLTest {
 }
 
 class XMLTest {
-  import XMLTest.{ e, sc }
-
   @UnitTest
   def nodeSeq: Unit = {
     val p = <foo>
@@ -247,8 +239,6 @@ class XMLTest {
     val x = <flog xmlns:ee="http://ee.com"><foo xmlns:dog="http://dog.com"><dog:cat/></foo></flog>
     assertTrue(x.toString.matches(".*xmlns:dog=\"http://dog.com\".*"));
   }
-
-  import NodeSeq.seqToNodeSeq
 
   val ax = <hello foo="bar" x:foo="baz" xmlns:x="the namespace from outer space">
              <world/>
