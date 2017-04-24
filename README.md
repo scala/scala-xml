@@ -8,7 +8,7 @@ If you are cross-building a project that uses scala-xml with both Scala 2.10 and
 
 The compiler was decoupled from this particular implementation using the same approach as for comprehensions (XML syntax is desugared into a set of method calls, which unfortunately is only defined by the [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala)). Alternative implementations are welcome!
 
-API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/).
+API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/scala/xml/index.html).
 
 ## Maintenance status
 
