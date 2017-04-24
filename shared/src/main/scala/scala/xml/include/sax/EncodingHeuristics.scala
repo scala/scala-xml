@@ -41,7 +41,7 @@ object EncodingHeuristics {
    * [[http://www.w3.org/TR/xml/#sec-guessing w3]].
    *
    * @param    in   `InputStream` to read from.
-   * @throws IOException if the stream cannot be reset
+   * @throws java.io.IOException if the stream cannot be reset
    * @return         the name of the encoding.
    */
   def readEncodingFromStream(in: InputStream): String = {
