@@ -1,14 +1,14 @@
-import com.typesafe.tools.mima.plugin.{MimaPlugin, MimaKeys}
+import ScalaModulePlugin._
 
-scalaVersion       in ThisBuild := crossScalaVersions.value.head
-crossScalaVersions in ThisBuild := {
-  val java = System.getProperty("java.version")
-  if (java.startsWith("1.6.") || java.startsWith("1.7."))
-    Seq("2.11.11")
-  else if (java.startsWith("1.8.") || java.startsWith("1.9."))
-    Seq("2.12.2")
-  else
-    sys.error(s"don't know what Scala versions to build on $java")
+scalaVersionsByJvm in ThisBuild := {
+  val v211 = "2.11.11"
+  val v212 = "2.12.2"
+  val v213 = "2.13.0-M1"
+  Map(
+    6 -> List(v211 -> true),
+    7 -> List(v211 -> false),
+    8 -> List(v212 -> true, v213 -> true, v211 -> false),
+    9 -> List(v212 -> false, v213 -> false, v211 -> false))
 }
 
 lazy val root = project.in(file("."))
@@ -28,17 +28,12 @@ lazy val xml = crossProject.in(file("."))
   )
   .jvmSettings(
     scalaModuleSettings ++
-    scalaModuleOsgiSettings ++
     List(
       OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
       libraryDependencies += "junit" % "junit" % "4.11" % "test",
       libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test",
       libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml*"),
-      mimaPreviousVersion := Some("1.0.6"),
-      // You cannot disable JVM test forking when working on scala modules
-      // that are distributed with the compiler because of an SBT
-      // classloader leaking issue (scala/scala-xml#20 and #112).
-      fork in Test := true): _*)
+      mimaPreviousVersion := Some("1.0.6")): _*)
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
 
 lazy val xmlJVM = xml.jvm
