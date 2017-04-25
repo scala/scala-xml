@@ -9,10 +9,9 @@
 package scala
 package xml
 
-import parsing.NoBindingFactoryAdapter
 import factory.XMLLoader
 import java.io.{ File, FileDescriptor, FileInputStream, FileOutputStream }
-import java.io.{ InputStream, Reader, StringReader, Writer }
+import java.io.{ InputStream, Reader, StringReader }
 import java.nio.channels.Channels
 import scala.util.control.Exception.ultimately
 

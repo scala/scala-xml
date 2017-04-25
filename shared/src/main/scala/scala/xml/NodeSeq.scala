@@ -43,7 +43,6 @@ object NodeSeq {
  *  @version 1.0
  */
 abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with SeqLike[Node, NodeSeq] with Equality {
-  import NodeSeq.seqToNodeSeq // import view magic for NodeSeq wrappers
 
   /** Creates a list buffer as builder for this class */
   override protected[this] def newBuilder = NodeSeq.newBuilder

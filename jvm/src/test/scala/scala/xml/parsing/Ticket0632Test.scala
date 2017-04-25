@@ -2,15 +2,13 @@ package scala.xml.parsing
 
 import org.junit.Test
 import org.junit.Ignore
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import scala.xml.JUnitAssertsForXML.assertEquals
 
 class Ticket0632TestJVM {
 
   import scala.io.Source.fromString
   import scala.xml.parsing.ConstructingParser.fromSource
-  import scala.xml.{NodeSeq, TopScope}
+  import scala.xml.TopScope
   private def parse(s:String) = fromSource(fromString(s), false).element(TopScope)
 
   @Test

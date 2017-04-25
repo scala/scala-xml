@@ -11,7 +11,6 @@ package xml
 package persistent
 
 import java.io.{ File, FileOutputStream }
-import java.nio.ByteBuffer
 import java.nio.channels.Channels
 import java.lang.Thread
 

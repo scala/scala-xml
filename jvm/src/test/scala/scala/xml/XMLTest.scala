@@ -3,15 +3,11 @@ package scala.xml
 import language.postfixOps
 
 import org.junit.{Test => UnitTest}
-import org.junit.Ignore
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
 import scala.xml.parsing.ConstructingParser
 import java.io.StringWriter
-import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
 import scala.collection.Iterable
@@ -495,7 +491,6 @@ class XMLTestJVM {
   }
 
   import java.io.{ Console => _, _ }
-  import scala.io._
   import scala.xml.parsing._
   @UnitTest
   def dontLoop: Unit = {

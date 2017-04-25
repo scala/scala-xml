@@ -11,7 +11,7 @@ package xml
 
 import Utility.sbToString
 import scala.annotation.tailrec
-import scala.collection.{ AbstractIterable, Iterator }
+import scala.collection.AbstractIterable
 
 /**
  * Copyright 2008 Google Inc. All Rights Reserved.

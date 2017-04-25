@@ -11,7 +11,6 @@ package xml
 package include.sax
 
 import java.io.InputStream
-import scala.util.matching.Regex
 
 /**
  * `EncodingHeuristics` reads from a stream

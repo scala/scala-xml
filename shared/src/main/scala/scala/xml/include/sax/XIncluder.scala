@@ -11,9 +11,9 @@ package xml
 package include.sax
 
 import scala.collection.mutable
-import org.xml.sax.{ ContentHandler, XMLReader, Locator, Attributes }
+import org.xml.sax.{ ContentHandler, Locator, Attributes }
 import org.xml.sax.ext.LexicalHandler
-import java.io.{ File, OutputStream, OutputStreamWriter, Writer, IOException }
+import java.io.{ OutputStream, OutputStreamWriter, IOException }
 
 /**
  * XIncluder is a SAX `ContentHandler` that writes its XML document onto

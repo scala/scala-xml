@@ -10,9 +10,6 @@ package scala
 package xml
 package factory
 
-import parsing.{ FactoryAdapter, NoBindingFactoryAdapter }
-import java.io.{ InputStream, Reader, StringReader, File, FileDescriptor, FileInputStream }
-
 trait NodeFactory[A <: Node] {
   val ignoreComments = false
   val ignoreProcInstr = false

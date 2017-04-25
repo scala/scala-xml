@@ -15,7 +15,7 @@ import scala.xml.include._
 import org.xml.sax.{ Attributes, XMLReader, Locator }
 import org.xml.sax.helpers.{ XMLReaderFactory, XMLFilterImpl, NamespaceSupport, AttributesImpl }
 
-import java.io.{ InputStream, BufferedInputStream, InputStreamReader, IOException, UnsupportedEncodingException }
+import java.io.{ BufferedInputStream, InputStreamReader, IOException, UnsupportedEncodingException }
 import java.util.Stack
 import java.net.{ URL, MalformedURLException }
 
