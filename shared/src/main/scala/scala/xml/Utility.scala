@@ -102,7 +102,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     val escMap = (pairs - "apos") map { case (s, c) => c -> ("&%s;" format s) }
     val unescMap = pairs
   }
-  import Escapes.unescMap
+  import Escapes.{ escMap, unescMap }
 
   /**
    * Appends escaped string to `s`.
@@ -113,7 +113,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     text.iterator.foldLeft(s) { (s, c) =>
       escMap.get(c) match {
         case Some(str)                             => s ++= str
-        case _ => if c >= ' ' || "\n\r\t".contains(c) => s += c
+        case _ if c >= ' ' || "\n\r\t".contains(c) => s += c
         case _ => s // noop
       }
     }
