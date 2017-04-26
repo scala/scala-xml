@@ -20,7 +20,12 @@ lazy val xml = crossProject.in(file("."))
     name    := "scala-xml",
     version := "1.0.7-SNAPSHOT",
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
-    scalacOptions in Test  += "-Xxml:coalescing")
+    scalacOptions in Test  += "-Xxml:coalescing",
+    apiMappings += (
+      scalaInstance.value.libraryJar
+        -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+    )
+  )
   .jvmSettings(
     scalaModuleSettings ++
     scalaModuleOsgiSettings ++
