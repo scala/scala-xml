@@ -468,6 +468,19 @@ class XMLTestJVM {
   }
 
   @UnitTest
+  def issue77: Unit = {
+    val preserveWS = false
+    
+    val x = "<x>a &amp; b</x>"
+    val d = ConstructingParser.fromSource(scala.io.Source.fromString(x), preserveWS).document
+    assertEquals(x, d.toString)
+
+    val y = "<y>&amp; a &amp;</y>"
+    val e = ConstructingParser.fromSource(scala.io.Source.fromString(y), preserveWS).document
+    assertEquals(y, e.toString)
+  }
+
+  @UnitTest
   def t5843 {
     val foo = scala.xml.Attribute(null, "foo", "1", scala.xml.Null)
     val bar = scala.xml.Attribute(null, "bar", "2", foo)

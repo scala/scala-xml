@@ -413,9 +413,15 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
           ts &+ handle.text(pos, " ") // Append a text node consisting of a single space
       }
       else {
+        // If 'txt 'starts with a space and follows an 'Atom'
+        if(txt.startsWith(" ") && !ts.isEmpty && ts.last.isAtom)
+          ts &+ handle.text(pos, " ")
         for (t <- TextBuffer.fromString(txt).toText) {
           ts &+ handle.text(pos, t.text)
         }
+        // If txt ends with a space and is followed by an entity or character ref
+        if(txt.endsWith(" ") && ch == '&')
+          ts &+ handle.text(pos, " ")
       }
     }
   }
