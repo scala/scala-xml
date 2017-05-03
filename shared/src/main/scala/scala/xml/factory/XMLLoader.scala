@@ -37,9 +37,9 @@ trait XMLLoader[T <: Node] {
   def loadXML(source: InputSource, parser: SAXParser): T = {
     val newAdapter = adapter
 
-    newAdapter.scopeStack push TopScope
+    newAdapter.scopeStack = TopScope :: newAdapter.scopeStack
     parser.parse(source, newAdapter)
-    newAdapter.scopeStack.pop()
+    newAdapter.scopeStack = newAdapter.scopeStack.tail
 
     newAdapter.rootElem.asInstanceOf[T]
   }

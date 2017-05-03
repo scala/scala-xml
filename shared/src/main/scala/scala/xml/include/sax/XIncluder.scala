@@ -10,7 +10,6 @@ package scala
 package xml
 package include.sax
 
-import scala.collection.mutable
 import org.xml.sax.{ ContentHandler, Locator, Attributes }
 import org.xml.sax.ext.LexicalHandler
 import java.io.{ OutputStream, OutputStreamWriter, IOException }
@@ -126,7 +125,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   // LexicalHandler methods
   private var inDTD: Boolean = false
-  private val entities = new mutable.Stack[String]()
+  private var entities = List.empty[String]
 
   def startDTD(name: String, publicID: String, systemID: String): Unit = {
     inDTD = true
@@ -146,11 +145,11 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   def endDTD(): Unit = {}
 
   def startEntity(name: String): Unit = {
-    entities push name
+    entities =  name :: entities
   }
 
   def endEntity(name: String): Unit = {
-    entities.pop()
+    entities = entities.tail
   }
 
   def startCDATA(): Unit = {}
