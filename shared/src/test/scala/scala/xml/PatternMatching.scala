@@ -80,7 +80,7 @@ class PatternMatching extends {
     })
 
     // SI-1059
-    var m: PartialFunction[Any, Any] = { case SafeNodeSeq(s @ _*) => s }
+    val m: PartialFunction[Any, Any] = { case SafeNodeSeq(s @ _*) => s }
 
     assertEquals(m(<a/> ++ <b/>), List(<a/>, <b/>))
     assertTrue(m.isDefinedAt(<a/> ++ <b/>))

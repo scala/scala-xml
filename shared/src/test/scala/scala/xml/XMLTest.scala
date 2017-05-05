@@ -261,7 +261,6 @@ class XMLTest {
 
   @UnitTest
   def XmlEy {
-    val z = ax \ "@{the namespace from outer space}foo"
     assertTrue((ax \ "@{the namespace from outer space}foo") xml_== "baz")
     assertTrue((cx \ "@{the namespace from outer space}foo") xml_== "baz")
 

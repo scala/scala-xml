@@ -1,7 +1,6 @@
 package scala.xml
 
 import org.junit.Test
-import org.junit.Ignore
 import org.junit.Assert.assertEquals
 
 class XMLSyntaxTestJVM {
