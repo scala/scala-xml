@@ -21,9 +21,12 @@ lazy val xml = crossProject.in(file("."))
     version := "1.0.7-SNAPSHOT",
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
-    apiMappings += (
+    apiMappings ++= Map(
       scalaInstance.value.libraryJar
-        -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+        -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/"),
+      // http://stackoverflow.com/questions/16934488
+      file(System.getProperty("sun.boot.class.path").split(java.io.File.pathSeparator).filter(_.endsWith(java.io.File.separator + "rt.jar")).head)
+        -> url("http://docs.oracle.com/javase/8/docs/api")
     )
   )
   .jvmSettings(
