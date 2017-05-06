@@ -40,8 +40,8 @@ class XMLTestJVM {
       override def text = ""
     }
 
-    assertTrue(c == parsedxml11)
-    assertTrue(parsedxml1 == parsedxml11)
+    assertEquals(c, parsedxml11)
+    assertEquals(parsedxml1, parsedxml11)
     assertTrue(List(parsedxml1) sameElements List(parsedxml11))
     assertTrue(Array(parsedxml1).toList sameElements List(parsedxml11))
 
@@ -50,10 +50,10 @@ class XMLTestJVM {
     val i = new InputSource(new StringReader(x2))
     val x2p = scala.xml.XML.load(i)
 
-    assertTrue(x2p == Elem(null, "book", e, sc,
+    assertEquals(Elem(null, "book", e, sc,
       Elem(null, "author", e, sc, Text("Peter Buneman")),
       Elem(null, "author", e, sc, Text("Dan Suciu")),
-      Elem(null, "title", e, sc, Text("Data on ze web"))))
+      Elem(null, "title", e, sc, Text("Data on ze web"))), x2p)
 
   }
 
@@ -431,16 +431,16 @@ class XMLTestJVM {
   @UnitTest
   def t6939 = {
     val foo = <x:foo xmlns:x="http://foo.com/"><x:bar xmlns:x="http://bar.com/"><x:baz/></x:bar></x:foo>
-    assertTrue(foo.child.head.scope.toString == """ xmlns:x="http://bar.com/"""")
+    assertEquals(foo.child.head.scope.toString, """ xmlns:x="http://bar.com/"""")
 
     val fooDefault = <foo xmlns="http://foo.com/"><bar xmlns="http://bar.com/"><baz/></bar></foo>
-    assertTrue(fooDefault.child.head.scope.toString == """ xmlns="http://bar.com/"""")
+    assertEquals(fooDefault.child.head.scope.toString, """ xmlns="http://bar.com/"""")
 
     val foo2 = scala.xml.XML.loadString("""<x:foo xmlns:x="http://foo.com/"><x:bar xmlns:x="http://bar.com/"><x:baz/></x:bar></x:foo>""")
-    assertTrue(foo2.child.head.scope.toString == """ xmlns:x="http://bar.com/"""")
+    assertEquals(foo2.child.head.scope.toString, """ xmlns:x="http://bar.com/"""")
 
     val foo2Default = scala.xml.XML.loadString("""<foo xmlns="http://foo.com/"><bar xmlns="http://bar.com/"><baz/></bar></foo>""")
-    assertTrue(foo2Default.child.head.scope.toString == """ xmlns="http://bar.com/"""")
+    assertEquals(foo2Default.child.head.scope.toString, """ xmlns="http://bar.com/"""")
   }
 
   @UnitTest
