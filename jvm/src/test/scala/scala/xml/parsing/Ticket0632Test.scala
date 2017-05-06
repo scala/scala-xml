@@ -1,7 +1,6 @@
 package scala.xml.parsing
 
 import org.junit.Test
-import org.junit.Ignore
 import scala.xml.JUnitAssertsForXML.assertEquals
 
 class Ticket0632TestJVM {

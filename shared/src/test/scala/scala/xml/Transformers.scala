@@ -3,7 +3,6 @@ package scala.xml
 import scala.xml.transform._
 
 import org.junit.Test
-import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
 
 class Transformers {
