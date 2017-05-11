@@ -24,6 +24,19 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     mimaPreviousVersion := {
       Some("1.2.0")
     },
+    mimaBinaryIssueFilters ++= {
+      import com.typesafe.tools.mima.core._
+      import com.typesafe.tools.mima.core.ProblemFilters._
+      Seq(
+        // Scala 2.12 deprecated mutable.Stack, so we broke
+        // binary compatibility for 1.1.0 in the following way:
+        exclude[IncompatibleMethTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack_="),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.hStack"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.attribStack"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.tagStack")
+      )
+    },
 
     unmanagedSourceDirectories in Compile ++= {
       (unmanagedSourceDirectories in Compile).value.map { dir =>
