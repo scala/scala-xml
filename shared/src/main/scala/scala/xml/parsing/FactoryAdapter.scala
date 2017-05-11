@@ -38,9 +38,33 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
   var rootElem: Node = null
 
   val buffer = new StringBuilder()
+  /** List of attributes
+    * 
+    * Previously was a [[scala.collection.mutable.Stack]], but is now a mutable [[scala.collection.immutable.List]].
+    * 
+    * @since 1.0.7 
+    */
   var attribStack = List.empty[MetaData]
+  /** List of elements
+    * 
+    * Previously was a [[scala.collection.mutable.Stack]], but is now a mutable [[scala.collection.immutable.List]].
+    * 
+    * @since 1.0.7 
+    */
   var hStack = List.empty[Node] // [ element ] contains siblings
+  /** List of element names
+    * 
+    * Previously was a [[scala.collection.mutable.Stack]], but is now a mutable [[scala.collection.immutable.List]].
+    * 
+    * @since 1.0.7 
+    */
   var tagStack = List.empty[String]
+  /** List of namespaces
+    * 
+    * Previously was a [[scala.collection.mutable.Stack]], but is now a mutable [[scala.collection.immutable.List]].
+    * 
+    * @since 1.0.7 
+    */
   var scopeStack = List.empty[NamespaceBinding]
 
   var curTag: String = null
