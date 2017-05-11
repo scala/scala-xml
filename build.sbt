@@ -36,6 +36,19 @@ lazy val xml = crossProject.in(file("."))
       libraryDependencies += "junit" % "junit" % "4.11" % "test",
       libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test",
       libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaVersion.value}"),
+      mimaBinaryIssueFilters ++= {
+        import com.typesafe.tools.mima.core._
+        import com.typesafe.tools.mima.core.ProblemFilters._
+        Seq(
+          // Scala 2.12 deprecated mutable.Stack, so we broke
+          // binary compatability for 1.0.7 in the following way:
+          exclude[IncompatibleMethTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack_="),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.hStack"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.attribStack"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.tagStack")
+        )
+      },
       mimaPreviousVersion := Some("1.0.6")): _*)
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
 
