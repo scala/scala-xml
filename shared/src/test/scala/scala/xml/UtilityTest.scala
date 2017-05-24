@@ -2,7 +2,6 @@ package scala.xml
 
 import org.junit.Test
 import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
 
 class UtilityTest {
@@ -10,7 +9,7 @@ class UtilityTest {
   @Test
   def isNameStart: Unit = {
     assertTrue(Utility.isNameStart('b'))
-    assertFalse(Utility.isNameStart(':'))
+    assertTrue(Utility.isNameStart(':'))
   }
 
   @Test
