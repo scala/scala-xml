@@ -542,4 +542,24 @@ class XMLTestJVM {
     pp.format(x, sb)
     assertEquals(expected, sb.toString)
   }
+
+  @UnitTest
+  def issue46: Unit = {
+    // val x = <node/>
+    val x = <node></node>
+    // val x = Elem(null, "node", e, sc)
+    val pp = new xml.PrettyPrinter(80, 2)
+    // This assertion passed
+    assertEquals("<node></node>", x.toString)
+    // This was the bug, producing <node></node>
+    assertEquals("<node/>", pp.format(x.copy(minimizeEmpty = true)))
+  }
+
+  @UnitTest
+  def issue90: Unit = {
+    val pp = new xml.PrettyPrinter(80, 2, minimizeEmpty = true)
+    val x = <node><leaf></leaf></node>
+    assertEquals("<node>\n  <leaf/>\n</node>", pp.format(x))
+  }
+
 }
