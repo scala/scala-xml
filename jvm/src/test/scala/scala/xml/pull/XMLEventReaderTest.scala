@@ -2,7 +2,7 @@ package scala.xml
 package pull
 
 import org.junit.Test
-import org.junit.Assert.{assertFalse, assertTrue}
+import org.junit.Assert.{assertEquals,assertFalse, assertTrue}
 
 import scala.io.Source
 import scala.xml.parsing.FatalError
@@ -167,5 +167,29 @@ class XMLEventReaderTest {
     val er = new XMLEventReader(toSource(data))
     while(er.hasNext) er.next()
     er.stop()
+  }
+
+  @Test
+  def entityRefTest: Unit = { // SI-7796
+    val source = Source.fromString("<text>&quot;&apos;&lt;&gt;&amp;</text>")
+    val er = new XMLEventReader(source)
+
+    assertTrue(er.next match {
+      case EvElemStart(_, "text", _, _) => true
+      case _ => false
+    })
+
+    assertEquals(EvEntityRef("quot"), er.next)
+    assertEquals(EvEntityRef("apos"), er.next)
+    assertEquals(EvEntityRef("lt"), er.next)
+    assertEquals(EvEntityRef("gt"), er.next)
+    assertEquals(EvEntityRef("amp"), er.next)
+
+    assertTrue(er.next match {
+      case EvElemEnd(_, "text") => true
+      case _ => false
+    })
+
+    assertTrue(er.isEmpty)
   }
 }

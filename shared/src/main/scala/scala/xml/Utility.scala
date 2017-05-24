@@ -96,13 +96,11 @@ object Utility extends AnyRef with parsing.TokenTests {
       "lt" -> '<',
       "gt" -> '>',
       "amp" -> '&',
-      "quot" -> '"'
-    // enigmatic comment explaining why this isn't escaped --
-    // is valid xhtml but not html, and IE doesn't know it, says jweb
-    // "apos"  -> '\''
+      "quot" -> '"',
+      "apos"  -> '\''
     )
-    val escMap = pairs map { case (s, c) => c -> ("&%s;" format s) }
-    val unescMap = pairs ++ Map("apos" -> '\'')
+    val escMap = (pairs - "apos") map { case (s, c) => c -> ("&%s;" format s) }
+    val unescMap = pairs
   }
   import Escapes.unescMap
 
