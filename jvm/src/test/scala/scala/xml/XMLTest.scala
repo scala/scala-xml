@@ -300,6 +300,29 @@ class XMLTestJVM {
     </wsdl:definitions>""", wsdlTemplate4("service4", () => "target4") toString)
   }
 
+  // Issue found with ISO-8859-1 in #121 that was fixed with UTF-8 default
+  @UnitTest
+  def writeReadNoDeclarationDefaultEncoding: Unit = {
+    val chars = ((32 to 126) ++ (160 to 255)).map(_.toChar)
+    val xml = <x>{ chars.mkString }</x>
+
+    // com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException:
+    // Invalid byte 1 of 1-byte UTF-8 sequence.
+    // scala.xml.XML.save("foo.xml", xml)
+    // scala.xml.XML.loadFile("foo.xml").toString)
+
+    val outputStream = new java.io.ByteArrayOutputStream
+    val streamWriter = new java.io.OutputStreamWriter(outputStream, XML.encoding)
+
+    XML.write(streamWriter, xml, XML.encoding, false, null)
+    streamWriter.flush
+
+    val inputStream = new java.io.ByteArrayInputStream(outputStream.toByteArray)
+    val streamReader = new java.io.InputStreamReader(inputStream)
+
+    assertEquals(xml.toString, XML.load(streamReader).toString)
+  }
+
   @UnitTest
   def t0663 = {
     val src = scala.io.Source.fromString("<?xml version='1.0' encoding='UTF-8'?><feed/>")
