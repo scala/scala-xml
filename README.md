@@ -1,4 +1,9 @@
-scala-xml [<img src="https://img.shields.io/travis/scala/scala-xml.svg"/>](https://travis-ci.org/scala/scala-xml) [<img src="https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.11.svg?label=latest%20release%20for%202.11"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aorg.scala-lang.modules%20a%3Ascala-xml_2.11) [<img src="https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.12*.svg?label=latest%20release%20for%202.12"/>](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aorg.scala-lang.modules%20a%3Ascala-xml_2.12*) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/scala/scala-xml)
+scala-xml
+[![Travis](https://img.shields.io/travis/scala/scala-xml.svg)](https://travis-ci.org/scala/scala-xml)
+[![latest release for 2.11](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.11.svg?label=scala+2.11)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.11)
+[![latest release for 2.12](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.12.svg?label=scala+2.12)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.12)
+[![latest release for 2.13.0-M1](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.13.0-M1.svg?label=scala+2.13.0-M1)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.13.0-M1)
+[![Gitter](https://badges.gitter.im/Join+Chat.svg)](https://gitter.im/scala/scala-xml)
 =========
 
 The standard Scala XML library. Please file issues here instead of over at issues.scala-lang.org.
