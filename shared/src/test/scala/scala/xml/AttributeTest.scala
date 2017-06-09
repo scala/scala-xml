@@ -147,9 +147,9 @@ class AttributeTest {
     val b = xml \ "b"
     assertEquals(2, b.length)
     assertEquals(NodeSeq.fromSeq(Seq(<b bar="1"/>, <b bar="2"/>)), b)
-    val barFail = b \ "@bar"
+    val barAttributesDirect = b \ "@bar"
     val barList =  b.map(_ \ "@bar")
-    assertEquals(NodeSeq.Empty, barFail)
+    assertEquals(Group(Seq(Text("1"), Text("2"))), barAttributesDirect)
     assertEquals(List(Group(Seq(Text("1"))), Group(Seq(Text("2")))), barList)
   }
 
