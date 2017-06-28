@@ -12,7 +12,7 @@ scalaVersionsByJvm in ThisBuild := {
 }
 
 lazy val root = project.in(file("."))
-  .aggregate(xmlJS, xmlJVM)
+  .aggregate(xmlJS, xmlJVM, xmlquote)
   .settings(publish := {}, publishLocal := {})
 
 lazy val xml = crossProject.in(file("xml"))
@@ -54,3 +54,20 @@ lazy val xml = crossProject.in(file("xml"))
 
 lazy val xmlJVM = xml.jvm
 lazy val xmlJS = xml.js
+
+lazy val xmlquote = project.in(file("quote"))
+  .dependsOn(xmlJVM)
+  .settings(
+    name := "scala-xml-quote",
+    scalacOptions ++= Seq(
+      "-deprecation",
+      "-feature",
+      "-unchecked",
+      "-Xlint"
+    ),
+    libraryDependencies ++= Seq(
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+      "com.lihaoyi" %% "fastparse" % "0.4.3",
+      "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+    )
+  )
