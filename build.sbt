@@ -15,7 +15,7 @@ lazy val root = project.in(file("."))
   .aggregate(xmlJS, xmlJVM)
   .settings(publish := {}, publishLocal := {})
 
-lazy val xml = crossProject.in(file("."))
+lazy val xml = crossProject.in(file("xml"))
   .settings(
     name    := "scala-xml",
     version := "1.0.7-SNAPSHOT",
