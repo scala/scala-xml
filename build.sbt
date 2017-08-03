@@ -31,21 +31,8 @@ lazy val xml = crossProject.in(file("."))
       // http://stackoverflow.com/questions/16934488
       file(System.getProperty("sun.boot.class.path").split(java.io.File.pathSeparator).filter(_.endsWith(java.io.File.separator + "rt.jar")).head)
         -> url("http://docs.oracle.com/javase/8/docs/api")
-    ),
-
-    mimaBinaryIssueFilters ++= {
-      import com.typesafe.tools.mima.core._
-      import com.typesafe.tools.mima.core.ProblemFilters._
-      Seq(
-        // Scala 2.12 deprecated mutable.Stack, so we broke
-        // binary compatability for 1.0.7 in the following way:
-        exclude[IncompatibleMethTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack_="),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.hStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.attribStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.tagStack")
-      )
-    })
+    )
+  )
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
 

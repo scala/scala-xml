@@ -32,9 +32,9 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     val delta = new mutable.HashMap[immutable.BitSet, mutable.HashMap[T, immutable.BitSet]]
     var deftrans = mutable.Map(q0 -> sink, sink -> sink) // initial transitions
     var finals: mutable.Map[immutable.BitSet, Int] = mutable.Map()
-    var rest = immutable.List.empty[immutable.BitSet]
+    val rest = new mutable.Stack[immutable.BitSet]
 
-    rest = q0 :: sink :: rest
+    rest.push(sink, q0)
 
     def addFinal(q: immutable.BitSet) {
       if (nfa containsFinal q)
@@ -43,7 +43,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     def add(Q: immutable.BitSet) {
       if (!states(Q)) {
         states += Q
-        rest = Q :: rest
+        rest push Q
         addFinal(Q)
       }
     }
@@ -51,8 +51,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     addFinal(q0) // initial state may also be a final state
 
     while (!rest.isEmpty) {
-      val P = rest.head
-      rest = rest.tail
+      val P = rest.pop()
       // assign a number to this bitset
       indexMap = indexMap.updated(P, ix)
       invIndexMap = invIndexMap.updated(ix, P)
