@@ -42,7 +42,7 @@ object NodeSeq {
  *  @author  Burak Emir
  *  @version 1.0
  */
-abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with SeqLike[Node, NodeSeq] with Equality {
+abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with SeqLike[Node, NodeSeq] with Equality with Serializable {
 
   /** Creates a list buffer as builder for this class */
   override protected[this] def newBuilder = NodeSeq.newBuilder
