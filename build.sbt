@@ -20,7 +20,7 @@ lazy val xml = crossProject.in(file("."))
   .jvmSettings(scalaModuleSettingsJVM)
   .settings(
     name    := "scala-xml",
-    version := "1.0.7-SNAPSHOT",
+    version := "1.1.0-SNAPSHOT",
 
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
@@ -38,7 +38,7 @@ lazy val xml = crossProject.in(file("."))
       import com.typesafe.tools.mima.core.ProblemFilters._
       Seq(
         // Scala 2.12 deprecated mutable.Stack, so we broke
-        // binary compatability for 1.0.7 in the following way:
+        // binary compatibility for 1.1.0 in the following way:
         exclude[IncompatibleMethTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack_="),
         exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.hStack"),
         exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack"),
