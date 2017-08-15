@@ -40,30 +40,30 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
   val buffer = new StringBuilder()
   /** List of attributes
     * 
-    * Previously was a [[scala.collection.mutable.Stack]], but is now a mutable [[scala.collection.immutable.List]].
+    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
     * 
-    * @since 1.0.7 
+    * @since 1.1.0 
     */
   var attribStack = List.empty[MetaData]
   /** List of elements
     * 
-    * Previously was a [[scala.collection.mutable.Stack]], but is now a mutable [[scala.collection.immutable.List]].
+    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
     * 
-    * @since 1.0.7 
+    * @since 1.1.0 
     */
   var hStack = List.empty[Node] // [ element ] contains siblings
   /** List of element names
     * 
-    * Previously was a [[scala.collection.mutable.Stack]], but is now a mutable [[scala.collection.immutable.List]].
+    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
     * 
-    * @since 1.0.7 
+    * @since 1.1.0 
     */
   var tagStack = List.empty[String]
   /** List of namespaces
     * 
-    * Previously was a [[scala.collection.mutable.Stack]], but is now a mutable [[scala.collection.immutable.List]].
+    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
     * 
-    * @since 1.0.7 
+    * @since 1.1.0 
     */
   var scopeStack = List.empty[NamespaceBinding]
 
