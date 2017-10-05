@@ -73,7 +73,7 @@ object XML extends XMLLoader[Elem] {
    * Saves a node to a file with given filename using given encoding
    *  optionally with xmldecl and doctype declaration.
    *
-   *  Note: default encoding was ISO-8859-1 (latin1) in pre-1.0.7 scala-xml versions.
+   *  Note: Before scala-xml 1.1.0, the default encoding was ISO-8859-1 (latin1).
    *  If your code depends on characters in non-ASCII latin1 range, specify
    *  ISO-8859-1 encoding explicitly.
    *
