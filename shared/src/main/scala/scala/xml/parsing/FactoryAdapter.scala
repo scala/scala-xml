@@ -10,6 +10,7 @@ package scala
 package xml
 package parsing
 
+import scala.collection.{ mutable, Iterator }
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 
@@ -38,34 +39,10 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
   var rootElem: Node = null
 
   val buffer = new StringBuilder()
-  /** List of attributes
-    * 
-    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
-    * 
-    * @since 1.1.0 
-    */
-  var attribStack = List.empty[MetaData]
-  /** List of elements
-    * 
-    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
-    * 
-    * @since 1.1.0 
-    */
-  var hStack = List.empty[Node] // [ element ] contains siblings
-  /** List of element names
-    * 
-    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
-    * 
-    * @since 1.1.0 
-    */
-  var tagStack = List.empty[String]
-  /** List of namespaces
-    * 
-    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
-    * 
-    * @since 1.1.0 
-    */
-  var scopeStack = List.empty[NamespaceBinding]
+  val attribStack = new mutable.Stack[MetaData]
+  val hStack = new mutable.Stack[Node] // [ element ] contains siblings
+  val tagStack = new mutable.Stack[String]
+  var scopeStack = new mutable.Stack[NamespaceBinding]
 
   var curTag: String = null
   var capture: Boolean = false
@@ -145,17 +122,17 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
     attributes: Attributes): Unit =
     {
       captureText()
-      tagStack = curTag :: tagStack
+      tagStack push curTag
       curTag = qname
 
       val localName = splitName(qname)._2
       capture = nodeContainsText(localName)
 
-      hStack =  null :: hStack
+      hStack push null
       var m: MetaData = Null
       var scpe: NamespaceBinding =
         if (scopeStack.isEmpty) TopScope
-        else scopeStack.head
+        else scopeStack.top
 
       for (i <- 0 until attributes.getLength()) {
         val qname = attributes getQName i
@@ -170,8 +147,8 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
           m = Attribute(Option(pre), key, Text(value), m)
       }
 
-      scopeStack = scpe :: scopeStack
-      attribStack =  m :: attribStack
+      scopeStack push scpe
+      attribStack push m
     }
 
   /**
@@ -179,7 +156,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
    */
   def captureText(): Unit = {
     if (capture && buffer.length > 0)
-      hStack = createText(buffer.toString) :: hStack
+      hStack push createText(buffer.toString)
 
     buffer.clear()
   }
@@ -193,24 +170,17 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
    */
   override def endElement(uri: String, _localName: String, qname: String): Unit = {
     captureText()
-    val metaData = attribStack.head
-    attribStack = attribStack.tail
+    val metaData = attribStack.pop()
 
     // reverse order to get it right
-    val v = hStack.takeWhile(_ != null).reverse
-    hStack = hStack.dropWhile(_ != null) match {
-      case null :: hs => hs
-      case hs => hs
-    }
+    val v = (Iterator continually hStack.pop takeWhile (_ != null)).toList.reverse
     val (pre, localName) = splitName(qname)
-    val scp = scopeStack.head
-    scopeStack = scopeStack.tail
+    val scp = scopeStack.pop()
 
     // create element
     rootElem = createNode(pre, localName, metaData, scp, v)
-    hStack = rootElem :: hStack
-    curTag = tagStack.head
-    tagStack = tagStack.tail
+    hStack push rootElem
+    curTag = tagStack.pop()
     capture = curTag != null && nodeContainsText(curTag) // root level
   }
 
@@ -219,6 +189,6 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
    */
   override def processingInstruction(target: String, data: String) {
     captureText()
-    hStack = hStack.reverse_:::(createProcInstr(target, data).toList)
+    hStack pushAll createProcInstr(target, data)
   }
 }
