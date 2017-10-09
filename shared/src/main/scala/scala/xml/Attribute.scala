@@ -14,7 +14,6 @@ package xml
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object Attribute {
   def unapply(x: Attribute) = x match {
@@ -47,7 +46,6 @@ object Attribute {
  *  [[scala.xml.PrefixedAttribute]] and [[scala.xml.UnprefixedAttribute]].
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 abstract trait Attribute extends MetaData {
   def pre: String // will be null if unprefixed

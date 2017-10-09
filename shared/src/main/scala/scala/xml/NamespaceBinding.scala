@@ -18,7 +18,6 @@ import Utility.sbToString
  *  prefix nor uri may be empty, which is not checked.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 @SerialVersionUID(0 - 2518644165573446725L)
 case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBinding) extends AnyRef with Equality {

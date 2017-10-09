@@ -14,7 +14,6 @@ package parsing
  * Implementation of MarkupHandler that constructs nodes.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 abstract class ConstructingHandler extends MarkupHandler {
   val preserveWS: Boolean

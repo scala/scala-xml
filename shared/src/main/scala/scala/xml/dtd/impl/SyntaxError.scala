@@ -14,7 +14,6 @@ package xml.dtd.impl
  *  syntactically incorrect expression is detected.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] class SyntaxError(e: String) extends RuntimeException(e)

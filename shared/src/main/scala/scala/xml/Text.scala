@@ -31,7 +31,6 @@ class Text(data: String) extends Atom[String](data) {
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object Text {
   def apply(data: String) = new Text(data)

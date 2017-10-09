@@ -18,8 +18,6 @@ import Utility.sbToString
  *  XML nodes.
  *
  *  @author  Burak Emir
- *  @version 1.0
- *
  *  @param width the width to fit the output into
  *  @param step  indentation
  */

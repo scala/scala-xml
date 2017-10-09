@@ -16,7 +16,6 @@ import scala.collection.{ immutable, mutable }
  * celebrated position automata construction (also called ''Berry-Sethi'' or ''Glushkov'').
  *
  *  @author Burak Emir
- *  @version 1.0
  */
 // TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 @deprecated("This class will be removed", "2.10.0")

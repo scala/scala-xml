@@ -13,7 +13,6 @@ package xml
  * The class `EntityRef` implements an XML node for entity references.
  *
  * @author  Burak Emir
- * @version 1.0
  * @param   entityName the name of the entity reference, for example `amp`.
  */
 case class EntityRef(entityName: String) extends SpecialNode {

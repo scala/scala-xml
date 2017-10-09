@@ -18,7 +18,6 @@ package xml
  * Calling the hashcode function will result in a runtime error.
  *
  * @author  Burak Emir
- * @version 1.0
  */
 class NodeBuffer extends scala.collection.mutable.ArrayBuffer[Node] {
 

@@ -31,7 +31,6 @@ class Unparsed(data: String) extends Atom[String](data) {
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object Unparsed {
   def apply(data: String) = new Unparsed(data)

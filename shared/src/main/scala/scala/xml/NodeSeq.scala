@@ -18,7 +18,6 @@ import scala.language.implicitConversions
  * This object ...
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object NodeSeq {
   final val Empty = fromSeq(Nil)
@@ -40,7 +39,6 @@ object NodeSeq {
  *  and comprehension methods.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with SeqLike[Node, NodeSeq] with Equality with Serializable {
 

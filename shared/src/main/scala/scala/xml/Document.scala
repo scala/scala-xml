@@ -16,7 +16,6 @@ package xml
  *  Also plays the role of an `XMLEvent` for pull parsing.
  *
  *  @author  Burak Emir
- *  @version 1.0, 26/04/2005
  */
 @SerialVersionUID(-2289320563321795109L)
 class Document extends NodeSeq with pull.XMLEvent with Serializable {

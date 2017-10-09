@@ -25,7 +25,6 @@ import Utility.Escapes.{ pairs => unescape }
  * collected using side-effects.
  *
  * @author  Burak Emir
- * @version 1.0
  */
 trait MarkupParser extends MarkupParserCommon with TokenTests {
   self: MarkupParser with MarkupHandler =>

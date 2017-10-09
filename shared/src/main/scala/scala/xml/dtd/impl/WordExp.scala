@@ -35,7 +35,6 @@ package xml.dtd.impl
  *  }}}
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 // TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class WordExp extends Base {

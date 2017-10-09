@@ -15,7 +15,6 @@ package xml
  *  sections in the input and is to be preserved as CDATA section in the output.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 class PCData(data: String) extends Atom[String](data) {
 
@@ -35,7 +34,6 @@ class PCData(data: String) extends Atom[String](data) {
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object PCData {
   def apply(data: String) = new PCData(data)

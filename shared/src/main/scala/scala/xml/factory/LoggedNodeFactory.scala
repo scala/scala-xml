@@ -28,7 +28,6 @@ package factory
  * }}}
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 @deprecated("This trait will be removed.", "2.11")
 trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {

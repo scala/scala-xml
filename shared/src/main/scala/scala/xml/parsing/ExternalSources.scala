@@ -17,7 +17,6 @@ import scala.io.Source
 
 /**
  *  @author  Burak Emir
- *  @version 1.0
  */
 trait ExternalSources {
   self: ExternalSources with MarkupParser with MarkupHandler =>

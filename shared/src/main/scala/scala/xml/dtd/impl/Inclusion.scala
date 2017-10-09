@@ -14,7 +14,6 @@ package xml.dtd.impl
  *  inspired by the ''AMoRE automata library''.
  *
  *  @author Burak Emir
- *  @version 1.0
  */
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] trait Inclusion[A <: AnyRef] {

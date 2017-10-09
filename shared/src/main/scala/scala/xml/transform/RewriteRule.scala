@@ -16,7 +16,6 @@ package transform
  *  is not applied.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 abstract class RewriteRule extends BasicTransformer {
   /** a name for this rewrite rule */

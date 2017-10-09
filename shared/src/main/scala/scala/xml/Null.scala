@@ -18,7 +18,6 @@ import scala.collection.Iterator
  *  sort of a linked list of tails.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 case object Null extends MetaData {
   override def iterator = Iterator.empty

@@ -13,7 +13,6 @@ package xml.dtd.impl
  * Pointed regular hedge expressions, a useful subclass of regular hedge expressions.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class PointedHedgeExp extends Base {

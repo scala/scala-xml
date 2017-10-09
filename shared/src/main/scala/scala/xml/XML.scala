@@ -54,7 +54,6 @@ object MinimizeMode extends Enumeration {
  *  when XML is handled using `Symbol` nodes.
  *
  *  @author  Burak Emir
- *  @version 1.0, 25/04/2005
  */
 object XML extends XMLLoader[Elem] {
   val xml = "xml"

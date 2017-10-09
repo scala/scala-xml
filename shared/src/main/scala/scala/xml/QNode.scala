@@ -14,7 +14,6 @@ package xml
  *  its namespace URI
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object QNode {
   def unapplySeq(n: Node) = Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child))

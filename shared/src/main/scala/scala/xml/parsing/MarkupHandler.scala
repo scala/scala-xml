@@ -16,11 +16,9 @@ import scala.xml.dtd._
 
 /**
  * class that handles markup - provides callback methods to MarkupParser.
- *  the default is nonvalidating behaviour
+ * the default is nonvalidating behaviour
  *
  *  @author  Burak Emir
- *  @version 1.0
- *
  *  @todo can we ignore more entity declarations (i.e. those with extIDs)?
  *  @todo expanding entity references
  */

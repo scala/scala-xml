@@ -14,7 +14,6 @@ package xml
  *  convenient deconstruction.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object Node {
   /** the constant empty attribute sequence */
@@ -38,7 +37,6 @@ object Node {
  *  - [[scala.xml.Text]] — Stand-alone parsed character data
  *
  * @author  Burak Emir and others
- * @version 1.1
  */
 abstract class Node extends NodeSeq {
 

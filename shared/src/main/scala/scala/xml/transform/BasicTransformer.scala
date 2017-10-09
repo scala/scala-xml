@@ -14,7 +14,6 @@ package transform
  * A class for XML transformations.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 abstract class BasicTransformer extends Function1[Node, Node] {
   protected def unchanged(n: Node, ns: Seq[Node]) =
