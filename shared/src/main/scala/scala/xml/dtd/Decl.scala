@@ -12,6 +12,17 @@ package dtd
 
 import Utility.sbToString
 
+/**
+ * XML declarations
+ * 
+ *  - [[scala.xml.dtd.AttListDecl]] — Attribute list declaration (ATTLIST)
+ *  - [[scala.xml.dtd.AttrDecl]] — Attribute declaration
+ *  - [[scala.xml.dtd.ElemDecl]] — Element declaration (ELEMENT)
+ *  - [[scala.xml.dtd.ParameterEntityDecl]] — Parameter entity list (ENTITY %)
+ *  - [[scala.xml.dtd.ParsedEntityDecl]] — Parsed general entity list (ENTITY)
+ *  - [[scala.xml.dtd.PEReference]] — Parsed entity reference
+ *  - [[scala.xml.dtd.UnparsedEntityDecl]] — Unparsed entity list (ENTITY NDATA)
+ */
 sealed abstract class Decl
 
 sealed abstract class MarkupDecl extends Decl {

@@ -27,8 +27,15 @@ object Node {
 }
 
 /**
- * An abstract class representing XML with nodes of a labelled tree.
+ * An abstract class representing XML with nodes of a labeled tree.
  * This class contains an implementation of a subset of XPath for navigation.
+ *
+ *  - [[scala.xml.Comment]] — XML comment
+ *  - [[scala.xml.Elem]] — XML element
+ *  - [[scala.xml.EntityRef]] — XML entity
+ *  - [[scala.xml.PCData]] — Character data section (CDATA)
+ *  - [[scala.xml.ProcInstr]] — Processing instruction (PI)
+ *  - [[scala.xml.Text]] — Stand-alone parsed character data
  *
  * @author  Burak Emir and others
  * @version 1.1

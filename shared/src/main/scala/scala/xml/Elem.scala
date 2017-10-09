@@ -66,8 +66,15 @@ object Elem {
 }
 
 /**
- * The case class `Elem` extends the `Node` class,
- *  providing an immutable data object representing an XML element.
+ * An immutable data object representing an XML element.
+ *
+ * Child elements can be other [[Elem]]s or any one of the other [[Node]] types.
+ *
+ * XML attributes are implemented with the [[scala.xml.MetaData]] base
+ * class.
+ *
+ * Optional XML namespace scope is represented by
+ * [[scala.xml.NamespaceBinding]].
  *
  *  @param prefix        namespace prefix (may be null, but not the empty string)
  *  @param label         the element name
