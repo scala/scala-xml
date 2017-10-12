@@ -1,6 +1,7 @@
 package scala.xml
 
 import java.io._
+import java.util.Base64
 
 object JavaByteSerialization {
   def roundTrip[T](obj: T): T = {
@@ -19,5 +20,13 @@ object JavaByteSerialization {
     val bis = new ByteArrayInputStream(in)
     val ois = new ObjectInputStream(bis)
     ois.readObject.asInstanceOf[T]
+  }
+
+  def base64Encode[T](in: T): String = {
+    Base64.getEncoder.encodeToString(serialize[T](in))
+  }
+
+  def base64Decode[T](in: String): T = {
+    deserialize[T](Base64.getDecoder.decode(in))
   }
 }
