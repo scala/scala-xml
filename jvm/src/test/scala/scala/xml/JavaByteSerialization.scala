@@ -1,32 +1,27 @@
 package scala.xml
 
-import java.io._
+import java.io.Serializable
 import java.util.Base64
+import org.apache.commons.lang3.SerializationUtils
 
 object JavaByteSerialization {
-  def roundTrip[T](obj: T): T = {
-    deserialize[T](serialize[T](obj))
+  def roundTrip[T <: Serializable](obj: T): T = {
+    SerializationUtils.roundtrip(obj)
   }
 
-  def serialize[T](in: T): Array[Byte] = {
-    val bos = new ByteArrayOutputStream()
-    val oos = new ObjectOutputStream(bos)
-    oos.writeObject(in)
-    oos.flush()
-    bos.toByteArray()
+  def serialize[T <: Serializable](in: T): Array[Byte] = {
+    SerializationUtils.serialize(in)
   }
 
-  def deserialize[T](in: Array[Byte]): T = {
-    val bis = new ByteArrayInputStream(in)
-    val ois = new ObjectInputStream(bis)
-    ois.readObject.asInstanceOf[T]
+  def deserialize[T <: Serializable](in: Array[Byte]): T = {
+    SerializationUtils.deserialize(in)
   }
 
-  def base64Encode[T](in: T): String = {
+  def base64Encode[T <: Serializable](in: T): String = {
     Base64.getEncoder.encodeToString(serialize[T](in))
   }
 
-  def base64Decode[T](in: String): T = {
+  def base64Decode[T <: Serializable](in: String): T = {
     deserialize[T](Base64.getDecoder.decode(in))
   }
 }
