@@ -14,6 +14,8 @@ The decoupling works because the compiler desugars XML literals in Scala source 
 
 API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/scala/xml/index.html).
 
+How to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
+
 ## Cross-building with 2.10
 
 If you are cross-building a project that uses scala-xml with both Scala 2.10 and later Scala versions, take a look at [this example](https://github.com/scala/scala-module-dependency-sample).
