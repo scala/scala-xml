@@ -27,11 +27,4 @@ class SerializationTest {
     val asNodeSeq: NodeSeq = children
     assertEquals(asNodeSeq, JavaByteSerialization.roundTrip(asNodeSeq))
   }
-
-  @Test
-  def base64Encode: Unit = {
-    val str = JavaByteSerialization.base64Encode(NodeSeq.Empty)
-    assertEquals("rO0ABXNy", str.take(8))
-    assertEquals("AHhweA==", str.takeRight(8))
-  }
 }
