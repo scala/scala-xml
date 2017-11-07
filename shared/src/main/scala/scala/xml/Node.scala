@@ -123,7 +123,7 @@ abstract class Node extends NodeSeq {
     child.toList.flatMap { x => x :: x.descendant }
 
   /**
-   * Descendant axis (all descendants of this node, including thisa node)
+   * Descendant axis (all descendants of this node, including this node)
    * includes all text nodes, element nodes, comments and processing instructions.
    */
   def descendant_or_self: List[Node] = this :: descendant
