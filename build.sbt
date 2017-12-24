@@ -1,7 +1,7 @@
 import ScalaModulePlugin._
 
 scalaVersionsByJvm in ThisBuild := {
-  val v211 = "2.11.11"
+  val v211 = "2.11.12"
   val v212 = "2.12.3"
   val v213 = "2.13.0-M2"
   Map(
