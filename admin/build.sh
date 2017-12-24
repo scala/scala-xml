@@ -50,4 +50,4 @@ if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
   openssl aes-256-cbc -K $K -iv $IV -in admin/secring.asc.enc -out admin/secring.asc -d
 fi
 
-sbt "$publishVersion" "$publishScalaVersion" clean update +test +publishLocal $extraTarget
+sbt -Dsbt.scala.version=2.10.7 "$publishVersion" "$publishScalaVersion" clean update +test +publishLocal $extraTarget

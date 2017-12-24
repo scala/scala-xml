@@ -25,13 +25,23 @@ lazy val xml = crossProject.in(file("."))
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
 
-    apiMappings ++= Map(
-      scalaInstance.value.libraryJar
-        -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/"),
-      // http://stackoverflow.com/questions/16934488
-      file(System.getProperty("sun.boot.class.path").split(java.io.File.pathSeparator).filter(_.endsWith(java.io.File.separator + "rt.jar")).head)
-        -> url("http://docs.oracle.com/javase/8/docs/api")
-    )
+    apiMappings ++= {
+      Map(
+        scalaInstance.value.libraryJar
+          -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+      ) ++ {
+        // http://stackoverflow.com/questions/16934488
+        Option(System.getProperty("sun.boot.class.path"))
+          .map(path =>
+            Map(
+              file(path
+                .split(java.io.File.pathSeparator)
+                .filter(_.endsWith(java.io.File.separator + "rt.jar")).head)
+              -> url("http://docs.oracle.com/javase/8/docs/api")
+            ))
+          .getOrElse(Map.empty)
+      }
+    }
   )
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),

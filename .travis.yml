@@ -22,6 +22,7 @@ addons:
 jdk:
   - openjdk6
   - oraclejdk8
+  - oraclejdk9
 
 notifications:
   email: adriaan.moors@lightbend.com
