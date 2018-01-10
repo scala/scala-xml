@@ -41,7 +41,10 @@ lazy val xml = crossProject.in(file("."))
         // If everything fails, jam in the Java 9 base module.
         Map(
           file("/modules/java.base")
+            -> url("http://docs.oracle.com/javase/9/docs/api"),
+          file("/modules/java.xml")
             -> url("http://docs.oracle.com/javase/9/docs/api")
+
         )
       }
     }
