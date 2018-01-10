@@ -37,7 +37,13 @@ lazy val xml = crossProject.in(file("."))
           file(jarPath)
             -> url("http://docs.oracle.com/javase/8/docs/api")
         )
-      } getOrElse(Map.empty)
+      } getOrElse {
+        // If everything fails, jam in the Java 9 base module.
+        Map(
+          file("/modules/java.base")
+            -> url("http://docs.oracle.com/javase/9/docs/api")
+        )
+      }
     }
   )
   .jvmSettings(
