@@ -56,4 +56,11 @@ class UtilityTest {
     assertEquals("<node><leaf/></node>", Utility.serialize(x, minimizeTags = MinimizeMode.Always).toString)
   }
 
+  @Test
+  def issue183: Unit = {
+    val x = <node><!-- comment  --></node>
+    assertEquals("<node></node>", Utility.serialize(x, stripComments = true).toString)
+    assertEquals("<node><!-- comment  --></node>", Utility.serialize(x, stripComments = false).toString)
+  }
+
 }

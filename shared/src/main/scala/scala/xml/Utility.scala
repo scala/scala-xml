@@ -201,7 +201,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     minimizeTags: MinimizeMode.Value = MinimizeMode.Default): StringBuilder =
     {
       x match {
-        case c: Comment if !stripComments => c buildString sb
+        case c: Comment                   => if (!stripComments) c buildString sb; sb
         case s: SpecialNode               => s buildString sb
         case g: Group                     =>
           for (c <- g.nodes) serialize(c, g.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags); sb
