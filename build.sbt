@@ -42,7 +42,7 @@ lazy val xml = crossProject.in(file("."))
     libraryDependencies += "junit" % "junit" % "4.11" % "test",
     libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test",
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.5" % "test",
-    libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaVersion.value}")
+    libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
   )
   .jsSettings(
     // Scala.js cannot run forked tests
