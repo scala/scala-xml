@@ -27,11 +27,27 @@ lazy val xml = crossProject.in(file("."))
 
     apiMappings ++= Map(
       scalaInstance.value.libraryJar
-        -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/"),
+        -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+    ) ++ {
       // http://stackoverflow.com/questions/16934488
-      file(System.getProperty("sun.boot.class.path").split(java.io.File.pathSeparator).filter(_.endsWith(java.io.File.separator + "rt.jar")).head)
-        -> url("http://docs.oracle.com/javase/8/docs/api")
-    )
+      Option(System.getProperty("sun.boot.class.path")).flatMap { classPath =>
+        classPath.split(java.io.File.pathSeparator).filter(_.endsWith(java.io.File.separator + "rt.jar")).headOption
+      }.map { jarPath =>
+        Map(
+          file(jarPath)
+            -> url("http://docs.oracle.com/javase/8/docs/api")
+        )
+      } getOrElse {
+        // If everything fails, jam in the Java 9 base module.
+        Map(
+          file("/modules/java.base")
+            -> url("http://docs.oracle.com/javase/9/docs/api"),
+          file("/modules/java.xml")
+            -> url("http://docs.oracle.com/javase/9/docs/api")
+
+        )
+      }
+    }
   )
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
