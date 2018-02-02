@@ -18,13 +18,13 @@ class UtilityTest {
                  <toomuchws/>
               </foo>
     val y = xml.Utility.trim(x)
-    assertEquals(1, y match { case <foo><toomuchws/></foo> => 1 })
+    assertTrue(y match { case <foo><toomuchws/></foo> => true })
 
     val x2 = <foo>
       <toomuchws>  a b  b a  </toomuchws>
     </foo>
     val y2 = xml.Utility.trim(x2)
-    assertEquals(2, y2 match { case <foo><toomuchws>a b b a</toomuchws></foo> => 2 })
+    assertTrue(y2 match { case <foo><toomuchws>a b b a</toomuchws></foo> => true })
   }
 
   @Test
