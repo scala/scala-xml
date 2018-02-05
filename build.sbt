@@ -55,8 +55,8 @@ lazy val xml = crossProject.in(file("."))
     // there is currently no previous released JS version, therefore MiMa is enabled only on JVM
     mimaPreviousVersion := Some("1.0.6"),
 
-    libraryDependencies += "junit" % "junit" % "4.11" % "test",
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.10" % "test",
+    libraryDependencies += "junit" % "junit" % "4.12" % "test",
+    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.5" % "test",
     libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
   )
