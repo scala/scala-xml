@@ -309,16 +309,16 @@ class XMLTestJVM {
     // com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException:
     // Invalid byte 1 of 1-byte UTF-8 sequence.
     // scala.xml.XML.save("foo.xml", xml)
-    // scala.xml.XML.loadFile("foo.xml").toString)
+    // scala.xml.XML.loadFile("foo.xml").toString
 
     val outputStream = new java.io.ByteArrayOutputStream
-    val streamWriter = new java.io.OutputStreamWriter(outputStream, XML.encoding)
+    val streamWriter = new java.io.OutputStreamWriter(outputStream, "UTF-8")
 
     XML.write(streamWriter, xml, XML.encoding, false, null)
     streamWriter.flush
 
     val inputStream = new java.io.ByteArrayInputStream(outputStream.toByteArray)
-    val streamReader = new java.io.InputStreamReader(inputStream)
+    val streamReader = new java.io.InputStreamReader(inputStream, XML.encoding)
 
     assertEquals(xml.toString, XML.load(streamReader).toString)
   }
