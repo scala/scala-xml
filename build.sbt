@@ -112,7 +112,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   )
   .jsSettings(
     // Scala.js cannot run forked tests
-    fork in Test := false
+    fork in Test := false,
+
+    libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.13.5" % "test"
   )
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
 
