@@ -4,6 +4,8 @@
 **  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
 ** /____/\___/_/ |_/____/_/ | |                                         **
 **                          |/                                          **
+**                                 Copyright 2008 Google Inc.           **
+**                                 All Rights Reserved.                 **
 \*                                                                      */
 
 package scala
@@ -13,10 +15,6 @@ import Utility.sbToString
 import scala.annotation.tailrec
 import scala.collection.AbstractIterable
 
-/**
- * Copyright 2008 Google Inc. All Rights Reserved.
- * @author Burak Emir <bqe@google.com>
- */
 object MetaData {
   /**
    * appends all attributes from new_tail to attribs, without attempting to
@@ -78,9 +76,6 @@ object MetaData {
  *
  *  Namespace URIs are obtained by using the namespace scope of the element
  *  owning this attribute (see `getNamespace`).
- *
- *  Copyright 2008 Google Inc. All Rights Reserved.
- *  @author Burak Emir <bqe@google.com>
  */
 abstract class MetaData
   extends AbstractIterable[MetaData]

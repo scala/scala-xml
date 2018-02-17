@@ -4,6 +4,8 @@
 **  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
 ** /____/\___/_/ |_/____/_/ | |                                         **
 **                          |/                                          **
+**                                 Copyright 2008 Google Inc.           **
+**                                 All Rights Reserved.                 **
 \*                                                                      */
 
 package scala
@@ -14,9 +16,6 @@ package xml
  *  convenient construction and deconstruction. It is possible to deconstruct
  *  any `Node` instance (that is not a `SpecialNode` or a `Group`) using the
  *  syntax `case Elem(prefix, label, attribs, scope, child @ _*) => ...`
- *
- *  Copyright 2008 Google Inc. All Rights Reserved.
- *  @author Burak Emir <bqe@google.com>
  */
 object Elem {
   /**
@@ -83,9 +82,6 @@ object Elem {
  *  @param minimizeEmpty `true` if this element should be serialized as minimized (i.e. "&lt;el/&gt;") when
  *                       empty; `false` if it should be written out in long form.
  *  @param child         the children of this node
- *
- *  Copyright 2008 Google Inc. All Rights Reserved.
- *  @author Burak Emir <bqe@google.com>
  */
 class Elem(
   override val prefix: String,
