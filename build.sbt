@@ -20,7 +20,7 @@ lazy val xml = crossProject.in(file("."))
   .jvmSettings(scalaModuleSettingsJVM)
   .settings(
     name    := "scala-xml",
-    version := "1.1.0-SNAPSHOT",
+    version := "1.1.1-SNAPSHOT",
 
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
