@@ -25,9 +25,18 @@ trait XMLLoader[T <: Node] {
 
   /* Override this to use a different SAXParser. */
   def parser: SAXParser = {
-    val f = SAXParserFactory.newInstance()
-    f.setNamespaceAware(false)
-    f.newSAXParser()
+    val parser = SAXParserFactory.newInstance()
+
+    parser.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
+    parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+    parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
+    parser.setFeature("http://xml.org/sax/features/external-parameter-entities", false)
+    parser.setFeature("http://xml.org/sax/features/external-general-entities", false)
+    parser.setFeature("http://xml.org/sax/features/resolve-dtd-uris", false)
+    parser.setXIncludeAware(false)
+    parser.setNamespaceAware(false)
+
+    parser.newSAXParser()
   }
 
   /**
