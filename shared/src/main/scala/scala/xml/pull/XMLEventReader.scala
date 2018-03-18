@@ -24,6 +24,7 @@ import scala.xml.parsing.{ ExternalSources, MarkupHandler, MarkupParser }
  *  @author Burak Emir
  *  @author Paul Phillips
  */
+@deprecated("Consider javax.xml.stream.XMLEventReader instead.", "1.1.1")
 class XMLEventReader(src: Source)
   extends scala.collection.AbstractIterator[XMLEvent]
   with ProducerConsumerIterator[XMLEvent] {
