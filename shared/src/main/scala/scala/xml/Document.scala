@@ -20,7 +20,7 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 @SerialVersionUID(-2289320563321795109L)
-class Document extends NodeSeq with pull.XMLEvent with Serializable {
+class Document extends NodeSeq with Serializable {
 
   /**
    * An ordered list of child information items, in document

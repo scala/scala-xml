@@ -13,12 +13,9 @@ package xml
  * `SpecialNode` is a special XML node which represents either text
  *  `(PCDATA)`, a comment, a `PI`, or an entity ref.
  *
- *  `SpecialNode`s also play the role of [[scala.xml.pull.XMLEvent]]s for
- *  pull-parsing.
- *
  *  @author Burak Emir
  */
-abstract class SpecialNode extends Node with pull.XMLEvent {
+abstract class SpecialNode extends Node {
 
   /** always empty */
   final override def attributes = Null
