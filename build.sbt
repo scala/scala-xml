@@ -55,6 +55,45 @@ lazy val xml = crossProject.in(file("."))
     // there is currently no previous released JS version, therefore MiMa is enabled only on JVM
     mimaPreviousVersion := Some("1.0.6"),
 
+    mimaBinaryIssueFilters ++= {
+      import com.typesafe.tools.mima.core._
+      import com.typesafe.tools.mima.core.ProblemFilters._
+      Seq(
+        // scala-xml 1.1.1 deprecated XMLEventReader, so we broke
+        // binary compatibility for 1.1.1 in the following way:
+        exclude[MissingClassProblem]("scala.xml.pull.EvComment"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvComment$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvElemEnd"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvElemEnd$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvElemStart"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvElemStart$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvEntityRef"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvEntityRef$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvProcInstr"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvProcInstr$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvText"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvText$"),
+        exclude[MissingClassProblem]("scala.xml.pull.ExceptionEvent"),
+        exclude[MissingClassProblem]("scala.xml.pull.ExceptionEvent$"),
+        exclude[MissingClassProblem]("scala.xml.pull.ProducerConsumerIterator"),
+        exclude[MissingClassProblem]("scala.xml.pull.XMLEvent"),
+        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader"),
+        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader$POISON$"),
+        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader$Parser"),
+        exclude[MissingClassProblem]("scala.xml.pull.package"),
+        exclude[MissingClassProblem]("scala.xml.pull.package$"),
+        exclude[MissingTypesProblem]("scala.xml.Atom"),
+        exclude[MissingTypesProblem]("scala.xml.Comment"),
+        exclude[MissingTypesProblem]("scala.xml.Document"),
+        exclude[MissingTypesProblem]("scala.xml.EntityRef"),
+        exclude[MissingTypesProblem]("scala.xml.PCData"),
+        exclude[MissingTypesProblem]("scala.xml.ProcInstr"),
+        exclude[MissingTypesProblem]("scala.xml.SpecialNode"),
+        exclude[MissingTypesProblem]("scala.xml.Text"),
+        exclude[MissingTypesProblem]("scala.xml.Unparsed")
+      )
+    },
+
     libraryDependencies += "junit" % "junit" % "4.12" % "test",
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.5" % "test",
