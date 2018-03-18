@@ -117,5 +117,5 @@ object XML extends XMLLoader[Elem] {
 
 object Properties extends scala.util.PropertiesTrait {
   protected def propCategory    = "scala-xml"
-  protected def pickJarBasedOn  = classOf[scala.xml.pull.XMLEventReader]
+  protected def pickJarBasedOn  = classOf[scala.xml.Node]
 }
