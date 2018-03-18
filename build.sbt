@@ -28,8 +28,40 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
       Seq(
+        // scala-xml 1.1.1 deprecated XMLEventReader, so it broke
+        // binary compatibility for 2.0.0 in the following way:
+        exclude[MissingClassProblem]("scala.xml.pull.EvComment"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvComment$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvElemEnd"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvElemEnd$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvElemStart"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvElemStart$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvEntityRef"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvEntityRef$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvProcInstr"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvProcInstr$"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvText"),
+        exclude[MissingClassProblem]("scala.xml.pull.EvText$"),
+        exclude[MissingClassProblem]("scala.xml.pull.ExceptionEvent"),
+        exclude[MissingClassProblem]("scala.xml.pull.ExceptionEvent$"),
+        exclude[MissingClassProblem]("scala.xml.pull.ProducerConsumerIterator"),
+        exclude[MissingClassProblem]("scala.xml.pull.XMLEvent"),
+        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader"),
+        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader$POISON$"),
+        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader$Parser"),
+        exclude[MissingClassProblem]("scala.xml.pull.package"),
+        exclude[MissingClassProblem]("scala.xml.pull.package$"),
+        exclude[MissingTypesProblem]("scala.xml.Atom"),
+        exclude[MissingTypesProblem]("scala.xml.Comment"),
+        exclude[MissingTypesProblem]("scala.xml.Document"),
+        exclude[MissingTypesProblem]("scala.xml.EntityRef"),
+        exclude[MissingTypesProblem]("scala.xml.PCData"),
+        exclude[MissingTypesProblem]("scala.xml.ProcInstr"),
+        exclude[MissingTypesProblem]("scala.xml.SpecialNode"),
+        exclude[MissingTypesProblem]("scala.xml.Text"),
+        exclude[MissingTypesProblem]("scala.xml.Unparsed"),
         // Scala 2.12 deprecated mutable.Stack, so we broke
-        // binary compatibility for 1.1.0 in the following way:
+        // binary compatibility for 2.0.0 in the following way:
         exclude[IncompatibleMethTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack_="),
         exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.hStack"),
         exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack"),
