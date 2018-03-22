@@ -23,6 +23,16 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       else Some("1.1.0")
     },
 
+    unmanagedSourceDirectories in Compile ++= {
+      (unmanagedSourceDirectories in Compile).value.map { dir =>
+        val sv = scalaVersion.value
+        CrossVersion.partialVersion(sv) match {
+          case Some((2, 13)) if !sv.startsWith("2.13.0-M3") => file(dir.getPath ++ "-2.13") // TODO: remove M3 guard once M4 is out.
+          case _             => file(dir.getPath ++ "-2.11-2.12")
+        }
+      }
+    },
+
     apiMappings ++= Map(
       scalaInstance.value.libraryJar
         -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
