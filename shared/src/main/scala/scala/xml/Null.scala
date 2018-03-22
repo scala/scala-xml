@@ -11,6 +11,7 @@ package xml
 
 import Utility.isNameStart
 import scala.collection.Iterator
+import scala.collection.Seq
 
 /**
  * Essentially, every method in here is a dummy, returning Zero[T].

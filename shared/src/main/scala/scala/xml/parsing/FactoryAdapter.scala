@@ -11,6 +11,7 @@ package xml
 package parsing
 
 import scala.collection.{ mutable, Iterator }
+import scala.collection.Seq
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 

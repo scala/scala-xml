@@ -1,5 +1,6 @@
 package scala.xml
 
+import scala.collection.Seq
 import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals

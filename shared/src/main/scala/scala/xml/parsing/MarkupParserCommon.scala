@@ -10,6 +10,7 @@ package scala
 package xml
 package parsing
 
+import scala.collection.Seq
 import Utility.SU
 
 /**

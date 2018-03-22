@@ -11,6 +11,7 @@ package xml
 package dtd
 
 import scala.collection.mutable
+import scala.collection.Seq
 
 /**
  * A document type declaration.

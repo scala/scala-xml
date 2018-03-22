@@ -12,6 +12,7 @@ package dtd
 
 import PartialFunction._
 import scala.collection.mutable
+import scala.collection.Seq
 
 import ContentModel.ElemName
 import MakeValidationException._ // @todo other exceptions

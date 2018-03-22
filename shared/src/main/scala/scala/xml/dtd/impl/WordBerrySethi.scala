@@ -10,6 +10,7 @@ package scala
 package xml.dtd.impl
 
 import scala.collection.{ immutable, mutable }
+import scala.collection.Seq
 
 /**
  * This class turns a regular expression into a [[scala.util.automata.NondetWordAutom]]

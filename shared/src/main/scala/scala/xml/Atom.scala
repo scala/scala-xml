@@ -9,6 +9,8 @@
 package scala
 package xml
 
+import scala.collection.Seq
+
 /**
  * The class `Atom` provides an XML node for text (`PCDATA`).
  *  It is used in both non-bound and bound XML representations.

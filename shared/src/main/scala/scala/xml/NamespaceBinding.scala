@@ -9,6 +9,7 @@
 package scala
 package xml
 
+import scala.collection.Seq
 import Utility.sbToString
 
 /**

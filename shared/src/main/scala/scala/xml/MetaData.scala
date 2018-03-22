@@ -14,6 +14,7 @@ package xml
 import Utility.sbToString
 import scala.annotation.tailrec
 import scala.collection.AbstractIterable
+import scala.collection.Seq
 
 object MetaData {
   /**

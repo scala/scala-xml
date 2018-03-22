@@ -10,6 +10,8 @@ package scala
 package xml
 package dtd
 
+import scala.collection.Seq
+
 /**
  * An XML node for document type declaration.
  *

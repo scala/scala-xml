@@ -10,6 +10,8 @@ package scala
 package xml
 package dtd
 
+import scala.collection.Seq
+
 /**
  * Scanner for regexps (content models in DTD element declarations)
  *  todo: cleanup
