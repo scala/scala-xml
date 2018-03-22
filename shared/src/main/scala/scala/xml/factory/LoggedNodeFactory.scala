@@ -10,6 +10,8 @@ package scala
 package xml
 package factory
 
+import scala.collection.Seq
+
 /**
  * This class logs what the nodefactory is actually doing.
  *  If you want to see what happens during loading, use it like this:

@@ -9,6 +9,8 @@
 package scala
 package xml
 
+import scala.collection.Seq
+
 /**
  * A document information item (according to InfoSet spec). The comments
  *  are copied from the Infoset spec, only augmented with some information

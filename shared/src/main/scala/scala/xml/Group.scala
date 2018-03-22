@@ -9,6 +9,8 @@
 package scala
 package xml
 
+import scala.collection.Seq
+
 /**
  * A hack to group XML nodes in one node for output.
  *

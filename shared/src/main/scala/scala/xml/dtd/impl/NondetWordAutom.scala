@@ -10,6 +10,7 @@ package scala
 package xml.dtd.impl
 
 import scala.collection.{ immutable, mutable }
+import scala.collection.Seq
 
 /**
  * A nondeterministic automaton. States are integers, where

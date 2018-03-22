@@ -10,6 +10,7 @@ package scala
 package xml
 package dtd
 
+import scala.collection.Seq
 import scala.xml.dtd.impl._
 import scala.xml.Utility.sbToString
 import PartialFunction._

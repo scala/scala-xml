@@ -11,6 +11,7 @@ package xml
 
 import scala.collection.mutable
 import scala.language.implicitConversions
+import scala.collection.Seq
 
 /**
  * The `Utility` object provides utility functions for processing instances

@@ -11,6 +11,7 @@ import java.io.StringWriter
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
 import scala.collection.Iterable
+import scala.collection.Seq
 import scala.xml.Utility.sort
 
 object XMLTestJVM {

@@ -10,6 +10,8 @@ package scala
 package xml
 package transform
 
+import scala.collection.Seq
+
 /**
  * A class for XML transformations.
  *

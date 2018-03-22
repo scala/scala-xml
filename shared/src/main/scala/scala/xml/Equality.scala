@@ -9,6 +9,8 @@
 package scala
 package xml
 
+import scala.collection.Seq
+
 /**
  * In an attempt to contain the damage being inflicted on consistency by the
  *  ad hoc `equals` methods spread around `xml`, the logic is centralized and

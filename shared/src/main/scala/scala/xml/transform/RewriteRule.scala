@@ -10,6 +10,8 @@ package scala
 package xml
 package transform
 
+import scala.collection.Seq
+
 /**
  * A RewriteRule, when applied to a term, yields either
  *  the result of rewriting the term or the term itself if the rule

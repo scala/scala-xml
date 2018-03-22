@@ -10,6 +10,8 @@ package scala
 package xml
 package factory
 
+import scala.collection.Seq
+
 trait NodeFactory[A <: Node] {
   val ignoreComments = false
   val ignoreProcInstr = false

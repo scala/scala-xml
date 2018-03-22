@@ -1,6 +1,7 @@
 package scala.xml
 
 import scala.xml.transform._
+import scala.collection.Seq
 import org.junit.Assert.assertSame
 import org.junit.experimental.theories.Theories
 import org.junit.experimental.theories.Theory

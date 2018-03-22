@@ -9,6 +9,8 @@
 package scala
 package xml
 
+import scala.collection.Seq
+
 /**
  * prefixed attributes always have a non-null namespace.
  *
