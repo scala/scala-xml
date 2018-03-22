@@ -19,10 +19,7 @@ package xml
  *
  * @author  Burak Emir
  */
-class NodeBuffer extends scala.collection.mutable.ArrayBuffer[Node] {
-
-  override def stringPrefix: String = "NodeBuffer"
-
+class NodeBuffer extends scala.collection.mutable.ArrayBuffer[Node] with ScalaVersionSpecificNodeBuffer {
   /**
    * Append given object to this buffer, returns reference on this
    * `NodeBuffer` for convenience. Some rules apply:
