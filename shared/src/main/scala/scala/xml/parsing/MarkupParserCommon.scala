@@ -203,7 +203,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     if (ch == that) nextch()
     else xHandleError(that, "'%s' expected instead of '%s'".format(that, ch))
   }
-  def xToken(that: Seq[Char]) { that foreach xToken }
+  def xToken(that: collection.Seq[Char]) { that foreach xToken }
 
   /** scan [S] '=' [S]*/
   def xEQ() = { xSpaceOpt(); xToken('='); xSpaceOpt() }

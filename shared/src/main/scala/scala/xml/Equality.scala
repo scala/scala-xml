@@ -30,7 +30,7 @@ package xml
  *
  *  Among the obstacles to sanity are/were:
  *
- *    Node extends NodeSeq extends Seq[Node]
+ *    Node extends NodeSeq extends collection.Seq[Node]
  *    MetaData extends Iterable[MetaData]
  *    The hacky "Group" xml node which throws exceptions
  *      with wild abandon, so don't get too close
@@ -69,7 +69,7 @@ object Equality {
 import Equality._
 
 trait Equality extends scala.Equals {
-  protected def basisForHashCode: Seq[Any]
+  protected def basisForHashCode: collection.Seq[Any]
 
   def strict_==(other: Equality): Boolean
   def strict_!=(other: Equality) = !strict_==(other)

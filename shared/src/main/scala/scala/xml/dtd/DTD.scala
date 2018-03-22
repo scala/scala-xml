@@ -20,8 +20,8 @@ import scala.collection.mutable
 abstract class DTD {
   var externalID: ExternalID = null
   var decls: List[Decl] = Nil
-  def notations: Seq[NotationDecl] = Nil
-  def unparsedEntities: Seq[EntityDecl] = Nil
+  def notations: collection.Seq[NotationDecl] = Nil
+  def unparsedEntities: collection.Seq[EntityDecl] = Nil
 
   var elem: mutable.Map[String, ElemDecl] = new mutable.HashMap[String, ElemDecl]()
   var attr: mutable.Map[String, AttListDecl] = new mutable.HashMap[String, AttListDecl]()

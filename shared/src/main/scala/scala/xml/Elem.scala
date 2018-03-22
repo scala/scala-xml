@@ -111,7 +111,7 @@ class Elem(
   //  setting namespace scope if necessary
   //  cleaning adjacent text nodes if necessary
 
-  override protected def basisForHashCode: Seq[Any] =
+  override protected def basisForHashCode: collection.Seq[Any] =
     prefix :: label :: attributes :: child.toList
 
   /**
@@ -136,7 +136,7 @@ class Elem(
     attributes: MetaData = this.attributes,
     scope: NamespaceBinding = this.scope,
     minimizeEmpty: Boolean = this.minimizeEmpty,
-    child: Seq[Node] = this.child.toSeq): Elem = Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
+    child: collection.Seq[Node] = this.child.toSeq): Elem = Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
 
   /**
    * Returns concatenation of `text(n)` for each child `n`.

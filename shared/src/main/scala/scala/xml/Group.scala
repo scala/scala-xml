@@ -14,7 +14,7 @@ package xml
  *
  *  @author  Burak Emir
  */
-final case class Group(nodes: Seq[Node]) extends Node {
+final case class Group(nodes: collection.Seq[Node]) extends Node {
   override def theSeq = nodes
 
   override def canEqual(other: Any) = other match {

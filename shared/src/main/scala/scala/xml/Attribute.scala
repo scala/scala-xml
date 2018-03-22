@@ -23,18 +23,18 @@ object Attribute {
   }
 
   /** Convenience functions which choose Un/Prefixedness appropriately */
-  def apply(key: String, value: Seq[Node], next: MetaData): Attribute =
+  def apply(key: String, value: collection.Seq[Node], next: MetaData): Attribute =
     new UnprefixedAttribute(key, value, next)
 
   def apply(pre: String, key: String, value: String, next: MetaData): Attribute =
     if (pre == null || pre == "") new UnprefixedAttribute(key, value, next)
     else new PrefixedAttribute(pre, key, value, next)
 
-  def apply(pre: String, key: String, value: Seq[Node], next: MetaData): Attribute =
+  def apply(pre: String, key: String, value: collection.Seq[Node], next: MetaData): Attribute =
     if (pre == null || pre == "") new UnprefixedAttribute(key, value, next)
     else new PrefixedAttribute(pre, key, value, next)
 
-  def apply(pre: Option[String], key: String, value: Seq[Node], next: MetaData): Attribute =
+  def apply(pre: Option[String], key: String, value: collection.Seq[Node], next: MetaData): Attribute =
     pre match {
       case None    => new UnprefixedAttribute(key, value, next)
       case Some(p) => new PrefixedAttribute(p, key, value, next)
@@ -50,11 +50,11 @@ object Attribute {
 abstract trait Attribute extends MetaData {
   def pre: String // will be null if unprefixed
   val key: String
-  val value: Seq[Node]
+  val value: collection.Seq[Node]
   val next: MetaData
 
-  def apply(key: String): Seq[Node]
-  def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node]
+  def apply(key: String): collection.Seq[Node]
+  def apply(namespace: String, scope: NamespaceBinding, key: String): collection.Seq[Node]
   def copy(next: MetaData): Attribute
 
   def remove(key: String) =

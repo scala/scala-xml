@@ -97,7 +97,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
     q.update(label, dest :: q.getOrElse(label, Nil))
   }
 
-  protected def initialize(subexpr: Seq[RegExp]): Unit = {
+  protected def initialize(subexpr: collection.Seq[RegExp]): Unit = {
     this.labelAt = immutable.Map()
     this.follow = mutable.HashMap()
     this.labels = mutable.HashSet()

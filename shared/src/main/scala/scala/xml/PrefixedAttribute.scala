@@ -20,7 +20,7 @@ package xml
 class PrefixedAttribute(
   val pre: String,
   val key: String,
-  val value: Seq[Node],
+  val value: collection.Seq[Node],
   val next1: MetaData)
   extends Attribute {
   val next = if (value ne null) next1 else next1.remove(key)
@@ -30,7 +30,7 @@ class PrefixedAttribute(
     this(pre, key, if (value ne null) Text(value) else null: NodeSeq, next)
 
   /** same as this(pre, key, value.get, next), or no attribute if value is None */
-  def this(pre: String, key: String, value: Option[Seq[Node]], next: MetaData) =
+  def this(pre: String, key: String, value: Option[collection.Seq[Node]], next: MetaData) =
     this(pre, key, value.orNull, next)
 
   /**
@@ -44,12 +44,12 @@ class PrefixedAttribute(
     owner.getNamespace(pre)
 
   /** forwards the call to next (because caller looks for unprefixed attribute */
-  def apply(key: String): Seq[Node] = next(key)
+  def apply(key: String): collection.Seq[Node] = next(key)
 
   /**
    * gets attribute value of qualified (prefixed) attribute with given key
    */
-  def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] = {
+  def apply(namespace: String, scope: NamespaceBinding, key: String): collection.Seq[Node] = {
     if (key == this.key && scope.getURI(pre) == namespace)
       value
     else

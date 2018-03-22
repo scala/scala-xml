@@ -27,7 +27,7 @@ class TextBuffer {
   /**
    * Appends this string to the text buffer, trimming whitespaces as needed.
    */
-  def append(cs: Seq[Char]): this.type = {
+  def append(cs: collection.Seq[Char]): this.type = {
     cs foreach { c =>
       if (!isSpace(c)) sb append c
       else if (sb.isEmpty || !isSpace(sb.last)) sb append ' '
@@ -40,7 +40,7 @@ class TextBuffer {
    *
    *  @return the text without whitespaces.
    */
-  def toText: Seq[Text] = sb.toString.trim match {
+  def toText: collection.Seq[Text] = sb.toString.trim match {
     case "" => Nil
     case s  => Seq(Text(s))
   }

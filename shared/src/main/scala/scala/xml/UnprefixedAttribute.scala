@@ -16,7 +16,7 @@ package xml
  */
 class UnprefixedAttribute(
   val key: String,
-  val value: Seq[Node],
+  val value: collection.Seq[Node],
   next1: MetaData)
   extends Attribute {
   final val pre = null
@@ -27,7 +27,7 @@ class UnprefixedAttribute(
     this(key, if (value ne null) Text(value) else null: NodeSeq, next)
 
   /** same as this(key, value.get, next), or no attribute if value is None */
-  def this(key: String, value: Option[Seq[Node]], next: MetaData) =
+  def this(key: String, value: Option[collection.Seq[Node]], next: MetaData) =
     this(key, value.orNull, next)
 
   /** returns a copy of this unprefixed attribute with the given next field*/
@@ -39,9 +39,9 @@ class UnprefixedAttribute(
    * Gets value of unqualified (unprefixed) attribute with given key, null if not found
    *
    * @param  key
-   * @return value as Seq[Node] if key is found, null otherwise
+   * @return value as collection.Seq[Node] if key is found, null otherwise
    */
-  def apply(key: String): Seq[Node] =
+  def apply(key: String): collection.Seq[Node] =
     if (key == this.key) value else next(key)
 
   /**
@@ -52,7 +52,7 @@ class UnprefixedAttribute(
    * @param  key
    * @return ..
    */
-  def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] =
+  def apply(namespace: String, scope: NamespaceBinding, key: String): collection.Seq[Node] =
     next(namespace, scope, key)
 }
 object UnprefixedAttribute {

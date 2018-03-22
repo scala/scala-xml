@@ -20,7 +20,7 @@ class Atom[+A](val data: A) extends SpecialNode with Serializable {
   if (data == null)
     throw new IllegalArgumentException("cannot construct " + getClass.getSimpleName + " with null")
 
-  override protected def basisForHashCode: Seq[Any] = Seq(data)
+  override protected def basisForHashCode: collection.Seq[Any] = Seq(data)
 
   override def strict_==(other: Equality) = other match {
     case x: Atom[_] => data == x.data

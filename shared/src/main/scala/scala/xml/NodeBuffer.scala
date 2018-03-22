@@ -11,7 +11,7 @@ package xml
 
 /**
  * This class acts as a Buffer for nodes. If it is used as a sequence of
- * nodes `Seq[Node]`, it must be ensured that no updates occur after that
+ * nodes `collection.Seq[Node]`, it must be ensured that no updates occur after that
  * point, because `scala.xml.Node` is assumed to be immutable.
  *
  * Despite this being a sequence, don't use it as key in a hashtable.

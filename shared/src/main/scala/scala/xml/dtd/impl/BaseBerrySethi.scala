@@ -58,7 +58,7 @@ private[dtd] abstract class BaseBerrySethi {
    *  precondition: pos is final
    *               pats are successor patterns of a Sequence node
    */
-  protected def compFollow(rs: Seq[RegExp]): Set[Int] = {
+  protected def compFollow(rs: collection.Seq[RegExp]): Set[Int] = {
     follow(0) =
       if (rs.isEmpty) emptySet
       else rs.foldRight(Set(pos))((p, fol) => {

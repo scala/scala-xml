@@ -20,7 +20,7 @@ package transform
 abstract class RewriteRule extends BasicTransformer {
   /** a name for this rewrite rule */
   val name = this.toString()
-  override def transform(ns: Seq[Node]): Seq[Node] = super.transform(ns)
-  override def transform(n: Node): Seq[Node] = n
+  override def transform(ns: collection.Seq[Node]): collection.Seq[Node] = super.transform(ns)
+  override def transform(n: Node): collection.Seq[Node] = n
 }
 

@@ -22,7 +22,7 @@ import scala.collection.{ immutable, mutable }
 // TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
   val nstates: Int
-  val labels: Seq[T]
+  val labels: collection.Seq[T]
   val finals: Array[Int] // 0 means not final
   val delta: Array[mutable.Map[T, immutable.BitSet]]
   val default: Array[immutable.BitSet]

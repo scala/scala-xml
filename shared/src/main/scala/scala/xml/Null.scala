@@ -41,7 +41,7 @@ case object Null extends MetaData {
     case x: MetaData => x.length == 0
     case _           => false
   }
-  override protected def basisForHashCode: Seq[Any] = Nil
+  override protected def basisForHashCode: collection.Seq[Any] = Nil
 
   def apply(namespace: String, scope: NamespaceBinding, key: String) = null
   def apply(key: String) =

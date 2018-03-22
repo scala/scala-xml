@@ -170,7 +170,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
           makeBox(ind, stg.substring(0, len2))
           makeBreak() // todo: break the rest in pieces
           /*{ //@todo
-             val sq:Seq[String] = stg.split(" ");
+             val sq:collection.Seq[String] = stg.split(" ");
              val it = sq.iterator;
              it.next;
              for (c <- it) {
@@ -254,7 +254,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
    *  @param nodes  the sequence of nodes to be serialized
    *  @param pscope the namespace to prefix mapping
    */
-  def formatNodes(nodes: Seq[Node], pscope: NamespaceBinding = TopScope): String =
+  def formatNodes(nodes: collection.Seq[Node], pscope: NamespaceBinding = TopScope): String =
     sbToString(formatNodes(nodes, pscope, _))
 
   /**
@@ -265,6 +265,6 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
    *  @param pscope the namespace to prefix mapping
    *  @param sb     the string buffer to which to append to
    */
-  def formatNodes(nodes: Seq[Node], pscope: NamespaceBinding, sb: StringBuilder): Unit =
+  def formatNodes(nodes: collection.Seq[Node], pscope: NamespaceBinding, sb: StringBuilder): Unit =
     nodes foreach (n => sb append format(n, pscope))
 }

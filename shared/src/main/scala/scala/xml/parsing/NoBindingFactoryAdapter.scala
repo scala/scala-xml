@@ -21,7 +21,7 @@ class NoBindingFactoryAdapter extends FactoryAdapter with NodeFactory[Elem] {
   def nodeContainsText(label: String) = true
 
   /** From NodeFactory.  Constructs an instance of scala.xml.Elem -- TODO: deprecate as in Elem */
-  protected def create(pre: String, label: String, attrs: MetaData, scope: NamespaceBinding, children: Seq[Node]): Elem =
+  protected def create(pre: String, label: String, attrs: MetaData, scope: NamespaceBinding, children: collection.Seq[Node]): Elem =
     Elem(pre, label, attrs, scope, children.isEmpty, children: _*)
 
   /** From FactoryAdapter.  Creates a node. never creates the same node twice, using hash-consing.

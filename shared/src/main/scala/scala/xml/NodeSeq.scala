@@ -21,7 +21,7 @@ import scala.language.implicitConversions
  */
 object NodeSeq {
   final val Empty = fromSeq(Nil)
-  def fromSeq(s: Seq[Node]): NodeSeq = new NodeSeq {
+  def fromSeq(s: collection.Seq[Node]): NodeSeq = new NodeSeq {
     def theSeq = s
   }
   type Coll = NodeSeq
@@ -31,11 +31,11 @@ object NodeSeq {
       def apply() = newBuilder
     }
   def newBuilder: Builder[Node, NodeSeq] = new ListBuffer[Node] mapResult fromSeq
-  implicit def seqToNodeSeq(s: Seq[Node]): NodeSeq = fromSeq(s)
+  implicit def seqToNodeSeq(s: collection.Seq[Node]): NodeSeq = fromSeq(s)
 }
 
 /**
- * This class implements a wrapper around `Seq[Node]` that adds XPath
+ * This class implements a wrapper around `collection.Seq[Node]` that adds XPath
  *  and comprehension methods.
  *
  *  @author  Burak Emir
@@ -45,7 +45,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   /** Creates a list buffer as builder for this class */
   override protected[this] def newBuilder = NodeSeq.newBuilder
 
-  def theSeq: Seq[Node]
+  def theSeq: collection.Seq[Node]
   def length = theSeq.length
   override def iterator = theSeq.iterator
 
@@ -62,7 +62,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     !these.hasNext && !those.hasNext
   }
 
-  protected def basisForHashCode: Seq[Any] = theSeq
+  protected def basisForHashCode: collection.Seq[Any] = theSeq
 
   override def canEqual(other: Any) = other match {
     case _: NodeSeq => true
