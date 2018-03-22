@@ -30,7 +30,7 @@ class Document extends NodeSeq with pull.XMLEvent with Serializable {
    *  excluded. If there is a document type declaration, the list also
    *  contains a document type declaration information item.
    */
-  var children: Seq[Node] = _
+  var children: collection.Seq[Node] = _
 
   /** The element information item corresponding to the document element. */
   var docElem: Node = _
@@ -43,14 +43,14 @@ class Document extends NodeSeq with pull.XMLEvent with Serializable {
    *  declared in the DTD. If any notation is multiply declared, this property
    *  has no value.
    */
-  def notations: Seq[scala.xml.dtd.NotationDecl] =
+  def notations: collection.Seq[scala.xml.dtd.NotationDecl] =
     dtd.notations
 
   /**
    * An unordered set of unparsed entity information items, one for each
    *  unparsed entity declared in the DTD.
    */
-  def unparsedEntities: Seq[scala.xml.dtd.EntityDecl] =
+  def unparsedEntities: collection.Seq[scala.xml.dtd.EntityDecl] =
     dtd.unparsedEntities
 
   /** The base URI of the document entity. */
@@ -90,7 +90,7 @@ class Document extends NodeSeq with pull.XMLEvent with Serializable {
 
   // methods for NodeSeq
 
-  def theSeq: Seq[Node] = this.docElem
+  def theSeq: collection.Seq[Node] = this.docElem
 
   override def canEqual(other: Any) = other match {
     case _: Document => true

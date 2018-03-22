@@ -48,7 +48,7 @@ class Scanner extends Tokens with parsing.TokenTests {
     if (c == d) next() else scala.sys.error("expected '" + d + "' found '" + c + "' !")
   }
 
-  final def accS(ds: Seq[Char]) { ds foreach acc }
+  final def accS(ds: collection.Seq[Char]) { ds foreach acc }
 
   final def readToken: Int =
     if (isSpace(c)) {

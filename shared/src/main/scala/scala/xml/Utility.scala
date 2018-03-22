@@ -38,7 +38,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    * Trims an element - call this method, when you know that it is an
    *  element (and not a text node) so you know that it will not be trimmed
    *  away. With this assumption, the function can return a `Node`, rather
-   *  than a `Seq[Node]`. If you don't know, call `trimProper` and account
+   *  than a `collection.Seq[Node]`. If you don't know, call `trimProper` and account
    *  for the fact that you may get back an empty sequence of nodes.
    *
    *  Precondition: node is not a text node (it might be trimmed)
@@ -53,7 +53,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    * trim a child of an element. `Attribute` values and `Atom` nodes that
    *  are not `Text` nodes are unaffected.
    */
-  def trimProper(x: Node): Seq[Node] = x match {
+  def trimProper(x: Node): collection.Seq[Node] = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
       val children = child flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
@@ -132,7 +132,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    * Returns a set of all namespaces used in a sequence of nodes
    * and all their descendants, including the empty namespaces.
    */
-  def collectNamespaces(nodes: Seq[Node]): mutable.Set[String] =
+  def collectNamespaces(nodes: collection.Seq[Node]): mutable.Set[String] =
     nodes.foldLeft(new mutable.HashSet[String]) { (set, x) => collectNamespaces(x, set); set }
 
   /**
@@ -229,7 +229,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     }
 
   def sequenceToXML(
-    children: Seq[Node],
+    children: collection.Seq[Node],
     pscope: NamespaceBinding = TopScope,
     sb: StringBuilder = new StringBuilder,
     stripComments: Boolean = false,
@@ -261,7 +261,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   /**
    * Returns a hashcode for the given constituents of a node
    */
-  def hashCode(pre: String, label: String, attribHashCode: Int, scpeHash: Int, children: Seq[Node]) =
+  def hashCode(pre: String, label: String, attribHashCode: Int, scpeHash: Int, children: collection.Seq[Node]) =
     scala.util.hashing.MurmurHash3.orderedHash(label +: attribHashCode +: scpeHash +: children, pre.##)
 
   def appendQuoted(s: String): String = sbToString(appendQuoted(s, _))
@@ -321,7 +321,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     null
   }
 
-  def parseAttributeValue(value: String): Seq[Node] = {
+  def parseAttributeValue(value: String): collection.Seq[Node] = {
     val sb = new StringBuilder
     var rfb: StringBuilder = null
     val nb = new NodeBuffer()

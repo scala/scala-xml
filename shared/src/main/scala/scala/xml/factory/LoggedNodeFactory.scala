@@ -47,7 +47,7 @@ trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
 
   /** logged version of makeNode method */
   override def makeNode(pre: String, label: String, attrSeq: MetaData,
-                        scope: NamespaceBinding, children: Seq[Node]): A = {
+                        scope: NamespaceBinding, children: collection.Seq[Node]): A = {
     if (logNode)
       log("[makeNode for " + label + "]")
 
@@ -73,13 +73,13 @@ trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
     super.makeText(s)
   }
 
-  override def makeComment(s: String): Seq[Comment] = {
+  override def makeComment(s: String): collection.Seq[Comment] = {
     if (logComment)
       log("[makeComment:\"" + s + "\"]")
     super.makeComment(s)
   }
 
-  override def makeProcInstr(t: String, s: String): Seq[ProcInstr] = {
+  override def makeProcInstr(t: String, s: String): collection.Seq[ProcInstr] = {
     if (logProcInstr)
       log("[makeProcInstr:\"" + t + " " + s + "\"]")
     super.makeProcInstr(t, s)

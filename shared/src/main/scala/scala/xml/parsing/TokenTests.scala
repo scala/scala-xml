@@ -29,7 +29,7 @@ trait TokenTests {
    *  (#x20 | #x9 | #xD | #xA)+
    *  }}}
    */
-  final def isSpace(cs: Seq[Char]): Boolean = cs.nonEmpty && (cs forall isSpace)
+  final def isSpace(cs: collection.Seq[Char]): Boolean = cs.nonEmpty && (cs forall isSpace)
 
   /** These are 99% sure to be redundant but refactoring on the safe side. */
   def isAlpha(c: Char) = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
@@ -96,7 +96,7 @@ trait TokenTests {
    *
    * @param ianaEncoding The IANA encoding name.
    */
-  def isValidIANAEncoding(ianaEncoding: Seq[Char]) = {
+  def isValidIANAEncoding(ianaEncoding: collection.Seq[Char]) = {
     def charOK(c: Char) = isAlphaDigit(c) || ("._-" contains c)
 
     ianaEncoding.nonEmpty && isAlpha(ianaEncoding.head) &&

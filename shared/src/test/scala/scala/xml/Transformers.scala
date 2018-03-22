@@ -38,7 +38,7 @@ class Transformers {
       </root>
 
     object t1 extends RewriteRule {
-      override def transform(n: Node): Seq[Node] = n match {
+      override def transform(n: Node): collection.Seq[Node] = n match {
         case <version>{ x }</version> if x.toString.toInt < 4 => <version>{ x.toString.toInt + 1 }</version>
         case other => other
       }
@@ -63,7 +63,7 @@ class Transformers {
     val xmlNode = <a><b><c><h1>Hello Example</h1></c></b></a>
 
     new RuleTransformer(new RewriteRule {
-      override def transform(n: Node): Seq[Node] = {
+      override def transform(n: Node): collection.Seq[Node] = {
         n match {
           case t: Text if !t.text.trim.isEmpty => {
             i += 1

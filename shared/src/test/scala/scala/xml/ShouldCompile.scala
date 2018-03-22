@@ -14,7 +14,7 @@ object o {
 
 // t1761
 class Foo {
-  val elements: Seq[Node] = Nil
+  val elements: collection.Seq[Node] = Nil
   val innerTransform: PartialFunction[Elem, String] = {
     case Elem(_, l: String, _, _, _@ _*) if elements.exists(_.label == l) =>
       l
@@ -76,7 +76,7 @@ class Floozy {
 
 object guardedMatch { // SI-3705
   // guard caused verifyerror in oldpatmat -- TODO: move this to compiler test suite
-  def updateNodes(ns: Seq[Node]): Seq[Node] =
+  def updateNodes(ns: collection.Seq[Node]): collection.Seq[Node] =
     for (subnode <- ns) yield subnode match {
       case <d>{ _ }</d> if true => <d>abc</d>
       case Elem(prefix, label, attribs, scope, children @ _*) =>

@@ -17,35 +17,35 @@ import org.junit.runner.RunWith
 object ReuseNodesTest {
  
   class OriginalTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
-    override def transform(ns: Seq[Node]): Seq[Node] = {
+    override def transform(ns: collection.Seq[Node]): collection.Seq[Node] = {
       val xs = ns.toStream map transform
       val (xs1, xs2) = xs zip ns span { case (x, n) => unchanged(n, x) }
        
       if (xs2.isEmpty) ns
       else (xs1 map (_._2)) ++ xs2.head._1 ++ transform(ns drop (xs1.length + 1))
     }
-    override def transform(n:Node): Seq[Node] = super.transform(n)
+    override def transform(n:Node): collection.Seq[Node] = super.transform(n)
   }
 
   class ModifiedTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
-    override def transform(ns: Seq[Node]): Seq[Node] = {
+    override def transform(ns: collection.Seq[Node]): collection.Seq[Node] = {
       val changed = ns flatMap transform
       
       if (changed.length != ns.length || (changed, ns).zipped.exists(_ != _)) changed
       else ns
     }
-    override def transform(n:Node): Seq[Node] = super.transform(n)
+    override def transform(n:Node): collection.Seq[Node] = super.transform(n)
   }
 
   class AlternateTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
-    override def transform(ns: Seq[Node]): Seq[Node] = {
+    override def transform(ns: collection.Seq[Node]): collection.Seq[Node] = {
       val xs = ns.toStream map transform
       val (xs1, xs2) = xs zip ns span { case (x, n) => unchanged(n, x) }
        
       if (xs2.isEmpty) ns
       else (xs1 map (_._2)) ++ xs2.head._1 ++ transform(ns drop (xs1.length + 1))
     }
-    override def transform(n:Node): Seq[Node] = super.transform(n)
+    override def transform(n:Node): collection.Seq[Node] = super.transform(n)
   }
    
   def rewriteRule = new RewriteRule {
@@ -80,7 +80,7 @@ class ReuseNodesTest {
     recursiveAssert(original,transformed)
   }
   
-  def recursiveAssert(original:Seq[Node], transformed:Seq[Node]):Unit = {
+  def recursiveAssert(original: collection.Seq[Node], transformed: collection.Seq[Node]):Unit = {
     original zip transformed foreach { 
       case (x, y) => recursiveAssert(x, y) 
     }

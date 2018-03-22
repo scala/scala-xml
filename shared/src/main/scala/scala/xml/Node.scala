@@ -85,7 +85,7 @@ abstract class Node extends NodeSeq {
    * @return value of `UnprefixedAttribute` with given key
    *         in attributes, if it exists, otherwise `null`.
    */
-  final def attribute(key: String): Option[Seq[Node]] = attributes.get(key)
+  final def attribute(key: String): Option[collection.Seq[Node]] = attributes.get(key)
 
   /**
    * Convenience method, looks up a prefixed attribute in attributes of this node.
@@ -96,7 +96,7 @@ abstract class Node extends NodeSeq {
    * @return value of `PrefixedAttribute` with given namespace
    *         and given key, otherwise `'''null'''`.
    */
-  final def attribute(uri: String, key: String): Option[Seq[Node]] =
+  final def attribute(uri: String, key: String): Option[collection.Seq[Node]] =
     attributes.get(uri, this, key)
 
   /**
@@ -113,12 +113,12 @@ abstract class Node extends NodeSeq {
    *
    * @return all children of this node
    */
-  def child: Seq[Node]
+  def child: collection.Seq[Node]
 
   /**
    * Children which do not stringify to "" (needed for equality)
    */
-  def nonEmptyChildren: Seq[Node] = child filterNot (_.toString == "")
+  def nonEmptyChildren: collection.Seq[Node] = child filterNot (_.toString == "")
 
   /**
    * Descendant axis (all descendants of this node, not including node itself)
@@ -139,7 +139,7 @@ abstract class Node extends NodeSeq {
     case _        => false
   }
 
-  override protected def basisForHashCode: Seq[Any] =
+  override protected def basisForHashCode: collection.Seq[Any] =
     prefix :: label :: attributes :: nonEmptyChildren.toList
 
   override def strict_==(other: Equality) = other match {
@@ -159,7 +159,7 @@ abstract class Node extends NodeSeq {
   /**
    *  returns a sequence consisting of only this node
    */
-  def theSeq: Seq[Node] = this :: Nil
+  def theSeq: collection.Seq[Node] = this :: Nil
 
   /**
    * String representation of this node

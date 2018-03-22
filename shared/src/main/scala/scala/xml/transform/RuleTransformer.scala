@@ -11,6 +11,6 @@ package xml
 package transform
 
 class RuleTransformer(rules: RewriteRule*) extends BasicTransformer {
-  override def transform(n: Node): Seq[Node] =
+  override def transform(n: Node): collection.Seq[Node] =
     rules.foldLeft(super.transform(n)) { (res, rule) => rule transform res }
 }

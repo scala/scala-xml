@@ -54,7 +54,7 @@ object ContentModel extends WordExp {
   def buildString(r: RegExp): String = sbToString(buildString(r, _))
 
   /* precond: rs.length >= 1 */
-  private def buildString(rs: Seq[RegExp], sb: StringBuilder, sep: Char) {
+  private def buildString(rs: collection.Seq[RegExp], sb: StringBuilder, sep: Char) {
     buildString(rs.head, sb)
     for (z <- rs.tail) {
       sb append sep

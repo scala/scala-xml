@@ -48,16 +48,16 @@ class XMLSyntaxTest {
     assertFalse(xh.child.map(_.isInstanceOf[Text]).exists(identity))
   }
 
-  /** see SVN r13821 (emir): support for <elem key={x:Option[Seq[Node]]} />,
+  /** see SVN r13821 (emir): support for <elem key={x:Option[collection.Seq[Node]]} />,
    *  so that Options can be used for optional attributes.
    */
   @Test
   def test2(): Unit = {
-    val x1: Option[Seq[Node]] = Some(<b>hello</b>)
+    val x1: Option[collection.Seq[Node]] = Some(<b>hello</b>)
     val n1 = <elem key={x1} />;
     assertEquals(x1, n1.attribute("key"))
 
-    val x2: Option[Seq[Node]] = None
+    val x2: Option[collection.Seq[Node]] = None
     val n2 = <elem key={x2} />;
     assertEquals(x2, n2.attribute("key"))
   }

@@ -21,7 +21,7 @@ object Xhtml {
    *
    * @param nodeSeq   the node sequence
    */
-  def toXhtml(nodeSeq: NodeSeq): String = sbToString(sb => sequenceToXML(nodeSeq: Seq[Node], sb = sb))
+  def toXhtml(nodeSeq: NodeSeq): String = sbToString(sb => sequenceToXML(nodeSeq: collection.Seq[Node], sb = sb))
 
   /**
    * Elements which we believe are safe to minimize if minimizeTags is true.
@@ -76,7 +76,7 @@ object Xhtml {
    * Amounts to calling toXhtml(node, ...) with the given parameters on each node.
    */
   def sequenceToXML(
-    children: Seq[Node],
+    children: collection.Seq[Node],
     pscope: NamespaceBinding = TopScope,
     sb: StringBuilder = new StringBuilder,
     stripComments: Boolean = false,

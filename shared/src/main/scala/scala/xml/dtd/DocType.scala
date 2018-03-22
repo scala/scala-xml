@@ -19,7 +19,7 @@ package dtd
  *  @param  extID  NoExternalID or the external ID of this doctype
  *  @param  intSubset sequence of internal subset declarations
  */
-case class DocType(name: String, extID: ExternalID, intSubset: Seq[dtd.Decl]) {
+case class DocType(name: String, extID: ExternalID, intSubset: collection.Seq[dtd.Decl]) {
   if (!Utility.isName(name))
     throw new IllegalArgumentException(name + " must be an XML Name")
 

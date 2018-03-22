@@ -18,7 +18,7 @@ package xml.dtd.impl
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] trait Inclusion[A <: AnyRef] {
 
-  val labels: Seq[A]
+  val labels: collection.Seq[A]
 
   /**
    * Returns true if `dfa1` is included in `dfa2`.

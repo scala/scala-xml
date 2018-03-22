@@ -471,9 +471,9 @@ Ours is the portal of hope, come as you are."
   def attributes = {
     val noAttr = <t/>
     val attrNull = <t a={ null: String }/>
-    val attrNone = <t a={ None: Option[Seq[Node]] }/>
+    val attrNone = <t a={ None: Option[collection.Seq[Node]] }/>
     val preAttrNull = <t p:a={ null: String }/>
-    val preAttrNone = <t p:a={ None: Option[Seq[Node]] }/>
+    val preAttrNone = <t p:a={ None: Option[collection.Seq[Node]] }/>
     assertEquals(noAttr, attrNull)
     assertEquals(noAttr, attrNone)
     assertEquals(noAttr, preAttrNull)

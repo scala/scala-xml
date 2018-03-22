@@ -63,7 +63,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
     case _                   => false
   }
 
-  def basisForHashCode: Seq[Any] = List(prefix, uri, parent)
+  def basisForHashCode: collection.Seq[Any] = List(prefix, uri, parent)
 
   def buildString(stop: NamespaceBinding): String = sbToString(buildString(_, stop))
 

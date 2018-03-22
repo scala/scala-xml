@@ -20,8 +20,8 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
   def determinize: DetWordAutom[T] = {
     // for assigning numbers to bitsets
-    var indexMap = scala.collection.Map[immutable.BitSet, Int]()
-    var invIndexMap = scala.collection.Map[Int, immutable.BitSet]()
+    var indexMap = scala.collection.immutable.Map[immutable.BitSet, Int]()
+    var invIndexMap = scala.collection.immutable.Map[Int, immutable.BitSet]()
     var ix = 0
 
     // we compute the dfa with states = bitsets
@@ -37,8 +37,11 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     rest.push(sink, q0)
 
     def addFinal(q: immutable.BitSet) {
-      if (nfa containsFinal q)
-        finals = finals.updated(q, selectTag(q, nfa.finals))
+      if (nfa containsFinal q) {
+        val finalsClone = finals.clone
+        finalsClone(q) = selectTag(q, nfa.finals)
+        finals = finalsClone
+      }
     }
     def add(Q: immutable.BitSet) {
       if (!states(Q)) {
@@ -69,7 +72,8 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
       // collect default transitions
       val Pdef = nfa nextDefault P
-      deftrans = deftrans.updated(P, Pdef)
+      deftrans = deftrans.clone
+      deftrans(P) = Pdef
       add(Pdef)
     }
 

@@ -12,7 +12,7 @@ class PatternMatching extends {
     assertTrue(matchList(li))
   }
 
-  def matchSeq(args: Seq[String]) = args match {
+  def matchSeq(args: collection.Seq[String]) = args match {
     case Seq(a, b, c, d @ _*) => true
   }
 
@@ -56,8 +56,8 @@ class PatternMatching extends {
   }
 
   object SafeNodeSeq {
-    def unapplySeq(any: Any): Option[Seq[Node]] = any match {
-      case s: Seq[_] => Some(s flatMap (_ match {
+    def unapplySeq(any: Any): Option[collection.Seq[Node]] = any match {
+      case s: collection.Seq[_] => Some(s flatMap (_ match {
         case n: Node => n case _ => NodeSeq.Empty
       })) case _ => None
     }

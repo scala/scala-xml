@@ -47,7 +47,7 @@ class ElementValidator() extends Function1[Node, Boolean] {
   /** set meta data, enabling attribute validation */
   def setMetaData(adecls: List[AttrDecl]) { this.adecls = adecls }
 
-  def getIterable(nodes: Seq[Node], skipPCDATA: Boolean): Iterable[ElemName] = {
+  def getIterable(nodes: collection.Seq[Node], skipPCDATA: Boolean): Iterable[ElemName] = {
     def isAllWhitespace(a: Atom[_]) = cond(a.data) { case s: String if s.trim == "" => true }
 
     nodes.filter {
@@ -100,7 +100,7 @@ class ElementValidator() extends Function1[Node, Boolean] {
    * check children, return true if conform to content model
    *  @note contentModel != null
    */
-  def check(nodes: Seq[Node]): Boolean = contentModel match {
+  def check(nodes: collection.Seq[Node]): Boolean = contentModel match {
     case ANY    => true
     case EMPTY  => getIterable(nodes, skipPCDATA = false).isEmpty
     case PCDATA => getIterable(nodes, skipPCDATA = true).isEmpty

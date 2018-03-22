@@ -99,9 +99,9 @@ abstract class MetaData
    * Gets value of unqualified (unprefixed) attribute with given key, null if not found
    *
    * @param  key
-   * @return value as Seq[Node] if key is found, null otherwise
+   * @return value as collection.Seq[Node] if key is found, null otherwise
    */
-  def apply(key: String): Seq[Node]
+  def apply(key: String): collection.Seq[Node]
 
   /**
    * convenience method, same as `apply(namespace, owner.scope, key)`.
@@ -110,7 +110,7 @@ abstract class MetaData
    *  @param owner the element owning this attribute list
    *  @param key   the attribute key
    */
-  final def apply(namespace_uri: String, owner: Node, key: String): Seq[Node] =
+  final def apply(namespace_uri: String, owner: Node, key: String): collection.Seq[Node] =
     apply(namespace_uri, owner.scope, key)
 
   /**
@@ -119,9 +119,9 @@ abstract class MetaData
    * @param  namespace_uri namespace uri of key
    * @param  scp a namespace scp (usually of the element owning this attribute list)
    * @param  k   to be looked for
-   * @return value as Seq[Node] if key is found, null otherwise
+   * @return value as collection.Seq[Node] if key is found, null otherwise
    */
-  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): Seq[Node]
+  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): collection.Seq[Node]
 
   /**
    * returns a copy of this MetaData item with next field set to argument.
@@ -147,7 +147,7 @@ abstract class MetaData
     case m: MetaData => this.asAttrMap == m.asAttrMap
     case _           => false
   }
-  protected def basisForHashCode: Seq[Any] = List(this.asAttrMap)
+  protected def basisForHashCode: collection.Seq[Any] = List(this.asAttrMap)
 
   /** filters this sequence of meta data */
   override def filter(f: MetaData => Boolean): MetaData =
@@ -158,7 +158,7 @@ abstract class MetaData
   def key: String
 
   /** returns value of this MetaData item */
-  def value: Seq[Node]
+  def value: collection.Seq[Node]
 
   /**
    * Returns a String containing "prefix:key" if the first key is
@@ -182,12 +182,12 @@ abstract class MetaData
    * Gets value of unqualified (unprefixed) attribute with given key, None if not found
    *
    * @param  key
-   * @return value in Some(Seq[Node]) if key is found, None otherwise
+   * @return value in Some(collection.Seq[Node]) if key is found, None otherwise
    */
-  final def get(key: String): Option[Seq[Node]] = Option(apply(key))
+  final def get(key: String): Option[collection.Seq[Node]] = Option(apply(key))
 
   /** same as get(uri, owner.scope, key) */
-  final def get(uri: String, owner: Node, key: String): Option[Seq[Node]] =
+  final def get(uri: String, owner: Node, key: String): Option[collection.Seq[Node]] =
     get(uri, owner.scope, key)
 
   /**
@@ -196,9 +196,9 @@ abstract class MetaData
    * @param  uri namespace of key
    * @param  scope a namespace scp (usually of the element owning this attribute list)
    * @param  key to be looked fore
-   * @return value as Some[Seq[Node]] if key is found, None otherwise
+   * @return value as Some[collection.Seq[Node]] if key is found, None otherwise
    */
-  final def get(uri: String, scope: NamespaceBinding, key: String): Option[Seq[Node]] =
+  final def get(uri: String, scope: NamespaceBinding, key: String): Option[collection.Seq[Node]] =
     Option(apply(uri, scope, key))
 
   protected def toString1(): String = sbToString(toString1)

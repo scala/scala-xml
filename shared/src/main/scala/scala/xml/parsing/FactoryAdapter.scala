@@ -75,7 +75,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
   /**
    * creates a new processing instruction node.
    */
-  def createProcInstr(target: String, data: String): Seq[ProcInstr]
+  def createProcInstr(target: String, data: String): collection.Seq[ProcInstr]
 
   //
   // ContentHandler methods
