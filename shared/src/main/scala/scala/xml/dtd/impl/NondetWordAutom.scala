@@ -47,7 +47,7 @@ private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
   def nextDefault(Q: immutable.BitSet): immutable.BitSet = next(Q, default)
 
   private def next(Q: immutable.BitSet, f: (Int) => immutable.BitSet): immutable.BitSet =
-    (Q map f).foldLeft(immutable.BitSet.empty)(_ ++ _)
+    ((Q: Set[Int]) map f).foldLeft(immutable.BitSet.empty)(_ ++ _)
 
   private def finalStates = 0 until nstates filter isFinal
   override def toString = {
