@@ -547,27 +547,27 @@ class XMLTestJVM {
 
   @UnitTest
   def issue17ExternalGeneralEntities: Unit = {
-    assertFalse(defaultParserFactory.getFeature("http://xml.org/sax/features/external-general-entities"))
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/external-general-entities"))
   }
 
   @UnitTest
   def issue17LoadExternalDtd: Unit = {
-    assertFalse(defaultParserFactory.getFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd"))
+    assertTrue(defaultParserFactory.getFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd"))
   }
 
   @UnitTest
   def issue17DisallowDoctypeDecl: Unit = {
-    assertTrue(defaultParserFactory.getFeature("http://apache.org/xml/features/disallow-doctype-decl"))
+    assertFalse(defaultParserFactory.getFeature("http://apache.org/xml/features/disallow-doctype-decl"))
   }
 
   @UnitTest
   def issue17ExternalParameterEntities: Unit = {
-    assertFalse(defaultParserFactory.getFeature("http://xml.org/sax/features/external-parameter-entities"))
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/external-parameter-entities"))
   }
 
   @UnitTest
   def issue17ResolveDtdUris: Unit = {
-    assertFalse(defaultParserFactory.getFeature("http://xml.org/sax/features/resolve-dtd-uris"))
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/resolve-dtd-uris"))
   }
 
   @UnitTest
