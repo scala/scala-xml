@@ -36,11 +36,11 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
     rest.push(sink, q0)
 
-    def addFinal(q: immutable.BitSet) {
+    def addFinal(q: immutable.BitSet): Unit = {
       if (nfa containsFinal q)
         finals = finals.updated(q, selectTag(q, nfa.finals))
     }
-    def add(Q: immutable.BitSet) {
+    def add(Q: immutable.BitSet): Unit = {
       if (!states(Q)) {
         states += Q
         rest push Q

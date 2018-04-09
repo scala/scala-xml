@@ -26,7 +26,7 @@ abstract class ValidatingMarkupHandler extends MarkupHandler {
   override def endDTD(n: String) = {
     rootLabel = n
   }
-  override def elemStart(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding) {
+  override def elemStart(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding): Unit = {
 
     def advanceDFA(dm: DFAContentModel) = {
       val trans = dm.dfa.delta(qCurrent)
@@ -67,7 +67,7 @@ abstract class ValidatingMarkupHandler extends MarkupHandler {
     // println("  done  now")
   }
 
-  override def elemEnd(pos: Int, pre: String, label: String) {
+  override def elemEnd(pos: Int, pre: String, label: String): Unit = {
     // println("  elemEnd")
     qCurrent = qStack.head
     qStack = qStack.tail
@@ -77,23 +77,23 @@ abstract class ValidatingMarkupHandler extends MarkupHandler {
     // println("    declCurrent now" + declCurrent)
   }
 
-  final override def elemDecl(name: String, cmstr: String) {
+  final override def elemDecl(name: String, cmstr: String): Unit = {
     decls = ElemDecl(name, ContentModel.parse(cmstr)) :: decls
   }
 
-  final override def attListDecl(name: String, attList: List[AttrDecl]) {
+  final override def attListDecl(name: String, attList: List[AttrDecl]): Unit = {
     decls = AttListDecl(name, attList) :: decls
   }
 
-  final override def unparsedEntityDecl(name: String, extID: ExternalID, notat: String) {
+  final override def unparsedEntityDecl(name: String, extID: ExternalID, notat: String): Unit = {
     decls = UnparsedEntityDecl(name, extID, notat) :: decls
   }
 
-  final override def notationDecl(notat: String, extID: ExternalID) {
+  final override def notationDecl(notat: String, extID: ExternalID): Unit = {
     decls = NotationDecl(notat, extID) :: decls
   }
 
-  final override def peReference(name: String) {
+  final override def peReference(name: String): Unit = {
     decls = PEReference(name) :: decls
   }
 

@@ -13,7 +13,7 @@ class XMLEventReaderTest {
 
   private def toSource(s: String) = new Source {
     val iter = s.iterator
-    override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err) {}
+    override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err): Unit = {}
   }
 
   @Test

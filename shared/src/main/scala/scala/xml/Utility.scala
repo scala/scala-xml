@@ -138,7 +138,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   /**
    * Adds all namespaces in node to set.
    */
-  def collectNamespaces(n: Node, set: mutable.Set[String]) {
+  def collectNamespaces(n: Node, set: mutable.Set[String]): Unit = {
     if (n.doCollectNamespaces) {
       set += n.namespace
       for (a <- n.attributes) a match {

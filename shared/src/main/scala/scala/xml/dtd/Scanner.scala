@@ -25,7 +25,7 @@ class Scanner extends Tokens with parsing.TokenTests {
   private var c: Char = 'z'
 
   /** initializes the scanner on input s */
-  final def initScanner(s: String) {
+  final def initScanner(s: String): Unit = {
     value = ""
     it = (s).iterator
     token = 1 + END
@@ -34,7 +34,7 @@ class Scanner extends Tokens with parsing.TokenTests {
   }
 
   /** scans the next token */
-  final def nextToken() {
+  final def nextToken(): Unit = {
     if (token != END) token = readToken
   }
 
@@ -44,11 +44,11 @@ class Scanner extends Tokens with parsing.TokenTests {
 
   final def next() = if (it.hasNext) c = it.next() else c = ENDCH
 
-  final def acc(d: Char) {
+  final def acc(d: Char): Unit = {
     if (c == d) next() else scala.sys.error("expected '" + d + "' found '" + c + "' !")
   }
 
-  final def accS(ds: Seq[Char]) { ds foreach acc }
+  final def accS(ds: Seq[Char]): Unit = { ds foreach acc }
 
   final def readToken: Int =
     if (isSpace(c)) {

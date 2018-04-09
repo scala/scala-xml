@@ -45,7 +45,7 @@ class ElementValidator() extends Function1[Node, Boolean] {
   def getContentModel = contentModel
 
   /** set meta data, enabling attribute validation */
-  def setMetaData(adecls: List[AttrDecl]) { this.adecls = adecls }
+  def setMetaData(adecls: List[AttrDecl]): Unit = { this.adecls = adecls }
 
   def getIterable(nodes: Seq[Node], skipPCDATA: Boolean): Iterable[ElemName] = {
     def isAllWhitespace(a: Atom[_]) = cond(a.data) { case s: String if s.trim == "" => true }
