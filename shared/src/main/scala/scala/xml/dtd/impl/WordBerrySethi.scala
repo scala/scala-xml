@@ -73,7 +73,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
    */
 
   /** Called at the leaves of the regexp */
-  protected def seenLabel(r: RegExp, i: Int, label: _labelT) {
+  protected def seenLabel(r: RegExp, i: Int, label: _labelT): Unit = {
     labelAt = labelAt.updated(i, label)
     this.labels += label
   }
@@ -92,7 +92,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
     case _               => super.traverse(r)
   }
 
-  protected def makeTransition(src: Int, dest: Int, label: _labelT) {
+  protected def makeTransition(src: Int, dest: Int, label: _labelT): Unit = {
     val q = deltaq(src)
     q.update(label, dest :: q.getOrElse(label, Nil))
   }
@@ -109,7 +109,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
     this.initials = Set(0)
   }
 
-  protected def initializeAutom() {
+  protected def initializeAutom(): Unit = {
     finals = immutable.Map.empty[Int, Int] // final states
     deltaq = new Array[mutable.HashMap[_labelT, List[Int]]](pos) // delta
     defaultq = new Array[List[Int]](pos) // default transitions

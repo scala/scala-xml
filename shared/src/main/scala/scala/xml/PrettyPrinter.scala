@@ -95,7 +95,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
   }
 
   protected def leafTag(n: Node) = {
-    def mkLeaf(sb: StringBuilder) {
+    def mkLeaf(sb: StringBuilder): Unit = {
       sb append '<'
       n nameToString sb
       n.attributes buildString sb
@@ -106,7 +106,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
   protected def startTag(n: Node, pscope: NamespaceBinding): (String, Int) = {
     var i = 0
-    def mkStart(sb: StringBuilder) {
+    def mkStart(sb: StringBuilder): Unit = {
       sb append '<'
       n nameToString sb
       i = sb.length + 1
@@ -118,7 +118,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
   }
 
   protected def endTag(n: Node) = {
-    def mkEnd(sb: StringBuilder) {
+    def mkEnd(sb: StringBuilder): Unit = {
       sb append "</"
       n nameToString sb
       sb append '>'
@@ -203,11 +203,11 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
    * @param n    the node to be serialized
    * @param sb   the stringbuffer to append to
    */
-  def format(n: Node, sb: StringBuilder) { // entry point
+  def format(n: Node, sb: StringBuilder): Unit = { // entry point
     format(n, TopScope, sb)
   }
 
-  def format(n: Node, pscope: NamespaceBinding, sb: StringBuilder) { // entry point
+  def format(n: Node, pscope: NamespaceBinding, sb: StringBuilder): Unit = { // entry point
     var lastwasbreak = false
     reset()
     traverse(n, pscope, 0)

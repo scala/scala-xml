@@ -88,7 +88,7 @@ abstract trait Attribute extends MetaData {
   /**
    * Appends string representation of only this attribute to stringbuffer.
    */
-  protected def toString1(sb: StringBuilder) {
+  protected def toString1(sb: StringBuilder): Unit = {
     if (value == null)
       return
     if (isPrefixed)

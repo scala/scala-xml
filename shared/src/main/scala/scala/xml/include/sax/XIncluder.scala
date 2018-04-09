@@ -25,9 +25,9 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   var out = new OutputStreamWriter(outs, encoding)
 
-  def setDocumentLocator(locator: Locator) {}
+  def setDocumentLocator(locator: Locator): Unit = {}
 
-  def startDocument() {
+  def startDocument(): Unit = {
     try {
       out.write("<?xml version='1.0' encoding='"
         + encoding + "'?>\r\n")
@@ -37,7 +37,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def endDocument() {
+  def endDocument(): Unit = {
     try {
       out.flush()
     } catch {
@@ -46,9 +46,9 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def startPrefixMapping(prefix: String, uri: String) {}
+  def startPrefixMapping(prefix: String, uri: String): Unit = {}
 
-  def endPrefixMapping(prefix: String) {}
+  def endPrefixMapping(prefix: String): Unit = {}
 
   def startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes) = {
     try {
@@ -71,7 +71,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def endElement(namespaceURI: String, localName: String, qualifiedName: String) {
+  def endElement(namespaceURI: String, localName: String, qualifiedName: String): Unit = {
     try {
       out.write("</" + qualifiedName + ">")
     } catch {
@@ -82,7 +82,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   // need to escape characters that are not in the given
   // encoding using character references????
-  def characters(ch: Array[Char], start: Int, length: Int) {
+  def characters(ch: Array[Char], start: Int, length: Int): Unit = {
     try {
       var i = 0; while (i < length) {
         val c = ch(start + i)
@@ -101,12 +101,12 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def ignorableWhitespace(ch: Array[Char], start: Int, length: Int) {
+  def ignorableWhitespace(ch: Array[Char], start: Int, length: Int): Unit = {
     this.characters(ch, start, length)
   }
 
   // do I need to escape text in PI????
-  def processingInstruction(target: String, data: String) {
+  def processingInstruction(target: String, data: String): Unit = {
     try {
       out.write("<?" + target + " " + data + "?>")
     } catch {
@@ -115,7 +115,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def skippedEntity(name: String) {
+  def skippedEntity(name: String): Unit = {
     try {
       out.write("&" + name + ";")
     } catch {
@@ -128,7 +128,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   private var inDTD: Boolean = false
   private val entities = new mutable.Stack[String]()
 
-  def startDTD(name: String, publicID: String, systemID: String) {
+  def startDTD(name: String, publicID: String, systemID: String): Unit = {
     inDTD = true
     // if this is the source document, output a DOCTYPE declaration
     if (entities.isEmpty) {
@@ -143,28 +143,28 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
       }
     }
   }
-  def endDTD() {}
+  def endDTD(): Unit = {}
 
-  def startEntity(name: String) {
+  def startEntity(name: String): Unit = {
     entities push name
   }
 
-  def endEntity(name: String) {
+  def endEntity(name: String): Unit = {
     entities.pop()
   }
 
-  def startCDATA() {}
-  def endCDATA() {}
+  def startCDATA(): Unit = {}
+  def endCDATA(): Unit = {}
 
   // Just need this reference so we can ask if a comment is
   // inside an include element or not
   private var filter: XIncludeFilter = null
 
-  def setFilter(filter: XIncludeFilter) {
+  def setFilter(filter: XIncludeFilter): Unit = {
     this.filter = filter
   }
 
-  def comment(ch: Array[Char], start: Int, length: Int) {
+  def comment(ch: Array[Char], start: Int, length: Int): Unit = {
     if (!inDTD && !filter.insideIncludeElement()) {
       try {
         out.write("<!--")

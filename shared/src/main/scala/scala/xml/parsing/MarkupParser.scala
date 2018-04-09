@@ -294,7 +294,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     handle.procInstr(position, name, text)
 
   /** this method tells ch to get the next character when next called */
-  def nextch() {
+  def nextch(): Unit = {
     // Read current ch if needed
     ch
 
@@ -415,7 +415,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  '<' content1 ::=  ...
    *  }}}
    */
-  def content1(pscope: NamespaceBinding, ts: NodeBuffer) {
+  def content1(pscope: NamespaceBinding, ts: NodeBuffer): Unit = {
     ch match {
       case '!' =>
         nextch()
@@ -511,7 +511,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  <! parseDTD ::= DOCTYPE name ... >
    *  }}}
    */
-  def parseDTD() { // dirty but fast
+  def parseDTD(): Unit = { // dirty but fast
     var extID: ExternalID = null
     if (this.dtd ne null)
       reportSyntaxError("unexpected character (DOCTYPE already defined")
@@ -776,7 +776,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   /**
    * "rec-xml/#ExtSubset" pe references may not occur within markup declarations
    */
-  def intSubset() {
+  def intSubset(): Unit = {
     //Console.println("(DEBUG) intSubset()")
     xSpace()
     while (']' != ch && !eof)
@@ -786,7 +786,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   /**
    * &lt;! element := ELEMENT
    */
-  def elementDecl() {
+  def elementDecl(): Unit = {
     xToken("EMENT")
     xSpace()
     val n = xName
@@ -907,7 +907,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  'N' notationDecl ::= "OTATION"
    *  }}}
    */
-  def notationDecl() {
+  def notationDecl(): Unit = {
     xToken("OTATION")
     xSpace()
     val notat = xName
@@ -935,11 +935,11 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     handle.notationDecl(notat, extID)
   }
 
-  def reportSyntaxError(pos: Int, str: String) { curInput.reportError(pos, str) }
-  def reportSyntaxError(str: String) { reportSyntaxError(pos, str) }
-  def reportValidationError(pos: Int, str: String) { reportSyntaxError(pos, str) }
+  def reportSyntaxError(pos: Int, str: String): Unit = { curInput.reportError(pos, str) }
+  def reportSyntaxError(str: String): Unit = { reportSyntaxError(pos, str) }
+  def reportValidationError(pos: Int, str: String): Unit = { reportSyntaxError(pos, str) }
 
-  def push(entityName: String) {
+  def push(entityName: String): Unit = {
     if (!eof)
       inpStack = curInput :: inpStack
 
@@ -950,7 +950,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     nextch()
   }
 
-  def pushExternal(systemId: String) {
+  def pushExternal(systemId: String): Unit = {
     if (!eof)
       inpStack = curInput :: inpStack
 
@@ -961,7 +961,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     nextch()
   }
 
-  def pop() {
+  def pop(): Unit = {
     curInput = inpStack.head
     inpStack = inpStack.tail
     lastChRead = curInput.ch

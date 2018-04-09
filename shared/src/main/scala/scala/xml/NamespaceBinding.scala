@@ -67,11 +67,11 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
 
   def buildString(stop: NamespaceBinding): String = sbToString(buildString(_, stop))
 
-  def buildString(sb: StringBuilder, stop: NamespaceBinding) {
+  def buildString(sb: StringBuilder, stop: NamespaceBinding): Unit = {
     shadowRedefined(stop).doBuildString(sb, stop)
   }
 
-  private def doBuildString(sb: StringBuilder, stop: NamespaceBinding) {
+  private def doBuildString(sb: StringBuilder, stop: NamespaceBinding): Unit = {
     if (List(null, stop, TopScope).contains(this)) return
 
     val s = " xmlns%s=\"%s\"".format(

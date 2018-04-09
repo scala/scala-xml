@@ -187,7 +187,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
   /**
    * Processing instruction.
    */
-  override def processingInstruction(target: String, data: String) {
+  override def processingInstruction(target: String, data: String): Unit = {
     captureText()
     hStack pushAll createProcInstr(target, data)
   }

@@ -260,7 +260,7 @@ class XMLTest {
   }
 
   @UnitTest
-  def XmlEy {
+  def XmlEy: Unit = {
     assertTrue((ax \ "@{the namespace from outer space}foo") xml_== "baz")
     assertTrue((cx \ "@{the namespace from outer space}foo") xml_== "baz")
 
@@ -416,7 +416,7 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
-  def t5052 {
+  def t5052: Unit = {
     assertTrue(<elem attr={ null: String }/> xml_== <elem/>)
     assertTrue(<elem attr={ None }/> xml_== <elem/>)
     assertTrue(<elem/> xml_== <elem attr={ null: String }/>)
@@ -438,7 +438,7 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
-  def t5843 {
+  def t5843: Unit = {
     val foo = scala.xml.Attribute(null, "foo", "1", scala.xml.Null)
     val bar = scala.xml.Attribute(null, "bar", "2", foo)
     val ns = scala.xml.NamespaceBinding(null, "uri", scala.xml.TopScope)
@@ -455,7 +455,7 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
-  def t7074 {
+  def t7074: Unit = {
     assertEquals("""<a/>""", sort(<a/>) toString)
     assertEquals("""<a b="2" c="3" d="1"/>""", sort(<a d="1" b="2" c="3"/>) toString)
     assertEquals("""<a b="2" c="4" d="1" e="3" f="5"/>""", sort(<a d="1" b="2" e="3" c="4" f="5"/>) toString)

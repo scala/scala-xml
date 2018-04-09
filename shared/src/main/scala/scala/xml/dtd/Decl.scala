@@ -103,7 +103,7 @@ sealed abstract class EntityDef {
 }
 
 case class IntDef(value: String) extends EntityDef {
-  private def validateValue() {
+  private def validateValue(): Unit = {
     var tmp = value
     var ix = tmp indexOf '%'
     while (ix != -1) {

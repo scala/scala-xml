@@ -121,7 +121,7 @@ abstract class MarkupHandler {
   def parsedEntityDecl(name: String, edef: EntityDef): Unit =
     someEntityDecl(name, edef, ParsedEntityDecl.apply _)
 
-  def peReference(name: String) { decls ::= PEReference(name) }
+  def peReference(name: String): Unit = { decls ::= PEReference(name) }
   def unparsedEntityDecl(name: String, extID: ExternalID, notat: String): Unit = ()
   def notationDecl(notat: String, extID: ExternalID): Unit = ()
   def reportSyntaxError(pos: Int, str: String): Unit

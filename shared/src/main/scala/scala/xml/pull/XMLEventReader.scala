@@ -69,11 +69,11 @@ class XMLEventReader(src: Source)
       NodeSeq.Empty
     }
 
-    override def elemStart(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding) {
+    override def elemStart(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding): Unit = {
       level += 1
       setEvent(EvElemStart(pre, label, attrs, scope))
     }
-    override def elemEnd(pos: Int, pre: String, label: String) {
+    override def elemEnd(pos: Int, pre: String, label: String): Unit = {
       setEvent(EvElemEnd(pre, label))
       level -= 1
     }
@@ -90,7 +90,7 @@ class XMLEventReader(src: Source)
     def entityRef(pos: Int, n: String) = setEvent(EvEntityRef(n))
     def text(pos: Int, txt: String) = setEvent(EvText(txt))
 
-    override def run() {
+    override def run(): Unit = {
       curInput = input
       try {
         interruptibly { this.initialize.document() }
