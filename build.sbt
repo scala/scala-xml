@@ -22,7 +22,9 @@ lazy val xml = crossProject.in(file("."))
     name    := "scala-xml",
     version := "1.1.1-SNAPSHOT",
 
-    scalacOptions         ++= "-deprecation:false -Xfuture -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
+    // Compiler team advised avoiding the -Xfuture option for releases.
+    // The output with -Xfuture should be periodically checked, though.
+    scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
 
     apiMappings ++= Map(
