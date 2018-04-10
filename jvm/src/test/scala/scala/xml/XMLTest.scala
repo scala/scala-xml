@@ -532,6 +532,54 @@ class XMLTestJVM {
     }
   }
 
+  /** Default SAXParserFactory */
+  val defaultParserFactory = javax.xml.parsers.SAXParserFactory.newInstance
+
+  @throws(classOf[org.xml.sax.SAXNotRecognizedException])
+  def issue17UnrecognizedFeature: Unit = {
+    assertTrue(defaultParserFactory.getFeature("foobar"))
+  }
+
+  @UnitTest
+  def issue17SecureProcessing: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://javax.xml.XMLConstants/feature/secure-processing"))
+  }
+
+  @UnitTest
+  def issue17ExternalGeneralEntities: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/external-general-entities"))
+  }
+
+  @UnitTest
+  def issue17LoadExternalDtd: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd"))
+  }
+
+  @UnitTest
+  def issue17DisallowDoctypeDecl: Unit = {
+    assertFalse(defaultParserFactory.getFeature("http://apache.org/xml/features/disallow-doctype-decl"))
+  }
+
+  @UnitTest
+  def issue17ExternalParameterEntities: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/external-parameter-entities"))
+  }
+
+  @UnitTest
+  def issue17ResolveDtdUris: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/resolve-dtd-uris"))
+  }
+
+  @UnitTest
+  def issue17isXIncludeAware: Unit = {
+    assertFalse(XML.parser.isXIncludeAware)
+  }
+
+  @UnitTest
+  def issue17isNamespaceAware: Unit = {
+    assertFalse(XML.parser.isNamespaceAware)
+  }
+
   @UnitTest
   def issue28: Unit = {
     val x = <x:foo xmlns:x="gaga"/>
