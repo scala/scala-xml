@@ -27,6 +27,8 @@ lazy val xml = crossProject.in(file("."))
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
 
+    mimaPreviousVersion := Some("1.1.0"),
+
     apiMappings ++= Map(
       scalaInstance.value.libraryJar
         -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
@@ -53,9 +55,6 @@ lazy val xml = crossProject.in(file("."))
   )
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
-
-    // there is currently no previous released JS version, therefore MiMa is enabled only on JVM
-    mimaPreviousVersion := Some("1.0.6"),
 
     libraryDependencies += "junit" % "junit" % "4.12" % "test",
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
