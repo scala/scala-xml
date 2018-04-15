@@ -19,7 +19,7 @@ import Utility.SU
  *  All members should be accessed through those.
  */
 private[scala] trait MarkupParserCommon extends TokenTests {
-  protected def unreachable = scala.sys.error("Cannot be reached.")
+  protected def unreachable = truncatedError("Cannot be reached.")
 
   // type HandleType       // MarkupHandler, SymbolicXMLBuilder
   type InputType // Source, CharArrayReader
@@ -62,7 +62,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     val buf = new StringBuilder
     while (ch != endCh && !eof) {
       // well-formedness constraint
-      if (ch == '<') return errorAndResult("'<' not allowed in attrib value", "")
+      if (ch == '<') reportSyntaxError("'<' not allowed in attrib value")
       else if (ch == SU) truncatedError("")
       else buf append ch_returning_nextch
     }
@@ -241,11 +241,11 @@ private[scala] trait MarkupParserCommon extends TokenTests {
       val head = until.head
       val rest = until.tail
 
-      while (true) {
+      while (!eof) {
         if (ch == head && peek(rest))
           return handler(positioner(), sb.toString)
         else if (ch == SU || eof)
-          truncatedError("") // throws TruncatedXMLControl in compiler
+          truncatedError(s"died parsing until $until") // throws TruncatedXMLControl in compiler
 
         sb append ch
         nextch()

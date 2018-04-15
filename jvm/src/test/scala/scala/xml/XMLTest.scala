@@ -766,8 +766,8 @@ class XMLTestJVM {
     assertEquals(x, XML.loadString(formatted))
   }
 
-  @UnitTest(expected = classOf[FatalError])
-  def xTokenFailure {
+  @UnitTest
+  def xTokenTest {
     val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("a"), false)
     assertEquals((): Unit, x.xToken('b'))
   }
@@ -786,27 +786,39 @@ class XMLTestJVM {
     x.xComment
   }
 
-  @UnitTest(expected = classOf[FatalError])
-  def xmlProcInstrFailure {
+  @UnitTest
+  def xmlProcInstrTest {
     val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("aa"), false)
 
     assertEquals(new UnprefixedAttribute("aa", Text(""), Null), x.xmlProcInstr)
   }
 
-  @Ignore("Ignored for future fix, currently throw OOE because of infinity MarkupParserCommon:66")
   @UnitTest(expected = classOf[FatalError])
-  def xAttributeValueFailure {
+  def notationDeclFailure {
     val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
 
-    x.xAttributeValue
+    x.notationDecl
   }
 
-  @Ignore("Ignored for future fix, currently return unexpected result")
-  @UnitTest(expected = classOf[FatalError])
-  def xEntityValueFailure {
+  @UnitTest
+  def pubidLiteralTest {
     val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
 
-    x.xEntityValue
+    assertEquals("", x.pubidLiteral)
+  }
+
+  @UnitTest
+  def xAttributeValueTest {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("'"), false)
+
+    assertEquals("", x.xAttributeValue)
+  }
+
+  @UnitTest
+  def xEntityValueTest {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
+
+    assertEquals("", x.xEntityValue)
   }
 
 }
