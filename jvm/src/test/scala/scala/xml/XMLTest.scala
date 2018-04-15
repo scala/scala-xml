@@ -767,47 +767,46 @@ class XMLTestJVM {
   }
 
   @UnitTest(expected = classOf[FatalError])
-  def shouldThrowFatalErrorWhenCantFindRequestedXToken {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
-
-    x.xToken('b')
+  def xTokenFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("a"), false)
+    assertEquals((): Unit, x.xToken('b'))
   }
 
   @UnitTest(expected = classOf[FatalError])
-  def shouldThrowFatalErrorWhenCantFindRequestedXCharData {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+  def xCharDataFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
 
     x.xCharData
   }
 
   @UnitTest(expected = classOf[FatalError])
-  def shouldThrowFatalErrorWhenCantFindRequestedXComment {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+  def xCommentFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
 
     x.xComment
   }
 
   @UnitTest(expected = classOf[FatalError])
-  def shouldThrowFatalErrorWhenCantFindRequestedXmlProcInstr {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+  def xmlProcInstrFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("aa"), false)
 
-    x.xmlProcInstr()
+    assertEquals(new UnprefixedAttribute("aa", Text(""), Null), x.xmlProcInstr)
   }
 
   @Ignore("Ignored for future fix, currently throw OOE because of infinity MarkupParserCommon:66")
   @UnitTest(expected = classOf[FatalError])
-  def shouldThrowFatalErrorWhenCantFindRequestedXAttributeValue {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+  def xAttributeValueFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
 
-    x.xAttributeValue()
+    x.xAttributeValue
   }
 
   @Ignore("Ignored for future fix, currently return unexpected result")
   @UnitTest(expected = classOf[FatalError])
-  def shouldThrowFatalErrorWhenCantFindRequestedXEntityValue {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("<a/>"), false)
+  def xEntityValueFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
 
-    assertEquals("a/>", x.xEntityValue())
+    x.xEntityValue
   }
 
 }
