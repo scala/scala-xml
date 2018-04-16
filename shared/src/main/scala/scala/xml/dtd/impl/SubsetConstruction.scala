@@ -20,8 +20,8 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
   def determinize: DetWordAutom[T] = {
     // for assigning numbers to bitsets
-    var indexMap = scala.collection.Map[immutable.BitSet, Int]()
-    var invIndexMap = scala.collection.Map[Int, immutable.BitSet]()
+    val indexMap = mutable.Map[immutable.BitSet, Int]()
+    val invIndexMap = mutable.Map[Int, immutable.BitSet]()
     var ix = 0
 
     // we compute the dfa with states = bitsets
@@ -30,15 +30,15 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
     var states = Set(q0, sink) // initial set of sets
     val delta = new mutable.HashMap[immutable.BitSet, mutable.HashMap[T, immutable.BitSet]]
-    var deftrans = mutable.Map(q0 -> sink, sink -> sink) // initial transitions
-    var finals: mutable.Map[immutable.BitSet, Int] = mutable.Map()
+    val deftrans = mutable.Map(q0 -> sink, sink -> sink) // initial transitions
+    val finals: mutable.Map[immutable.BitSet, Int] = mutable.Map()
     val rest = new mutable.Stack[immutable.BitSet]
 
     rest.push(sink, q0)
 
     def addFinal(q: immutable.BitSet) {
       if (nfa containsFinal q)
-        finals = finals.updated(q, selectTag(q, nfa.finals))
+        finals(q) = selectTag(q, nfa.finals)
     }
     def add(Q: immutable.BitSet) {
       if (!states(Q)) {
@@ -53,8 +53,8 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     while (!rest.isEmpty) {
       val P = rest.pop()
       // assign a number to this bitset
-      indexMap = indexMap.updated(P, ix)
-      invIndexMap = invIndexMap.updated(ix, P)
+      indexMap(P) = ix
+      invIndexMap(ix) = P
       ix += 1
 
       // make transition map
@@ -69,7 +69,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
       // collect default transitions
       val Pdef = nfa nextDefault P
-      deftrans = deftrans.updated(P, Pdef)
+      deftrans(P) = Pdef
       add(Pdef)
     }
 
