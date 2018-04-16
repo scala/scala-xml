@@ -358,7 +358,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     nextch()
     val str = cbuf.toString()
-    cbuf.length = 0
+    cbuf.setLength(0)
     str
   }
 
@@ -390,7 +390,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     xToken("--")
     while (!eof) {
       if (ch == '-' && { sb.append(ch); nextch(); ch == '-' }) {
-        sb.length = sb.length - 1
+        sb.setLength(sb.length - 1)
         nextch()
         xToken('>')
         return handle.comment(pos, sb.toString())
@@ -608,7 +608,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       exit = eof || (ch == '<') || (ch == '&')
     }
     val str = cbuf.toString
-    cbuf.length = 0
+    cbuf.setLength(0)
     str
   }
 
@@ -630,7 +630,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     nextch()
     val str = cbuf.toString()
-    cbuf.length = 0
+    cbuf.setLength(0)
     str
   }
 
@@ -653,7 +653,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     nextch()
     val str = cbuf.toString
-    cbuf.length = 0
+    cbuf.setLength(0)
     str
   }
 
@@ -799,7 +799,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     //Console.println("END["+ch+"]")
     nextch()
     val cmstr = cbuf.toString()
-    cbuf.length = 0
+    cbuf.setLength(0)
     handle.elemDecl(n, cmstr)
   }
 
@@ -826,7 +826,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
         nextch()
       }
       val atpe = cbuf.toString
-      cbuf.length = 0
+      cbuf.setLength(0)
 
       val defdecl: DefaultDecl = ch match {
         case '\'' | '"' =>
@@ -846,7 +846,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       xSpaceOpt()
 
       attList ::= AttrDecl(aname, atpe, defdecl)
-      cbuf.length = 0
+      cbuf.setLength(0)
     }
     nextch()
     handle.attListDecl(n, attList.reverse)
