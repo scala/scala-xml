@@ -766,57 +766,62 @@ class XMLTestJVM {
     assertEquals(x, XML.loadString(formatted))
   }
 
+  def toSource(s: String) = new scala.io.Source {
+    val iter = s.iterator
+    override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err): Unit = {}
+  }
+
   @UnitTest
   def xTokenTest {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("a"), false)
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("a"), false)
     assertEquals((): Unit, x.xToken('b'))
   }
 
   @UnitTest(expected = classOf[FatalError])
   def xCharDataFailure {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     x.xCharData
   }
 
   @UnitTest(expected = classOf[FatalError])
   def xCommentFailure {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     x.xComment
   }
 
   @UnitTest
   def xmlProcInstrTest {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("aa"), false)
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("aa"), false)
 
     assertEquals(new UnprefixedAttribute("aa", Text(""), Null), x.xmlProcInstr)
   }
 
   @UnitTest(expected = classOf[FatalError])
   def notationDeclFailure {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     x.notationDecl
   }
 
   @UnitTest
   def pubidLiteralTest {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     assertEquals("", x.pubidLiteral)
   }
 
   @UnitTest
   def xAttributeValueTest {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString("'"), false)
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("'"), false)
 
     assertEquals("", x.xAttributeValue)
   }
 
   @UnitTest
   def xEntityValueTest {
-    val x = xml.parsing.ConstructingParser.fromSource(io.Source.fromString(""), false)
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     assertEquals("", x.xEntityValue)
   }
