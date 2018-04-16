@@ -14,6 +14,7 @@ package pull
  * An XML event for pull parsing.  All events received during
  * parsing will be one of the subclasses of this trait.
  */
+@deprecated("Consider javax.xml.stream.events.XMLEvent instead.", "1.1.1")
 trait XMLEvent
 
 /**
