@@ -10,6 +10,8 @@ package scala
 package xml
 package parsing
 
+import scala.collection.Seq
+
 /**
  * Helper functions for parsing XML fragments
  */

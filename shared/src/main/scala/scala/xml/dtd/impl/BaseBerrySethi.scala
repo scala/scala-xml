@@ -10,6 +10,7 @@ package scala
 package xml.dtd.impl
 
 import scala.collection.{ mutable, immutable }
+import scala.collection.Seq
 
 // todo: replace global variable pos with acc
 

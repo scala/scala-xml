@@ -10,6 +10,8 @@ package scala
 package xml
 package transform
 
+import scala.collection.Seq
+
 class RuleTransformer(rules: RewriteRule*) extends BasicTransformer {
   override def transform(n: Node): Seq[Node] =
     rules.foldLeft(super.transform(n)) { (res, rule) => rule transform res }

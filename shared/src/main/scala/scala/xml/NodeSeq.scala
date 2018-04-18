@@ -13,6 +13,7 @@ import scala.collection.{ mutable, immutable, generic, SeqLike, AbstractSeq }
 import mutable.{ Builder, ListBuffer }
 import generic.{ CanBuildFrom }
 import scala.language.implicitConversions
+import scala.collection.Seq
 
 /**
  * This object ...

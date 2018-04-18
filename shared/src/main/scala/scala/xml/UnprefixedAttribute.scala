@@ -9,6 +9,8 @@
 package scala
 package xml
 
+import scala.collection.Seq
+
 /**
  * Unprefixed attributes have the null namespace, and no prefix field
  *

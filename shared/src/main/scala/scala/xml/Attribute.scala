@@ -9,6 +9,8 @@
 package scala
 package xml
 
+import scala.collection.Seq
+
 /**
  * This singleton object contains the `apply` and `unapply` methods for
  *  convenient construction and deconstruction.

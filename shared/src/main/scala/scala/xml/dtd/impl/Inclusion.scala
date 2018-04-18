@@ -9,6 +9,8 @@
 package scala
 package xml.dtd.impl
 
+import scala.collection.Seq
+
 /**
  * A fast test of language inclusion between minimal automata.
  *  inspired by the ''AMoRE automata library''.

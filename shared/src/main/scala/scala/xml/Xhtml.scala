@@ -4,6 +4,7 @@ package xml
 
 import parsing.XhtmlEntities
 import Utility.{ sbToString, isAtomAndNotText }
+import scala.collection.Seq
 
 /* (c) David Pollak  2007 WorldWide Conferencing, LLC */
 

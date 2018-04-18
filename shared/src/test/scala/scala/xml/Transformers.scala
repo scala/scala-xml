@@ -1,5 +1,6 @@
 package scala.xml
 
+import scala.collection.Seq
 import scala.xml.transform._
 
 import org.junit.Test

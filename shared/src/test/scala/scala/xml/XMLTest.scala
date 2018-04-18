@@ -9,6 +9,7 @@ import org.junit.Assert.assertEquals
 // import scala.xml.parsing.ConstructingParser
 import java.io.StringWriter
 import scala.collection.Iterable
+import scala.collection.Seq
 import scala.xml.Utility.sort
 
 object XMLTest {
