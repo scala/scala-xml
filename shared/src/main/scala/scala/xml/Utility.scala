@@ -51,13 +51,9 @@ object Utility extends AnyRef with parsing.TokenTests {
   }
 
   private def combineAdjacentTextNodes(children: Node*): Seq[Node] = {
-    children.foldLeft(Seq.empty[Node]) { (acc, n) =>
-      (acc.lastOption, n) match {
-        case (Some(Text(l)), Text(r)) => {
-          acc.dropRight(1) :+ Text(l + r)
-        }
-        case _ => acc :+ n
-      }
+    children.foldRight(Seq.empty[Node]) {
+      case (Text(left), Text(right) +: accMinusLast) => Text(left + right) +: accMinusLast
+      case (n, acc) => n +: acc 
     }
   }
 
