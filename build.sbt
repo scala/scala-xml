@@ -1,7 +1,7 @@
 import sbtcrossproject.{crossProject, CrossType}
 import ScalaModulePlugin._
 
-crossScalaVersions in ThisBuild := List("2.12.6", "2.11.12", "2.13.0-M3")
+crossScalaVersions in ThisBuild := List("2.12.6", "2.11.12", "2.13.0-M4")
 
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
@@ -27,7 +27,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       (unmanagedSourceDirectories in Compile).value.map { dir =>
         val sv = scalaVersion.value
         CrossVersion.partialVersion(sv) match {
-          case Some((2, 13)) if !sv.startsWith("2.13.0-M3") => file(dir.getPath ++ "-2.13") // TODO: remove M3 guard once M4 is out.
+          case Some((2, 13)) => file(dir.getPath ++ "-2.13")
           case _             => file(dir.getPath ++ "-2.11-2.12")
         }
       }
