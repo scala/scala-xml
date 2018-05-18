@@ -12,8 +12,6 @@
 *.jar
 *~
 
-build.properties
-
 # target directories for ant build
 /build/
 /dists/
