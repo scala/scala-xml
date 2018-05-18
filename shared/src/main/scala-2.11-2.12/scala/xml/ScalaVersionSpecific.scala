@@ -3,7 +3,7 @@ package scala.xml
 import scala.collection.SeqLike
 import scala.collection.generic.CanBuildFrom
 
-object ScalaVersionSpecific {
+private[xml] object ScalaVersionSpecific {
   import NodeSeq.Coll
   type CBF[-From, -A, +C] = CanBuildFrom[From, A, C]
   object NodeSeqCBF extends CanBuildFrom[Coll, Node, NodeSeq] {
@@ -12,11 +12,11 @@ object ScalaVersionSpecific {
   }
 }
 
-trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { self: NodeSeq =>
+private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { self: NodeSeq =>
   /** Creates a list buffer as builder for this class */
   override protected[this] def newBuilder = NodeSeq.newBuilder
 }
 
-trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
+private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
   override def stringPrefix: String = "NodeBuffer"
 }
