@@ -1,4 +1,5 @@
 import ScalaModulePlugin._
+import sbtcrossproject.crossProject
 
 scalaVersionsByJvm in ThisBuild := {
   val v211 = "2.11.12"
@@ -15,7 +16,7 @@ lazy val root = project.in(file("."))
   .aggregate(xmlJS, xmlJVM)
   .settings(disablePublishing)
 
-lazy val xml = crossProject.in(file("."))
+lazy val xml = crossProject(JSPlatform, JVMPlatform).in(file("."))
   .settings(scalaModuleSettings)
   .jvmSettings(scalaModuleSettingsJVM)
   .settings(
