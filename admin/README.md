@@ -39,9 +39,7 @@ env:
     # SONA_PASS
     - secure: "XXXXXX"
 
-script:
-  - if [[ "$TRAVIS_JDK_VERSION" == "openjdk6" && "$TRAVIS_SCALA_VERSION" =~ 2\.11\..* || "$TRAVIS_JDK_VERSION" == "oraclejdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then export RELEASE_COMBO=true; fi
-  - admin/build.sh
+script: admin/build.sh
 
 notifications:
   email:
