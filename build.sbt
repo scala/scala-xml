@@ -1,21 +1,12 @@
+import sbtcrossproject.{crossProject, CrossType}
 import ScalaModulePlugin._
 
-scalaVersionsByJvm in ThisBuild := {
-  val v211 = "2.11.12"
-  val v212 = "2.12.4"
-  val v213 = "2.13.0-M3"
-  Map(
-    6 -> List(v211 -> true),
-    7 -> List(v211 -> false),
-    8 -> List(v212 -> true, v213 -> true, v211 -> false),
-    9 -> List(v212 -> false, v213 -> false, v211 -> false))
-}
+crossScalaVersions in ThisBuild := List("2.12.6", "2.11.12", "2.13.0-M3")
 
-lazy val root = project.in(file("."))
-  .aggregate(xmlJS, xmlJVM)
-  .settings(disablePublishing)
-
-lazy val xml = crossProject.in(file("."))
+lazy val xml = crossProject(JSPlatform, JVMPlatform)
+  .withoutSuffixFor(JVMPlatform)
+  .crossType(CrossType.Full)
+  .in(file("."))
   .settings(scalaModuleSettings)
   .jvmSettings(scalaModuleSettingsJVM)
   .settings(
@@ -27,7 +18,10 @@ lazy val xml = crossProject.in(file("."))
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
 
-    mimaPreviousVersion := Some("1.1.0"),
+    mimaPreviousVersion := {
+      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M3") None // No such release yet
+      else Some("1.1.0")
+    },
 
     apiMappings ++= Map(
       scalaInstance.value.libraryJar
@@ -48,7 +42,6 @@ lazy val xml = crossProject.in(file("."))
             -> url("http://docs.oracle.com/javase/9/docs/api"),
           file("/modules/java.xml")
             -> url("http://docs.oracle.com/javase/9/docs/api")
-
         )
       }
     }

@@ -1,5 +1,3 @@
-addSbtPlugin("org.scala-lang.modules" % "sbt-scala-module" % "1.0.14")
-
 if (System.getProperty("java.version").startsWith("1."))
   Seq()
 else
@@ -7,4 +5,9 @@ else
   // see https://github.com/scala/sbt-scala-module/issues/35
   Seq(addSbtPlugin("com.typesafe.sbt" % "sbt-osgi" % "0.9.3"))
 
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.22")
+val scalaJSVersion =
+  Option(System.getenv("SCALAJS_VERSION")).filter(_.nonEmpty).getOrElse("0.6.23")
+
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % scalaJSVersion)
+addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "0.4.0")
+addSbtPlugin("org.scala-lang.modules" % "sbt-scala-module" % "1.0.14")
