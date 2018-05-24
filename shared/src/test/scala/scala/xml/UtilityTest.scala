@@ -194,4 +194,27 @@ class UtilityTest {
   ).toMap.withDefault {
     key: Char => key.toString
   }
+
+  def issue73StartsWithAndEndsWithWSInFirst: Unit = {
+    val x = <div>{Text("    My name is ")}{Text("Harry")}</div>
+    assertEquals(<div>My name is Harry</div>, Utility.trim(x))
+  }
+
+  @Test
+  def issue73EndsWithWSInLast: Unit = {
+    val x = <div>{Text("My name is ")}{Text("Harry    ")}</div>
+    assertEquals(<div>My name is Harry</div>, Utility.trim(x)) 
+  }
+
+  @Test
+  def issue73HasWSInMiddle: Unit = {
+    val x = <div>{Text("My name is")}{Text(" ")}{Text("Harry")}</div>
+    assertEquals(<div>My name is Harry</div>, Utility.trim(x))
+  }
+
+  @Test
+  def issue73HasWSEverywhere: Unit = {
+    val x = <div>{Text("   My name ")}{Text("  is  ")}{Text("  Harry   ")}</div>
+    assertEquals(<div>My name is Harry</div>, Utility.trim(x))
+  }
 }

@@ -46,8 +46,15 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trim(x: Node): Node = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children = child flatMap trimProper
+      val children = combineAdjacentTextNodes(child:_*) flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
+  }
+
+  private def combineAdjacentTextNodes(children: Node*): Seq[Node] = {
+    children.foldRight(Seq.empty[Node]) {
+      case (Text(left), Text(right) +: accMinusLast) => Text(left + right) +: accMinusLast
+      case (n, acc) => n +: acc 
+    }
   }
 
   /**
@@ -56,7 +63,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trimProper(x: Node): Seq[Node] = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children = child flatMap trimProper
+      val children = combineAdjacentTextNodes(child:_*) flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
     case Text(s) =>
       new TextBuffer().append(s).toText
