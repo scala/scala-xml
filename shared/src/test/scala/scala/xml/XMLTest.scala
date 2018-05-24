@@ -370,6 +370,13 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
+  def t547: Unit = {
+    // ambiguous toString problem from #547
+    val atom: scala.xml.Atom[Unit] = new scala.xml.Atom(())
+    assertEquals(().toString, atom.toString)
+  }
+
+  @UnitTest
   def t1079 = assertFalse(<t user:tag=""/> == <t user:tag="X"/>)
 
   import dtd.{ DocType, PublicID }
@@ -417,6 +424,30 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
+  def t4124: Unit = {
+    val body: Node = <elem>hi</elem>
+    assertEquals("hi", ((body: AnyRef, "foo"): @unchecked) match {
+      case (node: Node, "bar")        => "bye"
+      case (ser: Serializable, "foo") => "hi"
+    })
+
+    assertEquals("hi", ((body, "foo"): @unchecked) match {
+      case (node: Node, "bar")        => "bye"
+      case (ser: Serializable, "foo") => "hi"
+    })
+
+    assertEquals("bye", ((body: AnyRef, "foo"): @unchecked) match {
+      case (node: Node, "foo")        => "bye"
+      case (ser: Serializable, "foo") => "hi"
+    })
+
+    assertEquals("bye", ((body: AnyRef, "foo"): @unchecked) match {
+      case (node: Node, "foo")        => "bye"
+      case (ser: Serializable, "foo") => "hi"
+    })
+  }
+
+  @UnitTest
   def t5052: Unit = {
     assertTrue(<elem attr={ null: String }/> xml_== <elem/>)
     assertTrue(<elem attr={ None }/> xml_== <elem/>)
@@ -436,6 +467,19 @@ Ours is the portal of hope, come as you are."
     assertHonorsIterableContract(<a y={ null: String }/>.attributes)
     assertHonorsIterableContract(<a y={ null: String } x=""/>.attributes)
     assertHonorsIterableContract(<a a="" y={ null: String }/>.attributes)
+  }
+
+  @UnitTest
+  def t5154: Unit = {
+
+    // extra space made the pattern OK
+    def f = <z> {{3}}</z> match { case <z> {{3}}</z> => true }
+
+    // lack of space used to error: illegal start of simple pattern
+    def g = <z>{{3}}</z> match { case <z>{{3}}</z> => true }
+
+    assertTrue(f)
+    assertTrue(g)
   }
 
   @UnitTest
