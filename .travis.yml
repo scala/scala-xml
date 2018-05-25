@@ -42,9 +42,6 @@ matrix:
 
 script: admin/build.sh
 
-notifications:
-  email: adriaan.moors@lightbend.com
-
 before_cache:
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
