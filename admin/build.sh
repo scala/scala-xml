@@ -31,7 +31,9 @@ verPat="[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+)?"
 tagPat="^v$verPat(#.*)?$"
 
 if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
-  tagVer=$(echo $TRAVIS_TAG | sed s/#.*// | sed s/^v//)
+  tagVer=${TRAVIS_TAG}
+  tagVer=${tagVer#v}   # Remove `v` at beginning.
+  tagVer=${tagVer%%#*} # Remove anything after `#`.
   publishVersion='set every version := "'$tagVer'"'
 
   if [ "$RELEASE_COMBO" = "true" ]; then
