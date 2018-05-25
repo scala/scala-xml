@@ -4,7 +4,7 @@ set -e
 
 # Builds of tagged revisions are published to sonatype staging.
 
-# Travis runs a build on new revisions and on new tags, so a tagged revision is built twice.
+# Travis runs a build on revisions, including on new tags.
 # Builds for a tag have TRAVIS_TAG defined, which we use for identifying tagged builds.
 # Checking the local git clone would not work because git on travis does not fetch tags.
 
