@@ -4,7 +4,7 @@ set -e
 
 # Builds of tagged revisions are published to sonatype staging.
 
-# Travis runs a build on new revisions and on new tags, so a tagged revision is built twice.
+# Travis runs a build on revisions, including on new tags.
 # Builds for a tag have TRAVIS_TAG defined, which we use for identifying tagged builds.
 # Checking the local git clone would not work because git on travis does not fetch tags.
 
@@ -16,7 +16,8 @@ set -e
 # of the existing tag. Then a new tag can be created for that commit, e.g., `v1.2.3#2.13.0-M5`.
 # Everything after the `#` in the tag name is ignored.
 
-if [[ "$TRAVIS_JDK_VERSION" == "openjdk6" && "$TRAVIS_SCALA_VERSION" =~ 2\.11\..* || "$TRAVIS_JDK_VERSION" == "oraclejdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then
+if [[ "$TRAVIS_JDK_VERSION" == "openjdk6" && "$TRAVIS_SCALA_VERSION" =~ 2\.11\..* \
+      || "$TRAVIS_JDK_VERSION" == "oraclejdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then
   RELEASE_COMBO=true;
 fi
 
@@ -30,7 +31,9 @@ verPat="[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+)?"
 tagPat="^v$verPat(#.*)?$"
 
 if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
-  tagVer=$(echo $TRAVIS_TAG | sed s/#.*// | sed s/^v//)
+  tagVer=${TRAVIS_TAG}
+  tagVer=${tagVer#v}   # Remove `v` at beginning.
+  tagVer=${tagVer%%#*} # Remove anything after `#`.
   publishVersion='set every version := "'$tagVer'"'
 
   if [ "$RELEASE_COMBO" = "true" ]; then

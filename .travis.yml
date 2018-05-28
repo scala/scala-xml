@@ -24,6 +24,7 @@ env:
     # SONA_PASS
     - secure: "Xw7rI/qlML1nD2e2XwlakkhKAWNGZKqqE+Q3ntTvFpfHryl7KLCvVzJ4LIavnL6kGJaWOgy9vlSoEWn5g9nqHSfE31C/k5pY5nTMAKiwiJzfAS+r0asKXW2gmKhwtcTBkqyLVOZLCJSPVlFRQyfBJHY+Fs0L3KWcnMQgtBlyDhU="
   matrix:
+    # The empty SCALAJS_VERSION will only compile for the JVM
     - SCALAJS_VERSION=
     - SCALAJS_VERSION=0.6.23
     - SCALAJS_VERSION=1.0.0-M3
@@ -40,9 +41,6 @@ matrix:
       jdk: openjdk6
 
 script: admin/build.sh
-
-notifications:
-  email: adriaan.moors@lightbend.com
 
 before_cache:
   - find $HOME/.sbt -name "*.lock" | xargs rm
