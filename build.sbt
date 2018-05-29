@@ -1,7 +1,7 @@
 import sbtcrossproject.{crossProject, CrossType}
 import ScalaModulePlugin._
 
-crossScalaVersions in ThisBuild := List("2.12.6", "2.11.12", "2.13.0-M3")
+crossScalaVersions in ThisBuild := List("2.12.6", "2.11.12", "2.13.0-M4")
 
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
@@ -21,6 +21,16 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     mimaPreviousVersion := {
       if (System.getenv("SCALAJS_VERSION") == "1.0.0-M3") None // No such release yet
       else Some("1.1.0")
+    },
+
+    unmanagedSourceDirectories in Compile ++= {
+      (unmanagedSourceDirectories in Compile).value.map { dir =>
+        val sv = scalaVersion.value
+        CrossVersion.partialVersion(sv) match {
+          case Some((2, 13)) => file(dir.getPath ++ "-2.13")
+          case _             => file(dir.getPath ++ "-2.11-2.12")
+        }
+      }
     },
 
     apiMappings ++= Map(
