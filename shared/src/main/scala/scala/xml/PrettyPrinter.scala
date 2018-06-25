@@ -160,8 +160,16 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
       if (childrenAreLeaves(node) && fits(test)) {
         makeBox(ind, test)
       } else {
-        val (stg, len2) = startTag(node, pscope)
-        val etg = endTag(node)
+        val ((stg, len2), etg) =
+          if (node.child.isEmpty && minimizeEmpty) {
+            // force the tag to be self-closing
+            val firstAttribute = test.indexOf(' ')
+            val firstBreak = if (firstAttribute != -1) firstAttribute else test.lastIndexOf('/')
+            ((test, firstBreak), "")
+          } else {
+            (startTag(node, pscope), endTag(node))
+          }
+
         if (stg.length < width - cur) { // start tag fits
           makeBox(ind, stg)
           makeBreak()
@@ -180,10 +188,12 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
                makeBreak()
              }
              }*/
-          makeBox(ind, stg.substring(len2, stg.length))
-          makeBreak()
-          traverse(node.child.iterator, node.scope, ind + step)
-          makeBox(cur, etg)
+          makeBox(ind, stg.substring(len2, stg.length).trim)
+          if (etg.nonEmpty) {
+            makeBreak()
+            traverse(node.child.iterator, node.scope, ind + step)
+            makeBox(cur, etg)
+          }
           makeBreak()
         } else { // give up
           makeBox(ind, test)

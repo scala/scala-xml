@@ -749,4 +749,20 @@ class XMLTestJVM {
     assertEquals("<node>\n  <leaf/>\n</node>", pp.format(x))
   }
 
+  @UnitTest
+  def issue231: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
+    val x = <a b="c"/>
+    val formatted = pp.format(x)
+    assertEquals(x, XML.loadString(formatted))
+    assertTrue(formatted.trim.lines.length >= 2)
+  }
+
+  @UnitTest
+  def issue231_withoutAttributes: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
+    val x = <abcdefg/>
+    val formatted = pp.format(x)
+    assertEquals(x, XML.loadString(formatted))
+  }
 }
