@@ -397,7 +397,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       } else sb.append(ch)
       nextch()
     }
-    throw truncatedError("broken comment")
+    truncatedError("broken comment")
   }
 
   /* todo: move this into the NodeBuilder class */
@@ -928,7 +928,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       new PublicID(pubID, sysID)
     } else {
       reportSyntaxError("PUBLIC or SYSTEM expected")
-      scala.sys.error("died parsing notationdecl")
+      truncatedError("died parsing notationdecl")
     }
     xSpaceOpt()
     xToken('>')

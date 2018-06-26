@@ -633,7 +633,7 @@ class XMLTestJVM {
   import scala.xml.parsing._
   @UnitTest
   def dontLoop: Unit = {
-    val xml = "<!DOCTYPE xmeml SYSTEM> <xmeml> <sequence> </sequence> </xmeml> "
+    val xml = "<!DOCTYPE xmeml SYSTEM 'uri'> <xmeml> <sequence> </sequence> </xmeml> "
     val sink = new PrintStream(new ByteArrayOutputStream())
     (Console withOut sink) {
       (Console withErr sink) {
@@ -765,4 +765,65 @@ class XMLTestJVM {
     val formatted = pp.format(x)
     assertEquals(x, XML.loadString(formatted))
   }
+
+  def toSource(s: String) = new scala.io.Source {
+    val iter = s.iterator
+    override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err): Unit = {}
+  }
+
+  @UnitTest
+  def xTokenTest {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("a"), false)
+    assertEquals((): Unit, x.xToken('b'))
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def xCharDataFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    x.xCharData
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def xCommentFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    x.xComment
+  }
+
+  @UnitTest
+  def xmlProcInstrTest {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("aa"), false)
+
+    assertEquals(new UnprefixedAttribute("aa", Text(""), Null), x.xmlProcInstr)
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def notationDeclFailure {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    x.notationDecl
+  }
+
+  @UnitTest
+  def pubidLiteralTest {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    assertEquals("", x.pubidLiteral)
+  }
+
+  @UnitTest
+  def xAttributeValueTest {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("'"), false)
+
+    assertEquals("", x.xAttributeValue)
+  }
+
+  @UnitTest
+  def xEntityValueTest {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    assertEquals("", x.xEntityValue)
+  }
+
 }
