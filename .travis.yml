@@ -31,10 +31,14 @@ env:
 
 matrix:
   exclude:
-    - scala: 2.13.0-M3
-      env: SCALAJS_VERSION=1.0.0-M3
+    - jdk: oraclejdk9
+      env: SCALAJS_VERSION=0.6.23
     - jdk: oraclejdk9
       env: SCALAJS_VERSION=1.0.0-M3
+    - scala: 2.11.12
+      jdk: oraclejdk8
+    - scala: 2.11.12
+      jdk: oraclejdk9
     - scala: 2.12.6
       jdk: openjdk6
     - scala: 2.13.0-M3
