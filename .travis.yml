@@ -1,12 +1,7 @@
 language: scala
 
-addons:
-  apt:
-    packages:
-      - openjdk-6-jdk
-
 jdk:
-  - openjdk6
+  - openjdk7
   - oraclejdk8
   - oraclejdk10
 
@@ -40,9 +35,9 @@ matrix:
     - scala: 2.11.12
       jdk: oraclejdk10
     - scala: 2.12.6
-      jdk: openjdk6
+      jdk: openjdk7
     - scala: 2.13.0-M3
-      jdk: openjdk6
+      jdk: openjdk7
 
 script: admin/build.sh
 

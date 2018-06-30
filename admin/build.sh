@@ -16,7 +16,7 @@ set -e
 # of the existing tag. Then a new tag can be created for that commit, e.g., `v1.2.3#2.13.0-M5`.
 # Everything after the `#` in the tag name is ignored.
 
-if [[ "$TRAVIS_JDK_VERSION" == "openjdk6" && "$TRAVIS_SCALA_VERSION" =~ 2\.11\..* \
+if [[ "$TRAVIS_JDK_VERSION" == "openjdk7" && "$TRAVIS_SCALA_VERSION" =~ 2\.11\..* \
       || "$TRAVIS_JDK_VERSION" == "oraclejdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then
   RELEASE_COMBO=true;
 fi
@@ -52,4 +52,4 @@ if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
   fi
 fi
 
-sbt "++$TRAVIS_SCALA_VERSION" "$publishVersion" "$projectPrefix/clean" "$projectPrefix/test" "$projectPrefix/publishLocal" "$publishTask"
+sbt -Dhttps.protocols=TLSv1.2 "++$TRAVIS_SCALA_VERSION" "$publishVersion" "$projectPrefix/clean" "$projectPrefix/test" "$projectPrefix/publishLocal" "$publishTask"

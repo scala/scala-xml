@@ -10,6 +10,8 @@ The standard Scala XML library. Please file XML issues here, not at https://gith
 
 Since Scala 2.11, this library is a separate jar that can be omitted from Scala projects that do not use XML.
 
+Starting with version 1.1.1, the published jar of scala-xml will be built with Java 7 for Scala 2.11, rather than Java 6.  This change could introduce compatability issues for 2.11 users. More information at [sbt-scala-module#41](https://github.com/scala/sbt-scala-module/issues/41).
+
 The decoupling works because the compiler desugars XML literals in Scala source code into a set of method calls. Alternative implementations of these calls are welcome! (The calls are unfortunately only defined by the [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala).)
 
 API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/scala/xml/index.html).
