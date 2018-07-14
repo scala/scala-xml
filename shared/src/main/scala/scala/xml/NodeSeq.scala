@@ -78,10 +78,10 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   /**
    * Projection function, which returns  elements of `this` sequence based
    *  on the string `that`. Use:
-   *   - `this \ "foo"` to get a list of all elements that are labelled with `"foo"`;
-   *   - `\ "_"` to get a list of all elements (wildcard);
-   *   - `ns \ "@foo"` to get the unprefixed attribute `"foo"`;
-   *   - `ns \ "@{uri}foo"` to get the prefixed attribute `"pre:foo"` whose
+   *   - `this \ "foo"` to get a list of all children that are labelled with `"foo"`;
+   *   - `this \ "_"` to get a list of all child elements (wildcard);
+   *   - `this \ "@foo"` to get the unprefixed attribute `"foo"` of `this`;
+   *   - `this \ "@{uri}foo"` to get the prefixed attribute `"pre:foo"` whose
    *     prefix `"pre"` is resolved to the namespace `"uri"`.
    *
    *  For attribute projections, the resulting [[scala.xml.NodeSeq]] attribute
@@ -125,10 +125,11 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   /**
    * Projection function, which returns elements of `this` sequence and of
    *  all its subsequences, based on the string `that`. Use:
-   *   - `this \\ 'foo` to get a list of all elements that are labelled with `"foo"`;
-   *   - `\\ "_"` to get a list of all elements (wildcard);
-   *   - `ns \\ "@foo"` to get the unprefixed attribute `"foo"`;
-   *   - `ns \\ "@{uri}foo"` to get each prefixed attribute `"pre:foo"` whose
+   *   - `this \\ "foo" to get a list of all elements that are labelled with `"foo"`,
+   *     including `this`;
+   *   - `this \\ "_"` to get a list of all elements (wildcard), including `this`;
+   *   - `this \\ "@foo"` to get all unprefixed attributes `"foo"`;
+   *   - `this \\ "@{uri}foo"` to get all prefixed attribute `"pre:foo"` whose
    *     prefix `"pre"` is resolved to the namespace `"uri"`.
    *
    *  For attribute projections, the resulting [[scala.xml.NodeSeq]] attribute
