@@ -19,9 +19,10 @@ import Utility.sbToString
  *  XML nodes.
  *
  *  @author  Burak Emir
- *  @param width the width to fit the output into
- *  @param step  indentation
- *  @note This class is not threadsafe and should not be accessed by multiple threads at the same time.
+ *  @param  width         the width to fit the output into
+ *  @param  step          indentation
+ *  @note   This class is not threadsafe and should not be accessed by
+ *          multiple threads at the same time.
  */
 class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
