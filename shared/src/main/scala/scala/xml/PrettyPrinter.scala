@@ -21,6 +21,7 @@ import Utility.sbToString
  *  @author  Burak Emir
  *  @param  width         the width to fit the output into
  *  @param  step          indentation
+ *  @param  minimizeEmpty self-close empty tags
  *  @note   This class is not threadsafe and should not be accessed by
  *          multiple threads at the same time.
  */
