@@ -754,16 +754,64 @@ class XMLTestJVM {
     val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
     val x = <a b="c"/>
     val formatted = pp.format(x)
+    val expected =
+      """|<a
+         |b="c"/>
+         |""".stripMargin
     assertEquals(x, XML.loadString(formatted))
-    assertTrue(formatted.trim.lines.length >= 2)
+    assertEquals(expected, formatted)
   }
 
   @UnitTest
   def issue231_withoutAttributes: Unit = {
     val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
     val x = <abcdefg/>
+    val expected =
+      """|<abcdefg/>
+         |""".stripMargin
     val formatted = pp.format(x)
     assertEquals(x, XML.loadString(formatted))
+    assertEquals(expected, formatted)
+  }
+
+  @UnitTest
+  def issue231_children: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
+    val x = <a b="c"><d/><e><f g="h"></f><i/></e></a>
+    val formatted = pp.format(x)
+    val expected =
+      """|<a 
+         |b="c">
+         |  <d
+         |  />
+         |  <e>
+         |    <f
+         |    g="h"/>
+         |    <i
+         |    />
+         |  </e>
+         |</a>
+         |""".stripMargin
+    assertEquals(expected, formatted)
+  }
+
+  @UnitTest
+  def issue231_elementText: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
+    val x = <a>x<b/><c>y</c><d/></a>
+    val formatted = pp.format(x)
+    val expected =
+      """|<a>
+         |  x
+         |  <b
+         |  />
+         |  <c>
+         |    y
+         |  </c>
+         |  <d
+         |  />
+         |</a>""".stripMargin
+    assertEquals(expected, formatted)
   }
 
   def toSource(s: String) = new scala.io.Source {
