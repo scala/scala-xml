@@ -22,7 +22,7 @@ If you are cross-building a project that uses scala-xml with both Scala 2.10 and
 
 ## Maintenance status
 
-This library is community-maintained. The lead maintainers are [@aaron_s_hawley](https://github.com/ashawley) and [@biswanaths](https://github.com/biswanaths).
+This library is community-maintained. The lead maintainer is [@aaron_s_hawley](https://github.com/ashawley).
 
 ## Issues
 
