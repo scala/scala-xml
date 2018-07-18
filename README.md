@@ -24,6 +24,8 @@ If you are cross-building a project that uses scala-xml with both Scala 2.10 and
 
 This library is community-maintained. The lead maintainer is [@aaron_s_hawley](https://github.com/ashawley).
 
+Contributors are welcome, and should read the [contributor guide](https://github.com/scala/scala-xml/wiki/Contributor-guide) on the wiki.
+
 ## Issues
 
 Many old issues from the Scala JIRA issue tracker have been migrated
