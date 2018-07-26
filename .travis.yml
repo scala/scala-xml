@@ -1,5 +1,5 @@
-# opt-in to Travis's newer/faster container-based infrastructure
-sudo: false
+# Needed for openjdk6
+sudo: required
 
 language: scala
 
@@ -12,7 +12,11 @@ env:
     # SONA_PASS
     - secure: "Xw7rI/qlML1nD2e2XwlakkhKAWNGZKqqE+Q3ntTvFpfHryl7KLCvVzJ4LIavnL6kGJaWOgy9vlSoEWn5g9nqHSfE31C/k5pY5nTMAKiwiJzfAS+r0asKXW2gmKhwtcTBkqyLVOZLCJSPVlFRQyfBJHY+Fs0L3KWcnMQgtBlyDhU="
 
-script: admin/build.sh
+script: 
+  # work around https://github.com/travis-ci/travis-ci/issues/9713
+  - if [[ $JAVA_HOME = *java-6* ]]; then jdk_switcher use openjdk6; fi
+  - java -version
+  - admin/build.sh
 
 addons:
   apt:
