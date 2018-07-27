@@ -5,6 +5,9 @@ addons:
     packages:
       - openjdk-6-jdk
 
+# Needed for openjdk6
+sudo: required
+
 jdk:
   - openjdk6
   - oraclejdk8
@@ -44,7 +47,11 @@ matrix:
     - scala: 2.13.0-M3
       jdk: openjdk6
 
-script: admin/build.sh
+script: 
+  # work around https://github.com/travis-ci/travis-ci/issues/9713
+  - if [[ $JAVA_HOME = *java-6* ]]; then jdk_switcher use openjdk6; fi
+  - java -version
+  - admin/build.sh
 
 before_cache:
   - find $HOME/.sbt -name "*.lock" | xargs rm
