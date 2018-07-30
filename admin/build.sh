@@ -52,4 +52,9 @@ if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
   fi
 fi
 
-sbt "++$TRAVIS_SCALA_VERSION" "$publishVersion" "$projectPrefix/clean" "$projectPrefix/test" "$projectPrefix/publishLocal" "$publishTask"
+# Maven Central and Bintray are unreachable over HTTPS
+if [[ "$TRAVIS_JDK_VERSION" == "openjdk6" ]]; then
+  SBTOPTS="-Dsbt.override.build.repos=true -Dsbt.repository.config=./.sbtrepos"
+fi
+
+sbt $SBTOPTS "++$TRAVIS_SCALA_VERSION" "$publishVersion" "$projectPrefix/clean" "$projectPrefix/test" "$projectPrefix/publishLocal" "$publishTask"
