@@ -140,8 +140,10 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
    *  The document order is preserved.
    */
   def \\(that: String): NodeSeq = {
+    def fail = throw new IllegalArgumentException(that)
     def filt(cond: (Node) => Boolean) = this flatMap (_.descendant_or_self) filter cond
     that match {
+      case ""                  => fail
       case "_"                 => filt(!_.isAtom)
       case _ if that(0) == '@' => filt(!_.isAtom) flatMap (_ \ that)
       case _                   => filt(x => !x.isAtom && x.label == that)
