@@ -36,7 +36,7 @@ object Elem {
 
   def unapplySeq(n: Node) = n match {
     case _: SpecialNode | _: Group => None
-    case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child))
+    case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
   }
 
   import scala.sys.process._
