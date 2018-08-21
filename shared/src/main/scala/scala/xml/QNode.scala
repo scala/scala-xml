@@ -16,5 +16,5 @@ package xml
  *  @author  Burak Emir
  */
 object QNode {
-  def unapplySeq(n: Node) = Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child))
+  def unapplySeq(n: Node) = Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child.toSeq))
 }
