@@ -58,9 +58,9 @@ class PatternMatching extends {
 
   object SafeNodeSeq {
     def unapplySeq(any: Any): Option[Seq[Node]] = any match {
-      case s: Seq[_] => Some(s flatMap (_ match {
+      case s: Seq[_] => Some((s flatMap (_ match {
         case n: Node => n case _ => NodeSeq.Empty
-      })) case _ => None
+      })).toSeq) case _ => None
     }
   }
 
