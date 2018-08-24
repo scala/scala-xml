@@ -89,8 +89,7 @@ object NodeSeqSpec extends PropertiesFor("NodeSeq")
 
   property("\\\\ \"\".throws[Exception]") = {
     Prop.forAll { n: NodeSeq =>
-      // FIXME: Should be IllegalArgumentException.
-      Prop.throws(classOf[StringIndexOutOfBoundsException]) {
+      Prop.throws(classOf[IllegalArgumentException]) {
         (n \\ "")
       }
     }
@@ -113,12 +112,7 @@ object NodeSeqSpec extends PropertiesFor("NodeSeq")
   property("\\\\") = {
     Prop.forAll { (n: NodeSeq, s: String) =>
       Prop.iff[String](s, {
-        // FIXME: Should be IllegalArgumentException, regardless of theSeq.
-        case "" =>
-          Prop.throws(classOf[StringIndexOutOfBoundsException]) {
-            (n \\ s)
-          }
-        case "@" =>
+        case "" | "@" =>
           Prop.throws(classOf[IllegalArgumentException]) {
             (n \\ s)
           }
