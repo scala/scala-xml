@@ -145,6 +145,16 @@ class XMLTest {
     assertEquals(expected, actual)
   }
 
+  @UnitTest(expected=classOf[IllegalArgumentException])
+  def failEmptyStringChildren: Unit = {
+    <x/> \ ""
+  }
+
+  @UnitTest(expected=classOf[IllegalArgumentException])
+  def failEmptyStringDescendants: Unit = {
+    <x/> \\ ""
+  }
+
   @UnitTest
   def namespaces: Unit = {
     val cuckoo = <cuckoo xmlns="http://cuckoo.com">
