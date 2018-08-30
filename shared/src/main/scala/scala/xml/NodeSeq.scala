@@ -155,4 +155,6 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   override def toString(): String = theSeq.mkString
 
   def text: String = (this map (_.text)).mkString
+
+  protected[this] override def writeReplace(): AnyRef = this
 }
