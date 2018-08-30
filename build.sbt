@@ -1,7 +1,7 @@
 import sbtcrossproject.{crossProject, CrossType}
 import ScalaModulePlugin._
 
-crossScalaVersions in ThisBuild := List("2.12.6", "2.11.12", "2.13.0-M4")
+crossScalaVersions in ThisBuild := List("2.12.6", "2.11.12", "2.13.0-M5")
 
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)

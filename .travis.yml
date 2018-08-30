@@ -16,7 +16,7 @@ jdk:
 scala:
   - 2.11.12
   - 2.12.6
-  - 2.13.0-M4
+  - 2.13.0-M5
 
 env:
   global:
@@ -46,7 +46,7 @@ matrix:
       jdk: openjdk11
     - scala: 2.12.6
       jdk: openjdk6
-    - scala: 2.13.0-M4
+    - scala: 2.13.0-M5
       jdk: openjdk6
 
 script: 
