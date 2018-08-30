@@ -225,4 +225,6 @@ abstract class MetaData
 
   final def remove(namespace: String, owner: Node, key: String): MetaData =
     remove(namespace, owner.scope, key)
+
+  protected[this] override def writeReplace(): AnyRef = this
 }
