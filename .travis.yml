@@ -39,6 +39,8 @@ matrix:
     - jdk: oraclejdk10
       env: SCALAJS_VERSION=1.0.0-M5
     - scala: 2.11.12
+      env: SCALAJS_VERSION=1.0.0-M5
+    - scala: 2.11.12
       jdk: oraclejdk8
     - scala: 2.11.12
       jdk: oraclejdk10
