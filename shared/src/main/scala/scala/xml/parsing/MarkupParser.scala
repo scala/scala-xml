@@ -518,7 +518,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     xToken("DOCTYPE")
     xSpace()
     val n = xName
-    xSpace()
+    xSpaceOpt()
     //external ID
     if ('S' == ch || 'P' == ch) {
       extID = externalID()
