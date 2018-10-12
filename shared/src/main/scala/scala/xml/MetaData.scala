@@ -82,6 +82,7 @@ abstract class MetaData
   extends AbstractIterable[MetaData]
   with Iterable[MetaData]
   with Equality
+  with ScalaVersionSpecificIterableSerializable[MetaData]
   with Serializable {
 
   /**
@@ -225,6 +226,4 @@ abstract class MetaData
 
   final def remove(namespace: String, owner: Node, key: String): MetaData =
     remove(namespace, owner.scope, key)
-
-  protected[this] override def writeReplace(): AnyRef = this
 }

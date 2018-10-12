@@ -24,3 +24,7 @@ private[xml] trait ScalaVersionSpecificNodeSeq
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
   override def className: String = "NodeBuffer"
 }
+
+private[xml] trait ScalaVersionSpecificIterableSerializable[+A] extends Iterable[A] {
+  protected[this] override def writeReplace(): AnyRef = this
+}
