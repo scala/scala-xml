@@ -44,7 +44,7 @@ object NodeSeq {
  *
  *  @author  Burak Emir
  */
-abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with ScalaVersionSpecificNodeSeq with Equality with Serializable {
+abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with ScalaVersionSpecificNodeSeq with Equality with ScalaVersionSpecificIterableSerializable[Node] with Serializable {
   def theSeq: Seq[Node]
   def length = theSeq.length
   override def iterator = theSeq.iterator
@@ -158,6 +158,4 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   override def toString(): String = theSeq.mkString
 
   def text: String = (this map (_.text)).mkString
-
-  protected[this] override def writeReplace(): AnyRef = this
 }
