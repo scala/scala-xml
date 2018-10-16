@@ -11,7 +11,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(scalaModuleSettingsJVM)
   .settings(
     name    := "scala-xml",
-    version := "1.1.1-SNAPSHOT",
+    version := "1.2.0-SNAPSHOT",
 
     // Compiler team advised avoiding the -Xfuture option for releases.
     // The output with -Xfuture should be periodically checked, though.
@@ -20,7 +20,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
 
     mimaPreviousVersion := {
       if (System.getenv("SCALAJS_VERSION") == "1.0.0-M5") None // No such release yet
-      else Some("1.1.0")
+      else Some("1.1.1")
     },
 
     unmanagedSourceDirectories in Compile ++= {
