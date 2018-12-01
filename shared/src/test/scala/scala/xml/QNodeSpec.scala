@@ -18,7 +18,7 @@ object QNodeSpec extends CheckProperties("QNode")
   property("unapplySeq") = {
     Prop.forAll { n: Node =>
       val res = QNode.unapplySeq(n)
-      res ?= Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child))
+      res ?= Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child.toSeq))
     }
   }
 }

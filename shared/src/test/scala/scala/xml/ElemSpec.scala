@@ -63,7 +63,7 @@ object ElemSpec extends PropertiesFor("Elem")
         case _: SpecialNode | _: Group =>
           opt ?= None
         case _ =>
-          opt ?= Some((n.prefix, n.label, n.attributes, n.scope, n.child))
+          opt ?= Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
       })
     }
   }

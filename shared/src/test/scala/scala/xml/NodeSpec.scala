@@ -340,7 +340,7 @@ object NodeSpec extends CheckProperties("Node")
             Node.unapplySeq(n)
           }
         case _ =>
-          Node.unapplySeq(n) ?= Some((n.label, n.attributes, n.child))
+          Node.unapplySeq(n) ?= Some((n.label, n.attributes, n.child.toSeq))
       })
     }
   }
