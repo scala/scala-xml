@@ -49,10 +49,15 @@ matrix:
     - scala: 2.13.0-M5
       jdk: openjdk6
 
+before_script:
+  - nvm install 8
+  - nvm use 8
+
 script: 
   # work around https://github.com/travis-ci/travis-ci/issues/9713
   - if [[ $JAVA_HOME = *java-6* ]]; then jdk_switcher use openjdk6; fi
   - java -version
+  - node -v
   - admin/build.sh
 
 before_cache:
