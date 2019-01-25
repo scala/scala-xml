@@ -1,0 +1,7 @@
+target/
+.history
+/scala-*/
+/streams/
+/test-reports/
+*~
+.DS_Store
