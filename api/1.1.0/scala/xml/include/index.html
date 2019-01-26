@@ -1,0 +1,436 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <title></title>
+          <meta name="description" content="" />
+          <meta name="keywords" content="" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/index.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery.panzoom.min.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery.mousewheel.min.js"></script>
+      <script type="text/javascript" src="../../../lib/index.js"></script>
+      <script type="text/javascript" src="../../../index.js"></script>
+      <script type="text/javascript" src="../../../lib/scheduler.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+        /* this variable can be used by the JS to determine the path to the root document */
+        var toRoot = '../../../';
+      </script>
+    
+        </head>
+        <body>
+      <div id="search">
+        <span id="doc-title"><span id="doc-version"></span></span>
+        <span class="close-results"><span class="left">&lt;</span> Back</span>
+        <div id="textfilter">
+          <span class="input">
+            <input autocapitalize="none" placeholder="Search" id="index-input" type="text" accesskey="/" />
+            <i class="clear material-icons"></i>
+            <i id="search-icon" class="material-icons"></i>
+          </span>
+        </div>
+    </div>
+      <div id="search-results">
+        <div id="search-progress">
+          <div id="progress-fill"></div>
+        </div>
+        <div id="results-content">
+          <div id="entity-results"></div>
+          <div id="member-results"></div>
+        </div>
+      </div>
+      <div id="content-scroll-container" style="-webkit-overflow-scrolling: touch;">
+        <div id="content-container" style="-webkit-overflow-scrolling: touch;">
+          <div id="subpackage-spacer">
+            <div id="packages">
+              <h1>Packages</h1>
+              <ul>
+                <li name="_root_.root" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_root_"></a><a id="root:_root_"></a>
+      <span class="permalink">
+      <a href="index.html#_root_" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../../../index.html"><span class="name">root</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="_root_.scala" visbl="pub" class="indented1 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="scala"></a><a id="scala:scala"></a>
+      <span class="permalink">
+      <a href="index.html#scala" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../../index.html"><span class="name">scala</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
+    </li><li name="scala.xml" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="xml"></a><a id="xml:xml"></a>
+      <span class="permalink">
+      <a href="../scala/index.html#xml" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="This library provides support for the XML literal syntax in Scala programs." href="../index.html"><span class="name">xml</span></a>
+      </span>
+      
+      <p class="shortcomment cmt">This library provides support for the XML literal syntax in Scala programs.</p><div class="fullcomment"><div class="comment cmt"><p>This library provides support for the XML literal syntax in Scala programs.</p><pre><span class="kw">val</span> planets: scala.xml.Elem = &lt;planets&gt;
+  &lt;planet id=<span class="lit">"earth"</span>&gt;
+    &lt;title&gt;Earth&lt;/title&gt;
+    &lt;mass unit=<span class="lit">"kg"</span>&gt;<span class="num">5.9742e24</span>&lt;/mass&gt;
+    &lt;radius unit=<span class="lit">"m"</span>&gt;<span class="num">6378.14e3</span>&lt;/radius&gt;
+  &lt;/planet&gt;
+  &lt;planet id=<span class="lit">"mars"</span>&gt;
+    &lt;title&gt;Mars&lt;/title&gt;
+    &lt;mass unit=<span class="lit">"kg"</span>&gt;<span class="num">0.64191e24</span>&lt;/mass&gt;
+    &lt;radius unit=<span class="lit">"m"</span>&gt;<span class="num">3397.0e3</span>&lt;/radius&gt;
+  &lt;/planet&gt;
+&lt;/planets&gt;</pre><p>Additionally, you can mix Scala expressions in your XML elements by
+using the curly brace notation:</p><pre><span class="kw">val</span> sunMass = <span class="num">1.99e30</span>
+<span class="kw">val</span> sunRadius = <span class="num">6.96e8</span>
+<span class="kw">val</span> star = &lt;star&gt;
+  &lt;title&gt;Sun&lt;/title&gt;
+  &lt;mass unit=<span class="lit">"kg"</span>&gt;{ sunMass }&lt;/mass&gt;
+  &lt;radius unit=<span class="lit">"m"</span>&gt;{ sunRadius }&lt;/radius&gt;
+  &lt;surface unit=<span class="lit">"m²"</span>&gt;{ <span class="num">4</span> * Math.PI * Math.pow(sunRadius, <span class="num">2</span>) }&lt;/surface&gt;
+  &lt;volume unit=<span class="lit">"m³"</span>&gt;{ <span class="num">4</span>/<span class="num">3</span> * Math.PI * Math.pow(sunRadius, <span class="num">3</span>) }&lt;/volume&gt;
+&lt;/star&gt;</pre><p>An XML element, for example <code>&lt;star/&gt;</code> and <code>&lt;planet/&gt;</code>, is
+represented in this library as a case class, <a href="../Elem.html" class="extype" name="scala.xml.Elem">scala.xml.Elem</a>.</p><p>The sub-elements of XML values share a common base class,
+<a href="../Node.html" class="extype" name="scala.xml.Node">scala.xml.Node</a>.</p><p>However, the non-element declarations found in XML files share a
+different common base class, <a href="../dtd/Decl.html" class="extype" name="scala.xml.dtd.Decl">scala.xml.dtd.Decl</a>.  Additionally,
+document type declarations are represented by a different trait,
+<a href="../dtd/DTD.html" class="extype" name="scala.xml.dtd.DTD">scala.xml.dtd.DTD</a>.</p><p>For reading and writing XML data to and from files, see
+<a href="../XML$.html" class="extype" name="scala.xml.XML">scala.xml.XML</a>.  The default parser of XML data is the
+<a href="http://xerces.apache.org/" target="_blank">Xerces</a> parser and is provided in Java
+by <a href="http://docs.oracle.com/javase/8/docs/api/javax/xml/parsers/SAXParser.html" class="extype" name="javax.xml.parsers.SAXParser">javax.xml.parsers.SAXParser</a>.</p><p>A less greedy XML reader can return data as a sequential collection
+of events, see <a href="../pull/XMLEventReader.html" class="extype" name="scala.xml.pull.XMLEventReader">scala.xml.pull.XMLEventReader</a>.</p><p>For more control of the input, use the parser written in Scala that
+is provided, <a href="../parsing/ConstructingParser.html" class="extype" name="scala.xml.parsing.ConstructingParser">scala.xml.parsing.ConstructingParser</a>.</p><p>For working with XHTML input, use <a href="../parsing/XhtmlParser.html" class="extype" name="scala.xml.parsing.XhtmlParser">scala.xml.parsing.XhtmlParser</a>.</p><p>For more control of the output, use the <a href="../PrettyPrinter.html" class="extype" name="scala.xml.PrettyPrinter">scala.xml.PrettyPrinter</a>.</p><p>Utility methods for working with XML data are provided in
+<a href="../Utility$.html" class="extype" name="scala.xml.Utility">scala.xml.Utility</a>.</p><p>XML values in Scala are immutable, but you can traverse and
+transform XML data with a <a href="../transform/RuleTransformer.html" class="extype" name="scala.xml.transform.RuleTransformer">scala.xml.transform.RuleTransformer</a>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="scala">scala</a></dd></dl></div>
+    </li><li name="scala.xml.dtd" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dtd"></a><a id="dtd:dtd"></a>
+      <span class="permalink">
+      <a href="../../scala/xml/index.html#dtd" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../dtd/index.html"><span class="name">dtd</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="scala.xml">xml</a></dd></dl></div>
+    </li><li name="scala.xml.factory" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="factory"></a><a id="factory:factory"></a>
+      <span class="permalink">
+      <a href="../../scala/xml/index.html#factory" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../factory/index.html"><span class="name">factory</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="scala.xml">xml</a></dd></dl></div>
+    </li><li name="scala.xml.include" visbl="pub" class="indented3 current" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="include"></a><a id="include:include"></a>
+      <span class="permalink">
+      <a href="../../scala/xml/index.html#include" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">include</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="scala.xml">xml</a></dd></dl></div>
+    </li><li name="scala.xml.include.sax" visbl="pub" class="indented4 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sax"></a><a id="sax:sax"></a>
+      <span class="permalink">
+      <a href="../../../scala/xml/include/index.html#sax" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="sax/index.html"><span class="name">sax</span></a>
+      </span>
+      
+      
+    </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="CircularIncludeException.html" title="A CircularIncludeException is thrown when an included document attempts to include itself or one of its ancestor documents."></a>
+                        <a href="CircularIncludeException.html" title="A CircularIncludeException is thrown when an included document attempts to include itself or one of its ancestor documents.">CircularIncludeException</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="UnavailableResourceException.html" title="An UnavailableResourceException is thrown when an included document cannot be found or loaded."></a>
+                        <a href="UnavailableResourceException.html" title="An UnavailableResourceException is thrown when an included document cannot be found or loaded.">UnavailableResourceException</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="XIncludeException.html" title="XIncludeException is the generic superclass for all checked exceptions that may be thrown as a result of a violation of XInclude's rules."></a>
+                        <a href="XIncludeException.html" title="XIncludeException is the generic superclass for all checked exceptions that may be thrown as a result of a violation of XInclude's rules.">XIncludeException</a>
+                      </li><li name="scala.xml.parsing" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="parsing"></a><a id="parsing:parsing"></a>
+      <span class="permalink">
+      <a href="../../scala/xml/index.html#parsing" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../parsing/index.html"><span class="name">parsing</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="scala.xml">xml</a></dd></dl></div>
+    </li><li name="scala.xml.persistent" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="persistent"></a><a id="persistent:persistent"></a>
+      <span class="permalink">
+      <a href="../../scala/xml/index.html#persistent" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../persistent/index.html"><span class="name">persistent</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="scala.xml">xml</a></dd></dl></div>
+    </li><li name="scala.xml.pull" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="pull"></a><a id="pull:pull"></a>
+      <span class="permalink">
+      <a href="../../scala/xml/index.html#pull" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="Classes needed to view an XML document as a series of events." href="../pull/index.html"><span class="name">pull</span></a>
+      </span>
+      
+      <p class="shortcomment cmt">Classes needed to view an XML document as a series of events.</p><div class="fullcomment"><div class="comment cmt"><p>Classes needed to view an XML document as a series of events.  The document
+is parsed by an <a href="../pull/XMLEventReader.html" class="extype" name="scala.xml.pull.XMLEventReader">scala.xml.pull.XMLEventReader</a> instance.  You can treat it as
+an <a href="http://www.scala-lang.org/api/2.12.4/scala/collection/Iterator.html" class="extype" name="scala.collection.Iterator">scala.collection.Iterator</a> to retrieve the events, which are all
+subclasses of <a href="../pull/XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">scala.xml.pull.XMLEvent</a>.</p><pre>scala&gt; <span class="kw">val</span> source = Source.fromString(<span class="lit">""</span><span class="lit">"<?xml version="</span><span class="num">1.0</span><span class="lit">" encoding="</span>UTF-<span class="num">8</span><span class="lit">" standalone="</span>yes<span class="lit">"?>
+<?instruction custom value="</span>customvalue<span class="lit">"?>
+<!DOCTYPE foo [
+  <!ENTITY bar "</span>BAR<span class="lit">">
+]><foo>Hello<bar>&bar;</bar><bar>&gt;</bar></foo>"</span><span class="lit">""</span>)
+
+source: scala.io.Source = non-empty iterator
+
+scala&gt; <span class="kw">val</span> reader = <span class="kw">new</span> XMLEventReader(source)
+reader: scala.xml.pull.XMLEventReader = non-empty iterator
+
+scala&gt; reader.foreach{ println(_) }
+EvProcInstr(instruction,custom value=<span class="lit">"customvalue"</span>)
+EvText(
+)
+EvElemStart(<span class="kw">null</span>,foo,,)
+EvText(Hello)
+EvComment( <span class="kw">this</span> is a comment )
+EvElemStart(<span class="kw">null</span>,bar,,)
+EvText(BAR)
+EvElemEnd(<span class="kw">null</span>,bar)
+EvElemStart(<span class="kw">null</span>,bar,,)
+EvEntityRef(gt)
+EvElemEnd(<span class="kw">null</span>,bar)
+EvElemEnd(<span class="kw">null</span>,foo)
+EvText(
+
+)</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="scala.xml">xml</a></dd></dl></div>
+    </li><li name="scala.xml.transform" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="transform"></a><a id="transform:transform"></a>
+      <span class="permalink">
+      <a href="../../scala/xml/index.html#transform" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../transform/index.html"><span class="name">transform</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="scala.xml">xml</a></dd></dl></div>
+    </li>
+              </ul>
+            </div>
+          </div>
+          <div id="content">
+            <body class="package value">
+      <div id="definition">
+        <div class="big-circle package">p</div>
+        <p id="owner"><a href="../../index.html" class="extype" name="scala">scala</a>.<a href="../index.html" class="extype" name="scala.xml">xml</a></p>
+        <h1>include<span class="permalink">
+      <a href="../../../scala/xml/include/index.html" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span></h1>
+        
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">include</span>
+      </span>
+      </h4>
+
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="scala.xml.include.CircularIncludeException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CircularIncludeExceptionextendsXIncludeException"></a><a id="CircularIncludeException:CircularIncludeException"></a>
+      <span class="permalink">
+      <a href="../../../scala/xml/include/index.html#CircularIncludeExceptionextendsXIncludeException" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="A CircularIncludeException is thrown when an included document attempts to include itself or one of its ancestor documents." href="CircularIncludeException.html"><span class="name">CircularIncludeException</span></a><span class="result"> extends <a href="XIncludeException.html" class="extype" name="scala.xml.include.XIncludeException">XIncludeException</a></span>
+      </span>
+      
+      <p class="shortcomment cmt"> A <code>CircularIncludeException</code> is thrown when an included document attempts
+ to include itself or one of its ancestor documents.</p>
+    </li><li name="scala.xml.include.UnavailableResourceException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnavailableResourceExceptionextendsXIncludeException"></a><a id="UnavailableResourceException:UnavailableResourceException"></a>
+      <span class="permalink">
+      <a href="../../../scala/xml/include/index.html#UnavailableResourceExceptionextendsXIncludeException" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="An UnavailableResourceException is thrown when an included document cannot be found or loaded." href="UnavailableResourceException.html"><span class="name">UnavailableResourceException</span></a><span class="result"> extends <a href="XIncludeException.html" class="extype" name="scala.xml.include.XIncludeException">XIncludeException</a></span>
+      </span>
+      
+      <p class="shortcomment cmt">An <code>UnavailableResourceException</code> is thrown when an included document
+cannot be found or loaded.</p>
+    </li><li name="scala.xml.include.XIncludeException" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="XIncludeExceptionextendsException"></a><a id="XIncludeException:XIncludeException"></a>
+      <span class="permalink">
+      <a href="../../../scala/xml/include/index.html#XIncludeExceptionextendsException" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a title="XIncludeException is the generic superclass for all checked exceptions that may be thrown as a result of a violation of XInclude's rules." href="XIncludeException.html"><span class="name">XIncludeException</span></a><span class="result"> extends <a href="../../index.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>
+      </span>
+      
+      <p class="shortcomment cmt"><code>XIncludeException</code> is the generic superclass for all checked exceptions
+that may be thrown as a result of a violation of XInclude's rules.</p><div class="fullcomment"><div class="comment cmt"><p><code>XIncludeException</code> is the generic superclass for all checked exceptions
+that may be thrown as a result of a violation of XInclude's rules.</p><p>Constructs an <code>XIncludeException</code> with the specified detail message.
+The error message string <code>message</code> can later be retrieved by the
+<code><code><a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html#getMessage():String" class="extype" name="java.lang.Throwable">java.lang.Throwable#getMessage</a></code></code>
+method of class <code>java.lang.Throwable</code>.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+    </body>
+          </div>
+        </div>
+      </div>
+    </body>
+      </html>
