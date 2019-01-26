@@ -1,0 +1,180 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>include - scala.xml.include</title>
+          <meta name="description" content="include - scala.xml.include" />
+          <meta name="keywords" content="include scala.xml.include" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'scala.xml.include.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="scala">scala</a>.<a href="../package.html" class="extype" name="scala.xml">xml</a></p>
+        <h1>include</h1><span class="permalink">
+      <a href="../../../index.html#scala.xml.include.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">include</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="scala.xml.include.CircularIncludeException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CircularIncludeExceptionextendsXIncludeException"></a>
+      <a id="CircularIncludeException:CircularIncludeException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CircularIncludeException.html"><span class="name">CircularIncludeException</span></a><span class="result"> extends <a href="XIncludeException.html" class="extype" name="scala.xml.include.XIncludeException">XIncludeException</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.include.package@CircularIncludeExceptionextendsXIncludeException" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> A <code>CircularIncludeException</code> is thrown when an included document attempts
+ to include itself or one of its ancestor documents.</p>
+    </li><li name="scala.xml.include.UnavailableResourceException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnavailableResourceExceptionextendsXIncludeException"></a>
+      <a id="UnavailableResourceException:UnavailableResourceException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="UnavailableResourceException.html"><span class="name">UnavailableResourceException</span></a><span class="result"> extends <a href="XIncludeException.html" class="extype" name="scala.xml.include.XIncludeException">XIncludeException</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.include.package@UnavailableResourceExceptionextendsXIncludeException" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An <code>UnavailableResourceException</code> is thrown when an included document
+cannot be found or loaded.</p>
+    </li><li name="scala.xml.include.XIncludeException" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="XIncludeExceptionextendsException"></a>
+      <a id="XIncludeException:XIncludeException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="XIncludeException.html"><span class="name">XIncludeException</span></a><span class="result"> extends <a href="../../package.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.include.package@XIncludeExceptionextendsException" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>XIncludeException</code> is the generic superclass for all checked exceptions
+that may be thrown as a result of a violation of XInclude's rules.</p><div class="fullcomment"><div class="comment cmt"><p><code>XIncludeException</code> is the generic superclass for all checked exceptions
+that may be thrown as a result of a violation of XInclude's rules.</p><p>Constructs an <code>XIncludeException</code> with the specified detail message.
+The error message string <code>message</code> can later be retrieved by the
+<code><code><span class="extype" name="java.lang.Throwable#getMessage">java.lang.Throwable#getMessage</span></code></code>
+method of class <code>java.lang.Throwable</code>.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.xml.include.sax" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sax"></a>
+      <a id="sax:sax"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="sax/package.html"><span class="name">sax</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.include.package@sax" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
