@@ -1,0 +1,1259 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>xml - scala.xml</title>
+          <meta name="description" content="xml - scala.xml" />
+          <meta name="keywords" content="xml scala.xml" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../lib/template.js"></script>
+      <script type="text/javascript" src="../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../index.html';
+            var hash = 'scala.xml.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../lib/package_big.png" />
+        <p id="owner"><a href="../package.html" class="extype" name="scala">scala</a></p>
+        <h1>xml</h1><span class="permalink">
+      <a href="../../index.html#scala.xml.package" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">xml</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="scala.xml"><span>xml</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="scala.xml.Atom" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Atom[+A]extendsSpecialNodewithSerializable"></a>
+      <a id="Atom[+A]:Atom[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Atom.html"><span class="name">Atom</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <a href="SpecialNode.html" class="extype" name="scala.xml.SpecialNode">SpecialNode</a> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Atom[+A]extendsSpecialNodewithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The class <code>Atom</code> provides an XML node for text (<code>PCDATA</code>).</p><div class="fullcomment"><div class="comment cmt"><p>The class <code>Atom</code> provides an XML node for text (<code>PCDATA</code>).
+ It is used in both non-bound and bound XML representations.
+</p></div></div>
+    </li><li name="scala.xml.Attribute" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="AttributeextendsMetaData"></a>
+      <a id="Attribute:Attribute"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Attribute.html"><span class="name">Attribute</span></a><span class="result"> extends <a href="MetaData.html" class="extype" name="scala.xml.MetaData">MetaData</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@AttributeextendsMetaData" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The <code>Attribute</code> trait defines the interface shared by both
+ <a href="PrefixedAttribute.html" class="extype" name="scala.xml.PrefixedAttribute">scala.xml.PrefixedAttribute</a> and <a href="UnprefixedAttribute.html" class="extype" name="scala.xml.UnprefixedAttribute">scala.xml.UnprefixedAttribute</a>.</p><div class="fullcomment"><div class="comment cmt"><p>The <code>Attribute</code> trait defines the interface shared by both
+ <a href="PrefixedAttribute.html" class="extype" name="scala.xml.PrefixedAttribute">scala.xml.PrefixedAttribute</a> and <a href="UnprefixedAttribute.html" class="extype" name="scala.xml.UnprefixedAttribute">scala.xml.UnprefixedAttribute</a>.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.Comment" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CommentextendsSpecialNodewithProductwithSerializable"></a>
+      <a id="Comment:Comment"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Comment.html"><span class="name">Comment</span></a><span class="params">(<span name="commentText">commentText: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="SpecialNode.html" class="extype" name="scala.xml.SpecialNode">SpecialNode</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@CommentextendsSpecialNodewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The class <code>Comment</code> implements an XML node for comments.</p><div class="fullcomment"><div class="comment cmt"><p>The class <code>Comment</code> implements an XML node for comments.
+</p></div><dl class="paramcmts block"><dt class="param">commentText</dt><dd class="cmt"><p>the text contained in this node, may not contain &quot;--&quot;</p></dd></dl></div>
+    </li><li name="scala.xml.Document" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DocumentextendsNodeSeqwithXMLEventwithSerializable"></a>
+      <a id="Document:Document"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Document.html"><span class="name">Document</span></a><span class="result"> extends <a href="NodeSeq.html" class="extype" name="scala.xml.NodeSeq">NodeSeq</a> with <a href="pull/XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@DocumentextendsNodeSeqwithXMLEventwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A document information item (according to InfoSet spec).</p><div class="fullcomment"><div class="comment cmt"><p>A document information item (according to InfoSet spec). The comments
+ are copied from the Infoset spec, only augmented with some information
+ on the Scala types for definitions that might have no value.
+ Also plays the role of an <code>XMLEvent</code> for pull parsing.
+</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@SerialVersionUID</span><span class="args">()</span>
+              
+        </dd><dt>Version</dt><dd><p>1.0, 26/04/2005</p></dd></dl></div>
+    </li><li name="scala.xml.Elem" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ElemextendsNodewithSerializable"></a>
+      <a id="Elem:Elem"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Elem.html"><span class="name">Elem</span></a><span class="result"> extends <a href="Node.html" class="extype" name="scala.xml.Node">Node</a> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@ElemextendsNodewithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The case class <code>Elem</code> extends the <code>Node</code> class,
+ providing an immutable data object representing an XML element.</p>
+    </li><li name="scala.xml.EntityRef" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EntityRefextendsSpecialNodewithProductwithSerializable"></a>
+      <a id="EntityRef:EntityRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EntityRef.html"><span class="name">EntityRef</span></a><span class="params">(<span name="entityName">entityName: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="SpecialNode.html" class="extype" name="scala.xml.SpecialNode">SpecialNode</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@EntityRefextendsSpecialNodewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The class <code>EntityRef</code> implements an XML node for entity references.</p><div class="fullcomment"><div class="comment cmt"><p>The class <code>EntityRef</code> implements an XML node for entity references.
+</p></div><dl class="paramcmts block"><dt class="param">entityName</dt><dd class="cmt"><p>the name of the entity reference, for example <code>amp</code>.</p></dd></dl><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.EntityResolver" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="EntityResolver=org.xml.sax.EntityResolver"></a>
+      <a id="EntityResolver:EntityResolver"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">EntityResolver</span><span class="result"> = <span class="extype" name="org.xml.sax.EntityResolver">org.xml.sax.EntityResolver</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@EntityResolver=org.xml.sax.EntityResolver" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.Equality" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="EqualityextendsEquals"></a>
+      <a id="Equality:Equality"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Equality.html"><span class="name">Equality</span></a><span class="result"> extends <span class="extype" name="scala.Equals">Equals</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@EqualityextendsEquals" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.Group" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="GroupextendsNodewithProductwithSerializable"></a>
+      <a id="Group:Group"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Group.html"><span class="name">Group</span></a><span class="params">(<span name="nodes">nodes: <a href="../package.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<a href="Node.html" class="extype" name="scala.xml.Node">Node</a>]</span>)</span><span class="result"> extends <a href="Node.html" class="extype" name="scala.xml.Node">Node</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@GroupextendsNodewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A hack to group XML nodes in one node for output.</p><div class="fullcomment"><div class="comment cmt"><p>A hack to group XML nodes in one node for output.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.InputSource" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InputSource=org.xml.sax.InputSource"></a>
+      <a id="InputSource:InputSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">InputSource</span><span class="result"> = <span class="extype" name="org.xml.sax.InputSource">org.xml.sax.InputSource</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@InputSource=org.xml.sax.InputSource" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.MalformedAttributeException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MalformedAttributeExceptionextendsRuntimeExceptionwithProductwithSerializable"></a>
+      <a id="MalformedAttributeException:MalformedAttributeException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MalformedAttributeException.html"><span class="name">MalformedAttributeException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="../package.html#RuntimeException=RuntimeException" class="extmbr" name="scala.RuntimeException">RuntimeException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@MalformedAttributeExceptionextendsRuntimeExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.MetaData" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="MetaDataextendsAbstractIterable[scala.xml.MetaData]withIterable[scala.xml.MetaData]withEqualitywithSerializable"></a>
+      <a id="MetaData:MetaData"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MetaData.html"><span class="name">MetaData</span></a><span class="result"> extends <span class="extype" name="scala.collection.AbstractIterable">AbstractIterable</span>[<a href="MetaData.html" class="extype" name="scala.xml.MetaData">MetaData</a>] with <a href="../package.html#Iterable[+A]=Iterable[A]" class="extmbr" name="scala.Iterable">Iterable</a>[<a href="MetaData.html" class="extype" name="scala.xml.MetaData">MetaData</a>] with <a href="Equality.html" class="extype" name="scala.xml.Equality">Equality</a> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@MetaDataextendsAbstractIterable[scala.xml.MetaData]withIterable[scala.xml.MetaData]withEqualitywithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This class represents an attribute and at the same time a linked list of
+ attributes.</p><div class="fullcomment"><div class="comment cmt"><p>This class represents an attribute and at the same time a linked list of
+ attributes. Every instance of this class is either</p><ul><li>an instance of <code>UnprefixedAttribute key,value</code> or</li><li>an instance of <code>PrefixedAttribute namespace_prefix,key,value</code> or</li><li><code>Null, the empty attribute list.</code></li></ul><p> Namespace URIs are obtained by using the namespace scope of the element
+ owning this attribute (see <code>getNamespace</code>).</p><p> Copyright 2008 Google Inc. All Rights Reserved.</p></div></div>
+    </li><li name="scala.xml.NamespaceBinding" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NamespaceBindingextendsEqualitywithProductwithSerializable"></a>
+      <a id="NamespaceBinding:NamespaceBinding"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NamespaceBinding.html"><span class="name">NamespaceBinding</span></a><span class="params">(<span name="prefix">prefix: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="uri">uri: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="parent">parent: <a href="NamespaceBinding.html" class="extype" name="scala.xml.NamespaceBinding">NamespaceBinding</a></span>)</span><span class="result"> extends <a href="Equality.html" class="extype" name="scala.xml.Equality">Equality</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@NamespaceBindingextendsEqualitywithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The class <code>NamespaceBinding</code> represents namespace bindings
+ and scopes.</p><div class="fullcomment"><div class="comment cmt"><p>The class <code>NamespaceBinding</code> represents namespace bindings
+ and scopes. The binding for the default namespace is treated as a null
+ prefix. the absent namespace is represented with the null uri. Neither
+ prefix nor uri may be empty, which is not checked.
+</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@SerialVersionUID</span><span class="args">()</span>
+              
+        </dd><dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.Node" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="NodeextendsNodeSeq"></a>
+      <a id="Node:Node"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Node.html"><span class="name">Node</span></a><span class="result"> extends <a href="NodeSeq.html" class="extype" name="scala.xml.NodeSeq">NodeSeq</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@NodeextendsNodeSeq" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An abstract class representing XML with nodes of a labelled tree.</p><div class="fullcomment"><div class="comment cmt"><p>An abstract class representing XML with nodes of a labelled tree.
+This class contains an implementation of a subset of XPath for navigation.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.1</p></dd></dl></div>
+    </li><li name="scala.xml.NodeBuffer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NodeBufferextendsArrayBuffer[scala.xml.Node]"></a>
+      <a id="NodeBuffer:NodeBuffer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="NodeBuffer.html"><span class="name">NodeBuffer</span></a><span class="result"> extends <span class="extype" name="scala.collection.mutable.ArrayBuffer">ArrayBuffer</span>[<a href="Node.html" class="extype" name="scala.xml.Node">Node</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@NodeBufferextendsArrayBuffer[scala.xml.Node]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This class acts as a Buffer for nodes.</p><div class="fullcomment"><div class="comment cmt"><p>This class acts as a Buffer for nodes. If it is used as a sequence of
+nodes <code>Seq[Node]</code>, it must be ensured that no updates occur after that
+point, because <code>scala.xml.Node</code> is assumed to be immutable.</p><p>Despite this being a sequence, don't use it as key in a hashtable.
+Calling the hashcode function will result in a runtime error.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.NodeSeq" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="NodeSeqextendsAbstractSeq[scala.xml.Node]withSeq[scala.xml.Node]withSeqLike[scala.xml.Node,scala.xml.NodeSeq]withEquality"></a>
+      <a id="NodeSeq:NodeSeq"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="NodeSeq.html"><span class="name">NodeSeq</span></a><span class="result"> extends <span class="extype" name="scala.collection.AbstractSeq">AbstractSeq</span>[<a href="Node.html" class="extype" name="scala.xml.Node">Node</a>] with <span class="extype" name="scala.collection.immutable.Seq">collection.immutable.Seq</span>[<a href="Node.html" class="extype" name="scala.xml.Node">Node</a>] with <span class="extype" name="scala.collection.SeqLike">SeqLike</span>[<a href="Node.html" class="extype" name="scala.xml.Node">Node</a>, <a href="NodeSeq.html" class="extype" name="scala.xml.NodeSeq">NodeSeq</a>] with <a href="Equality.html" class="extype" name="scala.xml.Equality">Equality</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@NodeSeqextendsAbstractSeq[scala.xml.Node]withSeq[scala.xml.Node]withSeqLike[scala.xml.Node,scala.xml.NodeSeq]withEquality" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This class implements a wrapper around <code>Seq[Node]</code> that adds XPath
+ and comprehension methods.</p><div class="fullcomment"><div class="comment cmt"><p>This class implements a wrapper around <code>Seq[Node]</code> that adds XPath
+ and comprehension methods.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.PCData" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PCDataextendsAtom[String]"></a>
+      <a id="PCData:PCData"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="PCData.html"><span class="name">PCData</span></a><span class="result"> extends <a href="Atom.html" class="extype" name="scala.xml.Atom">Atom</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@PCDataextendsAtom[String]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This class (which is not used by all XML parsers, but always used by the
+ XHTML one) represents parseable character data, which appeared as CDATA
+ sections in the input and is to be preserved as CDATA section in the output.</p><div class="fullcomment"><div class="comment cmt"><p>This class (which is not used by all XML parsers, but always used by the
+ XHTML one) represents parseable character data, which appeared as CDATA
+ sections in the input and is to be preserved as CDATA section in the output.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.PrefixedAttribute" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PrefixedAttributeextendsMetaDatawithAttribute"></a>
+      <a id="PrefixedAttribute:PrefixedAttribute"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="PrefixedAttribute.html"><span class="name">PrefixedAttribute</span></a><span class="result"> extends <a href="MetaData.html" class="extype" name="scala.xml.MetaData">MetaData</a> with <a href="Attribute.html" class="extype" name="scala.xml.Attribute">Attribute</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@PrefixedAttributeextendsMetaDatawithAttribute" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">prefixed attributes always have a non-null namespace.</p>
+    </li><li name="scala.xml.PrettyPrinter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PrettyPrinterextendsAnyRef"></a>
+      <a id="PrettyPrinter:PrettyPrinter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="PrettyPrinter.html"><span class="name">PrettyPrinter</span></a><span class="result"> extends <a href="../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@PrettyPrinterextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class for pretty printing.</p><div class="fullcomment"><div class="comment cmt"><p>Class for pretty printing. After instantiating, you can use the
+ format() and formatNode() methods to convert XML to a formatted
+ string. The class can be reused to pretty print any number of
+ XML nodes.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.ProcInstr" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ProcInstrextendsSpecialNodewithProductwithSerializable"></a>
+      <a id="ProcInstr:ProcInstr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ProcInstr.html"><span class="name">ProcInstr</span></a><span class="params">(<span name="target">target: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="proctext">proctext: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="SpecialNode.html" class="extype" name="scala.xml.SpecialNode">SpecialNode</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@ProcInstrextendsSpecialNodewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">an XML node for processing instructions (PI)
+</p><div class="fullcomment"><div class="comment cmt"><p>an XML node for processing instructions (PI)
+</p></div><dl class="paramcmts block"><dt class="param">target</dt><dd class="cmt"><p>target name of this PI</p></dd><dt class="param">proctext</dt><dd class="cmt"><p>text contained in this node, may not contain &quot;?&gt;&quot;</p></dd></dl></div>
+    </li><li name="scala.xml.SAXException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SAXException=org.xml.sax.SAXException"></a>
+      <a id="SAXException:SAXException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">SAXException</span><span class="result"> = <span class="extype" name="org.xml.sax.SAXException">org.xml.sax.SAXException</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@SAXException=org.xml.sax.SAXException" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.SAXParseException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SAXParseException=org.xml.sax.SAXParseException"></a>
+      <a id="SAXParseException:SAXParseException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">SAXParseException</span><span class="result"> = <span class="extype" name="org.xml.sax.SAXParseException">org.xml.sax.SAXParseException</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@SAXParseException=org.xml.sax.SAXParseException" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.SAXParser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SAXParser=javax.xml.parsers.SAXParser"></a>
+      <a id="SAXParser:SAXParser"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">SAXParser</span><span class="result"> = <span class="extype" name="javax.xml.parsers.SAXParser">javax.xml.parsers.SAXParser</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@SAXParser=javax.xml.parsers.SAXParser" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.SpecialNode" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="SpecialNodeextendsNodewithXMLEvent"></a>
+      <a id="SpecialNode:SpecialNode"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SpecialNode.html"><span class="name">SpecialNode</span></a><span class="result"> extends <a href="Node.html" class="extype" name="scala.xml.Node">Node</a> with <a href="pull/XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@SpecialNodeextendsNodewithXMLEvent" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"><code>SpecialNode</code> is a special XML node which represents either text
+ <code>(PCDATA)</code>, a comment, a <code>PI</code>, or an entity ref.</p><div class="fullcomment"><div class="comment cmt"><p><code>SpecialNode</code> is a special XML node which represents either text
+ <code>(PCDATA)</code>, a comment, a <code>PI</code>, or an entity ref.</p><p> <code>SpecialNode</code>s also play the role of <a href="pull/XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">scala.xml.pull.XMLEvent</a>s for
+ pull-parsing.
+</p></div></div>
+    </li><li name="scala.xml.Text" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TextextendsAtom[String]"></a>
+      <a id="Text:Text"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Text.html"><span class="name">Text</span></a><span class="result"> extends <a href="Atom.html" class="extype" name="scala.xml.Atom">Atom</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@TextextendsAtom[String]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The class <code>Text</code> implements an XML node for text (PCDATA).</p><div class="fullcomment"><div class="comment cmt"><p>The class <code>Text</code> implements an XML node for text (PCDATA).
+ It is used in both non-bound and bound XML representations.
+</p></div></div>
+    </li><li name="scala.xml.TextBuffer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TextBufferextendsAnyRef"></a>
+      <a id="TextBuffer:TextBuffer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TextBuffer.html"><span class="name">TextBuffer</span></a><span class="result"> extends <a href="../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@TextBufferextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The class <code>TextBuffer</code> is for creating text nodes without surplus
+ whitespace.</p><div class="fullcomment"><div class="comment cmt"><p>The class <code>TextBuffer</code> is for creating text nodes without surplus
+ whitespace. All occurrences of one or more whitespace in strings
+ appended with the <code>append</code> method will be replaced by a single space
+ character, and leading and trailing space will be removed completely.
+</p></div></div>
+    </li><li name="scala.xml.TypeSymbol" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TypeSymbolextendsAnyRef"></a>
+      <a id="TypeSymbol:TypeSymbol"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TypeSymbol.html"><span class="name">TypeSymbol</span></a><span class="result"> extends <a href="../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@TypeSymbolextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.Unparsed" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="UnparsedextendsAtom[String]"></a>
+      <a id="Unparsed:Unparsed"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Unparsed.html"><span class="name">Unparsed</span></a><span class="result"> extends <a href="Atom.html" class="extype" name="scala.xml.Atom">Atom</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@UnparsedextendsAtom[String]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An XML node for unparsed content.</p><div class="fullcomment"><div class="comment cmt"><p>An XML node for unparsed content. It will be output verbatim, all bets
+ are off regarding wellformedness etc.
+</p></div></div>
+    </li><li name="scala.xml.UnprefixedAttribute" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnprefixedAttributeextendsMetaDatawithAttribute"></a>
+      <a id="UnprefixedAttribute:UnprefixedAttribute"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="UnprefixedAttribute.html"><span class="name">UnprefixedAttribute</span></a><span class="result"> extends <a href="MetaData.html" class="extype" name="scala.xml.MetaData">MetaData</a> with <a href="Attribute.html" class="extype" name="scala.xml.Attribute">Attribute</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@UnprefixedAttributeextendsMetaDatawithAttribute" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Unprefixed attributes have the null namespace, and no prefix field
+</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.xml.Attribute" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Attribute"></a>
+      <a id="Attribute:Attribute"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Attribute$.html"><span class="name">Attribute</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Attribute" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This singleton object contains the <code>apply</code> and <code>unapply</code> methods for
+ convenient construction and deconstruction.</p><div class="fullcomment"><div class="comment cmt"><p>This singleton object contains the <code>apply</code> and <code>unapply</code> methods for
+ convenient construction and deconstruction.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.Elem" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Elem"></a>
+      <a id="Elem:Elem"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Elem$.html"><span class="name">Elem</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Elem" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This singleton object contains the <code>apply</code> and <code>unapplySeq</code> methods for
+ convenient construction and deconstruction.</p><div class="fullcomment"><div class="comment cmt"><p>This singleton object contains the <code>apply</code> and <code>unapplySeq</code> methods for
+ convenient construction and deconstruction. It is possible to deconstruct
+ any <code>Node</code> instance (that is not a <code>SpecialNode</code> or a <code>Group</code>) using the
+ syntax <code>case Elem(prefix, label, attribs, scope, child @ _*) =&gt; ...</code></p><p> Copyright 2008 Google Inc. All Rights Reserved.</p></div></div>
+    </li><li name="scala.xml.Equality" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Equality"></a>
+      <a id="Equality:Equality"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Equality$.html"><span class="name">Equality</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Equality" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">In an attempt to contain the damage being inflicted on consistency by the
+ ad hoc <code>equals</code> methods spread around <code>xml</code>, the logic is centralized and
+ all the <code>xml</code> classes go through the <code>xml.Equality trait</code>.</p><div class="fullcomment"><div class="comment cmt"><p>In an attempt to contain the damage being inflicted on consistency by the
+ ad hoc <code>equals</code> methods spread around <code>xml</code>, the logic is centralized and
+ all the <code>xml</code> classes go through the <code>xml.Equality trait</code>.  There are two
+ forms of <code>xml</code> comparison.</p><ol class="decimal"><li><code><b>def</b> strict_==(other: scala.xml.Equality)</code></li></ol><p> This one tries to honor the little things like symmetry and hashCode
+ contracts.  The <code>equals</code> method routes all comparisons through this.</p><ol class="decimal"><li><code>xml_==(other: Any)</code></li></ol><p> This one picks up where <code>strict_==</code> leaves off.  It might declare any two
+ things equal.</p><p> As things stood, the logic not only made a mockery of the collections
+ equals contract, but also laid waste to that of case classes.</p><p> Among the obstacles to sanity are/were:</p><p>   Node extends NodeSeq extends Seq[Node]
+   MetaData extends Iterable[MetaData]
+   The hacky &quot;Group&quot; xml node which throws exceptions
+     with wild abandon, so don't get too close
+   Rampant asymmetry and impossible hashCodes
+   Most classes claiming to be equal to &quot;String&quot; if
+     some specific stringification of it was the same.
+     String was never going to return the favor.
+</p></div></div>
+    </li><li name="scala.xml.MetaData" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="MetaData"></a>
+      <a id="MetaData:MetaData"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MetaData$.html"><span class="name">MetaData</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@MetaData" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Copyright 2008 Google Inc.</p><div class="fullcomment"><div class="comment cmt"><p>Copyright 2008 Google Inc. All Rights Reserved.</p></div></div>
+    </li><li name="scala.xml.MinimizeMode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="MinimizeMode"></a>
+      <a id="MinimizeMode:MinimizeMode"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MinimizeMode$.html"><span class="name">MinimizeMode</span></a><span class="result"> extends <span class="extype" name="scala.Enumeration">Enumeration</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@MinimizeMode" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Governs how empty elements (i.e.</p><div class="fullcomment"><div class="comment cmt"><p>Governs how empty elements (i.e. those without child elements) should be serialized.
+</p></div></div>
+    </li><li name="scala.xml.Node" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Node"></a>
+      <a id="Node:Node"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Node$.html"><span class="name">Node</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Node" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This singleton object contains the <code>unapplySeq</code> method for
+ convenient deconstruction.</p><div class="fullcomment"><div class="comment cmt"><p>This singleton object contains the <code>unapplySeq</code> method for
+ convenient deconstruction.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.NodeSeq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NodeSeq"></a>
+      <a id="NodeSeq:NodeSeq"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NodeSeq$.html"><span class="name">NodeSeq</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@NodeSeq" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This object ...</p><div class="fullcomment"><div class="comment cmt"><p>This object ...
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.Null" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Null"></a>
+      <a id="Null:Null"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Null$.html"><span class="name">Null</span></a><span class="result"> extends <a href="MetaData.html" class="extype" name="scala.xml.MetaData">MetaData</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Null" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Essentially, every method in here is a dummy, returning Zero[T].</p><div class="fullcomment"><div class="comment cmt"><p>Essentially, every method in here is a dummy, returning Zero[T].
+ It provides a backstop for the unusual collection defined by MetaData,
+ sort of a linked list of tails.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.PCData" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PCData"></a>
+      <a id="PCData:PCData"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PCData$.html"><span class="name">PCData</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@PCData" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This singleton object contains the <code>apply</code>and <code>unapply</code> methods for
+ convenient construction and deconstruction.</p><div class="fullcomment"><div class="comment cmt"><p>This singleton object contains the <code>apply</code>and <code>unapply</code> methods for
+ convenient construction and deconstruction.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.PrefixedAttribute" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PrefixedAttribute"></a>
+      <a id="PrefixedAttribute:PrefixedAttribute"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PrefixedAttribute$.html"><span class="name">PrefixedAttribute</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@PrefixedAttribute" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.Properties" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Properties"></a>
+      <a id="Properties:Properties"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Properties$.html"><span class="name">Properties</span></a><span class="result"> extends <span class="extype" name="scala.util.PropertiesTrait">PropertiesTrait</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Properties" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.QNode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="QNode"></a>
+      <a id="QNode:QNode"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="QNode$.html"><span class="name">QNode</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@QNode" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This object provides an extractor method to match a qualified node with
+ its namespace URI
+</p><div class="fullcomment"><div class="comment cmt"><p>This object provides an extractor method to match a qualified node with
+ its namespace URI
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.Source" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Source"></a>
+      <a id="Source:Source"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Source$.html"><span class="name">Source</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Source" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.Text" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Text"></a>
+      <a id="Text:Text"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Text$.html"><span class="name">Text</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Text" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This singleton object contains the <code>apply</code>and <code>unapply</code> methods for
+ convenient construction and deconstruction.</p><div class="fullcomment"><div class="comment cmt"><p>This singleton object contains the <code>apply</code>and <code>unapply</code> methods for
+ convenient construction and deconstruction.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.TextBuffer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TextBuffer"></a>
+      <a id="TextBuffer:TextBuffer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TextBuffer$.html"><span class="name">TextBuffer</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@TextBuffer" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.TopScope" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="TopScope"></a>
+      <a id="TopScope:TopScope"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TopScope$.html"><span class="name">TopScope</span></a><span class="result"> extends <a href="NamespaceBinding.html" class="extype" name="scala.xml.NamespaceBinding">NamespaceBinding</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@TopScope" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">top level namespace scope.</p><div class="fullcomment"><div class="comment cmt"><p>top level namespace scope. only contains the predefined binding
+ for the &quot;xml&quot; prefix which is bound to
+ &quot;http://www.w3.org/XML/1998/namespace&quot;
+</p></div></div>
+    </li><li name="scala.xml.Unparsed" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Unparsed"></a>
+      <a id="Unparsed:Unparsed"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Unparsed$.html"><span class="name">Unparsed</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Unparsed" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This singleton object contains the <code>apply</code>and <code>unapply</code> methods for
+ convenient construction and deconstruction.</p><div class="fullcomment"><div class="comment cmt"><p>This singleton object contains the <code>apply</code>and <code>unapply</code> methods for
+ convenient construction and deconstruction.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0</p></dd></dl></div>
+    </li><li name="scala.xml.UnprefixedAttribute" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnprefixedAttribute"></a>
+      <a id="UnprefixedAttribute:UnprefixedAttribute"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="UnprefixedAttribute$.html"><span class="name">UnprefixedAttribute</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@UnprefixedAttribute" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.Utility" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Utility"></a>
+      <a id="Utility:Utility"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Utility$.html"><span class="name">Utility</span></a><span class="result"> extends <a href="parsing/TokenTests.html" class="extype" name="scala.xml.parsing.TokenTests">TokenTests</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Utility" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The <code>Utility</code> object provides utility functions for processing instances
+of bound and not bound XML classes, as well as escaping text nodes.</p>
+    </li><li name="scala.xml.XML" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="XML"></a>
+      <a id="XML:XML"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="XML$.html"><span class="name">XML</span></a><span class="result"> extends <a href="factory/XMLLoader.html" class="extype" name="scala.xml.factory.XMLLoader">XMLLoader</a>[<a href="Elem.html" class="extype" name="scala.xml.Elem">Elem</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@XML" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">The object <code>XML</code> provides constants, and functions to load
+ and save XML elements.</p><div class="fullcomment"><div class="comment cmt"><p>The object <code>XML</code> provides constants, and functions to load
+ and save XML elements. Use this when data binding is not desired, i.e.
+ when XML is handled using <code>Symbol</code> nodes.
+</p></div><dl class="attributes block"> <dt>Version</dt><dd><p>1.0, 25/04/2005</p></dd></dl></div>
+    </li><li name="scala.xml#XercesClassName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="XercesClassName:String"></a>
+      <a id="XercesClassName:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">XercesClassName</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@XercesClassName:String" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.Xhtml" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Xhtml"></a>
+      <a id="Xhtml:Xhtml"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Xhtml$.html"><span class="name">Xhtml</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@Xhtml" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="dtd"></a>
+      <a id="dtd:dtd"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="dtd/package.html"><span class="name">dtd</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@dtd" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.factory" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="factory"></a>
+      <a id="factory:factory"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="factory/package.html"><span class="name">factory</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@factory" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.include" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="include"></a>
+      <a id="include:include"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="include/package.html"><span class="name">include</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@include" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.parsing" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="parsing"></a>
+      <a id="parsing:parsing"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="parsing/package.html"><span class="name">parsing</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@parsing" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.persistent" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="persistent"></a>
+      <a id="persistent:persistent"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="persistent/package.html"><span class="name">persistent</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@persistent" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.pull" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="pull"></a>
+      <a id="pull:pull"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="pull/package.html"><span class="name">pull</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@pull" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Classes needed to view an XML document as a series of events.</p><div class="fullcomment"><div class="comment cmt"><p>Classes needed to view an XML document as a series of events.  The document
+is parsed by an <a href="pull/XMLEventReader.html" class="extype" name="scala.xml.pull.XMLEventReader">scala.xml.pull.XMLEventReader</a> instance.  You can treat it as
+an <span class="extype" name="scala.collection.Iterator">scala.collection.Iterator</span> to retrieve the events, which are all
+subclasses of <a href="pull/XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">scala.xml.pull.XMLEvent</a>.</p><pre>scala&gt; <span class="kw">val</span> source = Source.fromString(<span class="lit">""</span><span class="lit">"<?xml version="</span><span class="num">1.0</span><span class="lit">" encoding="</span>UTF-<span class="num">8</span><span class="lit">" standalone="</span>yes<span class="lit">"?>
+<?instruction custom value="</span>customvalue<span class="lit">"?>
+<!DOCTYPE foo [
+  <!ENTITY bar "</span>BAR<span class="lit">">
+]><foo>Hello<bar>&bar;</bar><bar>&gt;</bar></foo>"</span><span class="lit">""</span>)
+
+source: scala.io.Source = non-empty iterator
+
+scala&gt; <span class="kw">val</span> reader = <span class="kw">new</span> XMLEventReader(source)
+reader: scala.xml.pull.XMLEventReader = non-empty iterator
+
+scala&gt; reader.foreach{ println(_) }
+EvProcInstr(instruction,custom value=<span class="lit">"customvalue"</span>)
+EvText(
+)
+EvElemStart(<span class="kw">null</span>,foo,,)
+EvText(Hello)
+EvComment( <span class="kw">this</span> is a comment )
+EvElemStart(<span class="kw">null</span>,bar,,)
+EvText(BAR)
+EvElemEnd(<span class="kw">null</span>,bar)
+EvElemStart(<span class="kw">null</span>,bar,,)
+EvEntityRef(gt)
+EvElemEnd(<span class="kw">null</span>,bar)
+EvElemEnd(<span class="kw">null</span>,foo)
+EvText(
+
+)</pre></div></div>
+    </li><li name="scala.xml.transform" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="transform"></a>
+      <a id="transform:transform"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="transform/package.html"><span class="name">transform</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scala.xml.package@transform" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <a href="../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
