@@ -1,0 +1,315 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>pull - scala.xml.pull</title>
+          <meta name="description" content="pull - scala.xml.pull" />
+          <meta name="keywords" content="pull scala.xml.pull" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'scala.xml.pull.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="scala">scala</a>.<a href="../package.html" class="extype" name="scala.xml">xml</a></p>
+        <h1>pull</h1><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pull</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Classes needed to view an XML document as a series of events.  The document
+is parsed by an <a href="XMLEventReader.html" class="extype" name="scala.xml.pull.XMLEventReader">scala.xml.pull.XMLEventReader</a> instance.  You can treat it as
+an <span class="extype" name="scala.collection.Iterator">scala.collection.Iterator</span> to retrieve the events, which are all
+subclasses of <a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">scala.xml.pull.XMLEvent</a>.</p><pre>scala&gt; <span class="kw">val</span> source = Source.fromString(<span class="lit">""</span><span class="lit">"<?xml version="</span><span class="num">1.0</span><span class="lit">" encoding="</span>UTF-<span class="num">8</span><span class="lit">" standalone="</span>yes<span class="lit">"?>
+<?instruction custom value="</span>customvalue<span class="lit">"?>
+<!DOCTYPE foo [
+  <!ENTITY bar "</span>BAR<span class="lit">">
+]><foo>Hello<bar>&bar;</bar><bar>&gt;</bar></foo>"</span><span class="lit">""</span>)
+
+source: scala.io.Source = non-empty iterator
+
+scala&gt; <span class="kw">val</span> reader = <span class="kw">new</span> XMLEventReader(source)
+reader: scala.xml.pull.XMLEventReader = non-empty iterator
+
+scala&gt; reader.foreach{ println(_) }
+EvProcInstr(instruction,custom value=<span class="lit">"customvalue"</span>)
+EvText(
+)
+EvElemStart(<span class="kw">null</span>,foo,,)
+EvText(Hello)
+EvComment( <span class="kw">this</span> is a comment )
+EvElemStart(<span class="kw">null</span>,bar,,)
+EvText(BAR)
+EvElemEnd(<span class="kw">null</span>,bar)
+EvElemStart(<span class="kw">null</span>,bar,,)
+EvEntityRef(gt)
+EvElemEnd(<span class="kw">null</span>,bar)
+EvElemEnd(<span class="kw">null</span>,foo)
+EvText(
+
+)</pre></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="scala.xml.pull"><span>pull</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show All</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="scala.xml.pull.EvComment" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EvCommentextendsXMLEventwithProductwithSerializable"></a>
+      <a id="EvComment:EvComment"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EvComment.html"><span class="name">EvComment</span></a><span class="params">(<span name="text">text: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@EvCommentextendsXMLEventwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A comment was encountered</p><div class="fullcomment"><div class="comment cmt"><p>A comment was encountered</p></div><dl class="paramcmts block"><dt class="param">text</dt><dd class="cmt"><p>the text of the comment</p></dd></dl></div>
+    </li><li name="scala.xml.pull.EvElemEnd" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EvElemEndextendsXMLEventwithProductwithSerializable"></a>
+      <a id="EvElemEnd:EvElemEnd"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EvElemEnd.html"><span class="name">EvElemEnd</span></a><span class="params">(<span name="pre">pre: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="label">label: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@EvElemEndextendsXMLEventwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An Element's end tag was encountered.</p><div class="fullcomment"><div class="comment cmt"><p>An Element's end tag was encountered.</p></div><dl class="paramcmts block"><dt class="param">pre</dt><dd class="cmt"><p>prefix, if any, on the element.  This is the <code>xs</code> in <code>&lt;xs:string&gt;foo&lt;/xs:string&gt;</code>.</p></dd><dt class="param">label</dt><dd class="cmt"><p>the name of the element, not including the prefix</p></dd></dl></div>
+    </li><li name="scala.xml.pull.EvElemStart" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EvElemStartextendsXMLEventwithProductwithSerializable"></a>
+      <a id="EvElemStart:EvElemStart"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EvElemStart.html"><span class="name">EvElemStart</span></a><span class="params">(<span name="pre">pre: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="label">label: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="attrs">attrs: <a href="../MetaData.html" class="extype" name="scala.xml.MetaData">MetaData</a></span>, <span name="scope">scope: <a href="../NamespaceBinding.html" class="extype" name="scala.xml.NamespaceBinding">NamespaceBinding</a></span>)</span><span class="result"> extends <a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@EvElemStartextendsXMLEventwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An Element's start tag was encountered.</p><div class="fullcomment"><div class="comment cmt"><p>An Element's start tag was encountered.</p></div><dl class="paramcmts block"><dt class="param">pre</dt><dd class="cmt"><p>prefix, if any, on the element.  This is the <code>xs</code> in <code>&lt;xs:string&gt;foo&lt;/xs:string&gt;</code>.</p></dd><dt class="param">label</dt><dd class="cmt"><p>the name of the element, not including the prefix</p></dd><dt class="param">attrs</dt><dd class="cmt"><p>any attributes on the element</p></dd></dl></div>
+    </li><li name="scala.xml.pull.EvEntityRef" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EvEntityRefextendsXMLEventwithProductwithSerializable"></a>
+      <a id="EvEntityRef:EvEntityRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EvEntityRef.html"><span class="name">EvEntityRef</span></a><span class="params">(<span name="entity">entity: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@EvEntityRefextendsXMLEventwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An entity reference was encountered.</p><div class="fullcomment"><div class="comment cmt"><p>An entity reference was encountered.</p></div><dl class="paramcmts block"><dt class="param">entity</dt><dd class="cmt"><p>the name of the entity, e.g. <code>gt</code> when encountering the entity <code>&gt;</code></p></dd></dl></div>
+    </li><li name="scala.xml.pull.EvProcInstr" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EvProcInstrextendsXMLEventwithProductwithSerializable"></a>
+      <a id="EvProcInstr:EvProcInstr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EvProcInstr.html"><span class="name">EvProcInstr</span></a><span class="params">(<span name="target">target: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="text">text: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@EvProcInstrextendsXMLEventwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A processing instruction was encountered.</p><div class="fullcomment"><div class="comment cmt"><p>A processing instruction was encountered.</p></div><dl class="paramcmts block"><dt class="param">target</dt><dd class="cmt"><p>the &quot;PITarget&quot; of the processing instruction.  For the instruction <code>&lt;?foo bar=&quot;baz&quot;?&gt;</code>, the target would
+be <code>foo</code></p></dd><dt class="param">text</dt><dd class="cmt"><p>the remainder of the instruction.  For the instruction <code>&lt;?foo bar=&quot;baz&quot;?&gt;</code>, the text would
+be <code>bar=&quot;baz&quot;</code></p></dd></dl><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="http://www.w3.org/TR/REC-xml/#sec-pi" target="_blank">http://www.w3.org/TR/REC-xml/#sec-pi</a></p></span></dd></dl></div>
+    </li><li name="scala.xml.pull.EvText" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EvTextextendsXMLEventwithProductwithSerializable"></a>
+      <a id="EvText:EvText"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EvText.html"><span class="name">EvText</span></a><span class="params">(<span name="text">text: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@EvTextextendsXMLEventwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A text node was encountered.</p><div class="fullcomment"><div class="comment cmt"><p>A text node was encountered.</p></div><dl class="paramcmts block"><dt class="param">text</dt><dd class="cmt"><p>the text that was found</p></dd></dl></div>
+    </li><li name="scala.xml.pull.ProducerConsumerIterator" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ProducerConsumerIterator[T&gt;:Null]extendsIterator[T]"></a>
+      <a id="ProducerConsumerIterator[T&gt;:Null]:ProducerConsumerIterator[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ProducerConsumerIterator.html"><span class="name">ProducerConsumerIterator</span></a><span class="tparams">[<span name="T">T &gt;: <span class="extype" name="scala.Null">Null</span></span>]</span><span class="result"> extends <a href="../../package.html#Iterator[+A]=Iterator[A]" class="extmbr" name="scala.Iterator">Iterator</a>[<span class="extype" name="scala.xml.pull.ProducerConsumerIterator.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@ProducerConsumerIterator[T&gt;:Null]extendsIterator[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.pull.XMLEvent" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="XMLEventextendsAnyRef"></a>
+      <a id="XMLEvent:XMLEvent"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="XMLEvent.html"><span class="name">XMLEvent</span></a><span class="result"> extends <a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@XMLEventextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An XML event for pull parsing.</p><div class="fullcomment"><div class="comment cmt"><p>An XML event for pull parsing.  All events received during
+parsing will be one of the subclasses of this trait.
+</p></div></div>
+    </li><li name="scala.xml.pull.XMLEventReader" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="XMLEventReaderextendsAbstractIterator[scala.xml.pull.XMLEvent]withProducerConsumerIterator[scala.xml.pull.XMLEvent]"></a>
+      <a id="XMLEventReader:XMLEventReader"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="XMLEventReader.html"><span class="name">XMLEventReader</span></a><span class="result"> extends <span class="extype" name="scala.collection.AbstractIterator">AbstractIterator</span>[<a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a>] with <a href="ProducerConsumerIterator.html" class="extype" name="scala.xml.pull.ProducerConsumerIterator">ProducerConsumerIterator</a>[<a href="XMLEvent.html" class="extype" name="scala.xml.pull.XMLEvent">XMLEvent</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.pull.package@XMLEventReaderextendsAbstractIterator[scala.xml.pull.XMLEvent]withProducerConsumerIterator[scala.xml.pull.XMLEvent]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Main entry point into creating an event-based XML parser.</p><div class="fullcomment"><div class="comment cmt"><p>Main entry point into creating an event-based XML parser.  Treating this
+as a <span class="extype" name="scala.collection.Iterator">scala.collection.Iterator</span> will provide access to the generated events.</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

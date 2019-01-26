@@ -1,0 +1,159 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>persistent - scala.xml.persistent</title>
+          <meta name="description" content="persistent - scala.xml.persistent" />
+          <meta name="keywords" content="persistent scala.xml.persistent" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'scala.xml.persistent.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="scala">scala</a>.<a href="../package.html" class="extype" name="scala.xml">xml</a></p>
+        <h1>persistent</h1><span class="permalink">
+      <a href="../../../index.html#scala.xml.persistent.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">persistent</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="scala.xml.persistent.CachedFileStorage" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="CachedFileStorageextendsThread"></a>
+      <a id="CachedFileStorage:CachedFileStorage"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CachedFileStorage.html"><span class="name">CachedFileStorage</span></a><span class="result"> extends <span class="extype" name="java.lang.Thread">Thread</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.persistent.package@CachedFileStorageextendsThread" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Mutable storage of immutable xml trees.</p><div class="fullcomment"><div class="comment cmt"><p>Mutable storage of immutable xml trees. Everything is kept in memory,
+ with a thread periodically checking for changes and writing to file.</p><p> To ensure atomicity, two files are used, <code>filename1</code> and <code>'$'+filename1</code>.
+ The implementation switches between the two, deleting the older one
+ after a complete dump of the database has been written.
+</p></div></div>
+    </li><li name="scala.xml.persistent.Index" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Index[A]extendsxml.Node=&gt;A"></a>
+      <a id="Index[A]:Index[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Index.html"><span class="name">Index</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<a href="../Node.html" class="extype" name="scala.xml.Node">Node</a>) ⇒ <span class="extype" name="scala.xml.persistent.Index.A">A</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.persistent.package@Index[A]extendsxml.Node=&gt;A" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">an Index returns some unique key that is part of a node
+</p>
+    </li><li name="scala.xml.persistent.SetStorage" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SetStorageextendsCachedFileStorage"></a>
+      <a id="SetStorage:SetStorage"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SetStorage.html"><span class="name">SetStorage</span></a><span class="result"> extends <a href="CachedFileStorage.html" class="extype" name="scala.xml.persistent.CachedFileStorage">CachedFileStorage</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.persistent.package@SetStorageextendsCachedFileStorage" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A persistent store with set semantics.</p><div class="fullcomment"><div class="comment cmt"><p>A persistent store with set semantics. This class allows to add and remove
+ trees, but never contains two structurally equal trees.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

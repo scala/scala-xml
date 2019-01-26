@@ -1,0 +1,779 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>dtd - scala.xml.dtd</title>
+          <meta name="description" content="dtd - scala.xml.dtd" />
+          <meta name="keywords" content="dtd scala.xml.dtd" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'scala.xml.dtd.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="scala">scala</a>.<a href="../package.html" class="extype" name="scala.xml">xml</a></p>
+        <h1>dtd</h1><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dtd</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="scala.xml.dtd.AttListDecl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AttListDeclextendsMarkupDeclwithProductwithSerializable"></a>
+      <a id="AttListDecl:AttListDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="AttListDecl.html"><span class="name">AttListDecl</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="attrs">attrs: <a href="../../package.html#List[+A]=List[A]" class="extmbr" name="scala.List">List</a>[<a href="AttrDecl.html" class="extype" name="scala.xml.dtd.AttrDecl">AttrDecl</a>]</span>)</span><span class="result"> extends <a href="MarkupDecl.html" class="extype" name="scala.xml.dtd.MarkupDecl">MarkupDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@AttListDeclextendsMarkupDeclwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.AttrDecl" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AttrDeclextendsProductwithSerializable"></a>
+      <a id="AttrDecl:AttrDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="AttrDecl.html"><span class="name">AttrDecl</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="tpe">tpe: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="default">default: <a href="DefaultDecl.html" class="extype" name="scala.xml.dtd.DefaultDecl">DefaultDecl</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@AttrDeclextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">an attribute declaration.</p><div class="fullcomment"><div class="comment cmt"><p>an attribute declaration. at this point, the tpe is a string. Future
+ versions might provide a way to access the attribute types more
+ directly.
+</p></div></div>
+    </li><li name="scala.xml.dtd.ContentModel" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ContentModelextendsAnyRef"></a>
+      <a id="ContentModel:ContentModel"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ContentModel.html"><span class="name">ContentModel</span></a><span class="result"> extends <a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ContentModelextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.DEFAULT" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DEFAULTextendsDefaultDeclwithProductwithSerializable"></a>
+      <a id="DEFAULT:DEFAULT"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DEFAULT.html"><span class="name">DEFAULT</span></a><span class="params">(<span name="fixed">fixed: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="attValue">attValue: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="DefaultDecl.html" class="extype" name="scala.xml.dtd.DefaultDecl">DefaultDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@DEFAULTextendsDefaultDeclwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.DFAContentModel" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DFAContentModelextendsContentModel"></a>
+      <a id="DFAContentModel:DFAContentModel"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DFAContentModel.html"><span class="name">DFAContentModel</span></a><span class="result"> extends <a href="ContentModel.html" class="extype" name="scala.xml.dtd.ContentModel">ContentModel</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@DFAContentModelextendsContentModel" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.DTD" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DTDextendsAnyRef"></a>
+      <a id="DTD:DTD"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DTD.html"><span class="name">DTD</span></a><span class="result"> extends <a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@DTDextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A document type declaration.</p>
+    </li><li name="scala.xml.dtd.Decl" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DeclextendsAnyRef"></a>
+      <a id="Decl:Decl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Decl.html"><span class="name">Decl</span></a><span class="result"> extends <a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@DeclextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.DefaultDecl" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DefaultDeclextendsAnyRef"></a>
+      <a id="DefaultDecl:DefaultDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DefaultDecl.html"><span class="name">DefaultDecl</span></a><span class="result"> extends <a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@DefaultDeclextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.DocType" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DocTypeextendsProductwithSerializable"></a>
+      <a id="DocType:DocType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DocType.html"><span class="name">DocType</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="extID">extID: <a href="ExternalID.html" class="extype" name="scala.xml.dtd.ExternalID">ExternalID</a></span>, <span name="intSubset">intSubset: <a href="../../package.html#Seq[+A]=Seq[A]" class="extmbr" name="scala.Seq">Seq</a>[<a href="Decl.html" class="extype" name="scala.xml.dtd.Decl">Decl</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@DocTypeextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">An XML node for document type declaration.</p><div class="fullcomment"><div class="comment cmt"><p>An XML node for document type declaration.
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>name of this DOCTYPE</p></dd><dt class="param">extID</dt><dd class="cmt"><p>NoExternalID or the external ID of this doctype</p></dd><dt class="param">intSubset</dt><dd class="cmt"><p>sequence of internal subset declarations</p></dd></dl></div>
+    </li><li name="scala.xml.dtd.ELEMENTS" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ELEMENTSextendsDFAContentModelwithProductwithSerializable"></a>
+      <a id="ELEMENTS:ELEMENTS"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ELEMENTS.html"><span class="name">ELEMENTS</span></a><span class="params">(<span name="r">r: <a href="ContentModel$.html#RegExpextendsAnyRef" class="extmbr" name="scala.xml.dtd.ContentModel.RegExp">ContentModel.RegExp</a></span>)</span><span class="result"> extends <a href="DFAContentModel.html" class="extype" name="scala.xml.dtd.DFAContentModel">DFAContentModel</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ELEMENTSextendsDFAContentModelwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.ElemDecl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ElemDeclextendsMarkupDeclwithProductwithSerializable"></a>
+      <a id="ElemDecl:ElemDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ElemDecl.html"><span class="name">ElemDecl</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="contentModel">contentModel: <a href="ContentModel.html" class="extype" name="scala.xml.dtd.ContentModel">ContentModel</a></span>)</span><span class="result"> extends <a href="MarkupDecl.html" class="extype" name="scala.xml.dtd.MarkupDecl">MarkupDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ElemDeclextendsMarkupDeclwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">an element declaration
+</p>
+    </li><li name="scala.xml.dtd.ElementValidator" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ElementValidatorextendsxml.Node=&gt;Boolean"></a>
+      <a id="ElementValidator:ElementValidator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ElementValidator.html"><span class="name">ElementValidator</span></a><span class="result"> extends (<a href="../Node.html" class="extype" name="scala.xml.Node">Node</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ElementValidatorextendsxml.Node=&gt;Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">validate children and/or attributes of an element
+ exceptions are created but not thrown.</p>
+    </li><li name="scala.xml.dtd.EntityDecl" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="EntityDeclextendsMarkupDecl"></a>
+      <a id="EntityDecl:EntityDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="EntityDecl.html"><span class="name">EntityDecl</span></a><span class="result"> extends <a href="MarkupDecl.html" class="extype" name="scala.xml.dtd.MarkupDecl">MarkupDecl</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@EntityDeclextendsMarkupDecl" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">an entity declaration</p>
+    </li><li name="scala.xml.dtd.EntityDef" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="EntityDefextendsAnyRef"></a>
+      <a id="EntityDef:EntityDef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="EntityDef.html"><span class="name">EntityDef</span></a><span class="result"> extends <a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@EntityDefextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.ExtDef" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ExtDefextendsEntityDefwithProductwithSerializable"></a>
+      <a id="ExtDef:ExtDef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ExtDef.html"><span class="name">ExtDef</span></a><span class="params">(<span name="extID">extID: <a href="ExternalID.html" class="extype" name="scala.xml.dtd.ExternalID">ExternalID</a></span>)</span><span class="result"> extends <a href="EntityDef.html" class="extype" name="scala.xml.dtd.EntityDef">EntityDef</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ExtDefextendsEntityDefwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.ExternalID" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ExternalIDextendsTokenTests"></a>
+      <a id="ExternalID:ExternalID"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ExternalID.html"><span class="name">ExternalID</span></a><span class="result"> extends <a href="../parsing/TokenTests.html" class="extype" name="scala.xml.parsing.TokenTests">TokenTests</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ExternalIDextendsTokenTests" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">an ExternalIDs - either PublicID or SystemID
+</p>
+    </li><li name="scala.xml.dtd.IntDef" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IntDefextendsEntityDefwithProductwithSerializable"></a>
+      <a id="IntDef:IntDef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="IntDef.html"><span class="name">IntDef</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="EntityDef.html" class="extype" name="scala.xml.dtd.EntityDef">EntityDef</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@IntDefextendsEntityDefwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.MIXED" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MIXEDextendsDFAContentModelwithProductwithSerializable"></a>
+      <a id="MIXED:MIXED"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MIXED.html"><span class="name">MIXED</span></a><span class="params">(<span name="r">r: <a href="ContentModel$.html#RegExpextendsAnyRef" class="extmbr" name="scala.xml.dtd.ContentModel.RegExp">ContentModel.RegExp</a></span>)</span><span class="result"> extends <a href="DFAContentModel.html" class="extype" name="scala.xml.dtd.DFAContentModel">DFAContentModel</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@MIXEDextendsDFAContentModelwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.MarkupDecl" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="MarkupDeclextendsDecl"></a>
+      <a id="MarkupDecl:MarkupDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MarkupDecl.html"><span class="name">MarkupDecl</span></a><span class="result"> extends <a href="Decl.html" class="extype" name="scala.xml.dtd.Decl">Decl</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@MarkupDeclextendsDecl" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.NotationDecl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NotationDeclextendsMarkupDeclwithProductwithSerializable"></a>
+      <a id="NotationDecl:NotationDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NotationDecl.html"><span class="name">NotationDecl</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="extID">extID: <a href="ExternalID.html" class="extype" name="scala.xml.dtd.ExternalID">ExternalID</a></span>)</span><span class="result"> extends <a href="MarkupDecl.html" class="extype" name="scala.xml.dtd.MarkupDecl">MarkupDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@NotationDeclextendsMarkupDeclwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">a notation declaration</p>
+    </li><li name="scala.xml.dtd.PEReference" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PEReferenceextendsMarkupDeclwithProductwithSerializable"></a>
+      <a id="PEReference:PEReference"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PEReference.html"><span class="name">PEReference</span></a><span class="params">(<span name="ent">ent: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="MarkupDecl.html" class="extype" name="scala.xml.dtd.MarkupDecl">MarkupDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@PEReferenceextendsMarkupDeclwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">a parsed entity reference</p>
+    </li><li name="scala.xml.dtd.ParameterEntityDecl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParameterEntityDeclextendsEntityDeclwithProductwithSerializable"></a>
+      <a id="ParameterEntityDecl:ParameterEntityDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParameterEntityDecl.html"><span class="name">ParameterEntityDecl</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="entdef">entdef: <a href="EntityDef.html" class="extype" name="scala.xml.dtd.EntityDef">EntityDef</a></span>)</span><span class="result"> extends <a href="EntityDecl.html" class="extype" name="scala.xml.dtd.EntityDecl">EntityDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ParameterEntityDeclextendsEntityDeclwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">a parameter entity declaration</p>
+    </li><li name="scala.xml.dtd.ParsedEntityDecl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParsedEntityDeclextendsEntityDeclwithProductwithSerializable"></a>
+      <a id="ParsedEntityDecl:ParsedEntityDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParsedEntityDecl.html"><span class="name">ParsedEntityDecl</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="entdef">entdef: <a href="EntityDef.html" class="extype" name="scala.xml.dtd.EntityDef">EntityDef</a></span>)</span><span class="result"> extends <a href="EntityDecl.html" class="extype" name="scala.xml.dtd.EntityDecl">EntityDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ParsedEntityDeclextendsEntityDeclwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">a parsed general entity declaration</p>
+    </li><li name="scala.xml.dtd.PublicID" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PublicIDextendsExternalIDwithProductwithSerializable"></a>
+      <a id="PublicID:PublicID"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PublicID.html"><span class="name">PublicID</span></a><span class="params">(<span name="publicId">publicId: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="systemId">systemId: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="ExternalID.html" class="extype" name="scala.xml.dtd.ExternalID">ExternalID</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@PublicIDextendsExternalIDwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">a public identifier (see http://www.w3.org/QA/2002/04/valid-dtd-list.html).</p><div class="fullcomment"><div class="comment cmt"><p>a public identifier (see http://www.w3.org/QA/2002/04/valid-dtd-list.html).
+</p></div><dl class="paramcmts block"><dt class="param">publicId</dt><dd class="cmt"><p>the public identifier literal</p></dd><dt class="param">systemId</dt><dd class="cmt"><p>(can be null for notation pubIDs) the system identifier literal</p></dd></dl></div>
+    </li><li name="scala.xml.dtd.Scanner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ScannerextendsTokenswithTokenTests"></a>
+      <a id="Scanner:Scanner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Scanner.html"><span class="name">Scanner</span></a><span class="result"> extends <a href="Tokens.html" class="extype" name="scala.xml.dtd.Tokens">Tokens</a> with <a href="../parsing/TokenTests.html" class="extype" name="scala.xml.parsing.TokenTests">TokenTests</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ScannerextendsTokenswithTokenTests" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Scanner for regexps (content models in DTD element declarations)
+ todo: cleanup
+</p>
+    </li><li name="scala.xml.dtd.SystemID" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SystemIDextendsExternalIDwithProductwithSerializable"></a>
+      <a id="SystemID:SystemID"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SystemID.html"><span class="name">SystemID</span></a><span class="params">(<span name="systemId">systemId: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="ExternalID.html" class="extype" name="scala.xml.dtd.ExternalID">ExternalID</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@SystemIDextendsExternalIDwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">a system identifier
+</p><div class="fullcomment"><div class="comment cmt"><p>a system identifier
+</p></div><dl class="paramcmts block"><dt class="param">systemId</dt><dd class="cmt"><p>the system identifier literal</p></dd></dl></div>
+    </li><li name="scala.xml.dtd.Tokens" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TokensextendsAnyRef"></a>
+      <a id="Tokens:Tokens"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tokens.html"><span class="name">Tokens</span></a><span class="result"> extends <a href="../../package.html#AnyRef=Object" class="extmbr" name="scala.AnyRef">AnyRef</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@TokensextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.UnparsedEntityDecl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnparsedEntityDeclextendsEntityDeclwithProductwithSerializable"></a>
+      <a id="UnparsedEntityDecl:UnparsedEntityDecl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="UnparsedEntityDecl.html"><span class="name">UnparsedEntityDecl</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="extID">extID: <a href="ExternalID.html" class="extype" name="scala.xml.dtd.ExternalID">ExternalID</a></span>, <span name="notation">notation: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="EntityDecl.html" class="extype" name="scala.xml.dtd.EntityDecl">EntityDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@UnparsedEntityDeclextendsEntityDeclwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">an unparsed entity declaration</p>
+    </li><li name="scala.xml.dtd.ValidationException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValidationExceptionextendsExceptionwithProductwithSerializable"></a>
+      <a id="ValidationException:ValidationException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValidationException.html"><span class="name">ValidationException</span></a><span class="params">(<span name="e">e: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="../../package.html#Exception=Exception" class="extmbr" name="scala.Exception">Exception</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ValidationExceptionextendsExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.xml.dtd.ANY" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ANY"></a>
+      <a id="ANY:ANY"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ANY$.html"><span class="name">ANY</span></a><span class="result"> extends <a href="ContentModel.html" class="extype" name="scala.xml.dtd.ContentModel">ContentModel</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ANY" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.ContentModel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContentModel"></a>
+      <a id="ContentModel:ContentModel"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ContentModel$.html"><span class="name">ContentModel</span></a><span class="result"> extends <span class="extype" name="scala.xml.dtd.impl.WordExp">WordExp</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ContentModel" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.ContentModelParser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContentModelParser"></a>
+      <a id="ContentModelParser:ContentModelParser"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ContentModelParser$.html"><span class="name">ContentModelParser</span></a><span class="result"> extends <a href="Scanner.html" class="extype" name="scala.xml.dtd.Scanner">Scanner</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@ContentModelParser" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Parser for regexps (content models in DTD element declarations)</p>
+    </li><li name="scala.xml.dtd.DocType" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DocType"></a>
+      <a id="DocType:DocType"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DocType$.html"><span class="name">DocType</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@DocType" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.EMPTY" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="EMPTY"></a>
+      <a id="EMPTY:EMPTY"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="EMPTY$.html"><span class="name">EMPTY</span></a><span class="result"> extends <a href="ContentModel.html" class="extype" name="scala.xml.dtd.ContentModel">ContentModel</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@EMPTY" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.IMPLIED" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IMPLIED"></a>
+      <a id="IMPLIED:IMPLIED"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="IMPLIED$.html"><span class="name">IMPLIED</span></a><span class="result"> extends <a href="DefaultDecl.html" class="extype" name="scala.xml.dtd.DefaultDecl">DefaultDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@IMPLIED" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.MakeValidationException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MakeValidationException"></a>
+      <a id="MakeValidationException:MakeValidationException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MakeValidationException$.html"><span class="name">MakeValidationException</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@MakeValidationException" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p>
+    </li><li name="scala.xml.dtd.NoExternalID" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NoExternalID"></a>
+      <a id="NoExternalID:NoExternalID"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NoExternalID$.html"><span class="name">NoExternalID</span></a><span class="result"> extends <a href="ExternalID.html" class="extype" name="scala.xml.dtd.ExternalID">ExternalID</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@NoExternalID" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A marker used when a <code>DocType</code> contains no external id.</p>
+    </li><li name="scala.xml.dtd.PCDATA" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PCDATA"></a>
+      <a id="PCDATA:PCDATA"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PCDATA$.html"><span class="name">PCDATA</span></a><span class="result"> extends <a href="ContentModel.html" class="extype" name="scala.xml.dtd.ContentModel">ContentModel</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@PCDATA" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scala.xml.dtd.REQUIRED" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="REQUIRED"></a>
+      <a id="REQUIRED:REQUIRED"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="REQUIRED$.html"><span class="name">REQUIRED</span></a><span class="result"> extends <a href="DefaultDecl.html" class="extype" name="scala.xml.dtd.DefaultDecl">DefaultDecl</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scala.xml.dtd.package@REQUIRED" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
