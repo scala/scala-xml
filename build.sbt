@@ -13,6 +13,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     name    := "scala-xml",
     version := "1.2.0-SNAPSHOT",
 
+    // this line could be removed after https://github.com/scala/sbt-scala-module/issues/48 is fixed
+    licenses := Seq(("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))),
+
     // Compiler team advised avoiding the -Xfuture option for releases.
     // The output with -Xfuture should be periodically checked, though.
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
