@@ -12,7 +12,7 @@ Since Scala 2.11, this library is a separate jar that can be omitted from Scala 
 
 The decoupling works because the compiler desugars XML literals in Scala source code into a set of method calls. Alternative implementations of these calls are welcome! (The calls are unfortunately only defined by the [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala).)
 
-API documentation is available [here](http://www.scala-lang.org/api/current/scala-xml/scala/xml/index.html).
+API documentation is available [here](https://scala.github.io/scala-xml/api/1.1.0/scala/xml/).
 
 How to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
 
