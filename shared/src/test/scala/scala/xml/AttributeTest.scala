@@ -154,4 +154,23 @@ class AttributeTest {
     assertEquals(List(Group(Seq(Text("1"))), Group(Seq(Text("2")))), barList)
   }
 
+  @Test(expected=classOf[IllegalArgumentException])
+  def invalidAttributeFailForOne: Unit = {
+    <x/> \ "@"
+  }
+
+  @Test(expected=classOf[IllegalArgumentException])
+  def invalidAttributeFailForMany: Unit = {
+    <x><y/><z/></x>.child \ "@"
+  }
+
+  @Test(expected=classOf[IllegalArgumentException])
+  def invalidEmptyAttributeFailForOne: Unit = {
+    <x/> \@ ""
+  }
+
+  @Test(expected=classOf[IllegalArgumentException])
+  def invalidEmptyAttributeFailForMany: Unit = {
+    <x><y/><z/></x>.child \@ ""
+  }
 }

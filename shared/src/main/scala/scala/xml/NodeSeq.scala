@@ -116,6 +116,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     that match {
       case ""                                        => fail
       case "_"                                       => makeSeq(!_.isAtom)
+      case "@"                                       => fail
       case _ if (that(0) == '@' && this.length == 1) => atResult
       case _                                         => makeSeq(_.label == that)
     }
