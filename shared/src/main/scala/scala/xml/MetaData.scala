@@ -82,7 +82,6 @@ abstract class MetaData
   extends AbstractIterable[MetaData]
   with Iterable[MetaData]
   with Equality
-  with ScalaVersionSpecificIterableSerializable[MetaData]
   with Serializable {
 
   /**
