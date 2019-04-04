@@ -20,8 +20,6 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 abstract class RewriteRule extends BasicTransformer {
-  /** a name for this rewrite rule */
-  val name = this.toString()
   override def transform(ns: Seq[Node]): Seq[Node] = super.transform(ns)
   override def transform(n: Node): Seq[Node] = n
 }
