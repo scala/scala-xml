@@ -26,6 +26,7 @@ import Utility.sbToString
 sealed abstract class Decl
 
 sealed abstract class MarkupDecl extends Decl {
+  override def toString(): String = sbToString(buildString)
   def buildString(sb: StringBuilder): StringBuilder
 }
 
