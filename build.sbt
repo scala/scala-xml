@@ -11,7 +11,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(scalaModuleSettingsJVM)
   .settings(
     name    := "scala-xml",
-    version := "1.2.0-SNAPSHOT",
+    version := "1.2.1-SNAPSHOT",
 
     // this line could be removed after https://github.com/scala/sbt-scala-module/issues/48 is fixed
     licenses := Seq(("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))),
@@ -29,8 +29,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       )
     },
     mimaPreviousVersion := {
-      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M7") None // No such release yet
-      else Some("1.1.1")
+      Some("1.2.0")
     },
 
     unmanagedSourceDirectories in Compile ++= {
