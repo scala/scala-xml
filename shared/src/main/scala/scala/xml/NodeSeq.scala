@@ -44,7 +44,7 @@ object NodeSeq {
  *
  *  @author  Burak Emir
  */
-abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with ScalaVersionSpecificNodeSeq with Equality with ScalaVersionSpecificIterableSerializable[Node] with Serializable {
+abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with ScalaVersionSpecificNodeSeq with Equality with Serializable {
   def theSeq: Seq[Node]
   def length = theSeq.length
   override def iterator = theSeq.iterator

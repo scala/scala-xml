@@ -1,7 +1,7 @@
 import sbtcrossproject.{crossProject, CrossType}
 import ScalaModulePlugin._
 
-crossScalaVersions in ThisBuild := List("2.12.8", "2.11.12", "2.13.0-M5")
+crossScalaVersions in ThisBuild := List("2.12.8", "2.11.12", "2.13.0-RC1")
 
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
@@ -29,7 +29,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       )
     },
     mimaPreviousVersion := {
-      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M6") None // No such release yet
+      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M7") None // No such release yet
       else Some("1.1.1")
     },
 

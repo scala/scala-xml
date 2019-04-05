@@ -16,7 +16,7 @@ jdk:
 scala:
   - 2.11.12
   - 2.12.8
-  - 2.13.0-M5
+  - 2.13.0-RC1
 
 env:
   global:
@@ -29,24 +29,24 @@ env:
   matrix:
     # The empty SCALAJS_VERSION will only compile for the JVM
     - SCALAJS_VERSION=
-    - SCALAJS_VERSION=0.6.26
-    - SCALAJS_VERSION=1.0.0-M6
+    - SCALAJS_VERSION=0.6.27
+    - SCALAJS_VERSION=1.0.0-M7
 
 matrix:
   exclude:
     - jdk: openjdk11
-      env: SCALAJS_VERSION=0.6.26
+      env: SCALAJS_VERSION=0.6.27
     - jdk: openjdk11
-      env: SCALAJS_VERSION=1.0.0-M6
+      env: SCALAJS_VERSION=1.0.0-M7
     - scala: 2.11.12
-      env: SCALAJS_VERSION=1.0.0-M6
+      env: SCALAJS_VERSION=1.0.0-M7
     - scala: 2.11.12
       jdk: oraclejdk8
     - scala: 2.11.12
       jdk: openjdk11
     - scala: 2.12.8
       jdk: openjdk6
-    - scala: 2.13.0-M5
+    - scala: 2.13.0-RC1
       jdk: openjdk6
 
 before_script:

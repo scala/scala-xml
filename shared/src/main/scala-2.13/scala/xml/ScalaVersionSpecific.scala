@@ -19,12 +19,9 @@ private[xml] trait ScalaVersionSpecificNodeSeq
     with StrictOptimizedSeqOps[Node, immutable.Seq, NodeSeq] { self: NodeSeq =>
   override def fromSpecific(coll: IterableOnce[Node]): NodeSeq = (NodeSeq.newBuilder ++= coll).result()
   override def newSpecificBuilder: mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
+  override def empty: NodeSeq = NodeSeq.Empty
 }
 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
   override def className: String = "NodeBuffer"
-}
-
-private[xml] trait ScalaVersionSpecificIterableSerializable[+A] extends Iterable[A] {
-  protected[this] override def writeReplace(): AnyRef = this
 }

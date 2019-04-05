@@ -20,7 +20,3 @@ private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
   override def stringPrefix: String = "NodeBuffer"
 }
-
-private[xml] trait ScalaVersionSpecificIterableSerializable[+A] { // extends Iterable[A] {
-  // protected[this] override def writeReplace(): AnyRef = this
-}
