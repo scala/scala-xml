@@ -68,3 +68,4 @@ env JAVA_HOME=$(/usr/libexec/java_home -v 1.6) TARGET_DIR=./target ./admin/api-d
 env JAVA_HOME=$(/usr/libexec/java_home -v 1.8) TARGET_DIR=./target ./admin/api-docs.sh v1.0.6 2.12.0
 env JAVA_HOME=$(/usr/libexec/java_home -v 1.8) ./admin/api-docs.sh v1.1.0 2.12.4
 env JAVA_HOME=$(/usr/libexec/java_home -v 1.8) ./admin/api-docs.sh v1.1.1 2.12.6
+env JAVA_HOME=$(/usr/libexec/java_home -v 1.8) ./admin/api-docs.sh v1.2.0 2.12.8
