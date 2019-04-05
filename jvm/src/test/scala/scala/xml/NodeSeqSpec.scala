@@ -54,16 +54,10 @@ object NodeSeqSpec extends PropertiesFor("NodeSeq")
   property("\\ @.throws[Exception]") = {
     Prop.forAll { n: NodeSeq =>
       Prop.iff[NodeSeq](n, {
-        // FIXME: Should be IllegalArgumentException, regardless of theSeq.
-        case n if n.length == 0 =>
-          (n \ "@") ?= NodeSeq.Empty
-        case n if n.length == 1 =>
+        case n: NodeSeq =>
           Prop.throws(classOf[IllegalArgumentException]) {
             (n \ "@")
           }
-        case n: NodeSeq =>
-          (n \ "@")
-          Prop.passed
       })
     }
   }
@@ -126,16 +120,10 @@ object NodeSeqSpec extends PropertiesFor("NodeSeq")
   property("\\@ \"\".throws[Exception]") = {
     Prop.forAll { n: NodeSeq =>
       Prop.iff[NodeSeq](n, {
-        // FIXME: Should be IllegalArgumentException, regardless of theSeq.
-        case n if n.length == 0 =>
-          (n \@ "") ?= ""
-        case n if n.length == 1 =>
+        case s =>
           Prop.throws(classOf[IllegalArgumentException]) {
             (n \@ "")
           }
-        case s =>
-          (n \@ "")
-          Prop.passed
       })
     }
   }
