@@ -29,7 +29,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       )
     },
     mimaPreviousVersion := {
-      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M6") None // No such release yet
+      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M7") None // No such release yet
       else Some("1.1.1")
     },
 
