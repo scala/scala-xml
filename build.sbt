@@ -21,13 +21,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
 
-    mimaBinaryIssueFilters ++= {
-      import com.typesafe.tools.mima.core._
-      import com.typesafe.tools.mima.core.ProblemFilters._
-      Seq(
-        exclude[DirectMissingMethodProblem]("scala.xml.transform.RewriteRule.name")
-      )
-    },
     mimaPreviousVersion := {
       Some("1.2.0")
     },
