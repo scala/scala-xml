@@ -1,20 +1,10 @@
 language: scala
 
-# Needed for openjdk6
-dist: precise
-sudo: required
-addons:
-  hosts:
-    - localhost
-  hostname: localhost.local
-
 jdk:
-  - openjdk6
   - oraclejdk8
   - openjdk11
 
 scala:
-  - 2.11.12
   - 2.12.8
   - 2.13.0-RC1
 
@@ -38,26 +28,8 @@ matrix:
       env: SCALAJS_VERSION=0.6.27
     - jdk: openjdk11
       env: SCALAJS_VERSION=1.0.0-M7
-    - scala: 2.11.12
-      env: SCALAJS_VERSION=1.0.0-M7
-    - scala: 2.11.12
-      jdk: oraclejdk8
-    - scala: 2.11.12
-      jdk: openjdk11
-    - scala: 2.12.8
-      jdk: openjdk6
-    - scala: 2.13.0-RC1
-      jdk: openjdk6
-
-before_script:
-  - nvm install 8
-  - nvm use 8
 
 script: 
-  # work around https://github.com/travis-ci/travis-ci/issues/9713
-  - if [[ $JAVA_HOME = *java-6* ]]; then jdk_switcher use openjdk6; fi
-  - java -version
-  - node -v
   - admin/build.sh
 
 before_cache:
