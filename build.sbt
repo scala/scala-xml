@@ -63,7 +63,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies += "junit" % "junit" % "4.12" % "test",
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
-    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.5" % "test",
+    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.9" % "test",
     libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
   )
   .jsSettings(
