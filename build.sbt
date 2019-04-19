@@ -13,8 +13,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     name    := "scala-xml",
     version := "2.0.0-SNAPSHOT",
 
-    // Compiler team advised avoiding the -Xfuture option for releases.
-    // The output with -Xfuture should be periodically checked, though.
+    // Compiler team advised avoiding the -Xsource:2.14 option for releases.
+    // The output with -Xsource should be periodically checked, though.
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
 
