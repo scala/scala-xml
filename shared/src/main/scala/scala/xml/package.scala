@@ -56,9 +56,6 @@ package scala
  * [[http://xerces.apache.org/ Xerces]] parser and is provided in Java
  * by [[javax.xml.parsers.SAXParser]].
  *
- * A less greedy XML reader can return data as a sequential collection
- * of events, see [[scala.xml.pull.XMLEventReader]].
- *
  * For more control of the input, use the parser written in Scala that
  * is provided, [[scala.xml.parsing.ConstructingParser]].
  *

@@ -90,12 +90,12 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
             -> url("http://docs.oracle.com/javase/8/docs/api")
         )
       } getOrElse {
-        // If everything fails, jam in the Java 9 base module.
+        // If everything fails, jam in Java 11 modules.
         Map(
           file("/modules/java.base")
-            -> url("http://docs.oracle.com/javase/9/docs/api"),
+            -> url("https://docs.oracle.com/en/java/javase/11/docs/api/java.base"),
           file("/modules/java.xml")
-            -> url("http://docs.oracle.com/javase/9/docs/api")
+            -> url("https://docs.oracle.com/en/java/javase/11/docs/api/java.xml")
         )
       }
     }
