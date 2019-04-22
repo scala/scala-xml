@@ -158,7 +158,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
         if (scopeStack.isEmpty) TopScope
         else scopeStack.head
 
-      for (i <- 0 until attributes.getLength()) {
+      for (i <- (0 until attributes.getLength).reverse) {
         val qname = attributes getQName i
         val value = attributes getValue i
         val (pre, key) = splitName(qname)

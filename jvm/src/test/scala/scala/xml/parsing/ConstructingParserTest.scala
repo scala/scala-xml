@@ -71,4 +71,14 @@ class ConstructingParserTest {
 
     ConstructingParser.fromSource(source, true).content(TopScope)
   }
+
+  @Test
+  def SI6341issue65: Unit = {
+    val str = """<elem one="test" two="test2" three="test3"/>"""
+    val cpa = ConstructingParser.fromSource(io.Source.fromString(str), preserveWS = true)
+    val cpadoc = cpa.document()
+    val ppr = new PrettyPrinter(80,5)
+    val out = ppr.format(cpadoc.docElem)
+    assertEquals(str, out)
+  }
 }
