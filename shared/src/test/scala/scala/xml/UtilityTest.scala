@@ -38,6 +38,8 @@ class UtilityTest {
 
   @Test
   def sort: Unit = {
+    assertEquals("", xml.Utility.sort(<a/>.attributes).toString)
+    assertEquals(""" b="c"""", xml.Utility.sort(<a b="c"/>.attributes).toString)
     val q = xml.Utility.sort(<a g='3' j='2' oo='2' a='2'/>)
     assertEquals(" a=\"2\" g=\"3\" j=\"2\" oo=\"2\"", xml.Utility.sort(q.attributes).toString)
     val pp = new xml.PrettyPrinter(80,5)

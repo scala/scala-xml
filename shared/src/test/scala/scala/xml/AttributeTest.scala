@@ -49,6 +49,11 @@ class AttributeTest {
   }
 
   @Test
+  def attributeOrder: Unit = {
+    val x = <x y="1" z="2"/>
+    assertEquals("""<x y="1" z="2"/>""", x.toString)
+  }
+
   def attributeToString: Unit = {
     val expected: String = """<b x="&amp;"/>"""
     assertEquals(expected, (<b x="&amp;"/>).toString)

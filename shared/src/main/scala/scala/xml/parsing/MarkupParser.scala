@@ -339,7 +339,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     if (!aMap.wellformed(scope))
       reportSyntaxError("double attribute")
 
-    (aMap, scope)
+    (aMap.reverse, scope)
   }
 
   /**

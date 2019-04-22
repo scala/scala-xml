@@ -155,6 +155,11 @@ abstract class MetaData
     if (f(this)) copy(next filter f)
     else next filter f
 
+  def reverse: MetaData =
+    foldLeft(Null: MetaData) { (x, xs) =>
+        xs.copy(x)
+    }
+
   /** returns key of this MetaData item */
   def key: String
 
