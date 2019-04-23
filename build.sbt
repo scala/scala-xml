@@ -71,8 +71,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       (unmanagedSourceDirectories in Compile).value.map { dir =>
         val sv = scalaVersion.value
         CrossVersion.partialVersion(sv) match {
-          case Some((2, 13)) => file(dir.getPath ++ "-2.13")
-          case _             => file(dir.getPath ++ "-2.11-2.12")
+          case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
+          case _             => file(dir.getPath ++ "-2.13-")
         }
       }
     },
