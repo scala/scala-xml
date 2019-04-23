@@ -84,7 +84,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     ) ++ {
       // http://stackoverflow.com/questions/16934488
       Option(System.getProperty("sun.boot.class.path")).flatMap { classPath =>
-        classPath.split(java.io.File.pathSeparator).filter(_.endsWith(java.io.File.separator + "rt.jar")).headOption
+        classPath.split(java.io.File.pathSeparator).find(_.endsWith(java.io.File.separator + "rt.jar"))
       }.map { jarPath =>
         Map(
           file(jarPath)
