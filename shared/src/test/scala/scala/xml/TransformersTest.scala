@@ -6,7 +6,7 @@ import scala.xml.transform._
 import org.junit.Test
 import org.junit.Assert.assertEquals
 
-class Transformers {
+class TransformersTest {
 
 
   def transformer = new RuleTransformer(new RewriteRule {
