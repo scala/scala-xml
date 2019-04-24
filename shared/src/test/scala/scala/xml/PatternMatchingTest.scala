@@ -5,7 +5,7 @@ import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
 
-class PatternMatching extends {
+class PatternMatchingTest extends {
   @Test
   def unprefixedAttribute: Unit = {
     val li = List("1", "2", "3", "4")

@@ -34,7 +34,7 @@ abstract class BasicTransformer extends Function1[Node, Node] {
    */
   def transform(ns: Seq[Node]): Seq[Node] = {
     val changed = ns flatMap transform
-    if (changed.length != ns.length || (changed, ns).zipped.exists(_ != _)) changed
+    if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
     else ns
 }
 

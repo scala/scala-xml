@@ -820,55 +820,55 @@ class XMLTestJVM {
   }
 
   @UnitTest
-  def xTokenTest {
+  def xTokenTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource("a"), false)
     assertEquals((): Unit, x.xToken('b'))
   }
 
   @UnitTest(expected = classOf[FatalError])
-  def xCharDataFailure {
+  def xCharDataFailure: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     x.xCharData
   }
 
   @UnitTest(expected = classOf[FatalError])
-  def xCommentFailure {
+  def xCommentFailure: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     x.xComment
   }
 
   @UnitTest
-  def xmlProcInstrTest {
+  def xmlProcInstrTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource("aa"), false)
 
     assertEquals(new UnprefixedAttribute("aa", Text(""), Null), x.xmlProcInstr)
   }
 
   @UnitTest(expected = classOf[FatalError])
-  def notationDeclFailure {
+  def notationDeclFailure: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     x.notationDecl
   }
 
   @UnitTest
-  def pubidLiteralTest {
+  def pubidLiteralTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     assertEquals("", x.pubidLiteral)
   }
 
   @UnitTest
-  def xAttributeValueTest {
+  def xAttributeValueTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource("'"), false)
 
     assertEquals("", x.xAttributeValue)
   }
 
   @UnitTest
-  def xEntityValueTest {
+  def xEntityValueTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
     assertEquals("", x.xEntityValue)

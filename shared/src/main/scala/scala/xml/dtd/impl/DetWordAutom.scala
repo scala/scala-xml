@@ -34,7 +34,7 @@ private[dtd] abstract class DetWordAutom[T <: AnyRef] {
     val sb = new StringBuilder("[DetWordAutom  nstates=")
     sb.append(nstates)
     sb.append(" finals=")
-    val map = Map(finals.zipWithIndex map (_.swap): _*)
+    val map = finals.zipWithIndex.map(_.swap).toMap
     sb.append(map.toString())
     sb.append(" delta=\n")
 

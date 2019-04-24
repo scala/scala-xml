@@ -144,7 +144,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
         if (x.isNullable) // initial state is final
           finals = finals.updated(0, finalTag)
 
-        val delta1 = immutable.Map(deltaq.zipWithIndex map (_.swap): _*)
+        val delta1 = deltaq.zipWithIndex.map(_.swap).toMap
         val finalsArr = (0 until pos map (k => finals.getOrElse(k, 0))).toArray // 0 == not final
 
         val deltaArr: Array[mutable.Map[_labelT, immutable.BitSet]] =
