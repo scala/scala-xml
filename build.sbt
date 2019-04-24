@@ -1,4 +1,5 @@
-import sbtcrossproject.{crossProject, CrossType}
+import sbtcrossproject.CrossType
+import sbtcrossproject.CrossPlugin.autoImport.crossProject
 import ScalaModulePlugin._
 
 crossScalaVersions in ThisBuild := List("2.12.8", "2.13.0-RC1")
@@ -83,7 +84,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     ) ++ {
       // http://stackoverflow.com/questions/16934488
       Option(System.getProperty("sun.boot.class.path")).flatMap { classPath =>
-        classPath.split(java.io.File.pathSeparator).filter(_.endsWith(java.io.File.separator + "rt.jar")).headOption
+        classPath.split(java.io.File.pathSeparator).find(_.endsWith(java.io.File.separator + "rt.jar"))
       }.map { jarPath =>
         Map(
           file(jarPath)
@@ -103,10 +104,10 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
 
-    libraryDependencies += "junit" % "junit" % "4.12" % "test",
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
-    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.9" % "test",
-    libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
+    libraryDependencies += "junit" % "junit" % "4.12" % Test,
+    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
+    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.9" % Test,
+    libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test).exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
   )
   .jsSettings(
     // Scala.js cannot run forked tests
