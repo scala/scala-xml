@@ -2,7 +2,7 @@ scala-xml
 [![Travis](https://img.shields.io/travis/scala/scala-xml.svg)](https://travis-ci.org/scala/scala-xml)
 [![latest release for 2.11](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.11.svg?label=scala+2.11)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.11)
 [![latest release for 2.12](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.12.svg?label=scala+2.12)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.12)
-[![latest release for 2.13.0-M5](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.13.0-M5.svg?label=scala+2.13.0-M5)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.13.0-M5)
+[![latest release for 2.13.0-RC2](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.13.0-RC2.svg?label=scala+2.13.0-RC2)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.13.0-RC2)
 [![Gitter](https://badges.gitter.im/Join+Chat.svg)](https://gitter.im/scala/scala-xml)
 =========
 
