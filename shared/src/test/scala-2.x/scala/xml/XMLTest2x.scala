@@ -1,0 +1,42 @@
+package scala.xml
+
+import language.postfixOps
+
+import org.junit.{Test => UnitTest}
+import org.junit.Assert.assertTrue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertEquals
+import scala.xml.parsing.ConstructingParser
+import java.io.StringWriter
+import java.io.ByteArrayOutputStream
+import java.io.StringReader
+import scala.collection.Iterable
+import scala.collection.Seq
+import scala.xml.Utility.sort
+
+class XMLTest2x {
+  // t-486
+  def wsdlTemplate3(serviceName: String): Node =
+    <wsdl:definitions name={ serviceName } xmlns:tns={ new _root_.scala.xml.Text("target3") }>
+    </wsdl:definitions>;
+
+  @UnitTest
+  def wsdl = {
+    assertEquals("""<wsdl:definitions name="service3" xmlns:tns="target3">
+    </wsdl:definitions>""", wsdlTemplate3("service3") toString)
+  }
+
+  @UnitTest
+  def t5154: Unit = {
+
+    // extra space made the pattern OK
+    def f = <z> {{3}}</z> match { case <z> {{3}}</z> => true }
+
+    // lack of space used to error: illegal start of simple pattern
+    def g = <z>{{3}}</z> match { case <z>{{3}}</z> => true }
+
+    assertTrue(f)
+    assertTrue(g)
+  }
+
+}

@@ -4,19 +4,49 @@ import ScalaModulePlugin._
 
 crossScalaVersions in ThisBuild := List("2.12.8", "2.13.0-RC2")
 
+lazy val configSettings: Seq[Setting[_]] = Seq(
+  unmanagedSourceDirectories ++= {
+    unmanagedSourceDirectories.value.flatMap { dir =>
+      val sv = scalaVersion.value
+      Seq(
+        CrossVersion.partialVersion(sv) match {
+          case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
+          case _             => file(dir.getPath ++ "-2.13-")
+        },
+        CrossVersion.partialVersion(sv) match {
+          case Some((2, _))  => file(dir.getPath ++ "-2.x")
+          case _             => file(dir.getPath ++ "-3.x")
+        }
+      )
+    }
+  }
+)
+
+
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
   .crossType(CrossType.Full)
   .in(file("."))
   .settings(scalaModuleSettings)
   .jvmSettings(scalaModuleSettingsJVM)
+  .jvmSettings(
+    crossScalaVersions += "0.14.0-RC1"
+  )
   .settings(
     name    := "scala-xml",
     version := "2.0.0-SNAPSHOT",
 
-    // Compiler team advised avoiding the -Xsource:2.14 option for releases.
-    // The output with -Xsource should be periodically checked, though.
-    scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
+    scalacOptions ++= {
+      val opts =
+        if (isDotty.value)
+          "-language:Scala2"
+        else
+          // Compiler team advised avoiding the -Xsource:2.14 option for releases.
+          // The output with -Xsource should be periodically checked, though.
+          "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_"
+      opts.split("\\s+").to[Seq]
+    },
+
     scalacOptions in Test  += "-Xxml:coalescing",
 
     mimaPreviousVersion := {
@@ -68,16 +98,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       )
     },
 
-    unmanagedSourceDirectories in Compile ++= {
-      (unmanagedSourceDirectories in Compile).value.map { dir =>
-        val sv = scalaVersion.value
-        CrossVersion.partialVersion(sv) match {
-          case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
-          case _             => file(dir.getPath ++ "-2.13-")
-        }
-      }
-    },
-
     apiMappings ++= Map(
       scalaInstance.value.libraryJar
         -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
@@ -101,13 +121,21 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       }
     }
   )
+  .settings(
+    inConfig(Compile)(configSettings) ++ inConfig(Test)(configSettings)
+  )
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
 
     libraryDependencies += "junit" % "junit" % "4.12" % Test,
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.9" % Test,
-    libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test).exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
+    libraryDependencies ++= {
+      if (isDotty.value)
+        Seq()
+      else
+        Seq(("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test).exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}"))
+    }
   )
   .jsSettings(
     // Scala.js cannot run forked tests

@@ -6,3 +6,4 @@ val scalaJSVersion =
 addSbtPlugin("org.scala-js" % "sbt-scalajs" % scalaJSVersion)
 addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.0")
 addSbtPlugin("org.scala-lang.modules" % "sbt-scala-module" % "2.0.0")
+addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.3.1")

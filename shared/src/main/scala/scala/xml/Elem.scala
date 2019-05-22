@@ -53,7 +53,7 @@ object Elem {
   implicit def xmlToProcess(command: scala.xml.Elem): ProcessBuilder = Process(command.text.trim)
 
   @deprecated("To create a scala.sys.process.Process from an xml.Elem, please use Process(elem.text.trim).", "2.11.0")
-  implicit def processXml(p: Process.type) = new {
+  implicit def processXml(p: Process.type): { def apply(command: Elem): ProcessBuilder } = new {
     /**
      * Creates a [[scala.sys.process.ProcessBuilder]] from a Scala XML Element.
      * This can be used as a way to template strings.

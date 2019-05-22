@@ -359,10 +359,6 @@ Ours is the portal of hope, come as you are."
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace }>
     </wsdl:definitions>;
 
-  def wsdlTemplate3(serviceName: String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ new _root_.scala.xml.Text("target3") }>
-    </wsdl:definitions>;
-
   def wsdlTemplate4(serviceName: String, targetNamespace: () => String): Node =
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace() }>
     </wsdl:definitions>;
@@ -373,8 +369,6 @@ Ours is the portal of hope, come as you are."
     </wsdl:definitions>""", wsdlTemplate1("service1") toString)
     assertEquals("""<wsdl:definitions name="service2" xmlns:tns="target2">
     </wsdl:definitions>""", wsdlTemplate2("service2", "target2") toString)
-    assertEquals("""<wsdl:definitions name="service3" xmlns:tns="target3">
-    </wsdl:definitions>""", wsdlTemplate3("service3") toString)
     assertEquals("""<wsdl:definitions name="service4" xmlns:tns="target4">
     </wsdl:definitions>""", wsdlTemplate4("service4", () => "target4") toString)
   }
@@ -477,19 +471,6 @@ Ours is the portal of hope, come as you are."
     assertHonorsIterableContract(<a y={ null: String }/>.attributes)
     assertHonorsIterableContract(<a y={ null: String } x=""/>.attributes)
     assertHonorsIterableContract(<a a="" y={ null: String }/>.attributes)
-  }
-
-  @UnitTest
-  def t5154: Unit = {
-
-    // extra space made the pattern OK
-    def f = <z> {{3}}</z> match { case <z> {{3}}</z> => true }
-
-    // lack of space used to error: illegal start of simple pattern
-    def g = <z>{{3}}</z> match { case <z>{{3}}</z> => true }
-
-    assertTrue(f)
-    assertTrue(g)
   }
 
   @UnitTest

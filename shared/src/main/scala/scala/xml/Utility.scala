@@ -24,7 +24,7 @@ object Utility extends AnyRef with parsing.TokenTests {
 
   // [Martin] This looks dubious. We don't convert StringBuilders to
   // Strings anywhere else, why do it here?
-  implicit def implicitSbToString(sb: StringBuilder) = sb.toString()
+  implicit def implicitSbToString(sb: StringBuilder): String = sb.toString()
 
   // helper for the extremely oft-repeated sequence of creating a
   // StringBuilder, passing it around, and then grabbing its String.
