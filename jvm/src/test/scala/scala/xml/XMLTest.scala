@@ -281,10 +281,6 @@ class XMLTestJVM {
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace }>
     </wsdl:definitions>;
 
-  def wsdlTemplate3(serviceName: String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ new _root_.scala.xml.Text("target3") }>
-    </wsdl:definitions>;
-
   def wsdlTemplate4(serviceName: String, targetNamespace: () => String): Node =
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace() }>
     </wsdl:definitions>;
@@ -295,8 +291,6 @@ class XMLTestJVM {
     </wsdl:definitions>""", wsdlTemplate1("service1") toString)
     assertEquals("""<wsdl:definitions name="service2" xmlns:tns="target2">
     </wsdl:definitions>""", wsdlTemplate2("service2", "target2") toString)
-    assertEquals("""<wsdl:definitions name="service3" xmlns:tns="target3">
-    </wsdl:definitions>""", wsdlTemplate3("service3") toString)
     assertEquals("""<wsdl:definitions name="service4" xmlns:tns="target4">
     </wsdl:definitions>""", wsdlTemplate4("service4", () => "target4") toString)
   }
@@ -328,7 +322,7 @@ class XMLTestJVM {
   def t0663 = {
     val src = scala.io.Source.fromString("<?xml version='1.0' encoding='UTF-8'?><feed/>")
     val parser = xml.parsing.ConstructingParser.fromSource(src, true)
-    assertEquals("<feed/>", parser.document toString)
+    assertEquals("<feed/>", parser.document() toString)
   }
 
   @UnitTest
@@ -365,18 +359,6 @@ class XMLTestJVM {
       <a>{ if (true) "" else "I like turtles" }</a>)
 
     for (x1 <- xs; x2 <- xs) assertTrue(x1 xml_== x2)
-  }
-
-  @UnitTest
-  def t2354: Unit = {
-    val xml_good = "<title><![CDATA[Hello [tag]]]></title>"
-    val xml_bad = "<title><![CDATA[Hello [tag] ]]></title>"
-
-    val parser1 = ConstructingParser.fromSource(io.Source.fromString(xml_good), false)
-    val parser2 = ConstructingParser.fromSource(io.Source.fromString(xml_bad), false)
-
-    parser1.document
-    parser2.document
   }
 
   @UnitTest
@@ -481,115 +463,6 @@ class XMLTestJVM {
   }
 
   @UnitTest
-  def t8253: Unit = {
-    // `identity(foo)` used to match the overly permissive match in SymbolXMLBuilder
-    // which was intended to more specifically match `_root_.scala.xml.Text(...)`
-
-    import reflect.runtime.universe._ // not using the XML library in compiler tests
-
-    val ns1 = "ns1"
-    assertEquals(reify(ns1).tree.toString, q"ns1".toString)
-    assertEquals("<sample xmlns='ns1'/>",
-      """|{
-         |  var $tmpscope: _root_.scala.xml.NamespaceBinding = $scope;
-         |  $tmpscope = new _root_.scala.xml.NamespaceBinding(null, "ns1", $tmpscope);
-         |  {
-         |    val $scope: _root_.scala.xml.NamespaceBinding = $tmpscope;
-         |    new _root_.scala.xml.Elem(null, "sample", _root_.scala.xml.Null, $scope, true)
-         |  }
-         |}""".stripMargin,
-      q"<sample xmlns='ns1'/>".toString)
-    assertEquals("<sample xmlns={identity(ns1)}/>",
-      """|{
-         |  var $tmpscope: _root_.scala.xml.NamespaceBinding = $scope;
-         |  $tmpscope = new _root_.scala.xml.NamespaceBinding(null, ns1, $tmpscope);
-         |  {
-         |    val $scope: _root_.scala.xml.NamespaceBinding = $tmpscope;
-         |    new _root_.scala.xml.Elem(null, "sample", _root_.scala.xml.Null, $scope, true)
-         |  }
-         |}""".stripMargin,
-      q"<sample xmlns={ns1}/>".toString)
-    assertEquals("<sample xmlns:foo='ns1'/>",
-      """|{
-         |  var $tmpscope: _root_.scala.xml.NamespaceBinding = $scope;
-         |  $tmpscope = new _root_.scala.xml.NamespaceBinding("foo", "ns1", $tmpscope);
-         |  {
-         |    val $scope: _root_.scala.xml.NamespaceBinding = $tmpscope;
-         |    new _root_.scala.xml.Elem(null, "sample", _root_.scala.xml.Null, $scope, true)
-         |  }
-         |}""".stripMargin,
-      q"<sample xmlns:foo='ns1'/>".toString)
-    assertEquals("<sample xmlns:foo={identity(ns1)}/>",
-      """|{
-         |  var $tmpscope: _root_.scala.xml.NamespaceBinding = $scope;
-         |  $tmpscope = new _root_.scala.xml.NamespaceBinding("foo", ns1, $tmpscope);
-         |  {
-         |    val $scope: _root_.scala.xml.NamespaceBinding = $tmpscope;
-         |    new _root_.scala.xml.Elem(null, "sample", _root_.scala.xml.Null, $scope, true)
-         |  }
-         |}""".stripMargin,
-      q"<sample xmlns:foo={ns1}/>".toString)
-  }
-
-  @UnitTest
-  def t8466lift: Unit = {
-    import scala.reflect.runtime.universe._
-
-    implicit val liftXmlComment = Liftable[Comment] { comment =>
-      q"new _root_.scala.xml.Comment(${comment.commentText})"
-    }
-    liftXmlComment(Comment("foo"))
-    assertEquals(q"${Comment("foo")}".toString, q"<!--foo-->".toString)
-  }
-
-  @UnitTest
-  def t8466unlift: Unit = {
-    import scala.reflect.runtime.universe._
-
-    implicit val unliftXmlComment = Unliftable[Comment] {
-      case q"new _root_.scala.xml.Comment(${value: String})" => Comment(value)
-    }
-    unliftXmlComment.unapply(q"<!--foo-->")
-    val q"${comment: Comment}" = q"<!--foo-->"
-    assertEquals(comment.commentText, "foo")
-  }
-
-  @UnitTest
-  def t9027: Unit = {
-    // used to be parsed as .println
-
-    import reflect.runtime._, universe._
-
-    assertEquals(
-      """|{
-         |  {
-         |    val $buf = new _root_.scala.xml.NodeBuffer();
-         |    $buf.$amp$plus(new _root_.scala.xml.Elem(null, "a", _root_.scala.xml.Null, $scope, true));
-         |    $buf.$amp$plus(new _root_.scala.xml.Elem(null, "b", _root_.scala.xml.Null, $scope, true));
-         |    $buf
-         |  };
-         |  println("hello, world.")
-         |}""".stripMargin,
-      q"""<a/><b/>
-          println("hello, world.")""".toString)
-    assertEquals(
-      """|{
-         |  {
-         |    val $buf = new _root_.scala.xml.NodeBuffer();
-         |    $buf.$amp$plus(new _root_.scala.xml.Elem(null, "a", _root_.scala.xml.Null, $scope, true));
-         |    $buf.$amp$plus(new _root_.scala.xml.Elem(null, "b", _root_.scala.xml.Null, $scope, true));
-         |    $buf.$amp$plus(new _root_.scala.xml.Elem(null, "c", _root_.scala.xml.Null, $scope, true));
-         |    $buf
-         |  };
-         |  println("hello, world.")
-         |}""".stripMargin,
-      q"""<a/>
-      <b/>
-      <c/>
-      println("hello, world.")""".toString)
-  }
-
-  @UnitTest
   def t9060 = {
     val expected = """<a xmlns:b·="http://example.com"/>"""
     assertEquals(expected, XML.loadString(expected).toString)
@@ -637,7 +510,7 @@ class XMLTestJVM {
     val sink = new PrintStream(new ByteArrayOutputStream())
     (Console withOut sink) {
       (Console withErr sink) {
-        ConstructingParser.fromSource((io.Source fromString xml), true).document.docElem
+        ConstructingParser.fromSource((io.Source fromString xml), true).document().docElem
       }
     }
   }
@@ -843,35 +716,35 @@ class XMLTestJVM {
   def xmlProcInstrTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource("aa"), false)
 
-    assertEquals(new UnprefixedAttribute("aa", Text(""), Null), x.xmlProcInstr)
+    assertEquals(new UnprefixedAttribute("aa", Text(""), Null), x.xmlProcInstr())
   }
 
   @UnitTest(expected = classOf[FatalError])
   def notationDeclFailure: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
-    x.notationDecl
+    x.notationDecl()
   }
 
   @UnitTest
   def pubidLiteralTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
-    assertEquals("", x.pubidLiteral)
+    assertEquals("", x.pubidLiteral())
   }
 
   @UnitTest
   def xAttributeValueTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource("'"), false)
 
-    assertEquals("", x.xAttributeValue)
+    assertEquals("", x.xAttributeValue())
   }
 
   @UnitTest
   def xEntityValueTest: Unit = {
     val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
 
-    assertEquals("", x.xEntityValue)
+    assertEquals("", x.xEntityValue())
   }
 
 }

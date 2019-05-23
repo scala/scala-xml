@@ -46,7 +46,7 @@ class ConstructingParserTest {
       override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err) = {}
     }
 
-    val doc = ConstructingParser.fromSource(source, true).document
+    val doc = ConstructingParser.fromSource(source, true).document()
 
     assertEquals(expected, doc.theSeq)
   }
