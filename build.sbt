@@ -30,7 +30,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .settings(scalaModuleSettings)
   .jvmSettings(scalaModuleSettingsJVM)
   .jvmSettings(
-    crossScalaVersions += "0.14.0-RC1"
+    crossScalaVersions += "0.15.0-RC1"
   )
   .settings(
     name    := "scala-xml",
