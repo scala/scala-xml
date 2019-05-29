@@ -6,7 +6,7 @@ jdk:
 
 scala:
   - 2.12.8
-  - 2.13.0-RC2
+  - 2.13.0-RC3
   - 0.15.0-RC1
 
 env:
@@ -20,21 +20,21 @@ env:
   matrix:
     # The empty SCALAJS_VERSION will only compile for the JVM
     - SCALAJS_VERSION=
-    - SCALAJS_VERSION=0.6.27
-    - SCALAJS_VERSION=1.0.0-M7
+    - SCALAJS_VERSION=0.6.28
+    - SCALAJS_VERSION=1.0.0-M8
 
 matrix:
   exclude:
     - jdk: openjdk11
-      env: SCALAJS_VERSION=0.6.27
+      env: SCALAJS_VERSION=0.6.28
     - jdk: openjdk11
-      env: SCALAJS_VERSION=1.0.0-M7
+      env: SCALAJS_VERSION=1.0.0-M8
     - scala: 0.15.0-RC1
-      env: SCALAJS_VERSION=0.6.27
+      env: SCALAJS_VERSION=0.6.28
     - scala: 0.15.0-RC1
-      env: SCALAJS_VERSION=1.0.0-M7
+      env: SCALAJS_VERSION=1.0.0-M8
 
-script: 
+script:
   - admin/build.sh
 
 before_cache:
