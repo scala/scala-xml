@@ -570,4 +570,14 @@ Ours is the portal of hope, come as you are."
     pp.format(x, sb)
     assertEquals(expected, sb.toString)
   }
+
+  @UnitTest
+  def i1976: Unit = {
+     val node = <node>{ "whatever " }</node>
+  }
+
+  @UnitTest
+  def i6547: Unit = {
+    <foo a="hello &name; aaa"/>
+  }
 }
