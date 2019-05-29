@@ -22,7 +22,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     scalacOptions in Test  += "-Xxml:coalescing",
 
     mimaPreviousVersion := {
-      Some("1.2.0")
+      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M8") None // No such release yet
+      else Some("1.2.0")
     },
 
     unmanagedSourceDirectories in Compile ++= {
