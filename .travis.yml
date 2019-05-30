@@ -9,13 +9,9 @@ addons:
   hostname: localhost.local
 
 jdk:
-  - openjdk6
   - oraclejdk8
-  - openjdk11
 
 scala:
-  - 2.11.12
-  - 2.12.8
   - 2.13.0-RC3
 
 env:
@@ -31,23 +27,6 @@ env:
     - SCALAJS_VERSION=
     - SCALAJS_VERSION=0.6.28
     - SCALAJS_VERSION=1.0.0-M8
-
-matrix:
-  exclude:
-    - jdk: openjdk11
-      env: SCALAJS_VERSION=0.6.28
-    - jdk: openjdk11
-      env: SCALAJS_VERSION=1.0.0-M8
-    - scala: 2.11.12
-      env: SCALAJS_VERSION=1.0.0-M8
-    - scala: 2.11.12
-      jdk: oraclejdk8
-    - scala: 2.11.12
-      jdk: openjdk11
-    - scala: 2.12.8
-      jdk: openjdk6
-    - scala: 2.13.0-RC3
-      jdk: openjdk6
 
 before_script:
   - nvm install 8
