@@ -2,7 +2,7 @@ import sbtcrossproject.CrossType
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 import ScalaModulePlugin._
 
-crossScalaVersions in ThisBuild := List("2.12.8", "2.13.0-RC2")
+crossScalaVersions in ThisBuild := List("2.12.8", "2.13.0-RC3")
 
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
@@ -50,7 +50,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     scalacOptions in Test  += "-Xxml:coalescing",
 
     mimaPreviousVersion := {
-      Some("1.2.0")
+      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M8") None // No such release yet
+      else Some("1.2.0")
     },
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
