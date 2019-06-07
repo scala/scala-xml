@@ -2,7 +2,7 @@ import sbtcrossproject.CrossType
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 import ScalaModulePlugin._
 
-crossScalaVersions in ThisBuild := List("2.12.8", "2.13.0-RC3")
+crossScalaVersions in ThisBuild := List("2.12.8", "2.13.0")
 
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
