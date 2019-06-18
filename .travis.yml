@@ -9,7 +9,7 @@ addons:
   hostname: localhost.local
 
 jdk:
-  - openjdk6
+  - openjdk8
   - oraclejdk8
   - openjdk11
 
