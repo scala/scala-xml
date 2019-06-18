@@ -17,7 +17,7 @@ set -e
 # Everything after the `#` in the tag name is ignored.
 
 if [[ "$TRAVIS_JDK_VERSION" == "openjdk6" && "$TRAVIS_SCALA_VERSION" =~ 2\.11\..* \
-      || "$TRAVIS_JDK_VERSION" == "openjdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then
+      || "$TRAVIS_JDK_VERSION" == "oraclejdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then
   RELEASE_COMBO=true;
 fi
 
