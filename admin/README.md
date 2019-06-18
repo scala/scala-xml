@@ -23,8 +23,7 @@ After these steps, your `.travis.yml` should contain config of the form:
 language: scala
 
 jdk:
-  - openjdk6
-  - oraclejdk8
+  - openjdk8
 
 scala:
   - 2.11.12
