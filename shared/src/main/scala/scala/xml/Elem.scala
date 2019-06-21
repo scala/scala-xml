@@ -20,16 +20,6 @@ import scala.collection.Seq
  *  syntax `case Elem(prefix, label, attribs, scope, child @ _*) => ...`
  */
 object Elem {
-  /**
-   * Build an Elem, setting its minimizeEmpty property to `true` if it has no children.  Note that this
-   *  default may not be exactly what you want, as some XML dialects don't permit some elements to be minimized.
-   *
-   * @deprecated This factory method is retained for backward compatibility; please use the other one, with which you
-   *             can specify your own preference for minimizeEmpty.
-   */
-  @deprecated("Use the other apply method in this object", "2.10.0")
-  def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*): Elem =
-    apply(prefix, label, attributes, scope, child.isEmpty, child: _*)
 
   def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, minimizeEmpty: Boolean, child: Node*): Elem =
     new Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
@@ -91,12 +81,8 @@ class Elem(
   attributes1: MetaData,
   override val scope: NamespaceBinding,
   val minimizeEmpty: Boolean,
-  val child: Node*)
-  extends Node with Serializable {
-  @deprecated("This constructor is retained for backward compatibility. Please use the primary constructor, which lets you specify your own preference for `minimizeEmpty`.", "2.10.0")
-  def this(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*) = {
-    this(prefix, label, attributes, scope, child.isEmpty, child: _*)
-  }
+  val child: Node*
+) extends Node with Serializable {
 
   final override def doCollectNamespaces = true
   final override def doTransform = true
