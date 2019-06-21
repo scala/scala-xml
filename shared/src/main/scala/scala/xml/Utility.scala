@@ -128,6 +128,20 @@ object Utility extends AnyRef with parsing.TokenTests {
   }
 
   /**
+   * Appends escaped string to `s`, but not &quot;.
+   */
+  final def escapeText(text: String, s: StringBuilder): StringBuilder = {
+    val escTextMap = escMap - '"' // Remove quotes from escMap
+    text.iterator.foldLeft(s) { (s, c) =>
+      escTextMap.get(c) match {
+        case Some(str)                             => s ++= str
+        case _ if c >= ' ' || "\n\r\t".contains(c) => s += c
+        case _ => s // noop
+      }
+    }
+  }
+
+  /**
    * Appends unescaped string to `s`, `amp` becomes `&amp;`,
    * `lt` becomes `&lt;` etc..
    *
