@@ -95,7 +95,7 @@ class AttributeTest {
   def attributePathDuplicateAttribute: Unit = {
     val xml = Elem(null, "foo",
       Attribute("bar", Text("apple"),
-        Attribute("bar", Text("orange"), Null)), TopScope)
+        Attribute("bar", Text("orange"), Null)), TopScope, true)
     assertEquals(Group(Text("apple")), xml \ "@bar")
   }
 

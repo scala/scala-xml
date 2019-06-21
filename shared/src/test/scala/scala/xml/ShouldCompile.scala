@@ -58,7 +58,7 @@ class t2281B {
 
 // SI-5858
 object SI_5858 {
-  new Elem(null, null, Null, TopScope, Nil: _*) // was ambiguous
+  new Elem(null, null, Null, TopScope, true, Nil: _*) // was ambiguous
 }
 
 class Floozy {
