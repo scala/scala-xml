@@ -91,6 +91,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
         exclude[MissingTypesProblem]("scala.xml.Unparsed"),
         exclude[DirectMissingMethodProblem]("scala.xml.Elem.this"),
         exclude[DirectMissingMethodProblem]("scala.xml.Elem.apply"),
+        exclude[DirectMissingMethodProblem]("scala.xml.Elem.processXml"),
+        exclude[DirectMissingMethodProblem]("scala.xml.Elem.xmlToProcess"),
         // Scala 2.12 deprecated mutable.Stack, so we broke
         // binary compatibility for 2.0.0 in the following way:
         exclude[IncompatibleMethTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack_="),
