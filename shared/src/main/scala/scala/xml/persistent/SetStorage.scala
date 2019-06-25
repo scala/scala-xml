@@ -19,6 +19,7 @@ import java.io.File
  *
  *  @author Burak Emir
  */
+@deprecated("This class will be removed", "1.3.0")
 class SetStorage(file: File) extends CachedFileStorage(file) {
 
   private val theSet = mutable.HashSet[Node]()
