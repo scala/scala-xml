@@ -23,7 +23,7 @@ class Text(data: String) extends Atom[String](data) {
    *  specification.
    */
   override def buildString(sb: StringBuilder): StringBuilder =
-    Utility.escape(data, sb)
+    Utility.escapeText(data, sb)
 }
 
 /**
