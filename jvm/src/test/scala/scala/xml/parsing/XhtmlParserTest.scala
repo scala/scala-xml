@@ -33,6 +33,12 @@ class XhtmlParserTest {
     assertEquals(expected, XhtmlParser(Source.fromString(xml)).theSeq)
   }
 
+  @Test(expected = classOf[scala.xml.parsing.FatalError])
+  def issue307: Unit = {
+    val html = "<body>test <! </body>"
+    XhtmlParser(Source.fromString(html))
+  }
+
   @Test
   def html4Strict: Unit = {
     val xml =
