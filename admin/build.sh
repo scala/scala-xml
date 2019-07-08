@@ -16,7 +16,7 @@ set -e
 # of the existing tag. Then a new tag can be created for that commit, e.g., `v1.2.3#2.13.0-M5`.
 # Everything after the `#` in the tag name is ignored.
 
-if [[ "$TRAVIS_JDK_VERSION" == "openjdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then
+if [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then
   RELEASE_COMBO=true;
 fi
 
