@@ -1,9 +1,5 @@
 language: scala
 
-jdk:
-  - openjdk8
-  - openjdk11
-
 scala:
   - 2.12.8
   - 2.13.0
@@ -19,20 +15,29 @@ env:
     - secure: "Xw7rI/qlML1nD2e2XwlakkhKAWNGZKqqE+Q3ntTvFpfHryl7KLCvVzJ4LIavnL6kGJaWOgy9vlSoEWn5g9nqHSfE31C/k5pY5nTMAKiwiJzfAS+r0asKXW2gmKhwtcTBkqyLVOZLCJSPVlFRQyfBJHY+Fs0L3KWcnMQgtBlyDhU="
   matrix:
     # The empty SCALAJS_VERSION will only compile for the JVM
-    - SCALAJS_VERSION=
-    - SCALAJS_VERSION=0.6.28
-    - SCALAJS_VERSION=1.0.0-M8
+    - SCALAJS_VERSION=         ADOPTOPENJDK=8
+    - SCALAJS_VERSION=0.6.28   ADOPTOPENJDK=8
+    - SCALAJS_VERSION=1.0.0-M8 ADOPTOPENJDK=8
+    - SCALAJS_VERSION=         ADOPTOPENJDK=11
 
 matrix:
   exclude:
-    - jdk: openjdk11
-      env: SCALAJS_VERSION=0.6.28
-    - jdk: openjdk11
-      env: SCALAJS_VERSION=1.0.0-M8
-    - scala: 0.15.0-RC1
-      env: SCALAJS_VERSION=0.6.28
-    - scala: 0.15.0-RC1
-      env: SCALAJS_VERSION=1.0.0-M8
+    - scala: 0.16.0-RC3
+      env: SCALAJS_VERSION=0.6.28   ADOPTOPENJDK=8
+    - scala: 0.16.0-RC3
+      env: SCALAJS_VERSION=1.0.0-M8 ADOPTOPENJDK=8
+
+before_install:
+  # adding $HOME/.sdkman to cache would create an empty directory, which interferes with the initial installation
+  - "[[ -d $HOME/.sdkman/bin ]] || rm -rf $HOME/.sdkman/"
+  - curl -sL https://get.sdkman.io | bash
+  - echo sdkman_auto_answer=true > "$HOME/.sdkman/etc/config"
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+install:
+  - sdk install java $(sdk list java | grep -o "$ADOPTOPENJDK\.[0-9\.]*hs-adpt" | head -1)
+  - unset JAVA_HOME
+  - java -Xmx32m -version
 
 script:
   - admin/build.sh
@@ -42,5 +47,6 @@ before_cache:
   - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
 cache:
   directories:
-  - $HOME/.ivy2/cache
-  - $HOME/.sbt
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+    - $HOME/.sdkman
