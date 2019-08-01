@@ -26,6 +26,7 @@ import scala.collection.Iterator
  *
  *  @author Burak Emir
  */
+@deprecated("This class will be removed", "1.3.0")
 abstract class CachedFileStorage(private val file1: File) extends Thread {
 
   private val file2 = new File(file1.getParent, file1.getName + "$")
