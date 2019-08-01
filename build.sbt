@@ -89,6 +89,10 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
         exclude[MissingTypesProblem]("scala.xml.SpecialNode"),
         exclude[MissingTypesProblem]("scala.xml.Text"),
         exclude[MissingTypesProblem]("scala.xml.Unparsed"),
+        // Miscellaneous deprecations
+        exclude[MissingClassProblem]("scala.xml.persistent.CachedFileStorage"),
+        exclude[MissingClassProblem]("scala.xml.persistent.Index"),
+        exclude[MissingClassProblem]("scala.xml.persistent.SetStorage"),
         exclude[DirectMissingMethodProblem]("scala.xml.Elem.this"),
         exclude[DirectMissingMethodProblem]("scala.xml.Elem.apply"),
         exclude[DirectMissingMethodProblem]("scala.xml.Elem.processXml"),
