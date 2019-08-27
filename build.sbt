@@ -107,6 +107,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       )
     },
 
+    apiURL := Some(
+      url(s"""https://scala.github.io/scala-xml/api/${"-.*".r.replaceAllIn(version.value, "")}/""")
+    ),
     apiMappings ++= Map(
       scalaInstance.value.libraryJar
         -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
