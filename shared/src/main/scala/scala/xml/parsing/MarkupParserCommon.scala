@@ -115,8 +115,10 @@ private[scala] trait MarkupParserCommon extends TokenTests {
 
     val buf = new StringBuilder
 
-    do buf append ch_returning_nextch
-    while (isNameChar(ch))
+    while ({
+      buf append ch_returning_nextch
+      isNameChar(ch)
+    }) ()
 
     if (buf.last == ':') {
       reportSyntaxError("name cannot end in ':'")

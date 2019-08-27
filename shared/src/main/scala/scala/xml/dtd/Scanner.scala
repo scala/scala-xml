@@ -81,7 +81,11 @@ class Scanner extends Tokens with parsing.TokenTests {
 
   final def name = {
     val sb = new StringBuilder()
-    do { sb.append(c); next() } while (isNameChar(c))
+    while ({
+      sb.append(c)
+      next()
+      isNameChar(c)
+    }) ()
     value = sb.toString()
     NAME
   }

@@ -291,10 +291,11 @@ class XIncludeFilter extends XMLFilterImpl {
       val reader = new InputStreamReader(in, encoding)
       val c = new Array[Char](1024)
       var charsRead: Int = 0 // bogus init value
-      do {
+      while ({
         charsRead = reader.read(c, 0, 1024)
         if (charsRead > 0) this.characters(c, 0, charsRead)
-      } while (charsRead != -1)
+        charsRead != -1
+      }) ()
     } catch {
       case e: UnsupportedEncodingException =>
         throw new SAXException("Unsupported encoding: "

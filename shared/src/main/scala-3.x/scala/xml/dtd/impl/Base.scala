@@ -9,6 +9,8 @@
 package scala
 package xml.dtd.impl
 
+import scala.annotation.threadUnsafe
+
 /**
  * Basic regular expressions.
  *
@@ -20,7 +22,8 @@ private[dtd] abstract class Base {
   type _regexpT <: RegExp
 
   abstract class RegExp {
-    val isNullable: Boolean
+    // dotty can not override non-lazy val with a lazy val, but an abstract lazy val can not exist in Scala 2
+    lazy val isNullable: Boolean
   }
 
   object Alt {
@@ -34,7 +37,7 @@ private[dtd] abstract class Base {
   }
 
   class Alt private (val rs: _regexpT*) extends RegExp {
-    final val isNullable = rs exists (_.isNullable)
+    @threadUnsafe final lazy val isNullable = rs exists (_.isNullable)
   }
 
   object Sequ {
@@ -44,7 +47,7 @@ private[dtd] abstract class Base {
   }
 
   class Sequ private (val rs: _regexpT*) extends RegExp {
-    final val isNullable = rs forall (_.isNullable)
+    @threadUnsafe final lazy val isNullable = rs forall (_.isNullable)
   }
 
   case class Star(r: _regexpT) extends RegExp {
@@ -59,7 +62,7 @@ private[dtd] abstract class Base {
 
   /** this class can be used to add meta information to regexps. */
   class Meta(r1: _regexpT) extends RegExp {
-    final val isNullable = r1.isNullable
+    @threadUnsafe final lazy val isNullable = r1.isNullable
     def r = r1
   }
 }
