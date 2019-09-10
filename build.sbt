@@ -107,6 +107,14 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       )
     },
 
+    // See https://github.com/sbt/sbt/issues/4995
+    publishArtifact in (Compile, packageDoc) := {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        // doc task broken in sbt 1.3.0-RC4 and Scala 2.12.9
+        case Some((2, 12)) => false
+        case Some((_, _))  => true
+      }
+    },
     apiURL := Some(
       url(s"""https://scala.github.io/scala-xml/api/${"-.*".r.replaceAllIn(version.value, "")}/""")
     ),
