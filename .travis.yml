@@ -2,7 +2,7 @@ language: scala
 
 scala:
   - 0.18.1-RC1
-  - 2.12.9
+  - 2.12.10
   - 2.13.0
 
 env:
