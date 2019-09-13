@@ -20,7 +20,7 @@ private[dtd] abstract class Base {
   type _regexpT <: RegExp
 
   abstract class RegExp {
-    val isNullable: Boolean
+    def isNullable: Boolean
   }
 
   object Alt {

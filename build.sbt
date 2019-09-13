@@ -11,6 +11,7 @@ lazy val configSettings: Seq[Setting[_]] = Seq(
       Seq(
         CrossVersion.partialVersion(sv) match {
           case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
+          case Some((0, _))  => file(dir.getPath ++ "-2.13+")
           case _             => file(dir.getPath ++ "-2.13-")
         },
         CrossVersion.partialVersion(sv) match {
@@ -30,7 +31,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .settings(scalaModuleSettings)
   .jvmSettings(scalaModuleSettingsJVM)
   .jvmSettings(
-    crossScalaVersions += "0.17.0-RC1"
+    crossScalaVersions += "0.18.1-RC1"
   )
   .settings(
     name    := "scala-xml",

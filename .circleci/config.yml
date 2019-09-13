@@ -85,7 +85,7 @@ workflows:
       - scala_job:
           name: dotty
           java_version: jdk8
-          scala_version: 0.17.0-RC1
+          scala_version: 0.18.1-RC1
       - scala_job:
           name: jdk11_2.12.9
           java_version: jdk11
@@ -97,7 +97,7 @@ workflows:
       - scala_job:
           name: jdk11_dotty
           java_version: jdk11
-          scala_version: 0.17.0-RC1
+          scala_version: 0.18.1-RC1
       - scalajs_job:
           name: sjs0.6_2.12
           scala_version: 2.12.9
