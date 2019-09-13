@@ -1,8 +1,4 @@
-import sbtcrossproject.CrossType
-import sbtcrossproject.CrossPlugin.autoImport.crossProject
-import ScalaModulePlugin._
-
-crossScalaVersions in ThisBuild := List("2.12.9", "2.13.0")
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
@@ -28,14 +24,10 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
   .crossType(CrossType.Full)
   .in(file("."))
-  .settings(scalaModuleSettings)
-  .jvmSettings(scalaModuleSettingsJVM)
-  .jvmSettings(
-    crossScalaVersions += "0.18.1-RC1"
-  )
+  .settings(ScalaModulePlugin.scalaModuleSettings)
+  .jvmSettings(ScalaModulePlugin.scalaModuleSettingsJVM)
   .settings(
     name    := "scala-xml",
-    version := "2.0.0-SNAPSHOT",
 
     // See https://github.com/sbt/sbt/issues/4995
     // doc task broken in sbt 1.3.0-RC4 and Scala 2.12.9
@@ -54,7 +46,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
 
     scalacOptions in Test  += "-Xxml:coalescing",
 
-    mimaPreviousVersion := {
+    scalaModuleMimaPreviousVersion := {
       if (System.getenv("SCALAJS_VERSION") == "1.0.0-M8") None // No such release yet
       else Some("1.2.0")
     },
@@ -108,7 +100,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
         exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.hStack"),
         exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack"),
         exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.attribStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.tagStack")
+        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.tagStack"),
+        // New MiMa checks for generic signature changes
+        exclude[IncompatibleSignatureProblem]("*"),
       )
     },
 
@@ -159,6 +153,3 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     fork in Test := false
   )
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
-
-lazy val xmlJVM = xml.jvm
-lazy val xmlJS = xml.js
