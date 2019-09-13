@@ -36,6 +36,10 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     name    := "scala-xml",
     version := "2.0.0-SNAPSHOT",
 
+    // See https://github.com/sbt/sbt/issues/4995
+    // doc task broken in sbt 1.3.0-RC4 and Scala 2.12.9
+    useCoursier := false,
+
     scalacOptions ++= {
       val opts =
         if (isDotty.value)
