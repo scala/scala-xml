@@ -39,7 +39,6 @@ object ContentModel extends WordExp {
 
   def isMixed(cm: ContentModel) = cond(cm) { case _: MIXED => true }
   def containsText(cm: ContentModel) = (cm == PCDATA) || isMixed(cm)
-  def parse(s: String): ContentModel = ContentModelParser.parse(s)
 
   def getLabels(r: RegExp): Set[String] = {
     def traverse(r: RegExp): Set[String] = r match { // !!! check for match translation problem
