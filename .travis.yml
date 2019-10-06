@@ -43,4 +43,4 @@ cache:
     - $HOME/.ivy2/cache
     - $HOME/.sbt
     - $HOME/.sdkman
-    - $HOME/.coursier
+    - $HOME/.cache/coursier
