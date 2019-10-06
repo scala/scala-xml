@@ -27,7 +27,7 @@ commands:
       - save_cache:
           key: sbt-deps-v1-{{ checksum "build.sbt" }}
           paths:
-            - "~/.coursier"
+            - "~/.cache/coursier"
             - "~/.ivy2/cache"
             - "~/.sbt"
             - "~/.m2"
