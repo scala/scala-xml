@@ -14,6 +14,10 @@ API documentation is available [here](https://scala.github.io/scala-xml/api/1.2.
 
 How to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
 
+The latest stable release of Scala XML is 1.2.0.
+
+Milestone releases of Scala XML version 2.0 are available, starting with 2.0.0-M1.  See the changes for 2.0 in `CHANGELOG.md`.
+
 ## Maintenance status
 
 This library is community-maintained. The lead maintainer is [@aaron_s_hawley](https://github.com/ashawley).
