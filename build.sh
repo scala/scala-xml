@@ -16,7 +16,7 @@ set -e
 
 # For normal tags that are cross-built, we release on JDK 8 for Scala 2.x
 isReleaseJob() {
-  if [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^2\.1[234]\..*$ ]]; then
+  if [[ "$TRAVIS_JDK_VERSION" == "openjdk8" && "$TRAVIS_SCALA_VERSION" =~ ^2\.1[234]\..*$ ]]; then
     true
   else
     false
@@ -25,7 +25,7 @@ isReleaseJob() {
 
 # For tags that define a Scala version, we pick the jobs of one Scala version (2.13.x) to do the releases
 isTagScalaReleaseJob() {
-  if [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^2\.13\.[0-9]+$ ]]; then
+  if [[ "$TRAVIS_JDK_VERSION" == "openjdk8" && "$TRAVIS_SCALA_VERSION" =~ ^2\.13\.[0-9]+$ ]]; then
     true
   else
     false
@@ -46,7 +46,7 @@ if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
   tagScalaVer=$(echo $TRAVIS_TAG | sed s/[^#]*// | sed s/^#//)
   if [[ "$tagScalaVer" == "" ]]; then
     if ! isReleaseJob; then
-      echo "Not releasing on Java $ADOPTOPENJDK with Scala $TRAVIS_SCALA_VERSION"
+      echo "Not releasing on Java ${TRAVIS_JDK_VERSION#openjdk} with Scala $TRAVIS_SCALA_VERSION"
       exit 0
     fi
   else
