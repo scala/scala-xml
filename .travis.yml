@@ -1,10 +1,8 @@
-language: scala
+version: ~> 1.0 # needed for imports
 
-# This sets $TRAVIS_JDK_VERSION which is used, in turn, to get a
-# version of AdoptOpenJDK with the install-jdk.sh command.
-jdk:
-  - openjdk8
-  - openjdk11
+import: scala/scala-dev:travis/default.yml
+
+language: scala
 
 scala:
   - 0.20.0-RC1
@@ -12,38 +10,19 @@ scala:
   - 2.13.1
 
 env:
-  # The empty SCALAJS_VERSION will only compile for the JVM
-  - SCALAJS_VERSION=
-  - SCALAJS_VERSION=0.6.31
-  - SCALAJS_VERSION=1.0.0-M8
+  - SCALAJS_VERSION=         ADOPTOPENJDK=8
+  - SCALAJS_VERSION=0.6.31   ADOPTOPENJDK=8
+  - SCALAJS_VERSION=1.0.0-M8 ADOPTOPENJDK=8
+  - SCALAJS_VERSION=         ADOPTOPENJDK=11
 
 matrix:
   exclude:
-    - jdk: openjdk11
-      env: SCALAJS_VERSION=0.6.29
-    - jdk: openjdk11
-      env: SCALAJS_VERSION=1.0.0-M8
     - scala: 0.20.0-RC1
-      env: SCALAJS_VERSION=0.6.31
+      env: SCALAJS_VERSION=0.6.31   ADOPTOPENJDK=8
     - scala: 0.20.0-RC1
-      env: SCALAJS_VERSION=1.0.0-M8
+      env: SCALAJS_VERSION=1.0.0-M8 ADOPTOPENJDK=8
 
 install:
-  - export JAVA_HOME=$HOME/$TRAVIS_JDK_VERSION
-  - install-jdk.sh --url "https://api.adoptopenjdk.net/v2/binary/releases/$TRAVIS_JDK_VERSION?openjdk_impl=hotspot&os=linux&arch=x64&release=latest&heap_size=normal&type=jdk" --target $JAVA_HOME
-  - export PATH=$JAVA_HOME/bin:$PATH
-  - java -Xmx32m -version
   - git fetch --tags # get all tags for sbt-dynver
 
 script: ./build.sh
-
-before_cache:
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
-  - rm -f $HOME/.ivy2/.sbt.ivy.lock
-  - find $HOME/.coursier -name "*.lock" | xargs rm
-cache:
-  directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt
-    - $HOME/.cache/coursier
