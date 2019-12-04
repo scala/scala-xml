@@ -32,6 +32,15 @@ isTagScalaReleaseJob() {
   fi
 }
 
+# For tags that define a Scala.js version, we pick the jobs of one Scala.js version (1.0.0) to do the releases
+isTagScalaJsReleaseJob() {
+  if [[ "$ADOPTOPENJDK" == "8" && "$SCALAJS_VERSION" =~ ^1\.0\.0(-[A-Za-z0-9-]+)?$ ]]; then
+    true
+  else
+    false
+  fi
+}
+
 if [[ "$SCALAJS_VERSION" == "" ]]; then
   projectPrefix="xml"
 else
@@ -39,7 +48,7 @@ else
 fi
 
 verPat="[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+)?"
-tagPat="^v$verPat(#$verPat)?$"
+tagPat="^v$verPat(#(sjs_)?$verPat)?$"
 
 if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
   releaseTask="ci-release"
@@ -47,6 +56,11 @@ if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
   if [[ "$tagScalaVer" == "" ]]; then
     if ! isReleaseJob; then
       echo "Not releasing on Java $ADOPTOPENJDK with Scala $TRAVIS_SCALA_VERSION"
+      exit 0
+    fi
+  elif [[ "$tagScalaVer" == "sjs_$SCALAJS_VERSION" ]]; then
+    if ! isTagScalaJsReleaseJob; then
+      echo "The releases for Scala.js $tagScalaVer are built by other jobs in the travis job matrix"
       exit 0
     fi
   else
