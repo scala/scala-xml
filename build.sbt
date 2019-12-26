@@ -117,10 +117,12 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     apiURL := Some(
       url(s"""https://scala.github.io/scala-xml/api/${"-.*".r.replaceAllIn(version.value, "")}/""")
     ),
-    apiMappings ++= Map(
-      scalaInstance.value.libraryJar
-        -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
-    ) ++ {
+    apiMappings ++= scalaInstance.value.libraryJars.filter { file =>
+      file.getName.startsWith("scala-library") && file.getName.endsWith(".jar")
+    }.map { libraryJar =>
+      libraryJar ->
+        url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+    }.toMap ++ {
       // http://stackoverflow.com/questions/16934488
       Option(System.getProperty("sun.boot.class.path")).flatMap { classPath =>
         classPath.split(java.io.File.pathSeparator).find(_.endsWith(java.io.File.separator + "rt.jar"))
