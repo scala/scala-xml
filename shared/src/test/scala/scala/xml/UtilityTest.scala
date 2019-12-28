@@ -194,7 +194,7 @@ class UtilityTest {
     '\u001F' -> "^_",  // Unit separator
     '\u007F' -> "^?"   // Delete
   ).toMap.withDefault {
-    key: Char => key.toString
+    (key: Char) => key.toString
   }
 
   def issue73StartsWithAndEndsWithWSInFirst: Unit = {

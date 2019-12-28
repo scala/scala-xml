@@ -70,12 +70,11 @@ class ElementValidator() extends Function1[Node, Boolean] {
     for (attr <- md) {
       def attrStr = attr.value.toString
       def find(Key: String): Option[AttrDecl] = {
-        adecls.zipWithIndex find {
+        adecls.zipWithIndex collectFirst {
           case (a@AttrDecl(Key, _, _), j) =>
-            ok += j; return Some(a)
-          case _                          => false
+            ok += j
+            a
         }
-        None
       }
 
       find(attr.key) match {
