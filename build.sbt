@@ -148,7 +148,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
 
-    libraryDependencies += "junit" % "junit" % "4.12" % Test,
+    libraryDependencies += "junit" % "junit" % "4.13" % Test,
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.9" % Test,
     libraryDependencies ++= {
