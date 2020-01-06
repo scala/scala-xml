@@ -14,18 +14,22 @@ set -e
 # can be released using that new Scala version by creating a new tag containing the Scala version
 # after a hash, e.g., v1.2.3#2.13.0-M3.
 
-# For normal tags that are cross-built, we release on JDK 8 for Scala 2.x
+# For normal tags that are cross-built, we release on JDK 8 for Scala 2.x and Dotty 0.x
 isReleaseJob() {
   if [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^2\.1[234]\..*$ ]]; then
+    true
+  elif [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^0\.[0-9]+\..*$ ]]; then
     true
   else
     false
   fi
 }
 
-# For tags that define a Scala version, we pick the jobs of one Scala version (2.13.x) to do the releases
+# For tags that define a Scala version, we pick the jobs of a Scala version (2.13.x) or Dotty (0.x) to do the releases
 isTagScalaReleaseJob() {
   if [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^2\.13\.[0-9]+$ ]]; then
+    true
+  elif [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^0\.[0-9]+\..*$ ]]; then
     true
   else
     false
