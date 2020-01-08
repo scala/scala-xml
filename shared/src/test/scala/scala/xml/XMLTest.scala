@@ -461,7 +461,7 @@ Ours is the portal of hope, come as you are."
 
   @UnitTest
   def t5115 = {
-    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size, i.iterator.size)
+    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size.toLong, i.iterator.size.toLong)
 
     assertHonorsIterableContract(<a/>.attributes)
     assertHonorsIterableContract(<a x=""/>.attributes)

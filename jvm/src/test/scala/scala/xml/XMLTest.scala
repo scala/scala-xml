@@ -116,7 +116,7 @@ class XMLTestJVM {
         Elem(null, "title", e, sc, Text("Foundations of Programming Languages"))))
 
     assertEquals("<book><author>Peter Buneman</author><author>Dan Suciu</author><title>Data on ze web</title></book>",
-      (parsedxml2 \\ "book") { n: Node => (n \ "title") xml_== "Data on ze web" } toString)
+      (parsedxml2 \\ "book") { (n: Node) => (n \ "title") xml_== "Data on ze web" } toString)
 
     assertTrue(
       ((NodeSeq.fromSeq(List(parsedxml2))) \\ "_") sameElements List(
@@ -408,7 +408,7 @@ class XMLTestJVM {
 
   @UnitTest
   def t5115 = {
-    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size, i.iterator.size)
+    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size.toLong, i.iterator.size.toLong)
 
     assertHonorsIterableContract(<a/>.attributes)
     assertHonorsIterableContract(<a x=""/>.attributes)

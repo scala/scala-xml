@@ -24,7 +24,7 @@ class AttributeTest {
       appended = appended.next
       len = len + 1
     }
-    assertEquals("removal of duplicates for unprefixed attributes in append", 1, len)
+    assertEquals("removal of duplicates for unprefixed attributes in append", 1L, len.toLong)
   }
 
   @Test
@@ -151,7 +151,7 @@ class AttributeTest {
   def attributePathTwoChildrenWithAttributes: Unit = {
     val xml = <a><b bar="1" /><b bar="2" /></a>
     val b = xml \ "b"
-    assertEquals(2, b.length)
+    assertEquals(2, b.length.toLong)
     assertEquals(NodeSeq.fromSeq(Seq(<b bar="1"/>, <b bar="2"/>)), b)
     val barFail = b \ "@bar"
     val barList =  b.map(_ \ "@bar")

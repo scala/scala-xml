@@ -29,16 +29,16 @@ class XMLSyntaxTest {
     assertEquals(1.5, handle[Double](xb), 0.0)
 
     val xc = <hello>{ 5 }</hello>
-    assertEquals(5, handle[Int](xc))
+    assertEquals(5, handle[Int](xc).toLong)
 
     val xd = <hello>{ true }</hello>
     assertEquals(true, handle[Boolean](xd))
 
     val xe = <hello>{ 5:Short }</hello>
-    assertEquals((5:Short), handle[Short](xe))
+    assertEquals((5:Short).toLong, handle[Short](xe).toLong)
 
     val xf = <hello>{ val x = 27; x }</hello>
-    assertEquals(27, handle[Int](xf))
+    assertEquals(27, handle[Int](xf).toLong)
 
     val xg = <hello>{ List(1,2,3,4) }</hello>
     assertEquals("<hello>1 2 3 4</hello>", xg.toString)
