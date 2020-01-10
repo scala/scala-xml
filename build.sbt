@@ -92,6 +92,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
         exclude[MissingClassProblem]("scala.xml.dtd.Scanner"),
         exclude[MissingClassProblem]("scala.xml.dtd.ContentModelParser$"),
         exclude[MissingClassProblem]("scala.xml.dtd.ContentModelParser"),
+        exclude[MissingClassProblem]("scala.xml.dtd.ElementValidator"),
+        exclude[MissingClassProblem]("scala.xml.dtd.ElementValidator"),
         exclude[MissingClassProblem]("scala.xml.factory.Binder"),
         exclude[MissingClassProblem]("scala.xml.parsing.ValidatingMarkupHandler"),
         exclude[MissingClassProblem]("scala.xml.persistent.CachedFileStorage"),

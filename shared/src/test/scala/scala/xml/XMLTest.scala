@@ -176,57 +176,6 @@ class XMLTest {
     assertEquals(expected, actual)
   }
 
-  @UnitTest
-  def validationOfElements: Unit = {
-    val vtor = new scala.xml.dtd.ElementValidator();
-    {
-      import scala.xml.dtd.ELEMENTS
-      import scala.xml.dtd.ContentModel._
-      vtor.setContentModel(
-        ELEMENTS(
-          Sequ(
-            Letter(ElemName("bar")),
-            Star(Letter(ElemName("baz"))))));
-    }
-    assertTrue(vtor(<foo><bar/><baz/><baz/></foo>))
-
-    {
-      import scala.xml.dtd.MIXED
-      import scala.xml.dtd.ContentModel._
-
-      vtor.setContentModel(
-        MIXED(
-          Alt(Letter(ElemName("bar")),
-            Letter(ElemName("baz")),
-            Letter(ElemName("bal")))));
-    }
-
-    assertTrue(vtor(<foo><bar/><baz/><baz/></foo>))
-    assertTrue(vtor(<foo>ab<bar/>cd<baz/>ed<baz/>gh</foo>))
-    assertFalse(vtor(<foo> <ugha/> <bugha/> </foo>))
-  }
-
-  def validationfOfAttributes: Unit = {
-    val vtor = new scala.xml.dtd.ElementValidator();
-    vtor.setContentModel(null)
-    vtor.setMetaData(List())
-    assertFalse(vtor(<foo bar="hello"/>))
-
-    {
-      import scala.xml.dtd._
-      vtor setMetaData List(AttrDecl("bar", "CDATA", IMPLIED))
-    }
-    assertFalse(vtor(<foo href="http://foo.com" bar="hello"/>))
-    assertTrue(vtor(<foo bar="hello"/>))
-
-    {
-      import scala.xml.dtd._
-      vtor.setMetaData(List(AttrDecl("bar", "CDATA", REQUIRED)))
-    }
-    assertFalse(vtor(<foo href="http://foo.com"/>))
-    assertTrue(vtor(<foo bar="http://foo.com"/>))
-  }
-
   def Elem(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*): Elem =
     scala.xml.Elem.apply(prefix, label, attributes, scope, minimizeEmpty = true, child: _*)
 
