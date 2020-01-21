@@ -16,8 +16,7 @@ set -e
 # of the existing tag. Then a new tag can be created for that commit, e.g., `v1.2.3#2.13.0-M5`.
 # Everything after the `#` in the tag name is ignored.
 
-if [[ "$TRAVIS_JDK_VERSION" == "openjdk6" && "$TRAVIS_SCALA_VERSION" =~ 2\.11\..* \
-      || "$TRAVIS_JDK_VERSION" == "oraclejdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[23]\..* ]]; then
+if [[ "$TRAVIS_JDK_VERSION" == "openjdk8" && "$TRAVIS_SCALA_VERSION" =~ 2\.1[123]\..* ]]; then
   RELEASE_COMBO=true;
 fi
 
@@ -52,9 +51,4 @@ if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
   fi
 fi
 
-# Maven Central and Bintray are unreachable over HTTPS
-if [[ "$TRAVIS_JDK_VERSION" == "openjdk6" ]]; then
-  SBTOPTS="-Dsbt.override.build.repos=true -Dsbt.repository.config=./.sbtrepos"
-fi
-
-sbt $SBTOPTS "++$TRAVIS_SCALA_VERSION" "$publishVersion" "$projectPrefix/clean" "$projectPrefix/test" "$projectPrefix/publishLocal" "$publishTask"
+sbt "++$TRAVIS_SCALA_VERSION" "$publishVersion" "$projectPrefix/clean" "$projectPrefix/test" "$projectPrefix/publishLocal" "$publishTask"
