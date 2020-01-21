@@ -15,6 +15,7 @@ import parsing.ValidatingMarkupHandler
 /**
  *  @author Burak Emir
  */
+@deprecated("This class will be removed", "1.3.0")
 abstract class Binder(val preserveWS: Boolean) extends ValidatingMarkupHandler {
 
   var result: NodeBuffer = new NodeBuffer()
