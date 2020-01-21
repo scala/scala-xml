@@ -12,6 +12,7 @@ package parsing
 
 import scala.xml.dtd._
 
+@deprecated("This class will be removed", "1.3.0")
 abstract class ValidatingMarkupHandler extends MarkupHandler {
 
   var rootLabel: String = _

@@ -23,6 +23,7 @@ import impl._
  * validate children and/or attributes of an element
  *  exceptions are created but not thrown.
  */
+@deprecated("This class will be removed", "1.3.0")
 class ElementValidator() extends Function1[Node, Boolean] {
 
   private var exc: List[ValidationException] = Nil

@@ -12,6 +12,7 @@ package dtd
 
 /** Parser for regexps (content models in DTD element declarations) */
 
+@deprecated("This object will be removed", "1.3.0")
 object ContentModelParser extends Scanner { // a bit too permissive concerning #PCDATA
   import ContentModel._
 

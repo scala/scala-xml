@@ -16,6 +16,7 @@ import scala.collection.Seq
  * Scanner for regexps (content models in DTD element declarations)
  *  todo: cleanup
  */
+@deprecated("This class will be removed", "1.3.0")
 class Scanner extends Tokens with parsing.TokenTests {
 
   final val ENDCH = '\u0000'
