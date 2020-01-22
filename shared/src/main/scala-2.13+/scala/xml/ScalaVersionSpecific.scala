@@ -1,7 +1,7 @@
 package scala.xml
 
 import scala.collection.immutable.StrictOptimizedSeqOps
-import scala.collection.{SeqOps, IterableOnce, immutable, mutable}
+import scala.collection.{View, SeqOps, IterableOnce, immutable, mutable}
 import scala.collection.BuildFrom
 import scala.collection.mutable.Builder
 
@@ -20,6 +20,21 @@ private[xml] trait ScalaVersionSpecificNodeSeq
   override def fromSpecific(coll: IterableOnce[Node]): NodeSeq = (NodeSeq.newBuilder ++= coll).result()
   override def newSpecificBuilder: mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
   override def empty: NodeSeq = NodeSeq.Empty
+  def concat(suffix: IterableOnce[Node]): NodeSeq =
+    fromSpecific(iterator ++ suffix.iterator)
+  @inline final def ++ (suffix: Seq[Node]): NodeSeq = concat(suffix)
+  def appended(base: Node): NodeSeq =
+    fromSpecific(new View.Appended(this, base))
+  def appendedAll(suffix: IterableOnce[Node]): NodeSeq =
+    concat(suffix)
+  def prepended(base: Node): NodeSeq =
+    fromSpecific(new View.Prepended(base, this))
+  def prependedAll(prefix: IterableOnce[Node]): NodeSeq =
+    fromSpecific(prefix.iterator ++ iterator)
+  def map(f: Node => Node): NodeSeq =
+    fromSpecific(new View.Map(this, f))
+  def flatMap(f: Node => IterableOnce[Node]): NodeSeq =
+    fromSpecific(new View.FlatMap(this, f))
 }
 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
