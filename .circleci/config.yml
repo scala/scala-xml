@@ -65,7 +65,7 @@ jobs:
         type: string
       scalajs_version:
         description: "ScalaJS version"
-        default: 0.6.31
+        default: 0.6.32
         type: string
     environment:
       SCALAJS_VERSION: << parameters.scalajs_version >>
@@ -131,11 +131,11 @@ workflows:
       - scalajs_job:
           name: sjs0.6_2.12
           scala_version: 2.12.10
-          scalajs_version: 0.6.31
+          scalajs_version: 0.6.32
       - scalajs_job:
           name: sjs0.6_2.13
           scala_version: 2.13.1
-          scalajs_version: 0.6.31
+          scalajs_version: 0.6.32
       - scalajs_job:
           name: sjs1.0.0-RC2_2.12
           scala_version: 2.12.10
