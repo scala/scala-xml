@@ -13,8 +13,8 @@ class NodeSeqTest {
     val a: NodeSeq = <a>Hello</a>
     val b = <b>Hi</b>
     a ++ <b>Hi</b> match {
-      case res: NodeSeq => assertEquals(2, res.size)
-      case res: Seq[Node] => fail("Should be NodeSeq") // Unreachable code?
+      case res: NodeSeq => assertEquals(2, res.size.toLong)
+      case res: Seq[Node] => fail("Should be NodeSeq was Seq[Node]") // Unreachable code?
     }
     val res: NodeSeq = a ++ b
     val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
@@ -26,8 +26,8 @@ class NodeSeqTest {
     val a: NodeSeq = <a>Hello</a>
     val b = <b>Hi</b>
     a :+ <b>Hi</b> match {
-      case res: Seq[Node] => assertEquals(2, res.size)
-      case res: NodeSeq => fail("Should be Seq[Node]") // Unreachable code?
+      case res: Seq[Node] => assertEquals(2, res.size.toLong)
+      case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
     val res: NodeSeq = a :+ b
     val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
@@ -39,11 +39,13 @@ class NodeSeqTest {
     val a: NodeSeq = <a>Hello</a>
     val b = <b>Hi</b>
     a +: <b>Hi</b> match {
-      case res: Seq[NodeSeq] => assertEquals(2, res.size)
-      case res: NodeSeq => fail("Should be NodeSeq was Seq[Node]") // Unreachable code?
+      case res: Seq[Node] => assertEquals(2, res.size.toLong)
+      case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
     val res: Seq[NodeSeq] = a +: b
-    val exp = <a>Hello</a><b>Hi</b>
+    val exp: NodeBuffer = {
+      <a>Hello</a><b>Hi</b>
+    }
     assertEquals(exp, res)
   }
 
@@ -53,8 +55,8 @@ class NodeSeqTest {
     val b = <b>Hi</b>
     val c = <c>Hey</c>
     a ++: <b>Hi</b> ++: <c>Hey</c> match {
-      case res: Seq[Node] => assertEquals(3, res.size)
-      case res: NodeSeq => fail("Should be Seq[Node]") // Unreachable code?
+      case res: Seq[Node] => assertEquals(3, res.size.toLong)
+      case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
     val res: NodeSeq = a ++: b ++: c
     val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>, <c>Hey</c>))
