@@ -68,9 +68,7 @@ if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
       exit 0
     fi
   else
-    if isTagScalaReleaseJob; then
-      setTagScalaVersion='set every scalaVersion := "'$tagScalaVer'"'
-    else
+    if ! isTagScalaReleaseJob; then
       echo "The releases for Scala $tagScalaVer are built by other jobs in the travis job matrix"
       exit 0
     fi
@@ -86,4 +84,4 @@ export CI_SNAPSHOT_RELEASE="$projectPrefix/publish"
 # for now, until we're confident in the new release scripts, just close the staging repo.
 export CI_SONATYPE_RELEASE="; sonatypePrepare; sonatypeBundleUpload; sonatypeClose"
 
-sbt "$setTagScalaVersion" clean $projectPrefix/test $projectPrefix/publishLocal $releaseTask
+sbt clean $projectPrefix/test $projectPrefix/publishLocal $releaseTask
