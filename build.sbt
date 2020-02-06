@@ -1,7 +1,7 @@
 import sbtcrossproject.{crossProject, CrossType}
 import ScalaModulePlugin._
 
-crossScalaVersions in ThisBuild := List("2.12.8", "2.11.12", "2.13.0")
+crossScalaVersions in ThisBuild := List("2.12.10", "2.11.12", "2.13.1")
 
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
@@ -11,7 +11,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(scalaModuleSettingsJVM)
   .settings(
     name    := "scala-xml",
-    version := "1.2.1-SNAPSHOT",
+    version := "1.3.0-SNAPSHOT",
 
     // this line could be removed after https://github.com/scala/sbt-scala-module/issues/48 is fixed
     licenses := Seq(("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))),
@@ -22,7 +22,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     scalacOptions in Test  += "-Xxml:coalescing",
 
     mimaPreviousVersion := {
-      if (System.getenv("SCALAJS_VERSION") == "1.0.0-M8") None // No such release yet
+      if (System.getenv("SCALAJS_VERSION") == "1.0.0") None
       else Some("1.2.0")
     },
 
@@ -62,9 +62,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
 
-    libraryDependencies += "junit" % "junit" % "4.12" % "test",
+    libraryDependencies += "junit" % "junit" % "4.13" % "test",
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
-    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.5" % "test",
+    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.9" % "test",
     libraryDependencies += ("org.scala-lang" % "scala-compiler" % scalaVersion.value % "test").exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}")
   )
   .jsSettings(
