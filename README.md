@@ -34,3 +34,9 @@ page](https://github.com/scala/scala-xml/issues/62) for details.
 ## Security best practices
 
 The XML spec has some features that are best turned off, to avoid unsavory things like file system access, DoS attacks,... Issue [#17](https://github.com/scala/scala-xml/issues/17) tracks the recommended way of configuring the XML parser used by scala-xml to avoid these. This is by no means an exhaustive list. We'll be happy to incorporate your suggestions -- just comment on the ticket!
+
+## Related projects
+
+These Projects build upon this library and increase the functionality in different ways.
+ - [Advxml](https://github.com/geirolz/advxml) - A lightweight, functional library combining scala-xml with cats-core
+ - [ezXML](https://github.com/JulienSt/ezXML) - This project aims to make working with scala-xml less cumbersome
