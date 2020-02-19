@@ -5,7 +5,7 @@
 #
 set -e
 
-read -s -p 'SONA_USER: ' SONA_USER
-travis encrypt SONA_USER="$SONA_USER"
-read -s -p 'SONA_PASS: ' SONA_PASS
-travis encrypt SONA_PASS="$SONA_PASS"
+read -s -p 'SONATYPE_USERNAME: ' SONATYPE_USERNAME
+travis encrypt SONATYPE_USERNAME="$SONATYPE_USERNAME"
+read -s -p 'SONATYPE_PASSWORD: ' SONATYPE_PASSWORD
+travis encrypt SONATYPE_PASSWORD="$SONATYPE_PASSWORD"

@@ -34,9 +34,9 @@ env:
   global:
     # PGP_PASSPHRASE
     - secure: "XXXXXX"
-    # SONA_USER
+    # SONATYPE_USERNAME
     - secure: "XXXXXX"
-    # SONA_PASS
+    # SONATYPE_PASSWORD
     - secure: "XXXXXX"
 
 script: admin/build.sh

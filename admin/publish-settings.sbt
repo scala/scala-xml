@@ -4,5 +4,5 @@ inThisBuild(Seq(
   pgpPassphrase := Some(env("PGP_PASSPHRASE").toArray),
   pgpPublicRing := file("admin/pubring.asc"),
   pgpSecretRing := file("admin/secring.asc"),
-  credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", env("SONA_USER"), env("SONA_PASS"))
+  credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", env("SONATYPE_USERNAME"), env("SONATYPE_PASSWORD"))
 ))
