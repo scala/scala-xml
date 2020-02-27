@@ -10,35 +10,15 @@ set -e
 # sbt-dynver sets the version number from the tag
 # sbt-travisci sets the Scala version from the travis job matrix
 
-# When a new binary incompatible Scala version becomes available, a previously released version
-# can be released using that new Scala version by creating a new tag containing the Scala version
-# after a hash, e.g., v1.2.3#2.13.0-M3.
+# To back-publish an existing release for a new Scala / Scala.js / Scala Native version:
+# - check out the tag for the version that needs to be published
+# - change `.travis.yml` to adjust the version numbers and trim down the build matrix as necessary
+# - commit the changes and tag this new revision with an arbitrary suffix after a hash, e.g.,
+#   `v1.2.3#dotty-0.27` (the suffix is ignored, the version will be `1.2.3`)
 
-# For normal tags that are cross-built, we release on JDK 8 for Scala 2.x and Dotty 0.x
+# We release on JDK 8 (for Scala 2.x and Dotty 0.x)
 isReleaseJob() {
-  if [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^2\.1[234]\..*$ ]]; then
-    true
-  elif [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^0\.[0-9]+\..*$ ]]; then
-    true
-  else
-    false
-  fi
-}
-
-# For tags that define a Scala version, we pick the jobs of a Scala version (2.13.x) or Dotty (0.x) to do the releases
-isTagScalaReleaseJob() {
-  if [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^2\.13\.[0-9]+$ ]]; then
-    true
-  elif [[ "$ADOPTOPENJDK" == "8" && "$TRAVIS_SCALA_VERSION" =~ ^0\.[0-9]+\..*$ ]]; then
-    true
-  else
-    false
-  fi
-}
-
-# For tags that define a Scala.js version, we pick the jobs of one Scala.js version (1.0.0) to do the releases
-isTagScalaJsReleaseJob() {
-  if [[ "$ADOPTOPENJDK" == "8" && "$SCALAJS_VERSION" =~ ^1\.0\.0(-[A-Za-z0-9-]+)?$ ]]; then
+  if [[ "$ADOPTOPENJDK" == "8" ]]; then
     true
   else
     false
@@ -52,28 +32,13 @@ else
 fi
 
 verPat="[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+)?"
-tagPat="^v$verPat(#(sjs_)?$verPat)?$"
+tagPat="^v$verPat(#.*)?$"
 
 if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
   releaseTask="ci-release"
-  tagScalaVer=$(echo $TRAVIS_TAG | sed s/[^#]*// | sed s/^#//)
-  if [[ "$tagScalaVer" == "" ]]; then
-    if ! isReleaseJob; then
-      echo "Not releasing on Java $ADOPTOPENJDK with Scala $TRAVIS_SCALA_VERSION"
-      exit 0
-    fi
-  elif [[ "$tagScalaVer" == "sjs_$SCALAJS_VERSION" ]]; then
-    if ! isTagScalaJsReleaseJob; then
-      echo "The releases for Scala.js $tagScalaVer are built by other jobs in the travis job matrix"
-      exit 0
-    fi
-  else
-    if isTagScalaReleaseJob; then
-      setTagScalaVersion='set every scalaVersion := "'$tagScalaVer'"'
-    else
-      echo "The releases for Scala $tagScalaVer are built by other jobs in the travis job matrix"
-      exit 0
-    fi
+  if ! isReleaseJob; then
+    echo "Not releasing on Java $ADOPTOPENJDK with Scala $TRAVIS_SCALA_VERSION"
+    exit 0
   fi
 fi
 
@@ -86,4 +51,4 @@ export CI_SNAPSHOT_RELEASE="$projectPrefix/publish"
 # for now, until we're confident in the new release scripts, just close the staging repo.
 export CI_SONATYPE_RELEASE="; sonatypePrepare; sonatypeBundleUpload; sonatypeClose"
 
-sbt "$setTagScalaVersion" clean $projectPrefix/test $projectPrefix/publishLocal $releaseTask
+sbt clean $projectPrefix/test $projectPrefix/publishLocal $releaseTask
