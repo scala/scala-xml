@@ -1,27 +1,20 @@
-import sbtcrossproject.{crossProject, CrossType}
-import ScalaModulePlugin._
-
-crossScalaVersions in ThisBuild := List("2.12.10", "2.11.12", "2.13.1")
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
   .crossType(CrossType.Full)
   .in(file("."))
-  .settings(scalaModuleSettings)
-  .jvmSettings(scalaModuleSettingsJVM)
+  .settings(ScalaModulePlugin.scalaModuleSettings)
+  .jvmSettings(ScalaModulePlugin.scalaModuleSettingsJVM)
   .settings(
     name    := "scala-xml",
-    version := "1.3.0-SNAPSHOT",
-
-    // this line could be removed after https://github.com/scala/sbt-scala-module/issues/48 is fixed
-    licenses := Seq(("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))),
 
     // Compiler team advised avoiding the -Xfuture option for releases.
     // The output with -Xfuture should be periodically checked, though.
     scalacOptions         ++= "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_".split("\\s+").to[Seq],
     scalacOptions in Test  += "-Xxml:coalescing",
 
-    mimaPreviousVersion := {
+    scalaModuleMimaPreviousVersion := {
       if (System.getenv("SCALAJS_VERSION") == "1.0.0") None
       else Some("1.2.0")
     },
@@ -36,25 +29,31 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       }
     },
 
-    apiMappings ++= Map(
-      scalaInstance.value.libraryJar
-        -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
-    ) ++ {
+    apiURL := Some(
+      url(s"""https://scala.github.io/scala-xml/api/${"-.*".r.replaceAllIn(version.value, "")}/""")
+    ),
+
+    apiMappings ++= scalaInstance.value.libraryJars.filter { file =>
+      file.getName.startsWith("scala-library") && file.getName.endsWith(".jar")
+    }.map { libraryJar =>
+      libraryJar ->
+        url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+    }.toMap ++ {
       // http://stackoverflow.com/questions/16934488
       Option(System.getProperty("sun.boot.class.path")).flatMap { classPath =>
-        classPath.split(java.io.File.pathSeparator).filter(_.endsWith(java.io.File.separator + "rt.jar")).headOption
+        classPath.split(java.io.File.pathSeparator).find(_.endsWith(java.io.File.separator + "rt.jar"))
       }.map { jarPath =>
         Map(
           file(jarPath)
             -> url("http://docs.oracle.com/javase/8/docs/api")
         )
       } getOrElse {
-        // If everything fails, jam in the Java 9 base module.
+        // If everything fails, jam in Java 11 modules.
         Map(
           file("/modules/java.base")
-            -> url("http://docs.oracle.com/javase/9/docs/api"),
+            -> url("https://docs.oracle.com/en/java/javase/11/docs/api/java.base"),
           file("/modules/java.xml")
-            -> url("http://docs.oracle.com/javase/9/docs/api")
+            -> url("https://docs.oracle.com/en/java/javase/11/docs/api/java.xml")
         )
       }
     }
@@ -72,6 +71,3 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     fork in Test := false
   )
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
-
-lazy val xmlJVM = xml.jvm
-lazy val xmlJS = xml.js

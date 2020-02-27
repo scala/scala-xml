@@ -1,8 +1,8 @@
-language: scala
+version: ~> 1.0 # needed for imports
 
-jdk:
-  - openjdk8
-  - openjdk11
+import: scala/scala-dev:travis/default.yml
+
+language: scala
 
 scala:
   - 2.11.12
@@ -10,40 +10,19 @@ scala:
   - 2.13.1
 
 env:
-  global:
-    # PGP_PASSPHRASE
-    - secure: "BYC1kEnHjNrINrHYWPGEuTTJ2V340/0ByzqeihLecjoZ75yrjWdsh6MI1JEUWgv5kb+58vLzib21JfnjsPK6Yb2bSXuCFCsEtJNh6RJKgxkWlCOzfTSh5I2wl7PCjRClRL6gseX2uTSvFjL4Z//pmxwxeXlLp7voQe4QAUq1+sE="
-    # SONA_USER
-    - secure: "OpBwPc1GNvauageYOH3RscAa7wpZxgpmqDz15aigIKLNWzAhAtVUx0MleZ8rQeoqml6nrAvlnzuVHjKL2lVcjMPpjUis7bcQ5UAGK7tZK8x+qZNQxXmpXu8+pENwQA2yFaqt/xy7K5jFOrHJHTRxcPnyVG1yKakPWz53PPYUwbc="
-    # SONA_PASS
-    - secure: "Xw7rI/qlML1nD2e2XwlakkhKAWNGZKqqE+Q3ntTvFpfHryl7KLCvVzJ4LIavnL6kGJaWOgy9vlSoEWn5g9nqHSfE31C/k5pY5nTMAKiwiJzfAS+r0asKXW2gmKhwtcTBkqyLVOZLCJSPVlFRQyfBJHY+Fs0L3KWcnMQgtBlyDhU="
-  matrix:
-    # The empty SCALAJS_VERSION will only compile for the JVM
-    - SCALAJS_VERSION=
-    - SCALAJS_VERSION=0.6.32
-    - SCALAJS_VERSION=1.0.0
+  - SCALAJS_VERSION=         ADOPTOPENJDK=8
+  - SCALAJS_VERSION=0.6.32   ADOPTOPENJDK=8
+  - SCALAJS_VERSION=1.0.0    ADOPTOPENJDK=8
+  - SCALAJS_VERSION=         ADOPTOPENJDK=11
 
 matrix:
   exclude:
-    - jdk: openjdk11
-      env: SCALAJS_VERSION=0.6.32
-    - jdk: openjdk11
-      env: SCALAJS_VERSION=1.0.0
     - scala: 2.11.12
-      env: SCALAJS_VERSION=1.0.0
+      env: SCALAJS_VERSION=0.6.32   ADOPTOPENJDK=8
     - scala: 2.11.12
-      jdk: openjdk11
+      env: SCALAJS_VERSION=1.0.0    ADOPTOPENJDK=8
 
-script:
-  - java -version
-  - node -v
-  - admin/build.sh
+install:
+  - git fetch --tags # get all tags for sbt-dynver
 
-before_cache:
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
-cache:
-  directories:
-  - $HOME/.ivy2/cache
-  - $HOME/.sbt/boot
-  - $HOME/.sbt/launchers
+script: ./build.sh
