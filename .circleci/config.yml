@@ -139,8 +139,8 @@ workflows:
       - scalajs_job:
           name: sjs1.0_2.12
           scala_version: 2.12.10
-          scalajs_version: 1.0.0
+          scalajs_version: 1.0.1
       - scalajs_job:
           name: sjs1.0_2.13
           scala_version: 2.13.1
-          scalajs_version: 1.0.0
+          scalajs_version: 1.0.1
