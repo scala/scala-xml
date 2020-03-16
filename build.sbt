@@ -15,7 +15,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     scalacOptions in Test  += "-Xxml:coalescing",
 
     scalaModuleMimaPreviousVersion := {
-      if (System.getenv("SCALAJS_VERSION") == "1.0.0") None
+      if (System.getenv("SCALAJS_VERSION") == "1.0.1") None
       else Some("1.2.0")
     },
 
