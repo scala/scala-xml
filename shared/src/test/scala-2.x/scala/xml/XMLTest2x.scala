@@ -4,15 +4,7 @@ import language.postfixOps
 
 import org.junit.{Test => UnitTest}
 import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
-import scala.xml.parsing.ConstructingParser
-import java.io.StringWriter
-import java.io.ByteArrayOutputStream
-import java.io.StringReader
-import scala.collection.Iterable
-import scala.collection.Seq
-import scala.xml.Utility.sort
 
 class XMLTest2x {
   // t-486

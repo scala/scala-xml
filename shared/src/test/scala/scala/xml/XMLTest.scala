@@ -538,7 +538,8 @@ Ours is the portal of hope, come as you are."
 
   @UnitTest
   def i1976: Unit = {
-     val node = <node>{ "whatever " }</node>
+    val node = <node>{ "whatever " }</node>
+    assertEquals("whatever", node.child.text)
   }
 
   @UnitTest
