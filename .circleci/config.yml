@@ -89,7 +89,7 @@ workflows:
           java_version: jdk8
           scala_version: 2.13.1
       - scala_job:
-          name: dotty-0.21
+          name: dotty-0.22
           java_version: jdk8
           scala_version: 0.22.0-RC1
       - scala_job:
