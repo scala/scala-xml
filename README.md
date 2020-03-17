@@ -37,6 +37,15 @@ The XML spec has some features that are best turned off, to avoid unsavory thing
 
 ## Related projects
 
-These Projects build upon this library and increase the functionality in different ways.
- - [Advxml](https://github.com/geirolz/advxml) - A lightweight, functional library combining scala-xml with cats-core
- - [ezXML](https://github.com/JulienSt/ezXML) - This project aims to make working with scala-xml less cumbersome
+- [Advxml](https://github.com/geirolz/advxml) - Functional library combining scala-xml with cats-core
+- [Binding.scala](https://github.com/ThoughtWorksInc/Binding.scala) - Reactive programming library
+- [ezXML](https://github.com/JulienSt/ezXML) - Extensions for traverse, encoding, decoding and mapping XML
+- [http4s-scala-xml](https://http4s.org/v0.21/entity/) - XML literal support in http4s
+- [Json4s XML](https://github.com/json4s/json4s) - Conversion to and from JSON
+- [monadic-html](https://github.com/OlivierBlanvillain/monadic-html) - DOM-like event-based programming with XHTML
+- [scalaxb](http://scalaxb.org/) - XML data binding, serialization, SOAP and WSDL support
+- [ScalaTags](https://github.com/lihaoyi/scalatags) - Alternative syntax for XML literals
+- [scala-xml-dotty](https://github.com/felixmulder/scala-xml-dotty) - Macro library for XML literals in Dotty
+- [xtract](https://github.com/lucidsoftware/xtract) - A library for deserializing XML
+
+See also the "XML" section of [Awesome Scala](https://github.com/lauris/awesome-scala).
