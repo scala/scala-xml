@@ -43,8 +43,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     scalacOptions in Test  += "-Xxml:coalescing",
 
     scalaModuleMimaPreviousVersion := {
-      if (System.getenv("SCALAJS_VERSION") == "1.0.0") None // No such release yet
-      else Some("1.2.0")
+      if (isDotty.value) None // No such release yet
+      // else if (System.getenv("SCALAJS_VERSION") == "1.0.0") None
+      else Some("1.3.0")
     },
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
@@ -161,6 +162,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     }
   )
   .jsSettings(
+    // The config for Travis has an exclude, but sbt-travisci doesn't catch it.
+    crossScalaVersions -= "0.22.0-RC1",
     // Scala.js cannot run forked tests
     fork in Test := false
   )
