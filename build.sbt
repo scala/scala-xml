@@ -163,7 +163,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   )
   .jsSettings(
     // The config for Travis has an exclude, but sbt-travisci doesn't catch it.
-    crossScalaVersions -= "0.22.0-RC1",
+    crossScalaVersions -= "0.23.0-RC1",
     // Scala.js cannot run forked tests
     fork in Test := false
   )
