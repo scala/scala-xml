@@ -60,7 +60,7 @@ class TransformersTest {
   @Test
   def preserveReferentialComplexityInLinearComplexity = { // SI-4528
     var i = 0
- 
+
     val xmlNode = <a><b><c><h1>Hello Example</h1></c></b></a>
 
     new RuleTransformer(new RewriteRule {
@@ -77,4 +77,19 @@ class TransformersTest {
 
     assertEquals(1, i)
   }
+
+  @Test
+  def appliesRulesRecursivelyOnPreviousChanges = { // #257
+    def add(outer: Elem, inner: Node) = new RewriteRule {
+      override def transform(n: Node): Seq[Node] = n match {
+        case e: Elem if e.label == outer.label => e.copy(child = e.child ++ inner)
+        case other => other
+      }
+    }
+
+    def transformer = new RuleTransformer(add(<element/>, <new/>), add(<new/>, <thing/>))
+
+    assertEquals(<element><new><thing/></new></element>, transformer(<element/>))
+  }
 }
+

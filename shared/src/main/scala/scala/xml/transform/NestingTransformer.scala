@@ -12,10 +12,8 @@ package transform
 
 import scala.collection.Seq
 
-class RuleTransformer(rules: RewriteRule*) extends BasicTransformer {
-  private val transformers = rules.map(new NestingTransformer(_))
+class NestingTransformer(rule: RewriteRule) extends BasicTransformer {
   override def transform(n: Node): Seq[Node] = {
-    if (transformers.isEmpty) n
-    else transformers.tail.foldLeft(transformers.head.transform(n)) { (res, transformer) => transformer.transform(res) }
+    rule.transform(super.transform(n))
   }
 }
