@@ -25,7 +25,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Full)
   .in(file("."))
   .settings(ScalaModulePlugin.scalaModuleSettings)
-  .jvmSettings(ScalaModulePlugin.scalaModuleSettingsJVM)
+  .jvmSettings(ScalaModulePlugin.scalaModuleOsgiSettings)
   .settings(
     name    := "scala-xml",
 
