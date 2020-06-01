@@ -43,12 +43,12 @@ The XML spec has some features that are best turned off, to avoid unsavory thing
 - [http4s-scala-xml](https://http4s.org/v0.21/entity/) - XML literal support in http4s
 - [Json4s XML](https://github.com/json4s/json4s) - Conversion to and from JSON
 - [monadic-html](https://github.com/OlivierBlanvillain/monadic-html) - DOM-like event-based programming with XHTML
+- [phobos](https://github.com/TinkoffCreditSystems/phobos) - Data-binding library based on stream parsing using Aalto XML
 - [scalaxb](http://scalaxb.org/) - XML data binding, serialization, SOAP and WSDL support
 - [ScalaTags](https://github.com/lihaoyi/scalatags) - Alternative syntax for XML literals
 - [scala-xml-dotty](https://github.com/felixmulder/scala-xml-dotty) - Macro library for XML literals in Dotty
+- [XML SPaC](https://github.com/dylemma/xml-spac) - Streaming event-based parser combinators
+- [xs4s](https://github.com/ScalaWilliam/xs4s) - XML streaming for Scala
 - [xtract](https://github.com/lucidsoftware/xtract) - A library for deserializing XML
-https://github.com/TinkoffCreditSystems/phobos
-https://github.com/dylemma/xml-spac
-https://github.com/ScalaWilliam/xs4s
 
 See also the "XML" section of [Awesome Scala](https://github.com/lauris/awesome-scala).
