@@ -14,9 +14,9 @@ API documentation is available [here](https://scala.github.io/scala-xml/api/1.2.
 
 How to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
 
-The latest stable release of Scala XML is 1.2.0.
+The latest stable release of Scala XML is 1.3.0.
 
-Milestone releases of Scala XML version 2.0 are available, starting with 2.0.0-M1.  See the changes for 2.0 in `CHANGELOG.md`.
+Experimental milestone releases of Scala XML version 2.0 are available, starting with 2.0.0-M1.  See the changes for 2.0 in `CHANGELOG.md`.
 
 ## Maintenance status
 
@@ -47,5 +47,8 @@ The XML spec has some features that are best turned off, to avoid unsavory thing
 - [ScalaTags](https://github.com/lihaoyi/scalatags) - Alternative syntax for XML literals
 - [scala-xml-dotty](https://github.com/felixmulder/scala-xml-dotty) - Macro library for XML literals in Dotty
 - [xtract](https://github.com/lucidsoftware/xtract) - A library for deserializing XML
+https://github.com/TinkoffCreditSystems/phobos
+https://github.com/dylemma/xml-spac
+https://github.com/ScalaWilliam/xs4s
 
 See also the "XML" section of [Awesome Scala](https://github.com/lauris/awesome-scala).
