@@ -6,8 +6,7 @@ lazy val configSettings: Seq[Setting[_]] = Seq(
       val sv = scalaVersion.value
       Seq(
         CrossVersion.partialVersion(sv) match {
-          case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
-          case Some((0, _))  => file(dir.getPath ++ "-2.13+")
+          case Some((major, minor)) if major > 2 || (major == 2 && minor >= 13)  => file(dir.getPath ++ "-2.13+")
           case _             => file(dir.getPath ++ "-2.13-")
         },
         CrossVersion.partialVersion(sv) match {
@@ -165,7 +164,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   )
   .jsSettings(
     // The config for Travis has an exclude, but sbt-travisci doesn't catch it.
-    crossScalaVersions -= "0.27.0-RC1",
+    crossScalaVersions -= "3.0.0-M2",
     // Scala.js cannot run forked tests
     fork in Test := false
   )

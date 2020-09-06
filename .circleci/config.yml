@@ -89,9 +89,9 @@ workflows:
           java_version: jdk8
           scala_version: 2.13.3
       - scala_job:
-          name: dotty-0.27.0-RC1
+          name: 3.0.0-M2
           java_version: jdk8
-          scala_version: 0.27.0-RC1
+          scala_version: 3.0.0-M2
       - scala_job:
           name: jdk11_2.12
           java_version: jdk11
@@ -101,9 +101,9 @@ workflows:
           java_version: jdk11
           scala_version: 2.13.3
       - scala_job:
-          name: jdk11_dotty
+          name: jdk11_3.0
           java_version: jdk11
-          scala_version: 0.27.0-RC1
+          scala_version: 3.0.0-M2
       - scala_job:
           name: jdk13_2.12
           java_version: jdk13
@@ -113,9 +113,9 @@ workflows:
           java_version: jdk13
           scala_version: 2.13.3
       - scala_job:
-          name: jdk13_dotty
+          name: jdk13_3.0
           java_version: jdk13
-          scala_version: 0.27.0-RC1
+          scala_version: 3.0.0-M2
       - scala_job:
           name: jdk14_2.12
           java_version: jdk14
@@ -125,9 +125,17 @@ workflows:
           java_version: jdk14
           scala_version: 2.13.3
       - scala_job:
-          name: jdk14_dotty
+          name: jdk14_3.0
           java_version: jdk14
-          scala_version: 0.27.0-RC1
+          scala_version: 3.0.0-M2
+      - scalajs_job:
+          name: sjs0.6_2.12
+          scala_version: 2.12.10
+          scalajs_version: 0.6.33
+      - scalajs_job:
+          name: sjs0.6_2.13
+          scala_version: 2.13.1
+          scalajs_version: 0.6.33
       - scalajs_job:
           name: sjs1.0_2.12
           scala_version: 2.12.12
