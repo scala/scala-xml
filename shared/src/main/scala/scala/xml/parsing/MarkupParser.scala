@@ -548,7 +548,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     xToken('>')
     this.dtd = new DTD {
-      /*override var*/ externalID = extID
+      this.externalID = extID
       /*override val */ decls = handle.decls.reverse
     }
     //this.dtd.initializeEntities();
