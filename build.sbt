@@ -153,7 +153,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
 
     libraryDependencies += "junit" % "junit" % "4.13" % Test,
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
-    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.10" % Test,
+    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.11" % Test,
     libraryDependencies ++= {
       if (isDotty.value)
         Seq()
@@ -163,7 +163,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   )
   .jsSettings(
     // The config for Travis has an exclude, but sbt-travisci doesn't catch it.
-    crossScalaVersions -= "0.23.0-RC1",
+    crossScalaVersions -= "0.27.0-RC1",
     // Scala.js cannot run forked tests
     fork in Test := false
   )

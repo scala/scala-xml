@@ -35,7 +35,7 @@ class XMLTestJVM {
     val c = new Node {
       def label = "hello"
       override def hashCode() =
-        Utility.hashCode(prefix, label, attributes.hashCode(), scope.hashCode(), child);
+        Utility.hashCode(prefix, label, this.attributes.hashCode(), scope.hashCode(), child);
       def child = Elem(null, "world", e, sc);
       //def attributes = e;
       override def text = ""
