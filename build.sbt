@@ -19,7 +19,6 @@ lazy val configSettings: Seq[Setting[_]] = Seq(
   }
 )
 
-
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
   .crossType(CrossType.Full)
