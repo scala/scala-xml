@@ -41,9 +41,17 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     scalacOptions in Test  += "-Xxml:coalescing",
 
     scalaModuleMimaPreviousVersion := {
+<<<<<<< HEAD
       if (isDotty.value) None // No such release yet
       // else if (System.getenv("SCALAJS_VERSION") == "1.0.0") None
       else Some("1.3.0")
+||||||| 172ce22
+      if (System.getenv("SCALAJS_VERSION") == "1.0.0") None
+      else Some("1.2.0")
+=======
+      if (System.getenv("SCALAJS_VERSION") == "1.0.1") None
+      else Some("1.2.0")
+>>>>>>> origin/1.x
     },
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
