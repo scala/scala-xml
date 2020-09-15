@@ -4,14 +4,20 @@ import org.junit.Test
 
 class CompilerErrors extends CompilerTesting {
   @Test
-  def t7185() =
-    expectXmlError("""|overloaded method value apply with alternatives:
-                      |  (f: scala.xml.Node => Boolean)scala.xml.NodeSeq <and>
-                      |  (i: Int)scala.xml.Node
-                      | cannot be applied to ()""".stripMargin,
+  def t7185() = {
+    // the error message here differs a bit by Scala version
+    import util.Properties.versionNumberString
+    val thing =
+      if (versionNumberString.startsWith("2.11") || versionNumberString.startsWith("2.12")) "method value"
+      else "method"
+    expectXmlError(s"""|overloaded $thing apply with alternatives:
+                       |  (f: scala.xml.Node => Boolean)scala.xml.NodeSeq <and>
+                       |  (i: Int)scala.xml.Node
+                       | cannot be applied to ()""".stripMargin,
      """|object Test {
         |  <e></e>()
         |}""")
+  }
 
   @Test
   def t1878_typer() =
