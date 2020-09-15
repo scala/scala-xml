@@ -1,5 +1,14 @@
 # Scala XML Changes
 
+## 2.0.0-M2 (2020-09-15)
+
+Published for Scala 2.12 and 2.13, Scala.js 1.2.0,
+and Dotty 0.27.0-RC1.
+
+### Removed
+
+- Removed `scala.xml.dtd.ElementValidator`
+
 ## 2.0.0-M1 (2019-10-21)
 
 Not binary compatible with Scala XML 1.2.0.
@@ -7,8 +16,7 @@ Not binary compatible with Scala XML 1.2.0.
 Published for Scala 2.12, 2.13 and Scala.js 0.6, 1.0.0-M8.
 Artifacts are no longer published for Scala 2.11.
 
-There have been a number of deprecated elements that have been
-removed, see the "[Removed](#Removed)" section below.
+Some deprecated elements have been removed; see the "[Removed](#Removed)" section below.
 
 ### Added
 
@@ -57,5 +65,6 @@ the Scala compiler, not in the Scala XML library.
 - Remove `scala.xml.dtd.impl.PointedHedgeExp`
 - Remove `scala.xml.dtd.Scanner`
 - Remove `scala.xml.dtd.ContentModelParser`
+- Remove `scala.xml.dtd.ElementValidator`
 - Remove `scala.xml.factory.Binder`
 - Remove `scala.xml.parsing.ValidatingMarkupHandler`
