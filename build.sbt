@@ -19,7 +19,6 @@ lazy val configSettings: Seq[Setting[_]] = Seq(
   }
 )
 
-
 lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
   .crossType(CrossType.Full)
@@ -28,7 +27,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(ScalaModulePlugin.scalaModuleOsgiSettings)
   .settings(
     name    := "scala-xml",
-
     scalacOptions ++= {
       val opts =
         if (isDotty.value)
@@ -44,7 +42,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
 
     scalaModuleMimaPreviousVersion := {
       if (isDotty.value) None // No such release yet
-      // else if (System.getenv("SCALAJS_VERSION") == "1.0.0") None
+      // else if (System.getenv("SCALAJS_VERSION") == "1.0.1") None
       else Some("1.3.0")
     },
     mimaBinaryIssueFilters ++= {
