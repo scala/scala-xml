@@ -27,7 +27,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
   .jvmSettings(ScalaModulePlugin.scalaModuleOsgiSettings)
   .settings(
     name    := "scala-xml",
-
     scalacOptions ++= {
       val opts =
         if (isDotty.value)
