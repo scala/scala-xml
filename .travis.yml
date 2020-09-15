@@ -11,17 +11,14 @@ scala:
 
 env:
   - SCALAJS_VERSION=         ADOPTOPENJDK=8
-  - SCALAJS_VERSION=1.2.0   ADOPTOPENJDK=8
-  - SCALAJS_VERSION=1.0.1    ADOPTOPENJDK=8
+  - SCALAJS_VERSION=1.1.1    ADOPTOPENJDK=8
   - SCALAJS_VERSION=         ADOPTOPENJDK=11
   - SCALAJS_VERSION=         ADOPTOPENJDK=13
 
 matrix:
   exclude:
     - scala: 0.27.0-RC1
-      env: SCALAJS_VERSION=1.2.0   ADOPTOPENJDK=8
-    - scala: 0.27.0-RC1
-      env: SCALAJS_VERSION=1.0.1    ADOPTOPENJDK=8
+      env: SCALAJS_VERSION=1.1.1    ADOPTOPENJDK=8
 
 install:
   - git fetch --tags # get all tags for sbt-dynver
