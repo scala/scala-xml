@@ -16,7 +16,7 @@ How to documentation is available in the [wiki](https://github.com/scala/scala-x
 
 The latest stable release of Scala XML is 1.3.0.
 
-Experimental milestone releases of Scala XML version 2.0 are available, starting with 2.0.0-M1.  See the changes for 2.0 in `CHANGELOG.md`.
+Experimental milestone releases of Scala XML version 2.0 are available. Since 2.0.0-M2, Dotty is supported. See the changes for 2.0 in `CHANGELOG.md`.
 
 ## Maintenance status
 
