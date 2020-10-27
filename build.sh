@@ -26,9 +26,9 @@ isReleaseJob() {
 }
 
 if [[ "$SCALAJS_VERSION" == "" ]]; then
-  projectPrefix="xml"
+  projectPrefix="xml/"
 else
-  projectPrefix="xmlJS"
+  projectPrefix="xmlJS/"
 fi
 
 verPat="[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9-]+)?"
@@ -43,12 +43,12 @@ if [[ "$TRAVIS_TAG" =~ $tagPat ]]; then
 fi
 
 # default is +publishSigned; we cross-build with travis jobs, not sbt's crossScalaVersions
-export CI_RELEASE="$projectPrefix/publishSigned"
-export CI_SNAPSHOT_RELEASE="$projectPrefix/publish"
+export CI_RELEASE="${projectPrefix}publishSigned"
+export CI_SNAPSHOT_RELEASE="${projectPrefix}publish"
 
 # default is sonatypeBundleRelease, which closes and releases the staging repo
 # see https://github.com/xerial/sbt-sonatype#commands
 # for now, until we're confident in the new release scripts, just close the staging repo.
 export CI_SONATYPE_RELEASE="; sonatypePrepare; sonatypeBundleUpload; sonatypeClose"
 
-sbt clean $projectPrefix/test $projectPrefix/publishLocal $releaseTask
+sbt clean ${projectPrefix}test ${projectPrefix}publishLocal $releaseTask
