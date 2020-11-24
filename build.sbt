@@ -40,6 +40,10 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
 
     scalacOptions in Test  += "-Xxml:coalescing",
 
+    // don't run Dottydoc, it errors and isn't needed anyway.
+    // but we leave `publishArtifact` set to true, otherwise Sonatype won't let us publish
+    Compile / doc / sources := (if (isDotty.value) Seq() else (Compile / doc/ sources).value),
+
     scalaModuleMimaPreviousVersion := {
       if (isDotty.value) None // No such release yet
       // else if (System.getenv("SCALAJS_VERSION") == "1.0.1") None
