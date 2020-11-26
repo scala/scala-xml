@@ -7,12 +7,9 @@ executors:
   scala_jdk11_executor:
     docker:
       - image: circleci/openjdk:11-jdk
-  scala_jdk13_executor:
+  scala_jdk15_executor:
     docker:
-      - image: circleci/openjdk:13.0.1-jdk-buster
-  scala_jdk14_executor:
-    docker:
-      - image: circleci/openjdk:14-ea-26-jdk-buster
+      - image: circleci/openjdk:15-buster
 
 commands:
   sbt_cmd:
@@ -85,13 +82,13 @@ workflows:
           java_version: jdk8
           scala_version: 2.12.12
       - scala_job:
-          name: 2.13.3
+          name: 2.13.4
           java_version: jdk8
-          scala_version: 2.13.3
+          scala_version: 2.13.4
       - scala_job:
-          name: dotty-0.27.0-RC1
+          name: 3.0.0-M2
           java_version: jdk8
-          scala_version: 0.27.0-RC1
+          scala_version: 3.0.0-M2
       - scala_job:
           name: jdk11_2.12
           java_version: jdk11
@@ -99,40 +96,28 @@ workflows:
       - scala_job:
           name: jdk11_2.13
           java_version: jdk11
-          scala_version: 2.13.3
+          scala_version: 2.13.4
       - scala_job:
-          name: jdk11_dotty
+          name: jdk11_3.0
           java_version: jdk11
-          scala_version: 0.27.0-RC1
+          scala_version: 3.0.0-M2
       - scala_job:
-          name: jdk13_2.12
-          java_version: jdk13
+          name: jdk15_2.12
+          java_version: jdk15
           scala_version: 2.12.12
       - scala_job:
-          name: jdk13_2.13
-          java_version: jdk13
-          scala_version: 2.13.3
+          name: jdk15_2.13
+          java_version: jdk15
+          scala_version: 2.13.4
       - scala_job:
-          name: jdk13_dotty
-          java_version: jdk13
-          scala_version: 0.27.0-RC1
-      - scala_job:
-          name: jdk14_2.12
-          java_version: jdk14
-          scala_version: 2.12.12
-      - scala_job:
-          name: jdk14_2.13
-          java_version: jdk14
-          scala_version: 2.13.3
-      - scala_job:
-          name: jdk14_dotty
-          java_version: jdk14
-          scala_version: 0.27.0-RC1
+          name: jdk15_3.0
+          java_version: jdk15
+          scala_version: 3.0.0-M2
       - scalajs_job:
           name: sjs1.0_2.12
           scala_version: 2.12.12
           scalajs_version: 1.3.1
       - scalajs_job:
           name: sjs1.0_2.13
-          scala_version: 2.13.3
+          scala_version: 2.13.4
           scalajs_version: 1.3.1
