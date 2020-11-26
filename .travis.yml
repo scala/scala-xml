@@ -7,7 +7,7 @@ language: scala
 scala:
   - 3.0.0-M2
   - 2.12.12
-  - 2.13.3
+  - 2.13.4
 
 env:
   - SCALAJS_VERSION=         ADOPTOPENJDK=8
