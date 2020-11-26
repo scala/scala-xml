@@ -45,7 +45,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
 
     scalaModuleMimaPreviousVersion := {
       if (isDotty.value) None // No such release yet
-      // else if (System.getenv("SCALAJS_VERSION") == "1.0.1") None
       else Some("1.3.0")
     },
     mimaBinaryIssueFilters ++= {
