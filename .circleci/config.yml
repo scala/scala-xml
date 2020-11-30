@@ -10,6 +10,9 @@ executors:
   scala_jdk15_executor:
     docker:
       - image: circleci/openjdk:15-buster
+  scala_jdk16_executor:
+    docker:
+      - image: circleci/openjdk:16-buster
 
 commands:
   sbt_cmd:
@@ -20,7 +23,7 @@ commands:
         default: 2.12.12
       sbt_tasks:
         type: string
-        default: update compile test:compile test doc package
+        default: update compile test:compile test doc package osgiBundle
     steps:
       - restore_cache:
           keys:
@@ -52,7 +55,7 @@ jobs:
       - run: java -version
       - sbt_cmd:
           scala_version: << parameters.scala_version >>
-          sbt_tasks: xml/update xml/compile xml/test:compile xml/test xml/doc xml/package
+          sbt_tasks: xml/update xml/compile xml/test:compile xml/test xml/doc xml/package xml/osgiBundle
   scalajs_job:
     executor: scala_jdk8_executor
     parameters:
@@ -112,6 +115,18 @@ workflows:
       - scala_job:
           name: jdk15_3.0
           java_version: jdk15
+          scala_version: 3.0.0-M2
+      - scala_job:
+          name: jdk16_2.12
+          java_version: jdk16
+          scala_version: 2.12.12
+      - scala_job:
+          name: jdk16_2.13
+          java_version: jdk16
+          scala_version: 2.13.3
+      - scala_job:
+          name: jdk16_3.0
+          java_version: jdk16
           scala_version: 3.0.0-M2
       - scalajs_job:
           name: sjs1.0_2.12
