@@ -14,6 +14,8 @@ package xml
  *
  * @author Burak Emir
  * @param commentText the text contained in this node, may not contain "--"
+ *        and the final character may not be `-` to prevent a closing span of `-->`
+ *        which is invalid. [[https://www.w3.org/TR/xml11//#IDA5CES]]
  */
 case class Comment(commentText: String) extends SpecialNode {
 
@@ -22,8 +24,12 @@ case class Comment(commentText: String) extends SpecialNode {
   final override def doCollectNamespaces = false
   final override def doTransform = false
 
-  if (commentText contains "--")
+  if (commentText.contains("--")) {
     throw new IllegalArgumentException("text contains \"--\"")
+  }
+  if (commentText.length > 0 && commentText.charAt(commentText.length - 1) == '-') {
+    throw new IllegalArgumentException("The final character of a XML comment may not be '-'. See https://www.w3.org/TR/xml11//#IDA5CES")
+  }
 
   /**
    * Appends &quot;<!-- text -->&quot; to this string buffer.
