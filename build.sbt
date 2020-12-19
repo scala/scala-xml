@@ -37,7 +37,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
       opts.split("\\s+").to[Seq]
     },
 
-    scalacOptions in Test  += "-Xxml:coalescing",
+    Test / scalacOptions  += "-Xxml:coalescing",
 
     // don't run Dottydoc, it errors and isn't needed anyway.
     // but we leave `publishArtifact` set to true, otherwise Sonatype won't let us publish
@@ -159,9 +159,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     }
   )
   .jsSettings(
-    // The config for Travis has an exclude, but sbt-travisci doesn't catch it.
-    crossScalaVersions -= "3.0.0-M2",
     // Scala.js cannot run forked tests
-    fork in Test := false
+    Test / fork := false
   )
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
