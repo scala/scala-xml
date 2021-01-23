@@ -17,6 +17,13 @@ env:
   - SCALAJS_VERSION=          ADOPTOPENJDK=11
   - SCALAJS_VERSION=          ADOPTOPENJDK=15
 
+jobs:
+  exclude:
+    - scala: 3.0.0-M2
+      env: SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
+    - scala: 3.0.0-M3
+      env: SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
+
 install:
   - git fetch --tags # get all tags for sbt-dynver
 
