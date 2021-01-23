@@ -25,8 +25,10 @@ isReleaseJob() {
   fi
 }
 
-if [[ "$SCALAJS_VERSION" == "" ]]; then
+if [[ "$SCALAJS_VERSION" == "" ]] && [[ "$SCALANATIVE_VERSION" == "" ]]; then
   projectPrefix="xml/"
+elif [[ "$SCALAJS_VERSION" == "" ]]; then
+  projectPrefix="xmlNative/"
 else
   projectPrefix="xmlJS/"
 fi

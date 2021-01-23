@@ -18,7 +18,7 @@ lazy val configSettings: Seq[Setting[_]] = Seq(
   }
 )
 
-lazy val xml = crossProject(JSPlatform, JVMPlatform)
+lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .withoutSuffixFor(JVMPlatform)
   .crossType(CrossType.Full)
   .in(file("."))
@@ -163,3 +163,11 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     Test / fork := false
   )
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
+  .nativeSettings(
+    scalaModuleMimaPreviousVersion := None, // No such release yet
+    // Scala Native cannot run forked tests
+    Test / fork := false,
+    libraryDependencies += "org.scala-native" %%% "junit-runtime" % nativeVersion % Test,
+    addCompilerPlugin("org.scala-native" % "junit-plugin" % nativeVersion cross CrossVersion.full),
+    Test / testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v")
+  )
