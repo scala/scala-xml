@@ -11,14 +11,13 @@ package xml
 package factory
 
 import javax.xml.parsers.SAXParserFactory
-import parsing.{ FactoryAdapter, NoBindingFactoryAdapter }
-import java.io.{ InputStream, Reader, File, FileDescriptor }
+import parsing.{FactoryAdapter, NoBindingFactoryAdapter}
+import java.io.{InputStream, Reader, File, FileDescriptor}
 import java.net.URL
 
-/**
- * Presents collection of XML loading methods which use the parser
- *  created by "def parser".
- */
+/** Presents collection of XML loading methods which use the parser
+  *  created by "def parser".
+  */
 trait XMLLoader[T <: Node] {
   import scala.xml.Source._
   def adapter: FactoryAdapter = new NoBindingFactoryAdapter()
@@ -30,10 +29,9 @@ trait XMLLoader[T <: Node] {
     f.newSAXParser()
   }
 
-  /**
-   * Loads XML from the given InputSource, using the supplied parser.
-   *  The methods available in scala.xml.XML use the XML parser in the JDK.
-   */
+  /** Loads XML from the given InputSource, using the supplied parser.
+    *  The methods available in scala.xml.XML use the XML parser in the JDK.
+    */
   def loadXML(source: InputSource, parser: SAXParser): T = {
     val newAdapter = adapter
 

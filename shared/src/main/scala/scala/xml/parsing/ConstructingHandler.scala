@@ -10,16 +10,22 @@ package scala
 package xml
 package parsing
 
-/**
- * Implementation of MarkupHandler that constructs nodes.
- *
- *  @author  Burak Emir
- */
+/** Implementation of MarkupHandler that constructs nodes.
+  *
+  *  @author  Burak Emir
+  */
 abstract class ConstructingHandler extends MarkupHandler {
   val preserveWS: Boolean
 
-  def elem(pos: Int, pre: String, label: String, attrs: MetaData,
-           pscope: NamespaceBinding, empty: Boolean, nodes: NodeSeq): NodeSeq =
+  def elem(
+      pos: Int,
+      pre: String,
+      label: String,
+      attrs: MetaData,
+      pscope: NamespaceBinding,
+      empty: Boolean,
+      nodes: NodeSeq
+  ): NodeSeq =
     Elem(pre, label, attrs, pscope, empty, nodes: _*)
 
   def procInstr(pos: Int, target: String, txt: String) =

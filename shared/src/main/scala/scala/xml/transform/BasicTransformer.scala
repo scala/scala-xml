@@ -12,31 +12,30 @@ package transform
 
 import scala.collection.Seq
 
-/**
- * A class for XML transformations.
- *
- *  @author  Burak Emir
- */
+/** A class for XML transformations.
+  *
+  *  @author  Burak Emir
+  */
 abstract class BasicTransformer extends Function1[Node, Node] {
   protected def unchanged(n: Node, ns: Seq[Node]) =
     ns.length == 1 && (ns.head == n)
 
-  /**
-   * Call transform(Node) for each node in ns, append results
-   *  to NodeBuffer.
-   */
+  /** Call transform(Node) for each node in ns, append results
+    *  to NodeBuffer.
+    */
   def transform(it: Iterator[Node], nb: NodeBuffer): Seq[Node] =
     it.foldLeft(nb)(_ ++= transform(_)).toSeq
 
-  /**
-   * Call transform(Node) to each node in ns, yield ns if nothing changes,
-   *  otherwise a new sequence of concatenated results.
-   */
+  /** Call transform(Node) to each node in ns, yield ns if nothing changes,
+    *  otherwise a new sequence of concatenated results.
+    */
   def transform(ns: Seq[Node]): Seq[Node] = {
     val changed = ns flatMap transform
-    if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
+    if (
+      changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)
+    ) changed
     else ns
-}
+  }
 
   def transform(n: Node): Seq[Node] = {
     if (n.doTransform) n match {
@@ -46,7 +45,8 @@ abstract class BasicTransformer extends Function1[Node, Node] {
         val nch = transform(ch)
 
         if (ch eq nch) n
-        else Elem(n.prefix, n.label, n.attributes, n.scope, nch.isEmpty, nch: _*)
+        else
+          Elem(n.prefix, n.label, n.attributes, n.scope, nch.isEmpty, nch: _*)
     }
     else n
   }
@@ -54,7 +54,9 @@ abstract class BasicTransformer extends Function1[Node, Node] {
   def apply(n: Node): Node = {
     val seq = transform(n)
     if (seq.length > 1)
-      throw new UnsupportedOperationException("transform must return single node for root")
+      throw new UnsupportedOperationException(
+        "transform must return single node for root"
+      )
     else seq.head
   }
 }

@@ -10,16 +10,14 @@ package scala
 package xml
 package include
 
-/**
- *  A `CircularIncludeException` is thrown when an included document attempts
- *  to include itself or one of its ancestor documents.
- */
+/**  A `CircularIncludeException` is thrown when an included document attempts
+  *  to include itself or one of its ancestor documents.
+  */
 class CircularIncludeException(message: String) extends XIncludeException {
 
-  /**
-   * Constructs a `CircularIncludeException` with `'''null'''`.
-   * as its error detail message.
-   */
+  /** Constructs a `CircularIncludeException` with `'''null'''`.
+    * as its error detail message.
+    */
   def this() = this(null)
 
 }

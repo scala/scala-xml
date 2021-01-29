@@ -11,16 +11,17 @@ package xml
 
 import scala.collection.Seq
 
-/**
- * The class `Atom` provides an XML node for text (`PCDATA`).
- *  It is used in both non-bound and bound XML representations.
- *
- *  @author Burak Emir
- *  @param data the text contained in this node, may not be `'''null'''`.
- */
+/** The class `Atom` provides an XML node for text (`PCDATA`).
+  *  It is used in both non-bound and bound XML representations.
+  *
+  *  @author Burak Emir
+  *  @param data the text contained in this node, may not be `'''null'''`.
+  */
 class Atom[+A](val data: A) extends SpecialNode with Serializable {
   if (data == null)
-    throw new IllegalArgumentException("cannot construct " + getClass.getSimpleName + " with null")
+    throw new IllegalArgumentException(
+      "cannot construct " + getClass.getSimpleName + " with null"
+    )
 
   override protected def basisForHashCode: Seq[Any] = Seq(data)
 
@@ -39,10 +40,9 @@ class Atom[+A](val data: A) extends SpecialNode with Serializable {
 
   def label = "#PCDATA"
 
-  /**
-   * Returns text, with some characters escaped according to the XML
-   *  specification.
-   */
+  /** Returns text, with some characters escaped according to the XML
+    *  specification.
+    */
   def buildString(sb: StringBuilder): StringBuilder =
     Utility.escape(data.toString, sb)
 

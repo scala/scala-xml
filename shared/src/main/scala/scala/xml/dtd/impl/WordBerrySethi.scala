@@ -9,21 +9,20 @@
 package scala
 package xml.dtd.impl
 
-import scala.collection.{ immutable, mutable }
+import scala.collection.{immutable, mutable}
 import scala.collection.Seq
 
-/**
- * This class turns a regular expression into a [[scala.util.automata.NondetWordAutom]]
- * celebrated position automata construction (also called ''Berry-Sethi'' or ''Glushkov'').
- *
- *  @author Burak Emir
- */
+/** This class turns a regular expression into a [[scala.util.automata.NondetWordAutom]]
+  * celebrated position automata construction (also called ''Berry-Sethi'' or ''Glushkov'').
+  *
+  *  @author Burak Emir
+  */
 // TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
   override val lang: WordExp
 
-  import lang.{ Eps, Letter, RegExp, Sequ, _labelT }
+  import lang.{Eps, Letter, RegExp, Sequ, _labelT}
 
   protected var labels: mutable.HashSet[_labelT] = _
   // don't let this fool you, only labelAt is a real, surjective mapping
@@ -32,46 +31,43 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
   protected var defaultq: Array[List[Int]] = _ // default transitions
   protected var initials: Set[Int] = _
 
-  /**
-   * Computes `first(r)` where the word regexp `r`.
-   *
-   *  @param r the regular expression
-   *  @return  the computed set `first(r)`
-   */
+  /** Computes `first(r)` where the word regexp `r`.
+    *
+    *  @param r the regular expression
+    *  @return  the computed set `first(r)`
+    */
   protected override def compFirst(r: RegExp): Set[Int] = r match {
     case x: Letter => Set(x.pos)
     case _         => super.compFirst(r)
   }
 
-  /**
-   * Computes `last(r)` where the word regexp `r`.
-   *
-   *  @param r the regular expression
-   *  @return  the computed set `last(r)`
-   */
+  /** Computes `last(r)` where the word regexp `r`.
+    *
+    *  @param r the regular expression
+    *  @return  the computed set `last(r)`
+    */
   protected override def compLast(r: RegExp): Set[Int] = r match {
     case x: Letter => Set(x.pos)
     case _         => super.compLast(r)
   }
 
-  /**
-   * Returns the first set of an expression, setting the follow set along
-   *  the way.
-   *
-   *  @param r    the regular expression
-   *  @return     the computed set
-   */
-  protected override def compFollow1(fol1: Set[Int], r: RegExp): Set[Int] = r match {
-    case x: Letter =>
-      follow(x.pos) = fol1; Set(x.pos)
-    case Eps       => emptySet
-    case _         => super.compFollow1(fol1, r)
-  }
+  /** Returns the first set of an expression, setting the follow set along
+    *  the way.
+    *
+    *  @param r    the regular expression
+    *  @return     the computed set
+    */
+  protected override def compFollow1(fol1: Set[Int], r: RegExp): Set[Int] =
+    r match {
+      case x: Letter =>
+        follow(x.pos) = fol1; Set(x.pos)
+      case Eps => emptySet
+      case _   => super.compFollow1(fol1, r)
+    }
 
-  /**
-   * Returns "Sethi-length" of a pattern, creating the set of position
-   *  along the way
-   */
+  /** Returns "Sethi-length" of a pattern, creating the set of position
+    *  along the way
+    */
 
   /** Called at the leaves of the regexp */
   protected def seenLabel(r: RegExp, i: Int, label: _labelT): Unit = {
@@ -88,9 +84,9 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
 
   // todo: replace global variable pos with acc
   override def traverse(r: RegExp): Unit = r match {
-    case a@Letter(label) => a.pos = seenLabel(r, label)
-    case Eps             => // ignore
-    case _               => super.traverse(r)
+    case a @ Letter(label) => a.pos = seenLabel(r, label)
+    case Eps               => // ignore
+    case _                 => super.traverse(r)
   }
 
   protected def makeTransition(src: Int, dest: Int, label: _labelT): Unit = {
@@ -135,7 +131,9 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
         // (1,2) compute follow + first
         initialize(x.rs)
         pos += 1
-        compFollow(x.rs) // this used to be assigned to var globalFirst and then never used.
+        compFollow(
+          x.rs
+        ) // this used to be assigned to var globalFirst and then never used.
 
         // (3) make automaton from follow sets
         initializeAutom()
@@ -145,14 +143,20 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
           finals = finals.updated(0, finalTag)
 
         val delta1 = deltaq.zipWithIndex.map(_.swap).toMap
-        val finalsArr = (0 until pos map (k => finals.getOrElse(k, 0))).toArray // 0 == not final
+        val finalsArr =
+          (0 until pos map (k =>
+            finals.getOrElse(k, 0)
+          )).toArray // 0 == not final
 
         val deltaArr: Array[mutable.Map[_labelT, immutable.BitSet]] =
           (0 until pos map { x =>
-            mutable.HashMap(delta1(x).toSeq map { case (k, v) => k -> immutable.BitSet(v: _*) }: _*)
+            mutable.HashMap(delta1(x).toSeq map { case (k, v) =>
+              k -> immutable.BitSet(v: _*)
+            }: _*)
           }).toArray
 
-        val defaultArr = (0 until pos map (k => immutable.BitSet(defaultq(k): _*))).toArray
+        val defaultArr =
+          (0 until pos map (k => immutable.BitSet(defaultq(k): _*))).toArray
 
         new NondetWordAutom[_labelT] {
           val nstates = pos

@@ -11,20 +11,19 @@ package xml
 
 import scala.collection.Seq
 
-/**
- * prefixed attributes always have a non-null namespace.
- *
- *  @param pre
- *  @param key
- *  @param value the attribute value
- *  @param next1
- */
+/** prefixed attributes always have a non-null namespace.
+  *
+  *  @param pre
+  *  @param key
+  *  @param value the attribute value
+  *  @param next1
+  */
 class PrefixedAttribute(
-  val pre: String,
-  val key: String,
-  val value: Seq[Node],
-  val next1: MetaData)
-  extends Attribute {
+    val pre: String,
+    val key: String,
+    val value: Seq[Node],
+    val next1: MetaData
+) extends Attribute {
   val next = if (value ne null) next1 else next1.remove(key)
 
   /** same as this(pre, key, Text(value), next), or no attribute if value is null */
@@ -35,10 +34,9 @@ class PrefixedAttribute(
   def this(pre: String, key: String, value: Option[Seq[Node]], next: MetaData) =
     this(pre, key, value.orNull, next)
 
-  /**
-   * Returns a copy of this unprefixed attribute with the given
-   *  next field.
-   */
+  /** Returns a copy of this unprefixed attribute with the given
+    *  next field.
+    */
   def copy(next: MetaData) =
     new PrefixedAttribute(pre, key, value, next)
 
@@ -48,10 +46,13 @@ class PrefixedAttribute(
   /** forwards the call to next (because caller looks for unprefixed attribute */
   def apply(key: String): Seq[Node] = next(key)
 
-  /**
-   * gets attribute value of qualified (prefixed) attribute with given key
-   */
-  def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] = {
+  /** gets attribute value of qualified (prefixed) attribute with given key
+    */
+  def apply(
+      namespace: String,
+      scope: NamespaceBinding,
+      key: String
+  ): Seq[Node] = {
     if (key == this.key && scope.getURI(pre) == namespace)
       value
     else

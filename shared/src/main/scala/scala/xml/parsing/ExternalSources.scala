@@ -15,9 +15,8 @@ import java.io.File.separator
 
 import scala.io.Source
 
-/**
- *  @author  Burak Emir
- */
+/**  @author  Burak Emir
+  */
 trait ExternalSources {
   self: ExternalSources with MarkupParser with MarkupHandler =>
 

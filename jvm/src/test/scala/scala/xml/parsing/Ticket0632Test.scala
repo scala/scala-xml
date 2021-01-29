@@ -8,7 +8,8 @@ class Ticket0632TestJVM {
   import scala.io.Source.fromString
   import scala.xml.parsing.ConstructingParser.fromSource
   import scala.xml.TopScope
-  private def parse(s:String) = fromSource(fromString(s), false).element(TopScope)
+  private def parse(s: String) =
+    fromSource(fromString(s), false).element(TopScope)
 
   @Test
   def singleAmp: Unit = {

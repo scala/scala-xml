@@ -11,11 +11,10 @@ package xml
 
 import scala.collection.Seq
 
-/**
- * A hack to group XML nodes in one node for output.
- *
- *  @author  Burak Emir
- */
+/** A hack to group XML nodes in one node for output.
+  *
+  *  @author  Burak Emir
+  */
 final case class Group(nodes: Seq[Node]) extends Node {
   override def theSeq = nodes
 
@@ -31,11 +30,12 @@ final case class Group(nodes: Seq[Node]) extends Node {
 
   override protected def basisForHashCode = nodes
 
-  /**
-   * Since Group is very much a hack it throws an exception if you
-   *  try to do anything with it.
-   */
-  private def fail(msg: String) = throw new UnsupportedOperationException("class Group does not support method '%s'" format msg)
+  /** Since Group is very much a hack it throws an exception if you
+    *  try to do anything with it.
+    */
+  private def fail(msg: String) = throw new UnsupportedOperationException(
+    "class Group does not support method '%s'" format msg
+  )
 
   def label = fail("label")
   override def attributes = fail("attributes")

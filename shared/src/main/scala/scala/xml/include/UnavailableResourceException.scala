@@ -10,11 +10,10 @@ package scala
 package xml
 package include
 
-/**
- * An `UnavailableResourceException` is thrown when an included document
- * cannot be found or loaded.
- */
+/** An `UnavailableResourceException` is thrown when an included document
+  * cannot be found or loaded.
+  */
 class UnavailableResourceException(message: String)
-  extends XIncludeException(message) {
+    extends XIncludeException(message) {
   def this() = this(null)
 }

@@ -10,8 +10,10 @@ class XMLTestJVM2x {
     val xml_good = "<title><![CDATA[Hello [tag]]]></title>"
     val xml_bad = "<title><![CDATA[Hello [tag] ]]></title>"
 
-    val parser1 = ConstructingParser.fromSource(io.Source.fromString(xml_good), false)
-    val parser2 = ConstructingParser.fromSource(io.Source.fromString(xml_bad), false)
+    val parser1 =
+      ConstructingParser.fromSource(io.Source.fromString(xml_good), false)
+    val parser2 =
+      ConstructingParser.fromSource(io.Source.fromString(xml_bad), false)
 
     parser1.document()
     parser2.document()
@@ -26,7 +28,8 @@ class XMLTestJVM2x {
 
     val ns1 = "ns1"
     assertEquals(reify(ns1).tree.toString, q"ns1".toString)
-    assertEquals("<sample xmlns='ns1'/>",
+    assertEquals(
+      "<sample xmlns='ns1'/>",
       """|{
          |  var $tmpscope: _root_.scala.xml.NamespaceBinding = $scope;
          |  $tmpscope = new _root_.scala.xml.NamespaceBinding(null, "ns1", $tmpscope);
@@ -35,8 +38,10 @@ class XMLTestJVM2x {
          |    new _root_.scala.xml.Elem(null, "sample", _root_.scala.xml.Null, $scope, true)
          |  }
          |}""".stripMargin,
-      q"<sample xmlns='ns1'/>".toString)
-    assertEquals("<sample xmlns={identity(ns1)}/>",
+      q"<sample xmlns='ns1'/>".toString
+    )
+    assertEquals(
+      "<sample xmlns={identity(ns1)}/>",
       """|{
          |  var $tmpscope: _root_.scala.xml.NamespaceBinding = $scope;
          |  $tmpscope = new _root_.scala.xml.NamespaceBinding(null, ns1, $tmpscope);
@@ -45,8 +50,10 @@ class XMLTestJVM2x {
          |    new _root_.scala.xml.Elem(null, "sample", _root_.scala.xml.Null, $scope, true)
          |  }
          |}""".stripMargin,
-      q"<sample xmlns={ns1}/>".toString)
-    assertEquals("<sample xmlns:foo='ns1'/>",
+      q"<sample xmlns={ns1}/>".toString
+    )
+    assertEquals(
+      "<sample xmlns:foo='ns1'/>",
       """|{
          |  var $tmpscope: _root_.scala.xml.NamespaceBinding = $scope;
          |  $tmpscope = new _root_.scala.xml.NamespaceBinding("foo", "ns1", $tmpscope);
@@ -55,8 +62,10 @@ class XMLTestJVM2x {
          |    new _root_.scala.xml.Elem(null, "sample", _root_.scala.xml.Null, $scope, true)
          |  }
          |}""".stripMargin,
-      q"<sample xmlns:foo='ns1'/>".toString)
-    assertEquals("<sample xmlns:foo={identity(ns1)}/>",
+      q"<sample xmlns:foo='ns1'/>".toString
+    )
+    assertEquals(
+      "<sample xmlns:foo={identity(ns1)}/>",
       """|{
          |  var $tmpscope: _root_.scala.xml.NamespaceBinding = $scope;
          |  $tmpscope = new _root_.scala.xml.NamespaceBinding("foo", ns1, $tmpscope);
@@ -65,7 +74,8 @@ class XMLTestJVM2x {
          |    new _root_.scala.xml.Elem(null, "sample", _root_.scala.xml.Null, $scope, true)
          |  }
          |}""".stripMargin,
-      q"<sample xmlns:foo={ns1}/>".toString)
+      q"<sample xmlns:foo={ns1}/>".toString
+    )
   }
 
   @UnitTest
@@ -108,7 +118,8 @@ class XMLTestJVM2x {
          |  println("hello, world.")
          |}""".stripMargin,
       q"""<a/><b/>
-          println("hello, world.")""".toString)
+          println("hello, world.")""".toString
+    )
     assertEquals(
       """|{
          |  {
@@ -123,6 +134,7 @@ class XMLTestJVM2x {
       q"""<a/>
       <b/>
       <c/>
-      println("hello, world.")""".toString)
+      println("hello, world.")""".toString
+    )
   }
 }

@@ -22,7 +22,8 @@ class DeclTest {
          |  y CDATA #REQUIRED
          |  z CDATA #REQUIRED>""".stripMargin
 
-    val actual = AttListDecl("x",
+    val actual = AttListDecl(
+      "x",
       List(
         AttrDecl("y", "CDATA", REQUIRED),
         AttrDecl("z", "CDATA", REQUIRED)

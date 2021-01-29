@@ -9,11 +9,10 @@
 package scala
 package xml.dtd.impl
 
-/**
- * Basic regular expressions.
- *
- *  @author  Burak Emir
- */
+/** Basic regular expressions.
+  *
+  *  @author  Burak Emir
+  */
 
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class Base {
@@ -24,6 +23,7 @@ private[dtd] abstract class Base {
   }
 
   object Alt {
+
     /** `Alt( R,R,R* )`. */
     def apply(rs: _regexpT*) =
       if (rs.size < 2) throw new SyntaxError("need at least 2 branches in Alt")
@@ -38,6 +38,7 @@ private[dtd] abstract class Base {
   }
 
   object Sequ {
+
     /** Sequ( R,R* ) */
     def apply(rs: _regexpT*) = if (rs.isEmpty) Eps else new Sequ(rs: _*)
     def unapplySeq(x: Sequ) = Some(x.rs)

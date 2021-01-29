@@ -9,13 +9,18 @@ import org.junit.Assert.assertEquals
 class XMLTest2x {
   // t-486
   def wsdlTemplate3(serviceName: String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ new _root_.scala.xml.Text("target3") }>
+    <wsdl:definitions name={serviceName} xmlns:tns={
+      new _root_.scala.xml.Text("target3")
+    }>
     </wsdl:definitions>;
 
   @UnitTest
   def wsdl = {
-    assertEquals("""<wsdl:definitions name="service3" xmlns:tns="target3">
-    </wsdl:definitions>""", wsdlTemplate3("service3") toString)
+    assertEquals(
+      """<wsdl:definitions name="service3" xmlns:tns="target3">
+    </wsdl:definitions>""",
+      wsdlTemplate3("service3") toString
+    )
   }
 
   @UnitTest

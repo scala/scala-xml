@@ -26,7 +26,9 @@ class UtilityTest {
       <toomuchws>  a b  b a  </toomuchws>
     </foo>
     val y2 = xml.Utility.trim(x2)
-    assertTrue(y2 match { case <foo><toomuchws>a b b a</toomuchws></foo> => true })
+    assertTrue(y2 match {
+      case <foo><toomuchws>a b b a</toomuchws></foo> => true
+    })
   }
 
   @Test
@@ -41,8 +43,11 @@ class UtilityTest {
     assertEquals("", xml.Utility.sort(<a/>.attributes).toString)
     assertEquals(""" b="c"""", xml.Utility.sort(<a b="c"/>.attributes).toString)
     val q = xml.Utility.sort(<a g='3' j='2' oo='2' a='2'/>)
-    assertEquals(" a=\"2\" g=\"3\" j=\"2\" oo=\"2\"", xml.Utility.sort(q.attributes).toString)
-    val pp = new xml.PrettyPrinter(80,5)
+    assertEquals(
+      " a=\"2\" g=\"3\" j=\"2\" oo=\"2\"",
+      xml.Utility.sort(q.attributes).toString
+    )
+    val pp = new xml.PrettyPrinter(80, 5)
     assertEquals("<a a=\"2\" g=\"3\" j=\"2\" oo=\"2\"/>", pp.format(q))
   }
 
@@ -57,24 +62,33 @@ class UtilityTest {
   @Test
   def issue90: Unit = {
     val x = <node><leaf></leaf></node>
-    assertEquals("<node><leaf/></node>", Utility.serialize(x, minimizeTags = MinimizeMode.Always).toString)
+    assertEquals(
+      "<node><leaf/></node>",
+      Utility.serialize(x, minimizeTags = MinimizeMode.Always).toString
+    )
   }
 
   @Test
   def issue183: Unit = {
     val x = <node><!-- comment  --></node>
-    assertEquals("<node></node>", Utility.serialize(x, stripComments = true).toString)
-    assertEquals("<node><!-- comment  --></node>", Utility.serialize(x, stripComments = false).toString)
+    assertEquals(
+      "<node></node>",
+      Utility.serialize(x, stripComments = true).toString
+    )
+    assertEquals(
+      "<node><!-- comment  --></node>",
+      Utility.serialize(x, stripComments = false).toString
+    )
   }
 
   val printableAscii: Seq[Char] = {
     (' ' to '/') ++ // Punctuation
-    ('0' to '9') ++ // Digits
-    (':' to '@') ++ // Punctuation (cont.)
-    ('A' to 'Z') ++ // Uppercase
-    ('[' to '`') ++ // Punctuation (cont.)
-    ('a' to 'z') ++ // Lowercase
-    ('{' to '~')    // Punctuation (cont.)
+      ('0' to '9') ++ // Digits
+      (':' to '@') ++ // Punctuation (cont.)
+      ('A' to 'Z') ++ // Uppercase
+      ('[' to '`') ++ // Punctuation (cont.)
+      ('a' to 'z') ++ // Lowercase
+      ('{' to '~') // Punctuation (cont.)
   }
 
   val escapedChars: Seq[Char] =
@@ -114,7 +128,7 @@ class UtilityTest {
     val result = Utility.escape(input)
 
     assertEquals(printfc(expect), printfc(result)) // Pretty,
-    assertEquals(expect, result)                   // but verify.
+    assertEquals(expect, result) // but verify.
   }
 
   @Test
@@ -144,57 +158,55 @@ class UtilityTest {
     }
   }
 
-  /**
-   * Human-readable character printing
-   * 
-   * Think of `od -c` of unix od(1) command.
-   * 
-   * Or think of `printf("%c", i)` in C, but a little better.
-   */
+  /** Human-readable character printing
+    *
+    * Think of `od -c` of unix od(1) command.
+    *
+    * Or think of `printf("%c", i)` in C, but a little better.
+    */
   def printfc(str: String) = {
     str.map(prettyChar).mkString
   }
 
-  /**
-   * Visual representation of characters that enhances output of
-   * failed test assertions.
-   */
-  val prettyChar: Map[Char,String] = Map(
+  /** Visual representation of characters that enhances output of
+    * failed test assertions.
+    */
+  val prettyChar: Map[Char, String] = Map(
     '\u0000' -> "\\0", // Null
-    '\u0001' -> "^A",  // Start of header
-    '\u0002' -> "^B",  // Start of text
-    '\u0003' -> "^C",  // End of text
-    '\u0004' -> "^D",  // End of transmission
-    '\u0005' -> "^E",  // Enquiry
-    '\u0006' -> "^F",  // Acknowledgment
+    '\u0001' -> "^A", // Start of header
+    '\u0002' -> "^B", // Start of text
+    '\u0003' -> "^C", // End of text
+    '\u0004' -> "^D", // End of transmission
+    '\u0005' -> "^E", // Enquiry
+    '\u0006' -> "^F", // Acknowledgment
     '\u0007' -> "\\a", // Bell (^G)
-    '\b'     -> "\\b", // Backspace (^H)
-    '\t'     -> "\\t", // Tab (^I)
-    '\n'     -> "\\n", // Newline (^J)
+    '\b' -> "\\b", // Backspace (^H)
+    '\t' -> "\\t", // Tab (^I)
+    '\n' -> "\\n", // Newline (^J)
     '\u000B' -> "\\v", // Vertical tab (^K)
-    '\f'     -> "\\f", // Form feed (^L)
-    '\r'     -> "\\r", // Carriage return (^M)
-    '\u000E' -> "^N",  // Shift out
-    '\u000F' -> "^O",  // Shift in
-    '\u0010' -> "^P",  // Data link escape
-    '\u0011' -> "^Q",  // DC1 (XON)
-    '\u0012' -> "^R",  // DC2
-    '\u0013' -> "^S",  // DC3 (XOFF)
-    '\u0014' -> "^T",  // DC4
-    '\u0015' -> "^U",  // Negative acknowledgment
-    '\u0016' -> "^V",  // Synchronous idle
-    '\u0017' -> "^W",  // End of transmission block
-    '\u0018' -> "^X",  // Cancel
-    '\u0019' -> "^Y",  // End of medium
-    '\u001A' -> "^Z",  // Substitute
+    '\f' -> "\\f", // Form feed (^L)
+    '\r' -> "\\r", // Carriage return (^M)
+    '\u000E' -> "^N", // Shift out
+    '\u000F' -> "^O", // Shift in
+    '\u0010' -> "^P", // Data link escape
+    '\u0011' -> "^Q", // DC1 (XON)
+    '\u0012' -> "^R", // DC2
+    '\u0013' -> "^S", // DC3 (XOFF)
+    '\u0014' -> "^T", // DC4
+    '\u0015' -> "^U", // Negative acknowledgment
+    '\u0016' -> "^V", // Synchronous idle
+    '\u0017' -> "^W", // End of transmission block
+    '\u0018' -> "^X", // Cancel
+    '\u0019' -> "^Y", // End of medium
+    '\u001A' -> "^Z", // Substitute
     '\u001B' -> "\\e", // Escape
     '\u001C' -> "^\\", // File separator
-    '\u001D' -> "^]",  // Group separator
-    '\u001E' -> "^^",  // Record separator
-    '\u001F' -> "^_",  // Unit separator
-    '\u007F' -> "^?"   // Delete
-  ).toMap.withDefault {
-    (key: Char) => key.toString
+    '\u001D' -> "^]", // Group separator
+    '\u001E' -> "^^", // Record separator
+    '\u001F' -> "^_", // Unit separator
+    '\u007F' -> "^?" // Delete
+  ).toMap.withDefault { (key: Char) =>
+    key.toString
   }
 
   def issue73StartsWithAndEndsWithWSInFirst: Unit = {
@@ -205,7 +217,7 @@ class UtilityTest {
   @Test
   def issue73EndsWithWSInLast: Unit = {
     val x = <div>{Text("My name is ")}{Text("Harry    ")}</div>
-    assertEquals(<div>My name is Harry</div>, Utility.trim(x)) 
+    assertEquals(<div>My name is Harry</div>, Utility.trim(x))
   }
 
   @Test

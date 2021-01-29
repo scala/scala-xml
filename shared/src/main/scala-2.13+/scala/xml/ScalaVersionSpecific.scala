@@ -10,19 +10,22 @@ private[xml] object ScalaVersionSpecific {
   type CBF[-From, -A, +C] = BuildFrom[From, A, C]
   object NodeSeqCBF extends BuildFrom[Coll, Node, NodeSeq] {
     def newBuilder(from: Coll): Builder[Node, NodeSeq] = NodeSeq.newBuilder
-    def fromSpecific(from: Coll)(it: IterableOnce[Node]): NodeSeq = (NodeSeq.newBuilder ++= from).result()
+    def fromSpecific(from: Coll)(it: IterableOnce[Node]): NodeSeq =
+      (NodeSeq.newBuilder ++= from).result()
   }
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq
-  extends SeqOps[Node, immutable.Seq, NodeSeq]
+    extends SeqOps[Node, immutable.Seq, NodeSeq]
     with StrictOptimizedSeqOps[Node, immutable.Seq, NodeSeq] { self: NodeSeq =>
-  override def fromSpecific(coll: IterableOnce[Node]): NodeSeq = (NodeSeq.newBuilder ++= coll).result()
-  override def newSpecificBuilder: mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
+  override def fromSpecific(coll: IterableOnce[Node]): NodeSeq =
+    (NodeSeq.newBuilder ++= coll).result()
+  override def newSpecificBuilder: mutable.Builder[Node, NodeSeq] =
+    NodeSeq.newBuilder
   override def empty: NodeSeq = NodeSeq.Empty
   def concat(suffix: IterableOnce[Node]): NodeSeq =
     fromSpecific(iterator ++ suffix.iterator)
-  @inline final def ++ (suffix: Seq[Node]): NodeSeq = concat(suffix)
+  @inline final def ++(suffix: Seq[Node]): NodeSeq = concat(suffix)
   def appended(base: Node): NodeSeq =
     fromSpecific(new View.Appended(this, base))
   def appendedAll(suffix: IterableOnce[Node]): NodeSeq =

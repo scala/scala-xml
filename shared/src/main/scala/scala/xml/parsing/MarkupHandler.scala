@@ -14,24 +14,24 @@ import scala.collection.mutable
 import scala.io.Source
 import scala.xml.dtd._
 
-/**
- * class that handles markup - provides callback methods to MarkupParser.
- * the default is nonvalidating behaviour
- *
- *  @author  Burak Emir
- *  @todo can we ignore more entity declarations (i.e. those with extIDs)?
- *  @todo expanding entity references
- */
+/** class that handles markup - provides callback methods to MarkupParser.
+  * the default is nonvalidating behaviour
+  *
+  *  @author  Burak Emir
+  *  @todo can we ignore more entity declarations (i.e. those with extIDs)?
+  *  @todo expanding entity references
+  */
 abstract class MarkupHandler {
 
   /** returns true is this markup handler is validating */
   val isValidating: Boolean = false
 
   var decls: List[Decl] = Nil
-  var ent: mutable.Map[String, EntityDecl] = new mutable.HashMap[String, EntityDecl]()
+  var ent: mutable.Map[String, EntityDecl] =
+    new mutable.HashMap[String, EntityDecl]()
 
   def lookupElemDecl(Label: String): ElemDecl = {
-    for (z@ElemDecl(Label, _) <- decls)
+    for (z @ ElemDecl(Label, _) <- decls)
       return z
 
     null
@@ -47,57 +47,64 @@ abstract class MarkupHandler {
 
   def endDTD(n: String): Unit = ()
 
-  /**
-   * callback method invoked by MarkupParser after start-tag of element.
-   *
-   *  @param pos      the position in the sourcefile
-   *  @param pre      the prefix
-   *  @param label    the local name
-   *  @param attrs    the attributes (metadata)
-   */
-  def elemStart(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding): Unit = ()
+  /** callback method invoked by MarkupParser after start-tag of element.
+    *
+    *  @param pos      the position in the sourcefile
+    *  @param pre      the prefix
+    *  @param label    the local name
+    *  @param attrs    the attributes (metadata)
+    */
+  def elemStart(
+      pos: Int,
+      pre: String,
+      label: String,
+      attrs: MetaData,
+      scope: NamespaceBinding
+  ): Unit = ()
 
-  /**
-   * callback method invoked by MarkupParser after end-tag of element.
-   *
-   *  @param pos      the position in the source file
-   *  @param pre      the prefix
-   *  @param label    the local name
-   */
+  /** callback method invoked by MarkupParser after end-tag of element.
+    *
+    *  @param pos      the position in the source file
+    *  @param pre      the prefix
+    *  @param label    the local name
+    */
   def elemEnd(pos: Int, pre: String, label: String): Unit = ()
 
-  /**
-   * callback method invoked by MarkupParser after parsing an element,
-   *  between the elemStart and elemEnd callbacks
-   *
-   *  @param pos      the position in the source file
-   *  @param pre      the prefix
-   *  @param label    the local name
-   *  @param attrs    the attributes (metadata)
-   *  @param empty    `true` if the element was previously empty; `false` otherwise.
-   *  @param args     the children of this element
-   */
-  def elem(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding, empty: Boolean, args: NodeSeq): NodeSeq
+  /** callback method invoked by MarkupParser after parsing an element,
+    *  between the elemStart and elemEnd callbacks
+    *
+    *  @param pos      the position in the source file
+    *  @param pre      the prefix
+    *  @param label    the local name
+    *  @param attrs    the attributes (metadata)
+    *  @param empty    `true` if the element was previously empty; `false` otherwise.
+    *  @param args     the children of this element
+    */
+  def elem(
+      pos: Int,
+      pre: String,
+      label: String,
+      attrs: MetaData,
+      scope: NamespaceBinding,
+      empty: Boolean,
+      args: NodeSeq
+  ): NodeSeq
 
-  /**
-   * callback method invoked by MarkupParser after parsing PI.
-   */
+  /** callback method invoked by MarkupParser after parsing PI.
+    */
   def procInstr(pos: Int, target: String, txt: String): NodeSeq
 
-  /**
-   * callback method invoked by MarkupParser after parsing comment.
-   */
+  /** callback method invoked by MarkupParser after parsing comment.
+    */
   def comment(pos: Int, comment: String): NodeSeq
 
-  /**
-   * callback method invoked by MarkupParser after parsing entity ref.
-   *  @todo expanding entity references
-   */
+  /** callback method invoked by MarkupParser after parsing entity ref.
+    *  @todo expanding entity references
+    */
   def entityRef(pos: Int, n: String): NodeSeq
 
-  /**
-   * callback method invoked by MarkupParser after parsing text.
-   */
+  /** callback method invoked by MarkupParser after parsing text.
+    */
   def text(pos: Int, txt: String): NodeSeq
 
   // DTD handler methods
@@ -106,7 +113,11 @@ abstract class MarkupHandler {
 
   def attListDecl(name: String, attList: List[AttrDecl]): Unit = ()
 
-  private def someEntityDecl(name: String, edef: EntityDef, f: (String, EntityDef) => EntityDecl): Unit =
+  private def someEntityDecl(
+      name: String,
+      edef: EntityDef,
+      f: (String, EntityDef) => EntityDecl
+  ): Unit =
     edef match {
       case _: ExtDef if !isValidating => // ignore (cf REC-xml 4.4.1)
       case _ =>
@@ -122,10 +133,14 @@ abstract class MarkupHandler {
     someEntityDecl(name, edef, ParsedEntityDecl.apply _)
 
   def peReference(name: String): Unit = { decls ::= PEReference(name) }
-  def unparsedEntityDecl(name: String, extID: ExternalID, notat: String): Unit = ()
+  def unparsedEntityDecl(name: String, extID: ExternalID, notat: String): Unit =
+    ()
   def notationDecl(notat: String, extID: ExternalID): Unit = ()
   def reportSyntaxError(pos: Int, str: String): Unit
 
-  @deprecated("This method and its usages will be removed. Use a debugger to debug code.", "2.11")
+  @deprecated(
+    "This method and its usages will be removed. Use a debugger to debug code.",
+    "2.11"
+  )
   def log(msg: String): Unit = {}
 }

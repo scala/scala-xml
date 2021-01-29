@@ -11,43 +11,41 @@ package xml
 
 import scala.collection.Seq
 
-/**
- * In an attempt to contain the damage being inflicted on consistency by the
- *  ad hoc `equals` methods spread around `xml`, the logic is centralized and
- *  all the `xml` classes go through the `xml.Equality trait`.  There are two
- *  forms of `xml` comparison.
- *
- *  1. `'''def''' strict_==(other: scala.xml.Equality)`
- *
- *  This one tries to honor the little things like symmetry and hashCode
- *  contracts.  The `equals` method routes all comparisons through this.
- *
- *  1. `xml_==(other: Any)`
- *
- *  This one picks up where `strict_==` leaves off.  It might declare any two
- *  things equal.
- *
- *  As things stood, the logic not only made a mockery of the collections
- *  equals contract, but also laid waste to that of case classes.
- *
- *  Among the obstacles to sanity are/were:
- *
- *    Node extends NodeSeq extends Seq[Node]
- *    MetaData extends Iterable[MetaData]
- *    The hacky "Group" xml node which throws exceptions
- *      with wild abandon, so don't get too close
- *    Rampant asymmetry and impossible hashCodes
- *    Most classes claiming to be equal to "String" if
- *      some specific stringification of it was the same.
- *      String was never going to return the favor.
- */
+/** In an attempt to contain the damage being inflicted on consistency by the
+  *  ad hoc `equals` methods spread around `xml`, the logic is centralized and
+  *  all the `xml` classes go through the `xml.Equality trait`.  There are two
+  *  forms of `xml` comparison.
+  *
+  *  1. `'''def''' strict_==(other: scala.xml.Equality)`
+  *
+  *  This one tries to honor the little things like symmetry and hashCode
+  *  contracts.  The `equals` method routes all comparisons through this.
+  *
+  *  1. `xml_==(other: Any)`
+  *
+  *  This one picks up where `strict_==` leaves off.  It might declare any two
+  *  things equal.
+  *
+  *  As things stood, the logic not only made a mockery of the collections
+  *  equals contract, but also laid waste to that of case classes.
+  *
+  *  Among the obstacles to sanity are/were:
+  *
+  *    Node extends NodeSeq extends Seq[Node]
+  *    MetaData extends Iterable[MetaData]
+  *    The hacky "Group" xml node which throws exceptions
+  *      with wild abandon, so don't get too close
+  *    Rampant asymmetry and impossible hashCodes
+  *    Most classes claiming to be equal to "String" if
+  *      some specific stringification of it was the same.
+  *      String was never going to return the favor.
+  */
 
 object Equality {
   def asRef(x: Any): AnyRef = x.asInstanceOf[AnyRef]
 
-  /**
-   * Note - these functions assume strict equality has already failed.
-   */
+  /** Note - these functions assume strict equality has already failed.
+    */
   def compareBlithely(x1: AnyRef, x2: String): Boolean = x1 match {
     case x: Atom[_] => x.data == x2
     case x: NodeSeq => x.text == x2
@@ -76,32 +74,29 @@ trait Equality extends scala.Equals {
   def strict_==(other: Equality): Boolean
   def strict_!=(other: Equality) = !strict_==(other)
 
-  /**
-   * We insist we're only equal to other `xml.Equality` implementors,
-   *  which heads off a lot of inconsistency up front.
-   */
+  /** We insist we're only equal to other `xml.Equality` implementors,
+    *  which heads off a lot of inconsistency up front.
+    */
   override def canEqual(other: Any): Boolean = other match {
     case x: Equality => true
     case _           => false
   }
 
-  /**
-   * It's be nice to make these final, but there are probably
-   *  people out there subclassing the XML types, especially when
-   *  it comes to equals.  However WE at least can pretend they
-   *  are final since clearly individual classes cannot be trusted
-   *  to maintain a semblance of order.
-   */
+  /** It's be nice to make these final, but there are probably
+    *  people out there subclassing the XML types, especially when
+    *  it comes to equals.  However WE at least can pretend they
+    *  are final since clearly individual classes cannot be trusted
+    *  to maintain a semblance of order.
+    */
   override def hashCode() = basisForHashCode.##
   override def equals(other: Any) = doComparison(other, blithe = false)
   final def xml_==(other: Any) = doComparison(other, blithe = true)
   final def xml_!=(other: Any) = !xml_==(other)
 
-  /**
-   * The "blithe" parameter expresses the caller's unconcerned attitude
-   *  regarding the usual constraints on equals.  The method is thereby
-   *  given carte blanche to declare any two things equal.
-   */
+  /** The "blithe" parameter expresses the caller's unconcerned attitude
+    *  regarding the usual constraints on equals.  The method is thereby
+    *  given carte blanche to declare any two things equal.
+    */
   private def doComparison(other: Any, blithe: Boolean) = {
     val strictlyEqual = other match {
       case x: AnyRef if this eq x => true

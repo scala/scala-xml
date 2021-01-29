@@ -7,7 +7,7 @@ import org.junit.Assert.assertEquals
 class AttributeTest {
   @Test
   def unprefixedAttribute: Unit = {
-    val x = new UnprefixedAttribute("foo","bar", Null)
+    val x = new UnprefixedAttribute("foo", "bar", Null)
     assertEquals(Some(Text("bar")), x.get("foo"))
     assertEquals(Text("bar"), x("foo"))
     assertEquals(None, x.get("no_foo"))
@@ -16,15 +16,20 @@ class AttributeTest {
     val y = x.remove("foo")
     assertEquals(Null, y)
 
-    val z = new UnprefixedAttribute("foo", null:NodeSeq, x)
+    val z = new UnprefixedAttribute("foo", null: NodeSeq, x)
     assertEquals(None, z.get("foo"))
 
     var appended = x append x append x append x
-    var len = 0; while (appended ne Null) {
+    var len = 0;
+    while (appended ne Null) {
       appended = appended.next
       len = len + 1
     }
-    assertEquals("removal of duplicates for unprefixed attributes in append", 1L, len.toLong)
+    assertEquals(
+      "removal of duplicates for unprefixed attributes in append",
+      1L,
+      len.toLong
+    )
   }
 
   @Test
@@ -72,7 +77,7 @@ class AttributeTest {
     assertEquals(NodeSeq.Empty, xml \ "@bar")
   }
 
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test(expected = classOf[IllegalArgumentException])
   def attributePathIllegalEmptyAttribute: Unit = {
     val xml = <foo />
     xml \ "@"
@@ -93,9 +98,13 @@ class AttributeTest {
 
   @Test
   def attributePathDuplicateAttribute: Unit = {
-    val xml = Elem(null, "foo",
-      Attribute("bar", Text("apple"),
-        Attribute("bar", Text("orange"), Null)), TopScope, true)
+    val xml = Elem(
+      null,
+      "foo",
+      Attribute("bar", Text("apple"), Attribute("bar", Text("orange"), Null)),
+      TopScope,
+      true
+    )
     assertEquals(Group(Text("apple")), xml \ "@bar")
   }
 
@@ -108,28 +117,40 @@ class AttributeTest {
   @Test
   def attributeDescendantPathChildAttributes: Unit = {
     val xml = <a><b bar="1" /><b bar="2" /></a>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \ "b" \\ "@bar"))
+    assertEquals(
+      NodeSeq.fromSeq(Seq(Text("1"), Text("2"))),
+      (xml \ "b" \\ "@bar")
+    )
   }
 
   @Test
   def attributeDescendantPathDescendantAttributes: Unit = {
     val xml = <a><b bar="1" /><b bar="2" /></a>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "b" \\ "@bar"))
+    assertEquals(
+      NodeSeq.fromSeq(Seq(Text("1"), Text("2"))),
+      (xml \\ "b" \\ "@bar")
+    )
   }
 
   @Test
   def attributeChildDescendantPathDescendantAttributes: Unit = {
     val xml = <x><a><b bar="1" /><b bar="2" /></a></x>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \ "a" \\ "@bar"))
+    assertEquals(
+      NodeSeq.fromSeq(Seq(Text("1"), Text("2"))),
+      (xml \ "a" \\ "@bar")
+    )
   }
 
   @Test
   def attributeDescendantDescendantPathDescendantAttributes: Unit = {
     val xml = <x><a><b bar="1" /><b bar="2" /></a></x>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "b" \\ "@bar"))
+    assertEquals(
+      NodeSeq.fromSeq(Seq(Text("1"), Text("2"))),
+      (xml \\ "b" \\ "@bar")
+    )
   }
 
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test(expected = classOf[IllegalArgumentException])
   def attributePathDescendantIllegalEmptyAttribute: Unit = {
     val xml = <foo />
     xml \\ "@"
@@ -154,27 +175,27 @@ class AttributeTest {
     assertEquals(2, b.length.toLong)
     assertEquals(NodeSeq.fromSeq(Seq(<b bar="1"/>, <b bar="2"/>)), b)
     val barFail = b \ "@bar"
-    val barList =  b.map(_ \ "@bar")
+    val barList = b.map(_ \ "@bar")
     assertEquals(NodeSeq.Empty, barFail)
     assertEquals(List(Group(Seq(Text("1"))), Group(Seq(Text("2")))), barList)
   }
 
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test(expected = classOf[IllegalArgumentException])
   def invalidAttributeFailForOne: Unit = {
     <x/> \ "@"
   }
 
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test(expected = classOf[IllegalArgumentException])
   def invalidAttributeFailForMany: Unit = {
     <x><y/><z/></x>.child \ "@"
   }
 
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test(expected = classOf[IllegalArgumentException])
   def invalidEmptyAttributeFailForOne: Unit = {
     <x/> \@ ""
   }
 
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test(expected = classOf[IllegalArgumentException])
   def invalidEmptyAttributeFailForMany: Unit = {
     <x><y/><z/></x>.child \@ ""
   }

@@ -17,25 +17,28 @@ import scala.collection.AbstractIterable
 import scala.collection.Seq
 
 object MetaData {
-  /**
-   * appends all attributes from new_tail to attribs, without attempting to
-   * detect or remove duplicates. The method guarantees that all attributes
-   * from attribs come before the attributes in new_tail, but does not
-   * guarantee to preserve the relative order of attribs.
-   *
-   * Duplicates can be removed with `normalize`.
-   */
+
+  /** appends all attributes from new_tail to attribs, without attempting to
+    * detect or remove duplicates. The method guarantees that all attributes
+    * from attribs come before the attributes in new_tail, but does not
+    * guarantee to preserve the relative order of attribs.
+    *
+    * Duplicates can be removed with `normalize`.
+    */
   @tailrec
   def concatenate(attribs: MetaData, new_tail: MetaData): MetaData =
     if (attribs eq Null) new_tail
     else concatenate(attribs.next, attribs copy new_tail)
 
-  /**
-   * returns normalized MetaData, with all duplicates removed and namespace prefixes resolved to
-   *  namespace URIs via the given scope.
-   */
+  /** returns normalized MetaData, with all duplicates removed and namespace prefixes resolved to
+    *  namespace URIs via the given scope.
+    */
   def normalize(attribs: MetaData, scope: NamespaceBinding): MetaData = {
-    def iterate(md: MetaData, normalized_attribs: MetaData, set: Set[String]): MetaData = {
+    def iterate(
+        md: MetaData,
+        normalized_attribs: MetaData,
+        set: Set[String]
+    ): MetaData = {
       if (md eq Null) {
         normalized_attribs
       } else if (md.value eq null) {
@@ -52,81 +55,79 @@ object MetaData {
     iterate(attribs, Null, Set())
   }
 
-  /**
-   * returns key if md is unprefixed, pre+key is md is prefixed
-   */
-  def getUniversalKey(attrib: MetaData, scope: NamespaceBinding) = attrib match {
-    case prefixed: PrefixedAttribute     => scope.getURI(prefixed.pre) + prefixed.key
-    case unprefixed: UnprefixedAttribute => unprefixed.key
-  }
+  /** returns key if md is unprefixed, pre+key is md is prefixed
+    */
+  def getUniversalKey(attrib: MetaData, scope: NamespaceBinding) =
+    attrib match {
+      case prefixed: PrefixedAttribute =>
+        scope.getURI(prefixed.pre) + prefixed.key
+      case unprefixed: UnprefixedAttribute => unprefixed.key
+    }
 
-  /**
-   *  returns MetaData with attributes updated from given MetaData
-   */
-  def update(attribs: MetaData, scope: NamespaceBinding, updates: MetaData): MetaData =
+  /**  returns MetaData with attributes updated from given MetaData
+    */
+  def update(
+      attribs: MetaData,
+      scope: NamespaceBinding,
+      updates: MetaData
+  ): MetaData =
     normalize(concatenate(updates, attribs), scope)
 
 }
 
-/**
- * This class represents an attribute and at the same time a linked list of
- *  attributes. Every instance of this class is either
- *  - an instance of `UnprefixedAttribute key,value` or
- *  - an instance of `PrefixedAttribute namespace_prefix,key,value` or
- *  - `Null, the empty attribute list.
- *
- *  Namespace URIs are obtained by using the namespace scope of the element
- *  owning this attribute (see `getNamespace`).
- */
+/** This class represents an attribute and at the same time a linked list of
+  *  attributes. Every instance of this class is either
+  *  - an instance of `UnprefixedAttribute key,value` or
+  *  - an instance of `PrefixedAttribute namespace_prefix,key,value` or
+  *  - `Null, the empty attribute list.
+  *
+  *  Namespace URIs are obtained by using the namespace scope of the element
+  *  owning this attribute (see `getNamespace`).
+  */
 abstract class MetaData
-  extends AbstractIterable[MetaData]
-  with Iterable[MetaData]
-  with Equality
-  with Serializable {
+    extends AbstractIterable[MetaData]
+    with Iterable[MetaData]
+    with Equality
+    with Serializable {
 
-  /**
-   * Updates this MetaData with the MetaData given as argument. All attributes that occur in updates
-   *  are part of the resulting MetaData. If an attribute occurs in both this instance and
-   *  updates, only the one in updates is part of the result (avoiding duplicates). For prefixed
-   *  attributes, namespaces are resolved using the given scope, which defaults to TopScope.
-   *
-   *  @param updates MetaData with new and updated attributes
-   *  @return a new MetaData instance that contains old, new and updated attributes
-   */
+  /** Updates this MetaData with the MetaData given as argument. All attributes that occur in updates
+    *  are part of the resulting MetaData. If an attribute occurs in both this instance and
+    *  updates, only the one in updates is part of the result (avoiding duplicates). For prefixed
+    *  attributes, namespaces are resolved using the given scope, which defaults to TopScope.
+    *
+    *  @param updates MetaData with new and updated attributes
+    *  @return a new MetaData instance that contains old, new and updated attributes
+    */
   def append(updates: MetaData, scope: NamespaceBinding = TopScope): MetaData =
     MetaData.update(this, scope, updates)
 
-  /**
-   * Gets value of unqualified (unprefixed) attribute with given key, null if not found
-   *
-   * @param  key
-   * @return value as Seq[Node] if key is found, null otherwise
-   */
+  /** Gets value of unqualified (unprefixed) attribute with given key, null if not found
+    *
+    * @param  key
+    * @return value as Seq[Node] if key is found, null otherwise
+    */
   def apply(key: String): Seq[Node]
 
-  /**
-   * convenience method, same as `apply(namespace, owner.scope, key)`.
-   *
-   *  @param namespace_uri namespace uri of key
-   *  @param owner the element owning this attribute list
-   *  @param key   the attribute key
-   */
+  /** convenience method, same as `apply(namespace, owner.scope, key)`.
+    *
+    *  @param namespace_uri namespace uri of key
+    *  @param owner the element owning this attribute list
+    *  @param key   the attribute key
+    */
   final def apply(namespace_uri: String, owner: Node, key: String): Seq[Node] =
     apply(namespace_uri, owner.scope, key)
 
-  /**
-   * Gets value of prefixed attribute with given key and namespace, null if not found
-   *
-   * @param  namespace_uri namespace uri of key
-   * @param  scp a namespace scp (usually of the element owning this attribute list)
-   * @param  k   to be looked for
-   * @return value as Seq[Node] if key is found, null otherwise
-   */
+  /** Gets value of prefixed attribute with given key and namespace, null if not found
+    *
+    * @param  namespace_uri namespace uri of key
+    * @param  scp a namespace scp (usually of the element owning this attribute list)
+    * @param  k   to be looked for
+    * @return value as Seq[Node] if key is found, null otherwise
+    */
   def apply(namespace_uri: String, scp: NamespaceBinding, k: String): Seq[Node]
 
-  /**
-   * returns a copy of this MetaData item with next field set to argument.
-   */
+  /** returns a copy of this MetaData item with next field set to argument.
+    */
   def copy(next: MetaData): MetaData
 
   /** if owner is the element of this metadata item, returns namespace */
@@ -157,7 +158,7 @@ abstract class MetaData
 
   def reverse: MetaData =
     foldLeft(Null: MetaData) { (x, xs) =>
-        xs.copy(x)
+      xs.copy(x)
     }
 
   /** returns key of this MetaData item */
@@ -166,45 +167,45 @@ abstract class MetaData
   /** returns value of this MetaData item */
   def value: Seq[Node]
 
-  /**
-   * Returns a String containing "prefix:key" if the first key is
-   *  prefixed, and "key" otherwise.
-   */
+  /** Returns a String containing "prefix:key" if the first key is
+    *  prefixed, and "key" otherwise.
+    */
   def prefixedKey = this match {
     case x: Attribute if x.isPrefixed => x.pre + ":" + key
     case _                            => key
   }
 
-  /**
-   * Returns a Map containing the attributes stored as key/value pairs.
-   */
+  /** Returns a Map containing the attributes stored as key/value pairs.
+    */
   def asAttrMap: Map[String, String] =
     (iterator map (x => (x.prefixedKey, x.value.text))).toMap
 
   /** returns Null or the next MetaData item */
   def next: MetaData
 
-  /**
-   * Gets value of unqualified (unprefixed) attribute with given key, None if not found
-   *
-   * @param  key
-   * @return value in Some(Seq[Node]) if key is found, None otherwise
-   */
+  /** Gets value of unqualified (unprefixed) attribute with given key, None if not found
+    *
+    * @param  key
+    * @return value in Some(Seq[Node]) if key is found, None otherwise
+    */
   final def get(key: String): Option[Seq[Node]] = Option(apply(key))
 
   /** same as get(uri, owner.scope, key) */
   final def get(uri: String, owner: Node, key: String): Option[Seq[Node]] =
     get(uri, owner.scope, key)
 
-  /**
-   * gets value of qualified (prefixed) attribute with given key.
-   *
-   * @param  uri namespace of key
-   * @param  scope a namespace scp (usually of the element owning this attribute list)
-   * @param  key to be looked fore
-   * @return value as Some[Seq[Node]] if key is found, None otherwise
-   */
-  final def get(uri: String, scope: NamespaceBinding, key: String): Option[Seq[Node]] =
+  /** gets value of qualified (prefixed) attribute with given key.
+    *
+    * @param  uri namespace of key
+    * @param  scope a namespace scp (usually of the element owning this attribute list)
+    * @param  key to be looked fore
+    * @return value as Some[Seq[Node]] if key is found, None otherwise
+    */
+  final def get(
+      uri: String,
+      scope: NamespaceBinding,
+      key: String
+  ): Option[Seq[Node]] =
     Option(apply(uri, scope, key))
 
   protected def toString1(): String = sbToString(toString1)
@@ -221,7 +222,7 @@ abstract class MetaData
   }
 
   /**
-   */
+    */
   def wellformed(scope: NamespaceBinding): Boolean
 
   def remove(key: String): MetaData

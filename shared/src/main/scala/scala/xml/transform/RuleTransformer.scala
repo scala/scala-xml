@@ -16,6 +16,9 @@ class RuleTransformer(rules: RewriteRule*) extends BasicTransformer {
   private val transformers = rules.map(new NestingTransformer(_))
   override def transform(n: Node): Seq[Node] = {
     if (transformers.isEmpty) n
-    else transformers.tail.foldLeft(transformers.head.transform(n)) { (res, transformer) => transformer.transform(res) }
+    else
+      transformers.tail.foldLeft(transformers.head.transform(n)) {
+        (res, transformer) => transformer.transform(res)
+      }
   }
 }

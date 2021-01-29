@@ -9,20 +9,19 @@
 package scala
 package xml.dtd.impl
 
-import scala.collection.{ mutable, immutable }
+import scala.collection.{mutable, immutable}
 import scala.collection.Seq
 
 // todo: replace global variable pos with acc
 
-/**
- * This class turns a regular expression over `A` into a
- * [[scala.util.automata.NondetWordAutom]] over `A` using the celebrated
- * position automata construction (also called ''Berry-Sethi'' or ''Glushkov'').
- */
+/** This class turns a regular expression over `A` into a
+  * [[scala.util.automata.NondetWordAutom]] over `A` using the celebrated
+  * position automata construction (also called ''Berry-Sethi'' or ''Glushkov'').
+  */
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class BaseBerrySethi {
   val lang: Base
-  import lang.{ Alt, Eps, Meta, RegExp, Sequ, Star }
+  import lang.{Alt, Eps, Meta, RegExp, Sequ, Star}
 
   protected var pos = 0
 
@@ -45,7 +44,8 @@ private[dtd] abstract class BaseBerrySethi {
       val (l1, l2) = x.rs span (_.isNullable)
       ((l1 ++ (l2 take 1)) map compFunction).foldLeft(emptySet)(_ ++ _)
     case Star(t) => compFunction(t)
-    case _       => throw new IllegalArgumentException("unexpected pattern " + r.getClass)
+    case _ =>
+      throw new IllegalArgumentException("unexpected pattern " + r.getClass)
   }
 
   /** Computes `first(r)` for the word regexp `r`. */
@@ -54,27 +54,26 @@ private[dtd] abstract class BaseBerrySethi {
   /** Computes `last(r)` for the regexp `r`. */
   protected def compLast(r: RegExp): Set[Int] = doComp(r, compLast)
 
-  /**
-   * Starts from the right-to-left
-   *  precondition: pos is final
-   *               pats are successor patterns of a Sequence node
-   */
+  /** Starts from the right-to-left
+    *  precondition: pos is final
+    *               pats are successor patterns of a Sequence node
+    */
   protected def compFollow(rs: Seq[RegExp]): Set[Int] = {
     follow(0) =
       if (rs.isEmpty) emptySet
-      else rs.foldRight(Set(pos))((p, fol) => {
-        val first = compFollow1(fol, p)
+      else
+        rs.foldRight(Set(pos))((p, fol) => {
+          val first = compFollow1(fol, p)
 
-        if (p.isNullable) fol ++ first
-        else first
-      })
+          if (p.isNullable) fol ++ first
+          else first
+        })
 
     follow(0)
   }
 
-  /**
-   * Returns the first set of an expression, setting the follow set along the way.
-   */
+  /** Returns the first set of an expression, setting the follow set along the way.
+    */
   protected def compFollow1(fol1: Set[Int], r: RegExp): Set[Int] = r match {
     case x: Alt  => Set((x.rs reverseMap (compFollow1(fol1, _))).flatten: _*)
     case x: Meta => compFollow1(fol1, x.r)
@@ -86,12 +85,12 @@ private[dtd] abstract class BaseBerrySethi {
         if (p.isNullable) fol ++ first
         else first
       }
-    case _ => throw new IllegalArgumentException("unexpected pattern: " + r.getClass)
+    case _ =>
+      throw new IllegalArgumentException("unexpected pattern: " + r.getClass)
   }
 
-  /**
-   * Returns the "Sethi-length" of a pattern, creating the set of position along the way.
-   */
+  /** Returns the "Sethi-length" of a pattern, creating the set of position along the way.
+    */
   protected def traverse(r: RegExp): Unit = r match {
     // (is tree automaton stuff, more than Berry-Sethi)
     case x: Alt  => x.rs foreach traverse

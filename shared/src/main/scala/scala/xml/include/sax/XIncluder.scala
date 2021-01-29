@@ -10,17 +10,18 @@ package scala
 package xml
 package include.sax
 
-import org.xml.sax.{ ContentHandler, Locator, Attributes }
+import org.xml.sax.{ContentHandler, Locator, Attributes}
 import org.xml.sax.ext.LexicalHandler
-import java.io.{ OutputStream, OutputStreamWriter, IOException }
+import java.io.{OutputStream, OutputStreamWriter, IOException}
 
-/**
- * XIncluder is a SAX `ContentHandler` that writes its XML document onto
- * an output stream after resolving all `xinclude:include` elements.
- *
- * Based on Eliotte Rusty Harold's SAXXIncluder.
- */
-class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler with LexicalHandler {
+/** XIncluder is a SAX `ContentHandler` that writes its XML document onto
+  * an output stream after resolving all `xinclude:include` elements.
+  *
+  * Based on Eliotte Rusty Harold's SAXXIncluder.
+  */
+class XIncluder(outs: OutputStream, encoding: String)
+    extends ContentHandler
+    with LexicalHandler {
 
   var out = new OutputStreamWriter(outs, encoding)
 
@@ -28,8 +29,10 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   def startDocument(): Unit = {
     try {
-      out.write("<?xml version='1.0' encoding='"
-        + encoding + "'?>\r\n")
+      out.write(
+        "<?xml version='1.0' encoding='"
+          + encoding + "'?>\r\n"
+      )
     } catch {
       case e: IOException =>
         throw new SAXException("Write failed", e)
@@ -49,10 +52,16 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   def endPrefixMapping(prefix: String): Unit = {}
 
-  def startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes) = {
+  def startElement(
+      namespaceURI: String,
+      localName: String,
+      qualifiedName: String,
+      atts: Attributes
+  ) = {
     try {
       out.write("<" + qualifiedName)
-      var i = 0; while (i < atts.getLength()) {
+      var i = 0;
+      while (i < atts.getLength()) {
         out.write(" ")
         out.write(atts.getQName(i))
         out.write("='")
@@ -70,7 +79,11 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def endElement(namespaceURI: String, localName: String, qualifiedName: String): Unit = {
+  def endElement(
+      namespaceURI: String,
+      localName: String,
+      qualifiedName: String
+  ): Unit = {
     try {
       out.write("</" + qualifiedName + ">")
     } catch {
@@ -83,7 +96,8 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   // encoding using character references????
   def characters(ch: Array[Char], start: Int, length: Int): Unit = {
     try {
-      var i = 0; while (i < length) {
+      var i = 0;
+      while (i < length) {
         val c = ch(start + i)
         if (c == '&') out.write("&amp;")
         else if (c == '<') out.write("&lt;")
@@ -132,7 +146,8 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     // if this is the source document, output a DOCTYPE declaration
     if (entities.isEmpty) {
       var id = ""
-      if (publicID != null) id = " PUBLIC \"" + publicID + "\" \"" + systemID + '"'
+      if (publicID != null)
+        id = " PUBLIC \"" + publicID + "\" \"" + systemID + '"'
       else if (systemID != null) id = " SYSTEM \"" + systemID + '"'
       try {
         out.write("<!DOCTYPE " + name + id + ">\r\n")
@@ -145,7 +160,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   def endDTD(): Unit = {}
 
   def startEntity(name: String): Unit = {
-    entities =  name :: entities
+    entities = name :: entities
   }
 
   def endEntity(name: String): Unit = {

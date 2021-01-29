@@ -9,16 +9,15 @@
 package scala
 package xml.dtd.impl
 
-/**
- * A deterministic automaton. States are integers, where
- *  0 is always the only initial state. Transitions are represented
- *  in the delta function. A default transitions is one that
- *  is taken when no other transition can be taken.
- *  All states are reachable. Accepting states are those for which
- *  the partial function 'finals' is defined.
- *
- *  @author Burak Emir
- */
+/** A deterministic automaton. States are integers, where
+  *  0 is always the only initial state. Transitions are represented
+  *  in the delta function. A default transitions is one that
+  *  is taken when no other transition can be taken.
+  *  All states are reachable. Accepting states are those for which
+  *  the partial function 'finals' is defined.
+  *
+  *  @author Burak Emir
+  */
 // TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class DetWordAutom[T <: AnyRef] {
   val nstates: Int

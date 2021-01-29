@@ -11,20 +11,18 @@ package xml.dtd.impl
 
 import scala.collection.Seq
 
-/**
- * A fast test of language inclusion between minimal automata.
- *  inspired by the ''AMoRE automata library''.
- *
- *  @author Burak Emir
- */
+/** A fast test of language inclusion between minimal automata.
+  *  inspired by the ''AMoRE automata library''.
+  *
+  *  @author Burak Emir
+  */
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] trait Inclusion[A <: AnyRef] {
 
   val labels: Seq[A]
 
-  /**
-   * Returns true if `dfa1` is included in `dfa2`.
-   */
+  /** Returns true if `dfa1` is included in `dfa2`.
+    */
   def inclusion(dfa1: DetWordAutom[A], dfa2: DetWordAutom[A]) = {
 
     def encode(q1: Int, q2: Int) = 1 + q1 + q2 * dfa1.nstates

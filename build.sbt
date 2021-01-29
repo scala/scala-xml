@@ -6,12 +6,14 @@ lazy val configSettings: Seq[Setting[_]] = Seq(
       val sv = scalaVersion.value
       Seq(
         CrossVersion.partialVersion(sv) match {
-          case Some((major, minor)) if major > 2 || (major == 2 && minor >= 13)  => file(dir.getPath ++ "-2.13+")
-          case _             => file(dir.getPath ++ "-2.13-")
+          case Some((major, minor))
+              if major > 2 || (major == 2 && minor >= 13) =>
+            file(dir.getPath ++ "-2.13+")
+          case _ => file(dir.getPath ++ "-2.13-")
         },
         CrossVersion.partialVersion(sv) match {
-          case Some((2, _))  => file(dir.getPath ++ "-2.x")
-          case _             => file(dir.getPath ++ "-3.x")
+          case Some((2, _)) => file(dir.getPath ++ "-2.x")
+          case _            => file(dir.getPath ++ "-3.x")
         }
       )
     }
@@ -25,7 +27,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .settings(ScalaModulePlugin.scalaModuleSettings)
   .jvmSettings(ScalaModulePlugin.scalaModuleOsgiSettings)
   .settings(
-    name    := "scala-xml",
+    name := "scala-xml",
     scalacOptions ++= {
       val opts =
         if (isDotty.value)
@@ -36,13 +38,11 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_"
       opts.split("\\s+").to[Seq]
     },
-
-    Test / scalacOptions  += "-Xxml:coalescing",
-
+    Test / scalacOptions += "-Xxml:coalescing",
     // don't run Dottydoc, it errors and isn't needed anyway.
     // but we leave `publishArtifact` set to true, otherwise Sonatype won't let us publish
-    Compile / doc / sources := (if (isDotty.value) Seq() else (Compile / doc/ sources).value),
-
+    Compile / doc / sources := (if (isDotty.value) Seq()
+                                else (Compile / doc / sources).value),
     scalaModuleMimaPreviousVersion := {
       if (isDotty.value) None // No such release yet
       else Some("1.3.0")
@@ -85,10 +85,18 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         exclude[MissingTypesProblem]("scala.xml.Unparsed"),
         // Miscellaneous deprecations
         exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$TopIter$"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$Node$"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$Point$"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$TopIter"),
+        exclude[MissingClassProblem](
+          "scala.xml.dtd.impl.PointedHedgeExp$TopIter$"
+        ),
+        exclude[MissingClassProblem](
+          "scala.xml.dtd.impl.PointedHedgeExp$Node$"
+        ),
+        exclude[MissingClassProblem](
+          "scala.xml.dtd.impl.PointedHedgeExp$Point$"
+        ),
+        exclude[MissingClassProblem](
+          "scala.xml.dtd.impl.PointedHedgeExp$TopIter"
+        ),
         exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$Node"),
         exclude[MissingClassProblem]("scala.xml.dtd.Scanner"),
         exclude[MissingClassProblem]("scala.xml.dtd.ContentModelParser$"),
@@ -96,7 +104,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         exclude[MissingClassProblem]("scala.xml.dtd.ElementValidator"),
         exclude[MissingClassProblem]("scala.xml.dtd.ElementValidator"),
         exclude[MissingClassProblem]("scala.xml.factory.Binder"),
-        exclude[MissingClassProblem]("scala.xml.parsing.ValidatingMarkupHandler"),
+        exclude[MissingClassProblem](
+          "scala.xml.parsing.ValidatingMarkupHandler"
+        ),
         exclude[MissingClassProblem]("scala.xml.persistent.CachedFileStorage"),
         exclude[MissingClassProblem]("scala.xml.persistent.Index"),
         exclude[MissingClassProblem]("scala.xml.persistent.SetStorage"),
@@ -107,37 +117,59 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         exclude[DirectMissingMethodProblem]("scala.xml.Elem.xmlToProcess"),
         // Scala 2.12 deprecated mutable.Stack, so we broke
         // binary compatibility for 2.0.0 in the following way:
-        exclude[IncompatibleMethTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack_="),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.hStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.attribStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.tagStack"),
+        exclude[IncompatibleMethTypeProblem](
+          "scala.xml.parsing.FactoryAdapter.scopeStack_="
+        ),
+        exclude[IncompatibleResultTypeProblem](
+          "scala.xml.parsing.FactoryAdapter.hStack"
+        ),
+        exclude[IncompatibleResultTypeProblem](
+          "scala.xml.parsing.FactoryAdapter.scopeStack"
+        ),
+        exclude[IncompatibleResultTypeProblem](
+          "scala.xml.parsing.FactoryAdapter.attribStack"
+        ),
+        exclude[IncompatibleResultTypeProblem](
+          "scala.xml.parsing.FactoryAdapter.tagStack"
+        ),
         // New MiMa checks for generic signature changes
-        exclude[IncompatibleSignatureProblem]("*"),
+        exclude[IncompatibleSignatureProblem]("*")
       )
     },
-
-    apiMappings ++= scalaInstance.value.libraryJars.filter { file =>
-      file.getName.startsWith("scala-library") && file.getName.endsWith(".jar")
-    }.map { libraryJar =>
-      libraryJar ->
-        url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
-    }.toMap ++ {
-      // http://stackoverflow.com/questions/16934488
-      Option(System.getProperty("sun.boot.class.path")).flatMap { classPath =>
-        classPath.split(java.io.File.pathSeparator).find(_.endsWith(java.io.File.separator + "rt.jar"))
-      }.map { jarPath =>
-        Map(
-          file(jarPath)
-            -> url("http://docs.oracle.com/javase/8/docs/api")
+    apiMappings ++= scalaInstance.value.libraryJars
+      .filter { file =>
+        file.getName.startsWith("scala-library") && file.getName.endsWith(
+          ".jar"
         )
-      } getOrElse {
+      }
+      .map { libraryJar =>
+        libraryJar ->
+          url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+      }
+      .toMap ++ {
+      // http://stackoverflow.com/questions/16934488
+      Option(System.getProperty("sun.boot.class.path"))
+        .flatMap { classPath =>
+          classPath
+            .split(java.io.File.pathSeparator)
+            .find(_.endsWith(java.io.File.separator + "rt.jar"))
+        }
+        .map { jarPath =>
+          Map(
+            file(jarPath)
+              -> url("http://docs.oracle.com/javase/8/docs/api")
+          )
+        } getOrElse {
         // If everything fails, jam in Java 11 modules.
         Map(
           file("/modules/java.base")
-            -> url("https://docs.oracle.com/en/java/javase/11/docs/api/java.base"),
+            -> url(
+              "https://docs.oracle.com/en/java/javase/11/docs/api/java.base"
+            ),
           file("/modules/java.xml")
-            -> url("https://docs.oracle.com/en/java/javase/11/docs/api/java.xml")
+            -> url(
+              "https://docs.oracle.com/en/java/javase/11/docs/api/java.xml"
+            )
         )
       }
     }
@@ -147,7 +179,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   )
   .jvmSettings(
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
-
     libraryDependencies += "junit" % "junit" % "4.13.1" % Test,
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.11" % Test,
@@ -155,7 +186,13 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       if (isDotty.value)
         Seq()
       else
-        Seq(("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test).exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}"))
+        Seq(
+          ("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test)
+            .exclude(
+              "org.scala-lang.modules",
+              s"scala-xml_${scalaBinaryVersion.value}"
+            )
+        )
     }
   )
   .jsSettings(
@@ -182,7 +219,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         .fold(w => throw w.resolveException, identity(_))
       val jarPath = cp
         .find(_.toString.contains("junit-plugin"))
-        .getOrElse(throw new Exception("Can't find Scala Native junit-plugin jar"))
+        .getOrElse(
+          throw new Exception("Can't find Scala Native junit-plugin jar")
+        )
       s"-Xplugin:$jarPath"
     },
     Test / testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v")

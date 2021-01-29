@@ -14,15 +14,15 @@ class MetaDataTest {
 
   @Test
   def absentElementPrefixed2: Unit = {
-    assertEquals(None, Null.get("za://foo.com", TopScope, "bar" ))
+    assertEquals(None, Null.get("za://foo.com", TopScope, "bar"))
     assertEquals(None, Null.get("bar"))
   }
 
   @Test
   def presentElement1: Unit = {
-    val x = new PrefixedAttribute("zo","bar", new Atom(42), Null)
-    val s = new NamespaceBinding("zo","za://foo.com", TopScope)
-    assertEquals(new Atom(42), x("za://foo.com", s, "bar" ))
+    val x = new PrefixedAttribute("zo", "bar", new Atom(42), Null)
+    val s = new NamespaceBinding("zo", "za://foo.com", TopScope)
+    assertEquals(new Atom(42), x("za://foo.com", s, "bar"))
     assertEquals(null, x("bar"))
     assertEquals(Some(new Atom(42)), x.get("za://foo.com", s, "bar"))
     assertEquals(None, x.get("bar"))
@@ -30,25 +30,26 @@ class MetaDataTest {
 
   @Test
   def presentElement2: Unit = {
-    val s = new NamespaceBinding("zo","za://foo.com", TopScope)
-    val x1 = new PrefixedAttribute("zo","bar", new Atom(42), Null)
-    val x = new UnprefixedAttribute("bar","meaning", x1)
+    val s = new NamespaceBinding("zo", "za://foo.com", TopScope)
+    val x1 = new PrefixedAttribute("zo", "bar", new Atom(42), Null)
+    val x = new UnprefixedAttribute("bar", "meaning", x1)
     assertEquals(null, x(null, s, "bar"))
     assertEquals(Text("meaning"), x("bar"))
-    assertEquals(None, x.get(null, s, "bar" ))
+    assertEquals(None, x.get(null, s, "bar"))
     assertEquals(Some(Text("meaning")), x.get("bar"))
   }
 
   @Test
   def attributeExtractor: Unit = {
-    def domatch(x:Node): Node = {
+    def domatch(x: Node): Node = {
       x match {
-            case Node("foo", md @ UnprefixedAttribute(_, value, _), _*) if !value.isEmpty =>
-                 md("bar")(0)
-            case _ => new Atom(3)
+        case Node("foo", md @ UnprefixedAttribute(_, value, _), _*)
+            if !value.isEmpty =>
+          md("bar")(0)
+        case _ => new Atom(3)
       }
     }
-    val z =  <foo bar="gar"/>
+    val z = <foo bar="gar"/>
     val z2 = <foo/>
     assertEquals(Text("gar"), domatch(z))
     assertEquals(new Atom(3), domatch(z2))
@@ -58,7 +59,10 @@ class MetaDataTest {
   def reverseTest: Unit = {
     assertEquals("", Null.reverse.toString)
     assertEquals(""" b="c"""", <a b="c"/>.attributes.reverse.toString)
-    assertEquals(""" d="e" b="c"""", <a b="c" d="e"/>.attributes.reverse.toString)
+    assertEquals(
+      """ d="e" b="c"""",
+      <a b="c" d="e"/>.attributes.reverse.toString
+    )
   }
 
 }

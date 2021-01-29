@@ -10,8 +10,8 @@ package scala
 package xml
 
 import factory.XMLLoader
-import java.io.{ File, FileDescriptor, FileInputStream, FileOutputStream }
-import java.io.{ InputStream, Reader, StringReader }
+import java.io.{File, FileDescriptor, FileInputStream, FileOutputStream}
+import java.io.{InputStream, Reader, StringReader}
 import java.nio.channels.Channels
 import scala.util.control.Exception.ultimately
 
@@ -26,35 +26,31 @@ object Source {
   def fromString(string: String) = fromReader(new StringReader(string))
 }
 
-/**
- * Governs how empty elements (i.e. those without child elements) should be serialized.
- */
+/** Governs how empty elements (i.e. those without child elements) should be serialized.
+  */
 object MinimizeMode extends Enumeration {
-  /**
-   * Minimize empty tags if they were originally empty when parsed, or if they were constructed
-   *  with [[scala.xml.Elem]]`#minimizeEmpty` == true
-   */
+
+  /** Minimize empty tags if they were originally empty when parsed, or if they were constructed
+    *  with [[scala.xml.Elem]]`#minimizeEmpty` == true
+    */
   val Default = Value
 
-  /**
-   * Always minimize empty tags.  Note that this may be problematic for XHTML, in which
-   * case [[scala.xml.Xhtml]]`#toXhtml` should be used instead.
-   */
+  /** Always minimize empty tags.  Note that this may be problematic for XHTML, in which
+    * case [[scala.xml.Xhtml]]`#toXhtml` should be used instead.
+    */
   val Always = Value
 
-  /**
-   * Never minimize empty tags.
-   */
+  /** Never minimize empty tags.
+    */
   val Never = Value
 }
 
-/**
- * The object `XML` provides constants, and functions to load
- *  and save XML elements. Use this when data binding is not desired, i.e.
- *  when XML is handled using `Symbol` nodes.
- *
- *  @author  Burak Emir
- */
+/** The object `XML` provides constants, and functions to load
+  *  and save XML elements. Use this when data binding is not desired, i.e.
+  *  when XML is handled using `Symbol` nodes.
+  *
+  *  @author  Burak Emir
+  */
 object XML extends XMLLoader[Elem] {
   val xml = "xml"
   val xmlns = "xmlns"
@@ -68,46 +64,51 @@ object XML extends XMLLoader[Elem] {
   def withSAXParser(p: SAXParser): XMLLoader[Elem] =
     new XMLLoader[Elem] { override val parser: SAXParser = p }
 
-  /**
-   * Saves a node to a file with given filename using given encoding
-   *  optionally with xmldecl and doctype declaration.
-   *
-   *  Note: Before scala-xml 1.1.0, the default encoding was ISO-8859-1 (latin1).
-   *  If your code depends on characters in non-ASCII latin1 range, specify
-   *  ISO-8859-1 encoding explicitly.
-   *
-   *  @param filename the filename
-   *  @param node     the xml node we want to write
-   *  @param enc      encoding to use
-   *  @param xmlDecl  if true, write xml declaration
-   *  @param doctype  if not null, write doctype declaration
-   */
+  /** Saves a node to a file with given filename using given encoding
+    *  optionally with xmldecl and doctype declaration.
+    *
+    *  Note: Before scala-xml 1.1.0, the default encoding was ISO-8859-1 (latin1).
+    *  If your code depends on characters in non-ASCII latin1 range, specify
+    *  ISO-8859-1 encoding explicitly.
+    *
+    *  @param filename the filename
+    *  @param node     the xml node we want to write
+    *  @param enc      encoding to use
+    *  @param xmlDecl  if true, write xml declaration
+    *  @param doctype  if not null, write doctype declaration
+    */
   final def save(
-    filename: String,
-    node: Node,
-    enc: String = "UTF-8",
-    xmlDecl: Boolean = false,
-    doctype: dtd.DocType = null): Unit =
-    {
-      val fos = new FileOutputStream(filename)
-      val w = Channels.newWriter(fos.getChannel(), enc)
+      filename: String,
+      node: Node,
+      enc: String = "UTF-8",
+      xmlDecl: Boolean = false,
+      doctype: dtd.DocType = null
+  ): Unit = {
+    val fos = new FileOutputStream(filename)
+    val w = Channels.newWriter(fos.getChannel(), enc)
 
-      ultimately(w.close())(
-        write(w, node, enc, xmlDecl, doctype)
-      )
-    }
+    ultimately(w.close())(
+      write(w, node, enc, xmlDecl, doctype)
+    )
+  }
 
-  /**
-   * Writes the given node using writer, optionally with xml decl and doctype.
-   *  It's the caller's responsibility to close the writer.
-   *
-   *  @param w        the writer
-   *  @param node     the xml node we want to write
-   *  @param enc      the string to be used in `xmlDecl`
-   *  @param xmlDecl  if true, write xml declaration
-   *  @param doctype  if not null, write doctype declaration
-   */
-  final def write(w: java.io.Writer, node: Node, enc: String, xmlDecl: Boolean, doctype: dtd.DocType, minimizeTags: MinimizeMode.Value = MinimizeMode.Default): Unit = {
+  /** Writes the given node using writer, optionally with xml decl and doctype.
+    *  It's the caller's responsibility to close the writer.
+    *
+    *  @param w        the writer
+    *  @param node     the xml node we want to write
+    *  @param enc      the string to be used in `xmlDecl`
+    *  @param xmlDecl  if true, write xml declaration
+    *  @param doctype  if not null, write doctype declaration
+    */
+  final def write(
+      w: java.io.Writer,
+      node: Node,
+      enc: String,
+      xmlDecl: Boolean,
+      doctype: dtd.DocType,
+      minimizeTags: MinimizeMode.Value = MinimizeMode.Default
+  ): Unit = {
     /* TODO: optimize by giving writer parameter to toXML*/
     if (xmlDecl) w.write("<?xml version='1.0' encoding='" + enc + "'?>\n")
     if (doctype ne null) w.write(doctype.toString() + "\n")
@@ -116,6 +117,6 @@ object XML extends XMLLoader[Elem] {
 }
 
 object Properties extends scala.util.PropertiesTrait {
-  protected def propCategory    = "scala-xml"
-  protected def pickJarBasedOn  = classOf[scala.xml.Node]
+  protected def propCategory = "scala-xml"
+  protected def pickJarBasedOn = classOf[scala.xml.Node]
 }

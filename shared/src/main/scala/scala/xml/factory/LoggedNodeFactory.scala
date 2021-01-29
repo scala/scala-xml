@@ -12,25 +12,24 @@ package factory
 
 import scala.collection.Seq
 
-/**
- * This class logs what the nodefactory is actually doing.
- *  If you want to see what happens during loading, use it like this:
- * {{{
- * object testLogged extends App {
- * val x = new scala.xml.parsing.NoBindingFactoryAdapter
- * with scala.xml.factory.LoggedNodeFactory[scala.xml.Elem] {
- * override def log(s: String) = println(s)
- * }
- *
- * Console.println("Start")
- * val doc = x.load(new java.net.URL("http://example.com/file.xml"))
- * Console.println("End")
- * Console.println(doc)
- * }
- * }}}
- *
- *  @author  Burak Emir
- */
+/** This class logs what the nodefactory is actually doing.
+  *  If you want to see what happens during loading, use it like this:
+  * {{{
+  * object testLogged extends App {
+  * val x = new scala.xml.parsing.NoBindingFactoryAdapter
+  * with scala.xml.factory.LoggedNodeFactory[scala.xml.Elem] {
+  * override def log(s: String) = println(s)
+  * }
+  *
+  * Console.println("Start")
+  * val doc = x.load(new java.net.URL("http://example.com/file.xml"))
+  * Console.println("End")
+  * Console.println(doc)
+  * }
+  * }}}
+  *
+  *  @author  Burak Emir
+  */
 @deprecated("This trait will be removed.", "2.11")
 trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
   // configuration values
@@ -42,14 +41,20 @@ trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
   final val NONE = 0
   final val CACHE = 1
   final val FULL = 2
+
   /** 0 = no logging, 1 = cache hits, 2 = detail */
   val logCompressLevel = 1
 
   // methods of NodeFactory
 
   /** logged version of makeNode method */
-  override def makeNode(pre: String, label: String, attrSeq: MetaData,
-                        scope: NamespaceBinding, children: Seq[Node]): A = {
+  override def makeNode(
+      pre: String,
+      label: String,
+      attrSeq: MetaData,
+      scope: NamespaceBinding,
+      children: Seq[Node]
+  ): A = {
     if (logNode)
       log("[makeNode for " + label + "]")
 
@@ -62,7 +67,7 @@ trait LoggedNodeFactory[A <: Node] extends NodeFactory[A] {
       log(" attrs     "+attrSeq+" hash "+attrSeq.hashCode());
       log(" children :"+children+" hash "+children.hashCode());
     }
-    */
+     */
     if (!cache.get(hash).isEmpty && (logCompressLevel >= CACHE))
       log("[cache hit !]")
 

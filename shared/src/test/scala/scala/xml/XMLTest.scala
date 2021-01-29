@@ -27,7 +27,9 @@ class XMLTest {
             </foo>
 
     val pelems_1 = for (x <- p \ "bar"; y <- p \ "baz") yield {
-      Text(x.attributes("value").toString + y.attributes("bazValue").toString + "!")
+      Text(
+        x.attributes("value").toString + y.attributes("bazValue").toString + "!"
+      )
     };
 
     val pelems_2 = NodeSeq.fromSeq(List(Text("38!"), Text("58!")));
@@ -70,10 +72,12 @@ class XMLTest {
       for (
         t <- books \\ "title";
         r <- reviews \\ "entry" if (r \ "title") xml_== t
-      ) yield <result>
-                { t }
-                { r \ "remarks" }
-              </result>);
+      )
+        yield <result>
+                {t}
+                {r \ "remarks"}
+              </result>
+    );
     val results1Expected = """<result>
     |     <title>Blabla</title>
     |     <remarks> Hallo Welt. </remarks>
@@ -87,8 +91,13 @@ class XMLTest {
     assertEquals(results1Expected, results1)
 
     {
-      val actual = for (t @ <book><title>Blabla</title></book> <- NodeSeq.fromSeq(books.child).toList)
-        yield t
+      val actual =
+        for (
+          t @ <book><title>Blabla</title></book> <- NodeSeq
+            .fromSeq(books.child)
+            .toList
+        )
+          yield t
       val expected = List(<book><title>Blabla</title></book>)
       assertEquals(expected, actual)
     }
@@ -131,10 +140,12 @@ class XMLTest {
       for (
         t <- addrBook \\ "entry";
         r <- phoneBook \\ "entry" if (t \ "name") xml_== (r \ "name")
-      ) yield <result>
-                { t.child }
-                { r \ "phone" }
-              </result>)
+      )
+        yield <result>
+                {t.child}
+                {r \ "phone"}
+              </result>
+    )
     val expected = """|<result>
       |     <name>John</name>
       |     <street> Elm Street</street>
@@ -145,12 +156,12 @@ class XMLTest {
     assertEquals(expected, actual)
   }
 
-  @UnitTest(expected=classOf[IllegalArgumentException])
+  @UnitTest(expected = classOf[IllegalArgumentException])
   def failEmptyStringChildren: Unit = {
     <x/> \ ""
   }
 
-  @UnitTest(expected=classOf[IllegalArgumentException])
+  @UnitTest(expected = classOf[IllegalArgumentException])
   def failEmptyStringDescendants: Unit = {
     <x/> \\ ""
   }
@@ -171,22 +182,38 @@ class XMLTest {
   def namespacesWithNestedXmls: Unit = {
     val foo = <f:foo xmlns:f="fooUrl"></f:foo>
     val bar = <b:bar xmlns:b="barUrl">{foo}</b:bar>
-    val expected = """<b:bar xmlns:b="barUrl"><f:foo xmlns:f="fooUrl"></f:foo></b:bar>"""
+    val expected =
+      """<b:bar xmlns:b="barUrl"><f:foo xmlns:f="fooUrl"></f:foo></b:bar>"""
     val actual = bar.toString
     assertEquals(expected, actual)
   }
 
-  def Elem(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*): Elem =
-    scala.xml.Elem.apply(prefix, label, attributes, scope, minimizeEmpty = true, child: _*)
+  def Elem(
+      prefix: String,
+      label: String,
+      attributes: MetaData,
+      scope: NamespaceBinding,
+      child: Node*
+  ): Elem =
+    scala.xml.Elem.apply(
+      prefix,
+      label,
+      attributes,
+      scope,
+      minimizeEmpty = true,
+      child: _*
+    )
 
   @UnitTest
   def groupNode = {
     val zx1: Node = Group { <a/><b/><c/> }
-    val zy1: Node = <f>{ zx1 }</f>
+    val zy1: Node = <f>{zx1}</f>
     assertEquals("<f><a/><b/><c/></f>", zy1.toString)
 
-    assertEquals("<a/><f><a/><b/><c/></f><a/><b/><c/>",
-      Group { List(<a/>, zy1, zx1) }.toString)
+    assertEquals(
+      "<a/><f><a/><b/><c/></f><a/><b/><c/>",
+      Group { List(<a/>, zy1, zx1) }.toString
+    )
 
     val zz1 = <xml:group><a/><b/><c/></xml:group>
 
@@ -196,15 +223,18 @@ class XMLTest {
 
   @UnitTest
   def dodgyNamespace = {
-    val x = <flog xmlns:ee="http://ee.com"><foo xmlns:dog="http://dog.com"><dog:cat/></foo></flog>
+    val x =
+      <flog xmlns:ee="http://ee.com"><foo xmlns:dog="http://dog.com"><dog:cat/></foo></flog>
     assertTrue(x.toString.matches(".*xmlns:dog=\"http://dog.com\".*"));
   }
 
-  val ax = <hello foo="bar" x:foo="baz" xmlns:x="the namespace from outer space">
+  val ax =
+    <hello foo="bar" x:foo="baz" xmlns:x="the namespace from outer space">
              <world/>
            </hello>
 
-  val cx = <z:hello foo="bar" xmlns:z="z" x:foo="baz" xmlns:x="the namespace from outer space">
+  val cx =
+    <z:hello foo="bar" xmlns:z="z" x:foo="baz" xmlns:x="the namespace from outer space">
              crazy text world
            </z:hello>
 
@@ -251,26 +281,35 @@ class XMLTest {
 
   @UnitTest
   def weirdElem =
-    assertEquals("<?this is a pi foo bar = && {{ ?>", <?this is a pi foo bar = && {{ ?> toString)
+    assertEquals(
+      "<?this is a pi foo bar = && {{ ?>",
+      <?this is a pi foo bar = && {{ ?> toString
+    )
 
   @UnitTest
   def escape =
-    assertEquals("""
+    assertEquals(
+      """
  "Come, come again, whoever you are, come!
 Heathen, fire worshipper or idolatrous, come!
 Come even if you broke your penitence a hundred times,
 Ours is the portal of hope, come as you are."
-                              Mevlana Celaleddin Rumi""", <![CDATA[
+                              Mevlana Celaleddin Rumi""",
+      <![CDATA[
  "Come, come again, whoever you are, come!
 Heathen, fire worshipper or idolatrous, come!
 Come even if you broke your penitence a hundred times,
 Ours is the portal of hope, come as you are."
-                              Mevlana Celaleddin Rumi]]> toString) // this guy will escaped, and rightly so
+                              Mevlana Celaleddin Rumi]]> toString
+    ) // this guy will escaped, and rightly so
 
   @UnitTest
   def unparsed2 = {
     object myBreak extends scala.xml.Unparsed("<br />")
-    assertEquals("<foo><br /></foo>", <foo>{ myBreak }</foo> toString) // shows use of unparsed
+    assertEquals(
+      "<foo><br /></foo>",
+      <foo>{myBreak}</foo> toString
+    ) // shows use of unparsed
   }
 
   @UnitTest
@@ -287,8 +326,8 @@ Ours is the portal of hope, come as you are."
   def f(s: String) = {
     <entry>
       {
-        for (item <- s split ',') yield <elem>{ item }</elem>
-      }
+      for (item <- s split ',') yield <elem>{item}</elem>
+    }
     </entry>
   }
 
@@ -297,29 +336,40 @@ Ours is the portal of hope, come as you are."
     assertEquals(
       """<entry>
       <elem>a</elem><elem>b</elem><elem>c</elem>
-    </entry>""", f("a,b,c") toString)
+    </entry>""",
+      f("a,b,c") toString
+    )
 
   // t-486
   def wsdlTemplate1(serviceName: String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ "target1" }>
+    <wsdl:definitions name={serviceName} xmlns:tns={"target1"}>
     </wsdl:definitions>;
 
   def wsdlTemplate2(serviceName: String, targetNamespace: String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace }>
+    <wsdl:definitions name={serviceName} xmlns:tns={targetNamespace}>
     </wsdl:definitions>;
 
   def wsdlTemplate4(serviceName: String, targetNamespace: () => String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace() }>
+    <wsdl:definitions name={serviceName} xmlns:tns={targetNamespace()}>
     </wsdl:definitions>;
 
   @UnitTest
   def wsdl = {
-    assertEquals("""<wsdl:definitions name="service1" xmlns:tns="target1">
-    </wsdl:definitions>""", wsdlTemplate1("service1") toString)
-    assertEquals("""<wsdl:definitions name="service2" xmlns:tns="target2">
-    </wsdl:definitions>""", wsdlTemplate2("service2", "target2") toString)
-    assertEquals("""<wsdl:definitions name="service4" xmlns:tns="target4">
-    </wsdl:definitions>""", wsdlTemplate4("service4", () => "target4") toString)
+    assertEquals(
+      """<wsdl:definitions name="service1" xmlns:tns="target1">
+    </wsdl:definitions>""",
+      wsdlTemplate1("service1") toString
+    )
+    assertEquals(
+      """<wsdl:definitions name="service2" xmlns:tns="target2">
+    </wsdl:definitions>""",
+      wsdlTemplate2("service2", "target2") toString
+    )
+    assertEquals(
+      """<wsdl:definitions name="service4" xmlns:tns="target4">
+    </wsdl:definitions>""",
+      wsdlTemplate4("service4", () => "target4") toString
+    )
   }
 
   @UnitTest
@@ -332,25 +382,32 @@ Ours is the portal of hope, come as you are."
   @UnitTest
   def t1079 = assertFalse(<t user:tag=""/> == <t user:tag="X"/>)
 
-  import dtd.{ DocType, PublicID }
+  import dtd.{DocType, PublicID}
 
   @UnitTest
   def t1620 = {
-    val dt = DocType("foo", PublicID("-//Foo Corp//DTD 1.0//EN", "foo.dtd"), Seq())
+    val dt =
+      DocType("foo", PublicID("-//Foo Corp//DTD 1.0//EN", "foo.dtd"), Seq())
     var pw = new StringWriter()
     XML.write(pw, <foo/>, "utf-8", true, dt)
     pw.flush()
-    assertEquals("""<?xml version='1.0' encoding='utf-8'?>
+    assertEquals(
+      """<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE foo PUBLIC "-//Foo Corp//DTD 1.0//EN" "foo.dtd">
-<foo/>""", pw.toString)
+<foo/>""",
+      pw.toString
+    )
 
     pw = new StringWriter()
     val dt2 = DocType("foo", PublicID("-//Foo Corp//DTD 1.0//EN", null), Seq())
     XML.write(pw, <foo/>, "utf-8", true, dt2)
     pw.flush()
-    assertEquals("""<?xml version='1.0' encoding='utf-8'?>
+    assertEquals(
+      """<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE foo PUBLIC "-//Foo Corp//DTD 1.0//EN">
-<foo/>""", pw.toString)
+<foo/>""",
+      pw.toString
+    )
   }
 
   @UnitTest
@@ -358,9 +415,10 @@ Ours is the portal of hope, come as you are."
     val xs = List(
       <a></a>,
       <a/>,
-      <a>{ xml.NodeSeq.Empty }</a>,
-      <a>{ "" }</a>,
-      <a>{ if (true) "" else "I like turtles" }</a>)
+      <a>{xml.NodeSeq.Empty}</a>,
+      <a>{""}</a>,
+      <a>{if (true) "" else "I like turtles"}</a>
+    )
 
     for (x1 <- xs; x2 <- xs) assertTrue(x1 xml_== x2)
   }
@@ -379,47 +437,60 @@ Ours is the portal of hope, come as you are."
   @UnitTest
   def t4124: Unit = {
     val body: Node = <elem>hi</elem>
-    assertEquals("hi", ((body: AnyRef, "foo"): @unchecked) match {
-      case (node: Node, "bar")        => "bye"
-      case (ser: Serializable, "foo") => "hi"
-    })
+    assertEquals(
+      "hi",
+      ((body: AnyRef, "foo"): @unchecked) match {
+        case (node: Node, "bar")        => "bye"
+        case (ser: Serializable, "foo") => "hi"
+      }
+    )
 
-    assertEquals("hi", ((body, "foo"): @unchecked) match {
-      case (node: Node, "bar")        => "bye"
-      case (ser: Serializable, "foo") => "hi"
-    })
+    assertEquals(
+      "hi",
+      ((body, "foo"): @unchecked) match {
+        case (node: Node, "bar")        => "bye"
+        case (ser: Serializable, "foo") => "hi"
+      }
+    )
 
-    assertEquals("bye", ((body: AnyRef, "foo"): @unchecked) match {
-      case (node: Node, "foo")        => "bye"
-      case (ser: Serializable, "foo") => "hi"
-    })
+    assertEquals(
+      "bye",
+      ((body: AnyRef, "foo"): @unchecked) match {
+        case (node: Node, "foo")        => "bye"
+        case (ser: Serializable, "foo") => "hi"
+      }
+    )
 
-    assertEquals("bye", ((body: AnyRef, "foo"): @unchecked) match {
-      case (node: Node, "foo")        => "bye"
-      case (ser: Serializable, "foo") => "hi"
-    })
+    assertEquals(
+      "bye",
+      ((body: AnyRef, "foo"): @unchecked) match {
+        case (node: Node, "foo")        => "bye"
+        case (ser: Serializable, "foo") => "hi"
+      }
+    )
   }
 
   @UnitTest
   def t5052: Unit = {
-    assertTrue(<elem attr={ null: String }/> xml_== <elem/>)
-    assertTrue(<elem attr={ None }/> xml_== <elem/>)
-    assertTrue(<elem/> xml_== <elem attr={ null: String }/>)
-    assertTrue(<elem/> xml_== <elem attr={ None }/>)
+    assertTrue(<elem attr={null: String}/> xml_== <elem/>)
+    assertTrue(<elem attr={None}/> xml_== <elem/>)
+    assertTrue(<elem/> xml_== <elem attr={null: String}/>)
+    assertTrue(<elem/> xml_== <elem attr={None}/>)
   }
 
   @UnitTest
   def t5115 = {
-    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size.toLong, i.iterator.size.toLong)
+    def assertHonorsIterableContract(i: Iterable[_]) =
+      assertEquals(i.size.toLong, i.iterator.size.toLong)
 
     assertHonorsIterableContract(<a/>.attributes)
     assertHonorsIterableContract(<a x=""/>.attributes)
-    assertHonorsIterableContract(<a y={ None }/>.attributes)
-    assertHonorsIterableContract(<a y={ None } x=""/>.attributes)
-    assertHonorsIterableContract(<a a="" y={ None }/>.attributes)
-    assertHonorsIterableContract(<a y={ null: String }/>.attributes)
-    assertHonorsIterableContract(<a y={ null: String } x=""/>.attributes)
-    assertHonorsIterableContract(<a a="" y={ null: String }/>.attributes)
+    assertHonorsIterableContract(<a y={None}/>.attributes)
+    assertHonorsIterableContract(<a y={None} x=""/>.attributes)
+    assertHonorsIterableContract(<a a="" y={None}/>.attributes)
+    assertHonorsIterableContract(<a y={null: String}/>.attributes)
+    assertHonorsIterableContract(<a y={null: String} x=""/>.attributes)
+    assertHonorsIterableContract(<a a="" y={null: String}/>.attributes)
   }
 
   @UnitTest
@@ -448,8 +519,14 @@ Ours is the portal of hope, come as you are."
     assertEquals(null, scala.xml.TopScope.getURI(foo.pre))
     assertEquals(""" bar="2"""", bar remove "foo" toString)
     assertEquals(""" foo="1"""", bar remove "bar" toString)
-    assertEquals(""" bar="2"""", bar remove (null, scala.xml.TopScope, "foo") toString)
-    assertEquals(""" foo="1"""", bar remove (null, scala.xml.TopScope, "bar") toString)
+    assertEquals(
+      """ bar="2"""",
+      bar remove (null, scala.xml.TopScope, "foo") toString
+    )
+    assertEquals(
+      """ foo="1"""",
+      bar remove (null, scala.xml.TopScope, "bar") toString
+    )
     assertEquals(""" bar="2" foo="1"""", bar toString)
     assertEquals(""" bar="2" foo="1"""", bar remove (null, ns, "foo") toString)
     assertEquals(""" bar="2" foo="1"""", bar remove (null, ns, "bar") toString)
@@ -458,31 +535,59 @@ Ours is the portal of hope, come as you are."
   @UnitTest
   def t7074: Unit = {
     assertEquals("""<a/>""", sort(<a/>) toString)
-    assertEquals("""<a b="2" c="3" d="1"/>""", sort(<a d="1" b="2" c="3"/>) toString)
-    assertEquals("""<a b="2" c="4" d="1" e="3" f="5"/>""", sort(<a d="1" b="2" e="3" c="4" f="5"/>) toString)
-    assertEquals("""<a b="5" c="4" d="3" e="2" f="1"/>""", sort(<a f="1" e="2" d="3" c="4" b="5"/>) toString)
-    assertEquals("""<a b="1" c="2" d="3" e="4" f="5"/>""", sort(<a b="1" c="2" d="3" e="4" f="5"/>) toString)
-    assertEquals("""<a a:b="2" a:c="3" a:d="1"/>""", sort(<a a:d="1" a:b="2" a:c="3"/>) toString)
-    assertEquals("""<a a:b="2" a:c="4" a:d="1" a:e="3" a:f="5"/>""", sort(<a a:d="1" a:b="2" a:e="3" a:c="4" a:f="5"/>) toString)
-    assertEquals("""<a a:b="5" a:c="4" a:d="3" a:e="2" a:f="1"/>""", sort(<a a:f="1" a:e="2" a:d="3" a:c="4" a:b="5"/>) toString)
-    assertEquals("""<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>""", sort(<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>) toString)
+    assertEquals(
+      """<a b="2" c="3" d="1"/>""",
+      sort(<a d="1" b="2" c="3"/>) toString
+    )
+    assertEquals(
+      """<a b="2" c="4" d="1" e="3" f="5"/>""",
+      sort(<a d="1" b="2" e="3" c="4" f="5"/>) toString
+    )
+    assertEquals(
+      """<a b="5" c="4" d="3" e="2" f="1"/>""",
+      sort(<a f="1" e="2" d="3" c="4" b="5"/>) toString
+    )
+    assertEquals(
+      """<a b="1" c="2" d="3" e="4" f="5"/>""",
+      sort(<a b="1" c="2" d="3" e="4" f="5"/>) toString
+    )
+    assertEquals(
+      """<a a:b="2" a:c="3" a:d="1"/>""",
+      sort(<a a:d="1" a:b="2" a:c="3"/>) toString
+    )
+    assertEquals(
+      """<a a:b="2" a:c="4" a:d="1" a:e="3" a:f="5"/>""",
+      sort(<a a:d="1" a:b="2" a:e="3" a:c="4" a:f="5"/>) toString
+    )
+    assertEquals(
+      """<a a:b="5" a:c="4" a:d="3" a:e="2" a:f="1"/>""",
+      sort(<a a:f="1" a:e="2" a:d="3" a:c="4" a:b="5"/>) toString
+    )
+    assertEquals(
+      """<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>""",
+      sort(<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>) toString
+    )
   }
 
   @UnitTest
   def attributes = {
     val noAttr = <t/>
-    val attrNull = <t a={ null: String }/>
-    val attrNone = <t a={ None: Option[Seq[Node]] }/>
-    val preAttrNull = <t p:a={ null: String }/>
-    val preAttrNone = <t p:a={ None: Option[Seq[Node]] }/>
+    val attrNull = <t a={null: String}/>
+    val attrNone = <t a={None: Option[Seq[Node]]}/>
+    val preAttrNull = <t p:a={null: String}/>
+    val preAttrNone = <t p:a={None: Option[Seq[Node]]}/>
     assertEquals(noAttr, attrNull)
     assertEquals(noAttr, attrNone)
     assertEquals(noAttr, preAttrNull)
     assertEquals(noAttr, preAttrNone)
 
     val xml1 = <t b="1" d="2"/>
-    val xml2 = <t a={ null: String } p:a={ null: String } b="1" c={ null: String } d="2"/>
-    val xml3 = <t b="1" c={ null: String } d="2" a={ null: String } p:a={ null: String }/>
+    val xml2 = <t a={null: String} p:a={null: String} b="1" c={
+      null: String
+    } d="2"/>
+    val xml3 = <t b="1" c={null: String} d="2" a={null: String} p:a={
+      null: String
+    }/>
     assertEquals(xml1, xml2)
     assertEquals(xml1, xml3)
 
@@ -499,7 +604,10 @@ Ours is the portal of hope, come as you are."
     assertEquals("""<t a="1" d="2"/>""", <t a="1" d="2"/> toString)
     assertEquals("""<t b="1" d="2"/>""", <t b="1" d="2"/> toString)
     assertEquals("""<t a="1" b="2" c="3"/>""", <t a="1" b="2" c="3"/> toString)
-    assertEquals("""<t g="1" e="2" p:a="3" f:e="4" mgruhu:ji="5"/>""", <t g="1" e="2" p:a="3" f:e="4" mgruhu:ji="5"/> toString)
+    assertEquals(
+      """<t g="1" e="2" p:a="3" f:e="4" mgruhu:ji="5"/>""",
+      <t g="1" e="2" p:a="3" f:e="4" mgruhu:ji="5"/> toString
+    )
   }
 
   @UnitTest
@@ -527,7 +635,7 @@ Ours is the portal of hope, come as you are."
   @UnitTest
   def nodeStringBuilder: Unit = {
     val x = {
-        <x:foo xmlns:x="abc"/>
+      <x:foo xmlns:x="abc"/>
     }
     val pp = new PrettyPrinter(80, 2)
     val expected = """<x:foo xmlns:x="abc"/>"""
@@ -538,7 +646,7 @@ Ours is the portal of hope, come as you are."
 
   @UnitTest
   def i1976: Unit = {
-    val node = <node>{ "whatever " }</node>
+    val node = <node>{"whatever "}</node>
     assertEquals("whatever ", node.child.text)
   }
 

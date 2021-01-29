@@ -9,17 +9,16 @@
 package scala
 package xml.dtd.impl
 
-import scala.collection.{ immutable, mutable }
+import scala.collection.{immutable, mutable}
 import scala.collection.Seq
 
-/**
- * A nondeterministic automaton. States are integers, where
- *  0 is always the only initial state. Transitions are represented
- *  in the delta function. Default transitions are transitions that
- *  are taken when no other transitions can be applied.
- *  All states are reachable. Accepting states are those for which
- *  the partial function `finals` is defined.
- */
+/** A nondeterministic automaton. States are integers, where
+  *  0 is always the only initial state. Transitions are represented
+  *  in the delta function. Default transitions are transitions that
+  *  are taken when no other transitions can be applied.
+  *  All states are reachable. Accepting states are those for which
+  *  the partial function `finals` is defined.
+  */
 // TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
   val nstates: Int
@@ -47,7 +46,10 @@ private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
   def next(Q: immutable.BitSet, a: T): immutable.BitSet = next(Q, next(_, a))
   def nextDefault(Q: immutable.BitSet): immutable.BitSet = next(Q, default)
 
-  private def next(Q: immutable.BitSet, f: (Int) => immutable.BitSet): immutable.BitSet =
+  private def next(
+      Q: immutable.BitSet,
+      f: (Int) => immutable.BitSet
+  ): immutable.BitSet =
     Q.toSet.map(f).foldLeft(immutable.BitSet.empty)(_ ++ _)
 
   private def finalStates = 0 until nstates filter isFinal
@@ -55,8 +57,13 @@ private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
 
     val finalString = Map(finalStates map (j => j -> finals(j)): _*).toString
     val deltaString = (0 until nstates)
-      .map(i => "   %d->%s\n    _>%s\n".format(i, delta(i), default(i))).mkString
+      .map(i => "   %d->%s\n    _>%s\n".format(i, delta(i), default(i)))
+      .mkString
 
-    "[NondetWordAutom  nstates=%d  finals=%s  delta=\n%s".format(nstates, finalString, deltaString)
+    "[NondetWordAutom  nstates=%d  finals=%s  delta=\n%s".format(
+      nstates,
+      finalString,
+      deltaString
+    )
   }
 }

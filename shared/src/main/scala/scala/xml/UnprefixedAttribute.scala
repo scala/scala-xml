@@ -11,16 +11,15 @@ package xml
 
 import scala.collection.Seq
 
-/**
- * Unprefixed attributes have the null namespace, and no prefix field
- *
- *  @author Burak Emir
- */
+/** Unprefixed attributes have the null namespace, and no prefix field
+  *
+  *  @author Burak Emir
+  */
 class UnprefixedAttribute(
-  val key: String,
-  val value: Seq[Node],
-  next1: MetaData)
-  extends Attribute {
+    val key: String,
+    val value: Seq[Node],
+    next1: MetaData
+) extends Attribute {
   final val pre = null
   val next = if (value ne null) next1 else next1.remove(key)
 
@@ -32,29 +31,31 @@ class UnprefixedAttribute(
   def this(key: String, value: Option[Seq[Node]], next: MetaData) =
     this(key, value.orNull, next)
 
-  /** returns a copy of this unprefixed attribute with the given next field*/
+  /** returns a copy of this unprefixed attribute with the given next field */
   def copy(next: MetaData) = new UnprefixedAttribute(key, value, next)
 
   final def getNamespace(owner: Node): String = null
 
-  /**
-   * Gets value of unqualified (unprefixed) attribute with given key, null if not found
-   *
-   * @param  key
-   * @return value as Seq[Node] if key is found, null otherwise
-   */
+  /** Gets value of unqualified (unprefixed) attribute with given key, null if not found
+    *
+    * @param  key
+    * @return value as Seq[Node] if key is found, null otherwise
+    */
   def apply(key: String): Seq[Node] =
     if (key == this.key) value else next(key)
 
-  /**
-   * Forwards the call to next (because caller looks for prefixed attribute).
-   *
-   * @param  namespace
-   * @param  scope
-   * @param  key
-   * @return ..
-   */
-  def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] =
+  /** Forwards the call to next (because caller looks for prefixed attribute).
+    *
+    * @param  namespace
+    * @param  scope
+    * @param  key
+    * @return ..
+    */
+  def apply(
+      namespace: String,
+      scope: NamespaceBinding,
+      key: String
+  ): Seq[Node] =
     next(namespace, scope, key)
 }
 object UnprefixedAttribute {

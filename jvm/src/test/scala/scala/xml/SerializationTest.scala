@@ -18,7 +18,10 @@ class SerializationTest {
 
   @Test
   def unmatched: Unit = {
-    assertEquals(NodeSeq.Empty, JavaByteSerialization.roundTrip(<xml/> \ "HTML"))
+    assertEquals(
+      NodeSeq.Empty,
+      JavaByteSerialization.roundTrip(<xml/> \ "HTML")
+    )
   }
 
   @Test

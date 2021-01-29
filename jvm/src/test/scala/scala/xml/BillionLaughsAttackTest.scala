@@ -4,12 +4,11 @@ import org.junit.Test
 
 class BillionLaughsAttackTest {
 
-  /**
-   * org.xml.sax.SAXParseException: JAXP00010001: The parser has
-   * encountered more than "64000" entity expansions in this document;
-   * this is the limit imposed by the JDK.
-   */
-  @Test(expected=classOf[org.xml.sax.SAXParseException])
+  /** org.xml.sax.SAXParseException: JAXP00010001: The parser has
+    * encountered more than "64000" entity expansions in this document;
+    * this is the limit imposed by the JDK.
+    */
+  @Test(expected = classOf[org.xml.sax.SAXParseException])
   def lolzTest: Unit = {
     XML.loadString(lolz)
   }

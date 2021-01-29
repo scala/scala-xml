@@ -11,12 +11,11 @@ package xml
 
 import scala.collection.Seq
 
-/**
- * This singleton object contains the `apply` and `unapply` methods for
- *  convenient construction and deconstruction.
- *
- *  @author  Burak Emir
- */
+/** This singleton object contains the `apply` and `unapply` methods for
+  *  convenient construction and deconstruction.
+  *
+  *  @author  Burak Emir
+  */
 object Attribute {
   def unapply(x: Attribute) = x match {
     case PrefixedAttribute(_, key, value, next) => Some((key, value, next))
@@ -28,27 +27,41 @@ object Attribute {
   def apply(key: String, value: Seq[Node], next: MetaData): Attribute =
     new UnprefixedAttribute(key, value, next)
 
-  def apply(pre: String, key: String, value: String, next: MetaData): Attribute =
+  def apply(
+      pre: String,
+      key: String,
+      value: String,
+      next: MetaData
+  ): Attribute =
     if (pre == null || pre == "") new UnprefixedAttribute(key, value, next)
     else new PrefixedAttribute(pre, key, value, next)
 
-  def apply(pre: String, key: String, value: Seq[Node], next: MetaData): Attribute =
+  def apply(
+      pre: String,
+      key: String,
+      value: Seq[Node],
+      next: MetaData
+  ): Attribute =
     if (pre == null || pre == "") new UnprefixedAttribute(key, value, next)
     else new PrefixedAttribute(pre, key, value, next)
 
-  def apply(pre: Option[String], key: String, value: Seq[Node], next: MetaData): Attribute =
+  def apply(
+      pre: Option[String],
+      key: String,
+      value: Seq[Node],
+      next: MetaData
+  ): Attribute =
     pre match {
       case None    => new UnprefixedAttribute(key, value, next)
       case Some(p) => new PrefixedAttribute(p, key, value, next)
     }
 }
 
-/**
- * The `Attribute` trait defines the interface shared by both
- *  [[scala.xml.PrefixedAttribute]] and [[scala.xml.UnprefixedAttribute]].
- *
- *  @author  Burak Emir
- */
+/** The `Attribute` trait defines the interface shared by both
+  *  [[scala.xml.PrefixedAttribute]] and [[scala.xml.UnprefixedAttribute]].
+  *
+  *  @author  Burak Emir
+  */
 abstract trait Attribute extends MetaData {
   def pre: String // will be null if unprefixed
   val key: String
@@ -87,9 +100,8 @@ abstract trait Attribute extends MetaData {
     else 1 + next.size
   }
 
-  /**
-   * Appends string representation of only this attribute to stringbuffer.
-   */
+  /** Appends string representation of only this attribute to stringbuffer.
+    */
   protected def toString1(sb: StringBuilder): Unit = {
     if (value == null)
       return

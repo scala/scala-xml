@@ -9,13 +9,12 @@
 package scala
 package xml
 
-/**
- * an XML node for processing instructions (PI)
- *
- * @author Burak Emir
- * @param  target     target name of this PI
- * @param  proctext   text contained in this node, may not contain "?>"
- */
+/** an XML node for processing instructions (PI)
+  *
+  * @author Burak Emir
+  * @param  target     target name of this PI
+  * @param  proctext   text contained in this node, may not contain "?>"
+  */
 case class ProcInstr(target: String, proctext: String) extends SpecialNode {
   if (!Utility.isName(target))
     throw new IllegalArgumentException(target + " must be an XML Name")
@@ -30,10 +29,12 @@ case class ProcInstr(target: String, proctext: String) extends SpecialNode {
   final def label = "#PI"
   override def text = ""
 
-  /**
-   * appends &quot;&lt;?&quot; target (&quot; &quot;+text)?+&quot;?&gt;&quot;
-   *  to this stringbuffer.
-   */
+  /** appends &quot;&lt;?&quot; target (&quot; &quot;+text)?+&quot;?&gt;&quot;
+    *  to this stringbuffer.
+    */
   override def buildString(sb: StringBuilder) =
-    sb append "<?%s%s?>".format(target, (if (proctext == "") "" else " " + proctext))
+    sb append "<?%s%s?>".format(
+      target,
+      (if (proctext == "") "" else " " + proctext)
+    )
 }

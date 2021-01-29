@@ -9,12 +9,13 @@
 package scala
 package xml
 
-/**
- * This object provides an extractor method to match a qualified node with
- *  its namespace URI
- *
- *  @author  Burak Emir
- */
+/** This object provides an extractor method to match a qualified node with
+  *  its namespace URI
+  *
+  *  @author  Burak Emir
+  */
 object QNode {
-  def unapplySeq(n: Node) = Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child.toSeq))
+  def unapplySeq(n: Node) = Some(
+    (n.scope.getURI(n.prefix), n.label, n.attributes, n.child.toSeq)
+  )
 }

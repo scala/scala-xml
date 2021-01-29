@@ -12,7 +12,9 @@ private[xml] object ScalaVersionSpecific {
   }
 }
 
-private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { self: NodeSeq =>
+private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] {
+  self: NodeSeq =>
+
   /** Creates a list buffer as builder for this class */
   override protected[this] def newBuilder = NodeSeq.newBuilder
 }

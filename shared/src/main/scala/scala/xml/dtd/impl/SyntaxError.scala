@@ -9,11 +9,10 @@
 package scala
 package xml.dtd.impl
 
-/**
- * This runtime exception is thrown if an attempt to instantiate a
- *  syntactically incorrect expression is detected.
- *
- *  @author  Burak Emir
- */
+/** This runtime exception is thrown if an attempt to instantiate a
+  *  syntactically incorrect expression is detected.
+  *
+  *  @author  Burak Emir
+  */
 @deprecated("This class will be removed", "2.10.0")
 private[dtd] class SyntaxError(e: String) extends RuntimeException(e)

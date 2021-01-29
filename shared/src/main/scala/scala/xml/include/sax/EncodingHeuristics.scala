@@ -12,16 +12,15 @@ package include.sax
 
 import java.io.InputStream
 
-/**
- * `EncodingHeuristics` reads from a stream
- * (which should be buffered) and attempts to guess
- * what the encoding of the text in the stream is.
- * If it fails to determine the type of the encoding,
- * it returns the default UTF-8.
- *
- * @author Burak Emir
- * @author Paul Phillips
- */
+/** `EncodingHeuristics` reads from a stream
+  * (which should be buffered) and attempts to guess
+  * what the encoding of the text in the stream is.
+  * If it fails to determine the type of the encoding,
+  * it returns the default UTF-8.
+  *
+  * @author Burak Emir
+  * @author Paul Phillips
+  */
 object EncodingHeuristics {
   object EncodingNames {
     // UCS-4 isn't yet implemented in java releases anyway...
@@ -35,15 +34,14 @@ object EncodingHeuristics {
   }
   import EncodingNames._
 
-  /**
-   * This utility method attempts to determine the XML character encoding
-   * by examining the input stream, as specified at
-   * [[http://www.w3.org/TR/xml/#sec-guessing w3]].
-   *
-   * @param    in   `InputStream` to read from.
-   * @throws java.io.IOException if the stream cannot be reset
-   * @return         the name of the encoding.
-   */
+  /** This utility method attempts to determine the XML character encoding
+    * by examining the input stream, as specified at
+    * [[http://www.w3.org/TR/xml/#sec-guessing w3]].
+    *
+    * @param    in   `InputStream` to read from.
+    * @throws java.io.IOException if the stream cannot be reset
+    * @return         the name of the encoding.
+    */
   def readEncodingFromStream(in: InputStream): String = {
     var ret: String = null
     val bytesToRead = 1024 // enough to read most XML encoding declarations
@@ -56,13 +54,13 @@ object EncodingHeuristics {
 
     // first look for byte order mark
     ret = bytes match {
-      case (0x00, 0x00, 0xFE, 0xFF) => bigUCS4
-      case (0xFF, 0xFE, 0x00, 0x00) => littleUCS4
-      case (0x00, 0x00, 0xFF, 0xFE) => unusualUCS4
-      case (0xFE, 0xFF, 0x00, 0x00) => unusualUCS4
-      case (0xFE, 0xFF, _, _)       => bigUTF16
-      case (0xFF, 0xFE, _, _)       => littleUTF16
-      case (0xEF, 0xBB, 0xBF, _)    => utf8
+      case (0x00, 0x00, 0xfe, 0xff) => bigUCS4
+      case (0xff, 0xfe, 0x00, 0x00) => littleUCS4
+      case (0x00, 0x00, 0xff, 0xfe) => unusualUCS4
+      case (0xfe, 0xff, 0x00, 0x00) => unusualUCS4
+      case (0xfe, 0xff, _, _)       => bigUTF16
+      case (0xff, 0xfe, _, _)       => littleUTF16
+      case (0xef, 0xbb, 0xbf, _)    => utf8
       case _                        => null
     }
     if (ret != null)
@@ -90,7 +88,7 @@ object EncodingHeuristics {
       case (0x00, '<', 0x00, '?')   => bigUTF16 // XXX must read encoding
       case ('<', 0x00, '?', 0x00)   => littleUTF16 // XXX must read encoding
       case ('<', '?', 'x', 'm')     => readASCIIEncoding
-      case (0x4C, 0x6F, 0xA7, 0x94) => utf8 // XXX EBCDIC
+      case (0x4c, 0x6f, 0xa7, 0x94) => utf8 // XXX EBCDIC
       case _                        => utf8 // no XML or text declaration present
     }
     resetAndRet

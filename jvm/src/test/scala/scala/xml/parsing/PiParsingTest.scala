@@ -5,12 +5,13 @@ import scala.xml.JUnitAssertsForXML.assertEquals
 
 class PiParsingTestJVM {
 
-
   import scala.io.Source.fromString
   import scala.xml.parsing.ConstructingParser.fromSource
   import scala.xml.TopScope
-  private def parse(s:String) = fromSource(fromString(s), preserveWS = true).element(TopScope)
-  private def parseNoWS(s:String) = fromSource(fromString(s), preserveWS = false).element(TopScope)
+  private def parse(s: String) =
+    fromSource(fromString(s), preserveWS = true).element(TopScope)
+  private def parseNoWS(s: String) =
+    fromSource(fromString(s), preserveWS = false).element(TopScope)
 
   @Test
   def piNoWSparse: Unit = {

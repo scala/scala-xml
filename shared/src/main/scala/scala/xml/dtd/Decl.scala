@@ -12,17 +12,16 @@ package dtd
 
 import Utility.sbToString
 
-/**
- * XML declarations
- * 
- *  - [[scala.xml.dtd.AttListDecl]] — Attribute list declaration (ATTLIST)
- *  - [[scala.xml.dtd.AttrDecl]] — Attribute declaration
- *  - [[scala.xml.dtd.ElemDecl]] — Element declaration (ELEMENT)
- *  - [[scala.xml.dtd.ParameterEntityDecl]] — Parameter entity list (ENTITY %)
- *  - [[scala.xml.dtd.ParsedEntityDecl]] — Parsed general entity list (ENTITY)
- *  - [[scala.xml.dtd.PEReference]] — Parsed entity reference
- *  - [[scala.xml.dtd.UnparsedEntityDecl]] — Unparsed entity list (ENTITY NDATA)
- */
+/** XML declarations
+  *
+  *  - [[scala.xml.dtd.AttListDecl]] — Attribute list declaration (ATTLIST)
+  *  - [[scala.xml.dtd.AttrDecl]] — Attribute declaration
+  *  - [[scala.xml.dtd.ElemDecl]] — Element declaration (ELEMENT)
+  *  - [[scala.xml.dtd.ParameterEntityDecl]] — Parameter entity list (ENTITY %)
+  *  - [[scala.xml.dtd.ParsedEntityDecl]] — Parsed general entity list (ENTITY)
+  *  - [[scala.xml.dtd.PEReference]] — Parsed entity reference
+  *  - [[scala.xml.dtd.UnparsedEntityDecl]] — Unparsed entity list (ENTITY NDATA)
+  */
 sealed abstract class Decl
 
 sealed abstract class MarkupDecl extends Decl {
@@ -30,11 +29,10 @@ sealed abstract class MarkupDecl extends Decl {
   def buildString(sb: StringBuilder): StringBuilder
 }
 
-/**
- * an element declaration
- */
+/** an element declaration
+  */
 case class ElemDecl(name: String, contentModel: ContentModel)
-  extends MarkupDecl {
+    extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb append "<!ELEMENT " append name append ' '
 
@@ -43,18 +41,20 @@ case class ElemDecl(name: String, contentModel: ContentModel)
   }
 }
 
-case class AttListDecl(name: String, attrs: List[AttrDecl])
-  extends MarkupDecl {
+case class AttListDecl(name: String, attrs: List[AttrDecl]) extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
-    sb append "<!ATTLIST " append name append '\n' append attrs.mkString("", "\n", ">")
+    sb append "<!ATTLIST " append name append '\n' append attrs.mkString(
+      "",
+      "\n",
+      ">"
+    )
   }
 }
 
-/**
- * an attribute declaration. at this point, the tpe is a string. Future
- *  versions might provide a way to access the attribute types more
- *  directly.
- */
+/** an attribute declaration. at this point, the tpe is a string. Future
+  *  versions might provide a way to access the attribute types more
+  *  directly.
+  */
 case class AttrDecl(name: String, tpe: String, default: DefaultDecl) {
   override def toString(): String = sbToString(buildString)
 
@@ -69,7 +69,8 @@ case class AttrDecl(name: String, tpe: String, default: DefaultDecl) {
 sealed abstract class EntityDecl extends MarkupDecl
 
 /** a parsed general entity declaration */
-case class ParsedEntityDecl(name: String, entdef: EntityDef) extends EntityDecl {
+case class ParsedEntityDecl(name: String, entdef: EntityDef)
+    extends EntityDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb append "<!ENTITY " append name append ' '
     entdef buildString sb append '>'
@@ -77,7 +78,8 @@ case class ParsedEntityDecl(name: String, entdef: EntityDef) extends EntityDecl 
 }
 
 /** a parameter entity declaration */
-case class ParameterEntityDecl(name: String, entdef: EntityDef) extends EntityDecl {
+case class ParameterEntityDecl(name: String, entdef: EntityDef)
+    extends EntityDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb append "<!ENTITY % " append name append ' '
     entdef buildString sb append '>'
@@ -85,12 +87,14 @@ case class ParameterEntityDecl(name: String, entdef: EntityDef) extends EntityDe
 }
 
 /** an unparsed entity declaration */
-case class UnparsedEntityDecl(name: String, extID: ExternalID, notation: String) extends EntityDecl {
+case class UnparsedEntityDecl(name: String, extID: ExternalID, notation: String)
+    extends EntityDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb append "<!ENTITY " append name append ' '
     extID buildString sb append " NDATA " append notation append '>'
   }
 }
+
 /** a notation declaration */
 case class NotationDecl(name: String, extID: ExternalID) extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
@@ -110,12 +114,16 @@ case class IntDef(value: String) extends EntityDef {
     while (ix != -1) {
       val iz = tmp.indexOf(';', ix)
       if (iz == -1 && iz == ix + 1)
-        throw new IllegalArgumentException("no % allowed in entity value, except for parameter-entity-references")
+        throw new IllegalArgumentException(
+          "no % allowed in entity value, except for parameter-entity-references"
+        )
       else {
         val n = tmp.substring(ix, iz)
 
         if (!Utility.isName(n))
-          throw new IllegalArgumentException("internal entity def: \"" + n + "\" must be an XML Name")
+          throw new IllegalArgumentException(
+            "internal entity def: \"" + n + "\" must be an XML Name"
+          )
 
         tmp = tmp.substring(iz + 1, tmp.length)
         ix = tmp indexOf '%'

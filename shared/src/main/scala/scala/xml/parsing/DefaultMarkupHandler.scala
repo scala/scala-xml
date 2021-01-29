@@ -13,8 +13,15 @@ package parsing
 /** Default implementation of markup handler always returns `NodeSeq.Empty` */
 abstract class DefaultMarkupHandler extends MarkupHandler {
 
-  def elem(pos: Int, pre: String, label: String, attrs: MetaData,
-           scope: NamespaceBinding, empty: Boolean, args: NodeSeq) = NodeSeq.Empty
+  def elem(
+      pos: Int,
+      pre: String,
+      label: String,
+      attrs: MetaData,
+      scope: NamespaceBinding,
+      empty: Boolean,
+      args: NodeSeq
+  ) = NodeSeq.Empty
 
   def procInstr(pos: Int, target: String, txt: String) = NodeSeq.Empty
 

@@ -9,10 +9,12 @@
 package scala
 package xml.dtd.impl
 
-import scala.collection.{ mutable, immutable }
+import scala.collection.{mutable, immutable}
 
 // TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
-private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) {
+private[dtd] class SubsetConstruction[T <: AnyRef](
+    val nfa: NondetWordAutom[T]
+) {
   import nfa.labels
 
   def selectTag(Q: immutable.BitSet, finals: Array[Int]) =
@@ -29,7 +31,10 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     val sink = immutable.BitSet.empty // the set { }
 
     var states = Set(q0, sink) // initial set of sets
-    val delta = new mutable.HashMap[immutable.BitSet, mutable.HashMap[T, immutable.BitSet]]
+    val delta = new mutable.HashMap[
+      immutable.BitSet,
+      mutable.HashMap[T, immutable.BitSet]
+    ]
     val deftrans = mutable.Map(q0 -> sink, sink -> sink) // initial transitions
     val finals: mutable.Map[immutable.BitSet, Int] = mutable.Map()
     var rest = immutable.List.empty[immutable.BitSet]

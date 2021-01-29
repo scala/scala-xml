@@ -19,9 +19,23 @@ trait NodeFactory[A <: Node] {
   /* default behaviour is to use hash-consing */
   val cache = new scala.collection.mutable.HashMap[Int, List[A]]
 
-  protected def create(pre: String, name: String, attrs: MetaData, scope: NamespaceBinding, children: Seq[Node]): A
+  protected def create(
+      pre: String,
+      name: String,
+      attrs: MetaData,
+      scope: NamespaceBinding,
+      children: Seq[Node]
+  ): A
 
-  protected def construct(hash: Int, old: List[A], pre: String, name: String, attrSeq: MetaData, scope: NamespaceBinding, children: Seq[Node]): A = {
+  protected def construct(
+      hash: Int,
+      old: List[A],
+      pre: String,
+      name: String,
+      attrSeq: MetaData,
+      scope: NamespaceBinding,
+      children: Seq[Node]
+  ): A = {
     val el = create(pre, name, attrSeq, scope, children)
     cache.update(hash, el :: old)
     el
@@ -30,16 +44,30 @@ trait NodeFactory[A <: Node] {
   def eqElements(ch1: Seq[Node], ch2: Seq[Node]): Boolean =
     ch1.view.zipAll(ch2.view, null, null) forall { case (x, y) => x eq y }
 
-  def nodeEquals(n: Node, pre: String, name: String, attrSeq: MetaData, scope: NamespaceBinding, children: Seq[Node]) =
+  def nodeEquals(
+      n: Node,
+      pre: String,
+      name: String,
+      attrSeq: MetaData,
+      scope: NamespaceBinding,
+      children: Seq[Node]
+  ) =
     n.prefix == pre &&
       n.label == name &&
       n.attributes == attrSeq &&
       // scope?
       eqElements(n.child, children)
 
-  def makeNode(pre: String, name: String, attrSeq: MetaData, scope: NamespaceBinding, children: Seq[Node]): A = {
+  def makeNode(
+      pre: String,
+      name: String,
+      attrSeq: MetaData,
+      scope: NamespaceBinding,
+      children: Seq[Node]
+  ): A = {
     val hash = Utility.hashCode(pre, name, attrSeq.##, scope.##, children)
-    def cons(old: List[A]) = construct(hash, old, pre, name, attrSeq, scope, children)
+    def cons(old: List[A]) =
+      construct(hash, old, pre, name, attrSeq, scope, children)
 
     (cache get hash) match {
       case Some(list) => // find structurally equal

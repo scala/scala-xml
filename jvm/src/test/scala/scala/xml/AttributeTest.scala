@@ -29,9 +29,10 @@ class AttributeTestJVM {
     assertEquals(str2, doc2.toString)
   }
 
-  @Test(expected=classOf[SAXParseException])
+  @Test(expected = classOf[SAXParseException])
   def attributesFromStringWithDuplicate: Unit = {
-    val str = """<elem one="test" one="test1" two="test2" three="test3"></elem>"""
+    val str =
+      """<elem one="test" one="test1" two="test2" three="test3"></elem>"""
     XML.loadString(str)
   }
 }

@@ -9,12 +9,11 @@
 package scala
 package xml
 
-/**
- * `SpecialNode` is a special XML node which represents either text
- *  `(PCDATA)`, a comment, a `PI`, or an entity ref.
- *
- *  @author Burak Emir
- */
+/** `SpecialNode` is a special XML node which represents either text
+  *  `(PCDATA)`, a comment, a `PI`, or an entity ref.
+  *
+  *  @author Burak Emir
+  */
 abstract class SpecialNode extends Node {
 
   /** always empty */

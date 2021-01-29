@@ -12,13 +12,14 @@ package dtd
 
 case class ValidationException(e: String) extends Exception(e)
 
-/**
- *  @author Burak Emir
- */
+/**  @author Burak Emir
+  */
 object MakeValidationException {
   def fromFixedAttribute(k: String, value: String, actual: String) =
-    ValidationException("value of attribute " + k + " FIXED to \"" +
-      value + "\", but document tries \"" + actual + "\"")
+    ValidationException(
+      "value of attribute " + k + " FIXED to \"" +
+        value + "\", but document tries \"" + actual + "\""
+    )
 
   def fromNonEmptyElement() =
     new ValidationException("element should be *empty*")
@@ -37,5 +38,7 @@ object MakeValidationException {
   }
 
   def fromMissingAttribute(key: String, tpe: String) =
-    new ValidationException("missing value for REQUIRED attribute %s of type %s".format(key, tpe))
+    new ValidationException(
+      "missing value for REQUIRED attribute %s of type %s".format(key, tpe)
+    )
 }

@@ -18,7 +18,14 @@ class PatternMatchingTest {
   }
 
   def matchList(args: List[String]) =
-    Elem(null, "bla", Null, TopScope, minimizeEmpty = true, (args map { x => Text(x) }): _*) match {
+    Elem(
+      null,
+      "bla",
+      Null,
+      TopScope,
+      minimizeEmpty = true,
+      (args map { x => Text(x) }): _*
+    ) match {
       case Elem(_, _, _, _, Text("1"), _*) => true
     }
 
@@ -34,17 +41,21 @@ class PatternMatchingTest {
       case <x:ga/> => true
     })
 
-  val cx = <z:hello foo="bar" xmlns:z="z" x:foo="baz" xmlns:x="the namespace from outer space">
+  val cx =
+    <z:hello foo="bar" xmlns:z="z" x:foo="baz" xmlns:x="the namespace from outer space">
              crazy text world
            </z:hello>
 
   @Test
   def nodeContents = {
     assertTrue(Utility.trim(cx) match {
-      case n @ <hello>crazy text world</hello> if (n \ "@foo") xml_== "bar" => true
+      case n @ <hello>crazy text world</hello> if (n \ "@foo") xml_== "bar" =>
+        true
     })
     assertTrue(Utility.trim(cx) match {
-      case n @ <z:hello>crazy text world</z:hello> if (n \ "@foo") xml_== "bar" => true
+      case n @ <z:hello>crazy text world</z:hello>
+          if (n \ "@foo") xml_== "bar" =>
+        true
     })
     assertTrue(<x:foo xmlns:x="gaga"/> match {
       case scala.xml.QNode("gaga", "foo", md, child @ _*) => true
@@ -58,9 +69,12 @@ class PatternMatchingTest {
 
   object SafeNodeSeq {
     def unapplySeq(any: Any): Option[Seq[Node]] = any match {
-      case s: Seq[_] => Some((s flatMap (_ match {
-        case n: Node => n case _ => NodeSeq.Empty
-      })).toSeq) case _ => None
+      case s: Seq[_] =>
+        Some((s flatMap (_ match {
+          case n: Node => n
+          case _       => NodeSeq.Empty
+        })).toSeq)
+      case _ => None
     }
   }
 
@@ -77,7 +91,7 @@ class PatternMatchingTest {
 
     assertTrue(NodeSeq.fromSeq(books.child) match {
       case t @ Seq(<title>Blabla</title>) => false
-      case _ => true
+      case _                              => true
     })
 
     // SI-1059
@@ -92,27 +106,27 @@ class PatternMatchingTest {
     val body: Node = <elem>hi</elem>
 
     assertTrue((body: AnyRef, "foo") match {
-      case (node: Node, "bar") => false
+      case (node: Node, "bar")        => false
       case (ser: Serializable, "foo") => true
-      case (_, _) => false
+      case (_, _)                     => false
     })
 
     assertTrue((body, "foo") match {
-      case (node: Node, "bar") => false
+      case (node: Node, "bar")        => false
       case (ser: Serializable, "foo") => true
-      case (_, _) => false
+      case (_, _)                     => false
     })
 
     assertTrue((body: AnyRef, "foo") match {
-      case (node: Node, "foo") => true
+      case (node: Node, "foo")        => true
       case (ser: Serializable, "foo") => false
-      case (_, _) => false
+      case (_, _)                     => false
     })
 
     assertTrue((body: AnyRef, "foo") match {
-      case (node: Node, "foo") => true
+      case (node: Node, "foo")        => true
       case (ser: Serializable, "foo") => false
-      case (_, _) => false
+      case (_, _)                     => false
     })
   }
 }

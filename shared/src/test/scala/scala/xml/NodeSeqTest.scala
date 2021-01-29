@@ -14,7 +14,8 @@ class NodeSeqTest {
     val b = <b>Hi</b>
     a ++ <b>Hi</b> match {
       case res: NodeSeq => assertEquals(2, res.size.toLong)
-      case res: Seq[Node] => fail("Should be NodeSeq was Seq[Node]") // Unreachable code?
+      case res: Seq[Node] =>
+        fail("Should be NodeSeq was Seq[Node]") // Unreachable code?
     }
     val res: NodeSeq = a ++ b
     val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
@@ -27,7 +28,8 @@ class NodeSeqTest {
     val b = <b>Hi</b>
     a :+ <b>Hi</b> match {
       case res: Seq[Node] => assertEquals(2, res.size.toLong)
-      case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
+      case res: NodeSeq =>
+        fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
     val res: NodeSeq = a :+ b
     val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
@@ -40,7 +42,8 @@ class NodeSeqTest {
     val b = <b>Hi</b>
     a +: <b>Hi</b> match {
       case res: Seq[Node] => assertEquals(2, res.size.toLong)
-      case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
+      case res: NodeSeq =>
+        fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
     val res: Seq[NodeSeq] = a +: b
     val exp: NodeBuffer = {
@@ -56,7 +59,8 @@ class NodeSeqTest {
     val c = <c>Hey</c>
     a ++: <b>Hi</b> ++: <c>Hey</c> match {
       case res: Seq[Node] => assertEquals(3, res.size.toLong)
-      case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
+      case res: NodeSeq =>
+        fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
     val res: NodeSeq = a ++: b ++: c
     val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>, <c>Hey</c>))

@@ -6,12 +6,12 @@ import org.junit.Test
 
 final class CommentTest {
 
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test(expected = classOf[IllegalArgumentException])
   def invalidCommentWithTwoDashes: Unit = {
     Comment("invalid--comment")
   }
 
-  @Test(expected=classOf[IllegalArgumentException])
+  @Test(expected = classOf[IllegalArgumentException])
   def invalidCommentWithFinalDash: Unit = {
     Comment("invalid comment-")
   }
