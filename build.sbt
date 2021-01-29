@@ -18,7 +18,7 @@ lazy val configSettings: Seq[Setting[_]] = Seq(
   }
 )
 
-lazy val xml = crossProject(JSPlatform, JVMPlatform)
+lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .withoutSuffixFor(JVMPlatform)
   .crossType(CrossType.Full)
   .in(file("."))
@@ -163,3 +163,27 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
     Test / fork := false
   )
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
+  .nativeSettings(
+    scalaModuleMimaPreviousVersion := None, // No such release yet
+    // Scala Native cannot run forked tests
+    Test / fork := false,
+    libraryDependencies += "org.scala-native" %%% "junit-runtime" % nativeVersion % Test,
+    Test / scalacOptions += {
+      val log = streams.value.log
+      val retrieveDir = baseDirectory.value / "scala-native-junit-plugin-jars"
+      val lm = dependencyResolution.value
+      val cp = lm
+        .retrieve(
+          "org.scala-native" % s"junit-plugin_${scalaVersion.value}" % nativeVersion,
+          scalaModuleInfo = None,
+          retrieveDir,
+          log
+        )
+        .fold(w => throw w.resolveException, identity(_))
+      val jarPath = cp
+        .find(_.toString.contains("junit-plugin"))
+        .getOrElse(throw new Exception("Can't find Scala Native junit-plugin jar"))
+      s"-Xplugin:$jarPath"
+    },
+    Test / testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v")
+  )
