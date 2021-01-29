@@ -181,7 +181,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         )
         .fold(w => throw w.resolveException, identity(_))
       val jarPath = cp
-        .find(_.toString.contains(s"/org/scala-native/junit-plugin_${scalaVersion.value}/$nativeVersion/junit-plugin_${scalaVersion.value}-$nativeVersion.jar"))
+        .find(_.toString.contains("junit-plugin"))
         .getOrElse(throw new Exception("Can't find Scala Native junit-plugin jar"))
       s"-Xplugin:$jarPath"
     },
