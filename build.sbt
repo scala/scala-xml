@@ -1,5 +1,8 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
+ThisBuild / startYear := Some(2002)
+ThisBuild / licenses += (("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")))
+
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
     unmanagedSourceDirectories.value.flatMap { dir =>
@@ -42,6 +45,18 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     // don't run Dottydoc, it errors and isn't needed anyway.
     // but we leave `publishArtifact` set to true, otherwise Sonatype won't let us publish
     Compile / doc / sources := (if (isDotty.value) Seq() else (Compile / doc/ sources).value),
+
+    headerLicense  := Some(HeaderLicense.Custom(
+      s"""|Scala (https://www.scala-lang.org)
+          |
+          |Copyright EPFL and Lightbend, Inc.
+          |
+          |Licensed under Apache License 2.0
+          |(http://www.apache.org/licenses/LICENSE-2.0).
+          |
+          |See the NOTICE file distributed with this work for
+          |additional information regarding copyright ownership.
+          |""".stripMargin)),
 
     scalaModuleMimaPreviousVersion := {
       if (isDotty.value) None // No such release yet
