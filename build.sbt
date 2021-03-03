@@ -165,7 +165,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
 
     libraryDependencies += "junit" % "junit" % "4.13.2" % Test,
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
-    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.11" % Test,
+    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.12.0" % Test,
     libraryDependencies ++= {
       if (isDotty.value)
         Seq()
