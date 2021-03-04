@@ -256,10 +256,10 @@ class XMLTest {
   @UnitTest
   def escape =
     assertEquals("""
- "Come, come again, whoever you are, come!
+ &quot;Come, come again, whoever you are, come!
 Heathen, fire worshipper or idolatrous, come!
 Come even if you broke your penitence a hundred times,
-Ours is the portal of hope, come as you are."
+Ours is the portal of hope, come as you are.&quot;
                               Mevlana Celaleddin Rumi""", <![CDATA[
  "Come, come again, whoever you are, come!
 Heathen, fire worshipper or idolatrous, come!
@@ -420,22 +420,6 @@ Ours is the portal of hope, come as you are."
     assertHonorsIterableContract(<a y={ null: String }/>.attributes)
     assertHonorsIterableContract(<a y={ null: String } x=""/>.attributes)
     assertHonorsIterableContract(<a a="" y={ null: String }/>.attributes)
-  }
-
-  @UnitTest
-  def t5645: Unit = {
-
-    val bar = "baz"
-    val script = <script type="text/javascript">
-      foo("{bar}");
-    </script>
-
-    val expected =
-      """|<script type="text/javascript">
-         |      foo("baz");
-         |    </script>""".stripMargin
-
-    assertEquals(expected, script.toString)
   }
 
   @UnitTest
