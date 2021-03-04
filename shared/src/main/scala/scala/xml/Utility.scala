@@ -1,16 +1,21 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
 
 import scala.collection.mutable
 import scala.language.implicitConversions
+import scala.collection.Seq
 
 /**
  * The `Utility` object provides utility functions for processing instances
@@ -23,7 +28,7 @@ object Utility extends AnyRef with parsing.TokenTests {
 
   // [Martin] This looks dubious. We don't convert StringBuilders to
   // Strings anywhere else, why do it here?
-  implicit def implicitSbToString(sb: StringBuilder) = sb.toString()
+  implicit def implicitSbToString(sb: StringBuilder): String = sb.toString()
 
   // helper for the extremely oft-repeated sequence of creating a
   // StringBuilder, passing it around, and then grabbing its String.
@@ -45,8 +50,15 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trim(x: Node): Node = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children = child flatMap trimProper
+      val children = combineAdjacentTextNodes(child) flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
+  }
+
+  private def combineAdjacentTextNodes(children: Seq[Node]): Seq[Node] = {
+    children.foldRight(Seq.empty[Node]) {
+      case (Text(left), Text(right) +: nodes) => Text(left + right) +: nodes
+      case (n, nodes) => n +: nodes
+    }
   }
 
   /**
@@ -55,7 +67,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trimProper(x: Node): Seq[Node] = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children = child flatMap trimProper
+      val children = combineAdjacentTextNodes(child) flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
     case Text(s) =>
       new TextBuffer().append(s).toText
@@ -120,6 +132,20 @@ object Utility extends AnyRef with parsing.TokenTests {
   }
 
   /**
+   * Appends escaped string to `s`, but not &quot;.
+   */
+  final def escapeText(text: String, s: StringBuilder): StringBuilder = {
+    val escTextMap = escMap - '"' // Remove quotes from escMap
+    text.iterator.foldLeft(s) { (s, c) =>
+      escTextMap.get(c) match {
+        case Some(str)                             => s ++= str
+        case _ if c >= ' ' || "\n\r\t".contains(c) => s += c
+        case _ => s // noop
+      }
+    }
+  }
+
+  /**
    * Appends unescaped string to `s`, `amp` becomes `&amp;`,
    * `lt` becomes `&lt;` etc..
    *
@@ -138,7 +164,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   /**
    * Adds all namespaces in node to set.
    */
-  def collectNamespaces(n: Node, set: mutable.Set[String]) {
+  def collectNamespaces(n: Node, set: mutable.Set[String]): Unit = {
     if (n.doCollectNamespaces) {
       set += n.namespace
       for (a <- n.attributes) a match {
@@ -201,7 +227,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     minimizeTags: MinimizeMode.Value = MinimizeMode.Default): StringBuilder =
     {
       x match {
-        case c: Comment if !stripComments => c buildString sb
+        case c: Comment                   => if (!stripComments) c buildString sb; sb
         case s: SpecialNode               => s buildString sb
         case g: Group                     =>
           for (c <- g.nodes) serialize(c, g.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags); sb

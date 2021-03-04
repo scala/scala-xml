@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2002-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -86,7 +90,7 @@ class XIncludeFilter extends XMLFilterImpl {
   // what if this isn't called????
   // do I need to check this in startDocument() and push something
   // there????
-  override def setDocumentLocator(locator: Locator) {
+  override def setDocumentLocator(locator: Locator): Unit = {
     locators push locator
     val base = locator.getSystemId()
     try {
@@ -113,7 +117,7 @@ class XIncludeFilter extends XMLFilterImpl {
    */
   def insideIncludeElement(): Boolean = level != 0
 
-  override def startElement(uri: String, localName: String, qName: String, atts1: Attributes) {
+  override def startElement(uri: String, localName: String, qName: String, atts1: Attributes): Unit = {
     var atts = atts1
     if (level == 0) { // We're not inside an xi:include element
 
@@ -169,7 +173,7 @@ class XIncludeFilter extends XMLFilterImpl {
     }
   }
 
-  override def endElement(uri: String, localName: String, qName: String) {
+  override def endElement(uri: String, localName: String, qName: String): Unit = {
     if (uri.equals(XINCLUDE_NAMESPACE)
       && localName.equals("include")) {
       level -= 1
@@ -181,13 +185,13 @@ class XIncludeFilter extends XMLFilterImpl {
 
   private var depth = 0
 
-  override def startDocument() {
+  override def startDocument(): Unit = {
     level = 0
     if (depth == 0) super.startDocument()
     depth += 1
   }
 
-  override def endDocument() {
+  override def endDocument(): Unit = {
     locators.pop()
     bases.pop() // pop the URL for the document itself
     depth -= 1
@@ -195,27 +199,27 @@ class XIncludeFilter extends XMLFilterImpl {
   }
 
   // how do prefix mappings move across documents????
-  override def startPrefixMapping(prefix: String, uri: String) {
+  override def startPrefixMapping(prefix: String, uri: String): Unit = {
     if (level == 0) super.startPrefixMapping(prefix, uri)
   }
 
-  override def endPrefixMapping(prefix: String) {
+  override def endPrefixMapping(prefix: String): Unit = {
     if (level == 0) super.endPrefixMapping(prefix)
   }
 
-  override def characters(ch: Array[Char], start: Int, length: Int) {
+  override def characters(ch: Array[Char], start: Int, length: Int): Unit = {
     if (level == 0) super.characters(ch, start, length)
   }
 
-  override def ignorableWhitespace(ch: Array[Char], start: Int, length: Int) {
+  override def ignorableWhitespace(ch: Array[Char], start: Int, length: Int): Unit = {
     if (level == 0) super.ignorableWhitespace(ch, start, length)
   }
 
-  override def processingInstruction(target: String, data: String) {
+  override def processingInstruction(target: String, data: String): Unit = {
     if (level == 0) super.processingInstruction(target, data)
   }
 
-  override def skippedEntity(name: String) {
+  override def skippedEntity(name: String): Unit = {
     if (level == 0) super.skippedEntity(name)
   }
 
@@ -252,7 +256,7 @@ class XIncludeFilter extends XMLFilterImpl {
    * be downloaded from the specified URL
    * or if the encoding is not recognized
    */
-  private def includeTextDocument(url: String, encoding1: String) {
+  private def includeTextDocument(url: String, encoding1: String): Unit = {
     var encoding = encoding1
     if (encoding == null || encoding.trim().equals("")) encoding = "UTF-8"
     var source: URL = null
@@ -291,10 +295,10 @@ class XIncludeFilter extends XMLFilterImpl {
       val reader = new InputStreamReader(in, encoding)
       val c = new Array[Char](1024)
       var charsRead: Int = 0 // bogus init value
-      do {
+      while ({ {
         charsRead = reader.read(c, 0, 1024)
         if (charsRead > 0) this.characters(c, 0, charsRead)
-      } while (charsRead != -1)
+      } ; charsRead != -1}) ()
     } catch {
       case e: UnsupportedEncodingException =>
         throw new SAXException("Unsupported encoding: "
@@ -318,7 +322,7 @@ class XIncludeFilter extends XMLFilterImpl {
    * @throws SAXException if the requested document cannot
    * be downloaded from the specified URL.
    */
-  private def includeXMLDocument(url: String) {
+  private def includeXMLDocument(url: String): Unit = {
     val source =
       try new URL(bases.peek(), url)
       catch {

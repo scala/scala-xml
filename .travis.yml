@@ -1,36 +1,30 @@
-# opt-in to Travis's newer/faster container-based infrastructure
-sudo: false
+version: ~> 1.0 # needed for imports
+
+import: scala/scala-dev:travis/default.yml
 
 language: scala
 
+scala:
+  - 3.0.0-RC1
+  - 3.0.0-M3
+  - 2.12.13
+  - 2.13.5
+
 env:
-  global:
-    # PGP_PASSPHRASE
-    - secure: "BYC1kEnHjNrINrHYWPGEuTTJ2V340/0ByzqeihLecjoZ75yrjWdsh6MI1JEUWgv5kb+58vLzib21JfnjsPK6Yb2bSXuCFCsEtJNh6RJKgxkWlCOzfTSh5I2wl7PCjRClRL6gseX2uTSvFjL4Z//pmxwxeXlLp7voQe4QAUq1+sE="
-    # SONA_USER
-    - secure: "OpBwPc1GNvauageYOH3RscAa7wpZxgpmqDz15aigIKLNWzAhAtVUx0MleZ8rQeoqml6nrAvlnzuVHjKL2lVcjMPpjUis7bcQ5UAGK7tZK8x+qZNQxXmpXu8+pENwQA2yFaqt/xy7K5jFOrHJHTRxcPnyVG1yKakPWz53PPYUwbc="
-    # SONA_PASS
-    - secure: "Xw7rI/qlML1nD2e2XwlakkhKAWNGZKqqE+Q3ntTvFpfHryl7KLCvVzJ4LIavnL6kGJaWOgy9vlSoEWn5g9nqHSfE31C/k5pY5nTMAKiwiJzfAS+r0asKXW2gmKhwtcTBkqyLVOZLCJSPVlFRQyfBJHY+Fs0L3KWcnMQgtBlyDhU="
+  - SCALAJS_VERSION=          ADOPTOPENJDK=8
+  - SCALAJS_VERSION=1.5.0     ADOPTOPENJDK=8
+  - SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
+  - SCALAJS_VERSION=          ADOPTOPENJDK=11
+  - SCALAJS_VERSION=          ADOPTOPENJDK=15
 
-script: admin/build.sh
+jobs:
+  exclude:
+    - scala: 3.0.0-M3
+      env: SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
+    - scala: 3.0.0-RC1
+      env: SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
 
-addons:
-  apt:
-    packages:
-      - openjdk-6-jdk
+install:
+  - git fetch --tags # get all tags for sbt-dynver
 
-jdk:
-  - openjdk6
-  - oraclejdk8
-
-notifications:
-  email: adriaan.moors@lightbend.com
-
-before_cache:
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
-cache:
-  directories:
-  - $HOME/.ivy2/cache
-  - $HOME/.sbt/boot
-  - $HOME/.sbt/launchers
+script: ./build.sh

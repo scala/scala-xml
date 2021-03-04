@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml.dtd.impl
@@ -13,7 +17,6 @@ package xml.dtd.impl
  * Basic regular expressions.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 
 @deprecated("This class will be removed", "2.10.0")
@@ -21,7 +24,7 @@ private[dtd] abstract class Base {
   type _regexpT <: RegExp
 
   abstract class RegExp {
-    val isNullable: Boolean
+    def isNullable: Boolean
   }
 
   object Alt {

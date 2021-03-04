@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |                                         **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -42,9 +46,9 @@ trait XMLLoader[T <: Node] {
   def loadXML(source: InputSource, parser: SAXParser): T = {
     val newAdapter = adapter
 
-    newAdapter.scopeStack push TopScope
+    newAdapter.scopeStack = TopScope :: newAdapter.scopeStack
     parser.parse(source, newAdapter)
-    newAdapter.scopeStack.pop()
+    newAdapter.scopeStack = newAdapter.scopeStack.tail
 
     newAdapter.rootElem.asInstanceOf[T]
   }

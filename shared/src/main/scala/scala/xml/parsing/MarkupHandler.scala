@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -16,11 +20,9 @@ import scala.xml.dtd._
 
 /**
  * class that handles markup - provides callback methods to MarkupParser.
- *  the default is nonvalidating behaviour
+ * the default is nonvalidating behaviour
  *
  *  @author  Burak Emir
- *  @version 1.0
- *
  *  @todo can we ignore more entity declarations (i.e. those with extIDs)?
  *  @todo expanding entity references
  */
@@ -123,7 +125,7 @@ abstract class MarkupHandler {
   def parsedEntityDecl(name: String, edef: EntityDef): Unit =
     someEntityDecl(name, edef, ParsedEntityDecl.apply _)
 
-  def peReference(name: String) { decls ::= PEReference(name) }
+  def peReference(name: String): Unit = { decls ::= PEReference(name) }
   def unparsedEntityDecl(name: String, extID: ExternalID, notat: String): Unit = ()
   def notationDecl(notat: String, extID: ExternalID): Unit = ()
   def reportSyntaxError(pos: Int, str: String): Unit

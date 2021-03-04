@@ -1,20 +1,25 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
+
+import scala.collection.Seq
 
 /**
  * This singleton object contains the `apply` and `unapply` methods for
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object Attribute {
   def unapply(x: Attribute) = x match {
@@ -47,7 +52,6 @@ object Attribute {
  *  [[scala.xml.PrefixedAttribute]] and [[scala.xml.UnprefixedAttribute]].
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 abstract trait Attribute extends MetaData {
   def pre: String // will be null if unprefixed
@@ -90,7 +94,7 @@ abstract trait Attribute extends MetaData {
   /**
    * Appends string representation of only this attribute to stringbuffer.
    */
-  protected def toString1(sb: StringBuilder) {
+  protected def toString1(sb: StringBuilder): Unit = {
     if (value == null)
       return
     if (isPrefixed)

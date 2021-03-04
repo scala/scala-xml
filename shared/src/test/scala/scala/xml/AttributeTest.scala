@@ -1,5 +1,6 @@
 package scala.xml
 
+import scala.collection.Seq
 import org.junit.Test
 import org.junit.Assert.assertEquals
 
@@ -23,7 +24,7 @@ class AttributeTest {
       appended = appended.next
       len = len + 1
     }
-    assertEquals("removal of duplicates for unprefixed attributes in append", 1, len)
+    assertEquals("removal of duplicates for unprefixed attributes in append", 1L, len.toLong)
   }
 
   @Test
@@ -48,6 +49,11 @@ class AttributeTest {
   }
 
   @Test
+  def attributeOrder: Unit = {
+    val x = <x y="1" z="2"/>
+    assertEquals("""<x y="1" z="2"/>""", x.toString)
+  }
+
   def attributeToString: Unit = {
     val expected: String = """<b x="&amp;"/>"""
     assertEquals(expected, (<b x="&amp;"/>).toString)
@@ -89,7 +95,7 @@ class AttributeTest {
   def attributePathDuplicateAttribute: Unit = {
     val xml = Elem(null, "foo",
       Attribute("bar", Text("apple"),
-        Attribute("bar", Text("orange"), Null)), TopScope)
+        Attribute("bar", Text("orange"), Null)), TopScope, true)
     assertEquals(Group(Text("apple")), xml \ "@bar")
   }
 
@@ -145,7 +151,7 @@ class AttributeTest {
   def attributePathTwoChildrenWithAttributes: Unit = {
     val xml = <a><b bar="1" /><b bar="2" /></a>
     val b = xml \ "b"
-    assertEquals(2, b.length)
+    assertEquals(2, b.length.toLong)
     assertEquals(NodeSeq.fromSeq(Seq(<b bar="1"/>, <b bar="2"/>)), b)
     val barFail = b \ "@bar"
     val barList =  b.map(_ \ "@bar")
@@ -153,4 +159,23 @@ class AttributeTest {
     assertEquals(List(Group(Seq(Text("1"))), Group(Seq(Text("2")))), barList)
   }
 
+  @Test(expected=classOf[IllegalArgumentException])
+  def invalidAttributeFailForOne: Unit = {
+    <x/> \ "@"
+  }
+
+  @Test(expected=classOf[IllegalArgumentException])
+  def invalidAttributeFailForMany: Unit = {
+    <x><y/><z/></x>.child \ "@"
+  }
+
+  @Test(expected=classOf[IllegalArgumentException])
+  def invalidEmptyAttributeFailForOne: Unit = {
+    <x/> \@ ""
+  }
+
+  @Test(expected=classOf[IllegalArgumentException])
+  def invalidEmptyAttributeFailForMany: Unit = {
+    <x><y/><z/></x>.child \@ ""
+  }
 }

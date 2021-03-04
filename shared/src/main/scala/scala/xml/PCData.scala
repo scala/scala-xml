@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -15,7 +19,6 @@ package xml
  *  sections in the input and is to be preserved as CDATA section in the output.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 class PCData(data: String) extends Atom[String](data) {
 
@@ -27,7 +30,7 @@ class PCData(data: String) extends Atom[String](data) {
    *  @return the input string buffer with the formatted CDATA section
    */
   override def buildString(sb: StringBuilder): StringBuilder =
-    sb append "<![CDATA[%s]]>".format(data)
+    sb append "<![CDATA[%s]]>".format(data.replaceAll("]]>", "]]]]><![CDATA[>"))
 }
 
 /**
@@ -35,7 +38,6 @@ class PCData(data: String) extends Atom[String](data) {
  *  convenient construction and deconstruction.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object PCData {
   def apply(data: String) = new PCData(data)

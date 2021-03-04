@@ -1,73 +1,47 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2002-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
+
+import scala.collection.Seq
 
 /**
  * This singleton object contains the `apply` and `unapplySeq` methods for
  *  convenient construction and deconstruction. It is possible to deconstruct
  *  any `Node` instance (that is not a `SpecialNode` or a `Group`) using the
  *  syntax `case Elem(prefix, label, attribs, scope, child @ _*) => ...`
- *
- *  Copyright 2008 Google Inc. All Rights Reserved.
- *  @author Burak Emir <bqe@google.com>
  */
 object Elem {
-  /**
-   * Build an Elem, setting its minimizeEmpty property to `true` if it has no children.  Note that this
-   *  default may not be exactly what you want, as some XML dialects don't permit some elements to be minimized.
-   *
-   * @deprecated This factory method is retained for backward compatibility; please use the other one, with which you
-   *             can specify your own preference for minimizeEmpty.
-   */
-  @deprecated("Use the other apply method in this object", "2.10.0")
-  def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*): Elem =
-    apply(prefix, label, attributes, scope, child.isEmpty, child: _*)
 
   def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, minimizeEmpty: Boolean, child: Node*): Elem =
     new Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
 
   def unapplySeq(n: Node) = n match {
     case _: SpecialNode | _: Group => None
-    case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child))
-  }
-
-  import scala.sys.process._
-  import scala.language.implicitConversions
-
-  /**
-   * Implicitly convert a [[scala.xml.Elem]] into a
-   * [[scala.sys.process.ProcessBuilder]]. This is done by obtaining the text
-   * elements of the element, trimming spaces, and then converting the result
-   * from string to a process. Importantly, tags are completely ignored, so
-   * they cannot be used to separate parameters.
-   */
-  @deprecated("To create a scala.sys.process.Process from an xml.Elem, please use Process(elem.text.trim).", "2.11.0")
-  implicit def xmlToProcess(command: scala.xml.Elem): ProcessBuilder = Process(command.text.trim)
-
-  @deprecated("To create a scala.sys.process.Process from an xml.Elem, please use Process(elem.text.trim).", "2.11.0")
-  implicit def processXml(p: Process.type) = new {
-    /**
-     * Creates a [[scala.sys.process.ProcessBuilder]] from a Scala XML Element.
-     * This can be used as a way to template strings.
-     *
-     * @example {{{
-     * apply(<x> {dxPath.absolutePath} --dex --output={classesDexPath.absolutePath} {classesMinJarPath.absolutePath}</x>)
-     * }}}
-     */
-    def apply(command: Elem): ProcessBuilder = Process(command.text.trim)
+    case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
   }
 }
 
 /**
- * The case class `Elem` extends the `Node` class,
- *  providing an immutable data object representing an XML element.
+ * An immutable data object representing an XML element.
+ *
+ * Child elements can be other [[Elem]]s or any one of the other [[Node]] types.
+ *
+ * XML attributes are implemented with the [[scala.xml.MetaData]] base
+ * class.
+ *
+ * Optional XML namespace scope is represented by
+ * [[scala.xml.NamespaceBinding]].
  *
  *  @param prefix        namespace prefix (may be null, but not the empty string)
  *  @param label         the element name
@@ -76,9 +50,6 @@ object Elem {
  *  @param minimizeEmpty `true` if this element should be serialized as minimized (i.e. "&lt;el/&gt;") when
  *                       empty; `false` if it should be written out in long form.
  *  @param child         the children of this node
- *
- *  Copyright 2008 Google Inc. All Rights Reserved.
- *  @author Burak Emir <bqe@google.com>
  */
 class Elem(
   override val prefix: String,
@@ -86,12 +57,8 @@ class Elem(
   attributes1: MetaData,
   override val scope: NamespaceBinding,
   val minimizeEmpty: Boolean,
-  val child: Node*)
-  extends Node with Serializable {
-  @deprecated("This constructor is retained for backward compatibility. Please use the primary constructor, which lets you specify your own preference for `minimizeEmpty`.", "2.10.0")
-  def this(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*) = {
-    this(prefix, label, attributes, scope, child.isEmpty, child: _*)
-  }
+  val child: Node*
+) extends Node with Serializable {
 
   final override def doCollectNamespaces = true
   final override def doTransform = true

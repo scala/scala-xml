@@ -1,15 +1,20 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2002-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
 package dtd
 
+import scala.collection.Seq
 import scala.xml.dtd.impl._
 import scala.xml.Utility.sbToString
 import PartialFunction._
@@ -38,7 +43,6 @@ object ContentModel extends WordExp {
 
   def isMixed(cm: ContentModel) = cond(cm) { case _: MIXED => true }
   def containsText(cm: ContentModel) = (cm == PCDATA) || isMixed(cm)
-  def parse(s: String): ContentModel = ContentModelParser.parse(s)
 
   def getLabels(r: RegExp): Set[String] = {
     def traverse(r: RegExp): Set[String] = r match { // !!! check for match translation problem
@@ -54,7 +58,7 @@ object ContentModel extends WordExp {
   def buildString(r: RegExp): String = sbToString(buildString(r, _))
 
   /* precond: rs.length >= 1 */
-  private def buildString(rs: Seq[RegExp], sb: StringBuilder, sep: Char) {
+  private def buildString(rs: Seq[RegExp], sb: StringBuilder, sep: Char): Unit = {
     buildString(rs.head, sb)
     for (z <- rs.tail) {
       sb append sep

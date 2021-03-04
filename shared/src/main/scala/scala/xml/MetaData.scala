@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -12,11 +16,8 @@ package xml
 import Utility.sbToString
 import scala.annotation.tailrec
 import scala.collection.AbstractIterable
+import scala.collection.Seq
 
-/**
- * Copyright 2008 Google Inc. All Rights Reserved.
- * @author Burak Emir <bqe@google.com>
- */
 object MetaData {
   /**
    * appends all attributes from new_tail to attribs, without attempting to
@@ -78,9 +79,6 @@ object MetaData {
  *
  *  Namespace URIs are obtained by using the namespace scope of the element
  *  owning this attribute (see `getNamespace`).
- *
- *  Copyright 2008 Google Inc. All Rights Reserved.
- *  @author Burak Emir <bqe@google.com>
  */
 abstract class MetaData
   extends AbstractIterable[MetaData]
@@ -158,6 +156,11 @@ abstract class MetaData
   override def filter(f: MetaData => Boolean): MetaData =
     if (f(this)) copy(next filter f)
     else next filter f
+
+  def reverse: MetaData =
+    foldLeft(Null: MetaData) { (x, xs) =>
+        xs.copy(x)
+    }
 
   /** returns key of this MetaData item */
   def key: String

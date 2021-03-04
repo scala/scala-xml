@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml.dtd.impl
@@ -20,8 +24,8 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
   def determinize: DetWordAutom[T] = {
     // for assigning numbers to bitsets
-    var indexMap = scala.collection.Map[immutable.BitSet, Int]()
-    var invIndexMap = scala.collection.Map[Int, immutable.BitSet]()
+    val indexMap = mutable.Map[immutable.BitSet, Int]()
+    val invIndexMap = mutable.Map[Int, immutable.BitSet]()
     var ix = 0
 
     // we compute the dfa with states = bitsets
@@ -30,20 +34,20 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
     var states = Set(q0, sink) // initial set of sets
     val delta = new mutable.HashMap[immutable.BitSet, mutable.HashMap[T, immutable.BitSet]]
-    var deftrans = mutable.Map(q0 -> sink, sink -> sink) // initial transitions
-    var finals: mutable.Map[immutable.BitSet, Int] = mutable.Map()
-    val rest = new mutable.Stack[immutable.BitSet]
+    val deftrans = mutable.Map(q0 -> sink, sink -> sink) // initial transitions
+    val finals: mutable.Map[immutable.BitSet, Int] = mutable.Map()
+    var rest = immutable.List.empty[immutable.BitSet]
 
-    rest.push(sink, q0)
+    rest = q0 :: sink :: rest
 
-    def addFinal(q: immutable.BitSet) {
+    def addFinal(q: immutable.BitSet): Unit = {
       if (nfa containsFinal q)
-        finals = finals.updated(q, selectTag(q, nfa.finals))
+        finals(q) = selectTag(q, nfa.finals)
     }
-    def add(Q: immutable.BitSet) {
+    def add(Q: immutable.BitSet): Unit = {
       if (!states(Q)) {
         states += Q
-        rest push Q
+        rest = Q :: rest
         addFinal(Q)
       }
     }
@@ -51,10 +55,11 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     addFinal(q0) // initial state may also be a final state
 
     while (!rest.isEmpty) {
-      val P = rest.pop()
+      val P = rest.head
+      rest = rest.tail
       // assign a number to this bitset
-      indexMap = indexMap.updated(P, ix)
-      invIndexMap = invIndexMap.updated(ix, P)
+      indexMap(P) = ix
+      invIndexMap(ix) = P
       ix += 1
 
       // make transition map
@@ -69,7 +74,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
       // collect default transitions
       val Pdef = nfa nextDefault P
-      deftrans = deftrans.updated(P, Pdef)
+      deftrans(P) = Pdef
       add(Pdef)
     }
 

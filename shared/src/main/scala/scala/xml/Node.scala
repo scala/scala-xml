@@ -1,20 +1,25 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
+
+import scala.collection.Seq
 
 /**
  * This singleton object contains the `unapplySeq` method for
  *  convenient deconstruction.
  *
  *  @author  Burak Emir
- *  @version 1.0
  */
 object Node {
   /** the constant empty attribute sequence */
@@ -23,15 +28,21 @@ object Node {
   /** the empty namespace */
   val EmptyNamespace = ""
 
-  def unapplySeq(n: Node) = Some((n.label, n.attributes, n.child))
+  def unapplySeq(n: Node) = Some((n.label, n.attributes, n.child.toSeq))
 }
 
 /**
- * An abstract class representing XML with nodes of a labelled tree.
+ * An abstract class representing XML with nodes of a labeled tree.
  * This class contains an implementation of a subset of XPath for navigation.
  *
+ *  - [[scala.xml.Comment]] — XML comment
+ *  - [[scala.xml.Elem]] — XML element
+ *  - [[scala.xml.EntityRef]] — XML entity
+ *  - [[scala.xml.PCData]] — Character data section (CDATA)
+ *  - [[scala.xml.ProcInstr]] — Processing instruction (PI)
+ *  - [[scala.xml.Text]] — Stand-alone parsed character data
+ *
  * @author  Burak Emir and others
- * @version 1.1
  */
 abstract class Node extends NodeSeq {
 

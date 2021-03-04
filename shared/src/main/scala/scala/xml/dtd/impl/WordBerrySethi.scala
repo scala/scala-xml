@@ -1,22 +1,26 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml.dtd.impl
 
 import scala.collection.{ immutable, mutable }
+import scala.collection.Seq
 
 /**
  * This class turns a regular expression into a [[scala.util.automata.NondetWordAutom]]
  * celebrated position automata construction (also called ''Berry-Sethi'' or ''Glushkov'').
  *
  *  @author Burak Emir
- *  @version 1.0
  */
 // TODO: still used in ContentModel -- @deprecated("This class will be removed", "2.10.0")
 @deprecated("This class will be removed", "2.10.0")
@@ -74,7 +78,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
    */
 
   /** Called at the leaves of the regexp */
-  protected def seenLabel(r: RegExp, i: Int, label: _labelT) {
+  protected def seenLabel(r: RegExp, i: Int, label: _labelT): Unit = {
     labelAt = labelAt.updated(i, label)
     this.labels += label
   }
@@ -93,7 +97,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
     case _               => super.traverse(r)
   }
 
-  protected def makeTransition(src: Int, dest: Int, label: _labelT) {
+  protected def makeTransition(src: Int, dest: Int, label: _labelT): Unit = {
     val q = deltaq(src)
     q.update(label, dest :: q.getOrElse(label, Nil))
   }
@@ -110,7 +114,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
     this.initials = Set(0)
   }
 
-  protected def initializeAutom() {
+  protected def initializeAutom(): Unit = {
     finals = immutable.Map.empty[Int, Int] // final states
     deltaq = new Array[mutable.HashMap[_labelT, List[Int]]](pos) // delta
     defaultq = new Array[List[Int]](pos) // default transitions
@@ -144,7 +148,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
         if (x.isNullable) // initial state is final
           finals = finals.updated(0, finalTag)
 
-        val delta1 = immutable.Map(deltaq.zipWithIndex map (_.swap): _*)
+        val delta1 = deltaq.zipWithIndex.map(_.swap).toMap
         val finalsArr = (0 until pos map (k => finals.getOrElse(k, 0))).toArray // 0 == not final
 
         val deltaArr: Array[mutable.Map[_labelT, immutable.BitSet]] =

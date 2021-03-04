@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -25,7 +29,6 @@ import Utility.Escapes.{ pairs => unescape }
  * collected using side-effects.
  *
  * @author  Burak Emir
- * @version 1.0
  */
 trait MarkupParser extends MarkupParserCommon with TokenTests {
   self: MarkupParser with MarkupHandler =>
@@ -295,7 +298,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     handle.procInstr(position, name, text)
 
   /** this method tells ch to get the next character when next called */
-  def nextch() {
+  def nextch(): Unit = {
     // Read current ch if needed
     ch
 
@@ -340,7 +343,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     if (!aMap.wellformed(scope))
       reportSyntaxError("double attribute")
 
-    (aMap, scope)
+    (aMap.reverse, scope)
   }
 
   /**
@@ -359,7 +362,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     nextch()
     val str = cbuf.toString()
-    cbuf.length = 0
+    cbuf.setLength(0)
     str
   }
 
@@ -391,14 +394,14 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     xToken("--")
     while (!eof) {
       if (ch == '-' && { sb.append(ch); nextch(); ch == '-' }) {
-        sb.length = sb.length - 1
+        sb.setLength(sb.length - 1)
         nextch()
         xToken('>')
         return handle.comment(pos, sb.toString())
       } else sb.append(ch)
       nextch()
     }
-    throw truncatedError("broken comment")
+    truncatedError("broken comment")
   }
 
   /* todo: move this into the NodeBuilder class */
@@ -416,7 +419,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  '<' content1 ::=  ...
    *  }}}
    */
-  def content1(pscope: NamespaceBinding, ts: NodeBuffer) {
+  def content1(pscope: NamespaceBinding, ts: NodeBuffer): Unit = {
     ch match {
       case '!' =>
         nextch()
@@ -512,14 +515,14 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  <! parseDTD ::= DOCTYPE name ... >
    *  }}}
    */
-  def parseDTD() { // dirty but fast
+  def parseDTD(): Unit = { // dirty but fast
     var extID: ExternalID = null
     if (this.dtd ne null)
       reportSyntaxError("unexpected character (DOCTYPE already defined")
     xToken("DOCTYPE")
     xSpace()
     val n = xName
-    xSpace()
+    xSpaceOpt()
     //external ID
     if ('S' == ch || 'P' == ch) {
       extID = externalID()
@@ -549,7 +552,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     xToken('>')
     this.dtd = new DTD {
-      /*override var*/ externalID = extID
+      this.externalID = extID
       /*override val */ decls = handle.decls.reverse
     }
     //this.dtd.initializeEntities();
@@ -609,7 +612,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       exit = eof || (ch == '<') || (ch == '&')
     }
     val str = cbuf.toString
-    cbuf.length = 0
+    cbuf.setLength(0)
     str
   }
 
@@ -631,7 +634,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     nextch()
     val str = cbuf.toString()
-    cbuf.length = 0
+    cbuf.setLength(0)
     str
   }
 
@@ -654,7 +657,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     nextch()
     val str = cbuf.toString
-    cbuf.length = 0
+    cbuf.setLength(0)
     str
   }
 
@@ -777,7 +780,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   /**
    * "rec-xml/#ExtSubset" pe references may not occur within markup declarations
    */
-  def intSubset() {
+  def intSubset(): Unit = {
     //Console.println("(DEBUG) intSubset()")
     xSpace()
     while (']' != ch && !eof)
@@ -787,7 +790,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   /**
    * &lt;! element := ELEMENT
    */
-  def elementDecl() {
+  def elementDecl(): Unit = {
     xToken("EMENT")
     xSpace()
     val n = xName
@@ -800,7 +803,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     //Console.println("END["+ch+"]")
     nextch()
     val cmstr = cbuf.toString()
-    cbuf.length = 0
+    cbuf.setLength(0)
     handle.elemDecl(n, cmstr)
   }
 
@@ -827,7 +830,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
         nextch()
       }
       val atpe = cbuf.toString
-      cbuf.length = 0
+      cbuf.setLength(0)
 
       val defdecl: DefaultDecl = ch match {
         case '\'' | '"' =>
@@ -847,7 +850,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       xSpaceOpt()
 
       attList ::= AttrDecl(aname, atpe, defdecl)
-      cbuf.length = 0
+      cbuf.setLength(0)
     }
     nextch()
     handle.attListDecl(n, attList.reverse)
@@ -908,7 +911,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  'N' notationDecl ::= "OTATION"
    *  }}}
    */
-  def notationDecl() {
+  def notationDecl(): Unit = {
     xToken("OTATION")
     xSpace()
     val notat = xName
@@ -929,18 +932,18 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       new PublicID(pubID, sysID)
     } else {
       reportSyntaxError("PUBLIC or SYSTEM expected")
-      scala.sys.error("died parsing notationdecl")
+      truncatedError("died parsing notationdecl")
     }
     xSpaceOpt()
     xToken('>')
     handle.notationDecl(notat, extID)
   }
 
-  def reportSyntaxError(pos: Int, str: String) { curInput.reportError(pos, str) }
-  def reportSyntaxError(str: String) { reportSyntaxError(pos, str) }
-  def reportValidationError(pos: Int, str: String) { reportSyntaxError(pos, str) }
+  def reportSyntaxError(pos: Int, str: String): Unit = { curInput.reportError(pos, str) }
+  def reportSyntaxError(str: String): Unit = { reportSyntaxError(pos, str) }
+  def reportValidationError(pos: Int, str: String): Unit = { reportSyntaxError(pos, str) }
 
-  def push(entityName: String) {
+  def push(entityName: String): Unit = {
     if (!eof)
       inpStack = curInput :: inpStack
 
@@ -951,7 +954,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     nextch()
   }
 
-  def pushExternal(systemId: String) {
+  def pushExternal(systemId: String): Unit = {
     if (!eof)
       inpStack = curInput :: inpStack
 
@@ -962,7 +965,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     nextch()
   }
 
-  def pop() {
+  def pop(): Unit = {
     curInput = inpStack.head
     inpStack = inpStack.tail
     lastChRead = curInput.ch

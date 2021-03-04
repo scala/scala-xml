@@ -1,16 +1,25 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2002-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
 package transform
 
+import scala.collection.Seq
+
 class RuleTransformer(rules: RewriteRule*) extends BasicTransformer {
-  override def transform(n: Node): Seq[Node] =
-    rules.foldLeft(super.transform(n)) { (res, rule) => rule transform res }
+  private val transformers = rules.map(new NestingTransformer(_))
+  override def transform(n: Node): Seq[Node] = {
+    if (transformers.isEmpty) n
+    else transformers.tail.foldLeft(transformers.head.transform(n)) { (res, transformer) => transformer.transform(res) }
+  }
 }

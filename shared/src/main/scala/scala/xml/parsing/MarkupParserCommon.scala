@@ -1,15 +1,20 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2017, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
 package parsing
 
+import scala.collection.Seq
 import Utility.SU
 
 /**
@@ -18,7 +23,7 @@ import Utility.SU
  *  All members should be accessed through those.
  */
 private[scala] trait MarkupParserCommon extends TokenTests {
-  protected def unreachable = scala.sys.error("Cannot be reached.")
+  protected def unreachable = truncatedError("Cannot be reached.")
 
   // type HandleType       // MarkupHandler, SymbolicXMLBuilder
   type InputType // Source, CharArrayReader
@@ -61,7 +66,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     val buf = new StringBuilder
     while (ch != endCh && !eof) {
       // well-formedness constraint
-      if (ch == '<') return errorAndResult("'<' not allowed in attrib value", "")
+      if (ch == '<') reportSyntaxError("'<' not allowed in attrib value")
       else if (ch == SU) truncatedError("")
       else buf append ch_returning_nextch
     }
@@ -88,7 +93,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
   /**
    * [42]  '<' xmlEndTag ::=  '<' '/' Name S? '>'
    */
-  def xEndTag(startName: String) {
+  def xEndTag(startName: String): Unit = {
     xToken('/')
     if (xName != startName)
       errorNoEnd(startName)
@@ -114,8 +119,8 @@ private[scala] trait MarkupParserCommon extends TokenTests {
 
     val buf = new StringBuilder
 
-    do buf append ch_returning_nextch
-    while (isNameChar(ch))
+    while ({ buf append ch_returning_nextch
+    ; isNameChar(ch)}) ()
 
     if (buf.last == ':') {
       reportSyntaxError("name cannot end in ':'")
@@ -199,11 +204,11 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     x
   }
 
-  def xToken(that: Char) {
+  def xToken(that: Char): Unit = {
     if (ch == that) nextch()
     else xHandleError(that, "'%s' expected instead of '%s'".format(that, ch))
   }
-  def xToken(that: Seq[Char]) { that foreach xToken }
+  def xToken(that: Seq[Char]): Unit = { that foreach xToken }
 
   /** scan [S] '=' [S]*/
   def xEQ() = { xSpaceOpt(); xToken('='); xSpaceOpt() }
@@ -240,11 +245,11 @@ private[scala] trait MarkupParserCommon extends TokenTests {
       val head = until.head
       val rest = until.tail
 
-      while (true) {
+      while (!eof) {
         if (ch == head && peek(rest))
           return handler(positioner(), sb.toString)
         else if (ch == SU || eof)
-          truncatedError("") // throws TruncatedXMLControl in compiler
+          truncatedError(s"died parsing until $until") // throws TruncatedXMLControl in compiler
 
         sb append ch
         nextch()
