@@ -27,12 +27,17 @@ trait XMLLoader[T <: Node] {
   import scala.xml.Source._
   def adapter: FactoryAdapter = new NoBindingFactoryAdapter()
 
-  /* Override this to use a different SAXParser. */
-  def parser: SAXParser = {
-    val f = SAXParserFactory.newInstance()
-    f.setNamespaceAware(false)
-    f.newSAXParser()
+  private lazy val parserInstance = new ThreadLocal[SAXParser] {
+    override def initialValue = {
+      val parser = SAXParserFactory.newInstance()
+
+      parser.setNamespaceAware(false)
+      parser.newSAXParser()
+    }
   }
+
+  /* Override this to use a different SAXParser. */
+  def parser: SAXParser = parserInstance.get
 
   /**
    * Loads XML from the given InputSource, using the supplied parser.
