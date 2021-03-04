@@ -1,15 +1,20 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2018, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml.dtd.impl
 
 import scala.collection.{ immutable, mutable }
+import scala.collection.Seq
 
 /**
  * A nondeterministic automaton. States are integers, where
@@ -47,7 +52,7 @@ private[dtd] abstract class NondetWordAutom[T <: AnyRef] {
   def nextDefault(Q: immutable.BitSet): immutable.BitSet = next(Q, default)
 
   private def next(Q: immutable.BitSet, f: (Int) => immutable.BitSet): immutable.BitSet =
-    (Q map f).foldLeft(immutable.BitSet.empty)(_ ++ _)
+    Q.toSet.map(f).foldLeft(immutable.BitSet.empty)(_ ++ _)
 
   private def finalStates = 0 until nstates filter isFinal
   override def toString = {

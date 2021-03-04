@@ -11,6 +11,7 @@ import java.io.StringWriter
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
 import scala.collection.Iterable
+import scala.collection.Seq
 import scala.xml.Utility.sort
 
 object XMLTestJVM {
@@ -34,14 +35,14 @@ class XMLTestJVM {
     val c = new Node {
       def label = "hello"
       override def hashCode() =
-        Utility.hashCode(prefix, label, attributes.hashCode(), scope.hashCode(), child);
+        Utility.hashCode(prefix, label, this.attributes.hashCode(), scope.hashCode(), child);
       def child = Elem(null, "world", e, sc);
       //def attributes = e;
       override def text = ""
     }
 
-    assertTrue(c == parsedxml11)
-    assertTrue(parsedxml1 == parsedxml11)
+    assertEquals(c, parsedxml11)
+    assertEquals(parsedxml1, parsedxml11)
     assertTrue(List(parsedxml1) sameElements List(parsedxml11))
     assertTrue(Array(parsedxml1).toList sameElements List(parsedxml11))
 
@@ -50,10 +51,10 @@ class XMLTestJVM {
     val i = new InputSource(new StringReader(x2))
     val x2p = scala.xml.XML.load(i)
 
-    assertTrue(x2p == Elem(null, "book", e, sc,
+    assertEquals(Elem(null, "book", e, sc,
       Elem(null, "author", e, sc, Text("Peter Buneman")),
       Elem(null, "author", e, sc, Text("Dan Suciu")),
-      Elem(null, "title", e, sc, Text("Data on ze web"))))
+      Elem(null, "title", e, sc, Text("Data on ze web"))), x2p)
 
   }
 
@@ -115,7 +116,7 @@ class XMLTestJVM {
         Elem(null, "title", e, sc, Text("Foundations of Programming Languages"))))
 
     assertEquals("<book><author>Peter Buneman</author><author>Dan Suciu</author><title>Data on ze web</title></book>",
-      (parsedxml2 \\ "book") { n: Node => (n \ "title") xml_== "Data on ze web" } toString)
+      (parsedxml2 \\ "book") { (n: Node) => (n \ "title") xml_== "Data on ze web" } toString)
 
     assertTrue(
       ((NodeSeq.fromSeq(List(parsedxml2))) \\ "_") sameElements List(
@@ -199,7 +200,7 @@ class XMLTestJVM {
         new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(buffer))
       in.readObject().asInstanceOf[A]
     }
-    def check[A, B](x: A, y: B) {
+    def check[A, B](x: A, y: B): Unit = {
       // println("x = " + x)
       // println("y = " + y)
       // println("x equals y: " + (x equals y) + ", y equals x: " + (y equals x))
@@ -280,10 +281,6 @@ class XMLTestJVM {
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace }>
     </wsdl:definitions>;
 
-  def wsdlTemplate3(serviceName: String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ new _root_.scala.xml.Text("target3") }>
-    </wsdl:definitions>;
-
   def wsdlTemplate4(serviceName: String, targetNamespace: () => String): Node =
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace() }>
     </wsdl:definitions>;
@@ -294,8 +291,6 @@ class XMLTestJVM {
     </wsdl:definitions>""", wsdlTemplate1("service1") toString)
     assertEquals("""<wsdl:definitions name="service2" xmlns:tns="target2">
     </wsdl:definitions>""", wsdlTemplate2("service2", "target2") toString)
-    assertEquals("""<wsdl:definitions name="service3" xmlns:tns="target3">
-    </wsdl:definitions>""", wsdlTemplate3("service3") toString)
     assertEquals("""<wsdl:definitions name="service4" xmlns:tns="target4">
     </wsdl:definitions>""", wsdlTemplate4("service4", () => "target4") toString)
   }
@@ -320,14 +315,17 @@ class XMLTestJVM {
     val inputStream = new java.io.ByteArrayInputStream(outputStream.toByteArray)
     val streamReader = new java.io.InputStreamReader(inputStream, XML.encoding)
 
-    assertEquals(xml.toString, XML.load(streamReader).toString)
+    def unescapeQuotes(str: String) = 
+      "&quot;".r.replaceFirstIn(str, "\"")
+    val xmlFixed = unescapeQuotes(xml.toString)
+    assertEquals(xmlFixed, XML.load(streamReader).toString)
   }
 
   @UnitTest
   def t0663 = {
     val src = scala.io.Source.fromString("<?xml version='1.0' encoding='UTF-8'?><feed/>")
     val parser = xml.parsing.ConstructingParser.fromSource(src, true)
-    assertEquals("<feed/>", parser.document toString)
+    assertEquals("<feed/>", parser.document() toString)
   }
 
   @UnitTest
@@ -364,18 +362,6 @@ class XMLTestJVM {
       <a>{ if (true) "" else "I like turtles" }</a>)
 
     for (x1 <- xs; x2 <- xs) assertTrue(x1 xml_== x2)
-  }
-
-  @UnitTest
-  def t2354: Unit = {
-    val xml_good = "<title><![CDATA[Hello [tag]]]></title>"
-    val xml_bad = "<title><![CDATA[Hello [tag] ]]></title>"
-
-    val parser1 = ConstructingParser.fromSource(io.Source.fromString(xml_good), false)
-    val parser2 = ConstructingParser.fromSource(io.Source.fromString(xml_bad), false)
-
-    parser1.document
-    parser2.document
   }
 
   @UnitTest
@@ -422,7 +408,7 @@ class XMLTestJVM {
 
   @UnitTest
   def t5115 = {
-    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size, i.iterator.size)
+    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size.toLong, i.iterator.size.toLong)
 
     assertHonorsIterableContract(<a/>.attributes)
     assertHonorsIterableContract(<a x=""/>.attributes)
@@ -454,16 +440,16 @@ class XMLTestJVM {
   @UnitTest
   def t6939 = {
     val foo = <x:foo xmlns:x="http://foo.com/"><x:bar xmlns:x="http://bar.com/"><x:baz/></x:bar></x:foo>
-    assertTrue(foo.child.head.scope.toString == """ xmlns:x="http://bar.com/"""")
+    assertEquals(foo.child.head.scope.toString, """ xmlns:x="http://bar.com/"""")
 
     val fooDefault = <foo xmlns="http://foo.com/"><bar xmlns="http://bar.com/"><baz/></bar></foo>
-    assertTrue(fooDefault.child.head.scope.toString == """ xmlns="http://bar.com/"""")
+    assertEquals(fooDefault.child.head.scope.toString, """ xmlns="http://bar.com/"""")
 
     val foo2 = scala.xml.XML.loadString("""<x:foo xmlns:x="http://foo.com/"><x:bar xmlns:x="http://bar.com/"><x:baz/></x:bar></x:foo>""")
-    assertTrue(foo2.child.head.scope.toString == """ xmlns:x="http://bar.com/"""")
+    assertEquals(foo2.child.head.scope.toString, """ xmlns:x="http://bar.com/"""")
 
     val foo2Default = scala.xml.XML.loadString("""<foo xmlns="http://foo.com/"><bar xmlns="http://bar.com/"><baz/></bar></foo>""")
-    assertTrue(foo2Default.child.head.scope.toString == """ xmlns="http://bar.com/"""")
+    assertEquals(foo2Default.child.head.scope.toString, """ xmlns="http://bar.com/"""")
   }
 
   @UnitTest
@@ -523,13 +509,61 @@ class XMLTestJVM {
   import scala.xml.parsing._
   @UnitTest
   def dontLoop: Unit = {
-    val xml = "<!DOCTYPE xmeml SYSTEM> <xmeml> <sequence> </sequence> </xmeml> "
+    val xml = "<!DOCTYPE xmeml SYSTEM 'uri'> <xmeml> <sequence> </sequence> </xmeml> "
     val sink = new PrintStream(new ByteArrayOutputStream())
     (Console withOut sink) {
       (Console withErr sink) {
-        ConstructingParser.fromSource((io.Source fromString xml), true).document.docElem
+        ConstructingParser.fromSource((io.Source fromString xml), true).document().docElem
       }
     }
+  }
+
+  /** Default SAXParserFactory */
+  val defaultParserFactory = javax.xml.parsers.SAXParserFactory.newInstance
+
+  @throws(classOf[org.xml.sax.SAXNotRecognizedException])
+  def issue17UnrecognizedFeature: Unit = {
+    assertTrue(defaultParserFactory.getFeature("foobar"))
+  }
+
+  @UnitTest
+  def issue17SecureProcessing: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://javax.xml.XMLConstants/feature/secure-processing"))
+  }
+
+  @UnitTest
+  def issue17ExternalGeneralEntities: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/external-general-entities"))
+  }
+
+  @UnitTest
+  def issue17LoadExternalDtd: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd"))
+  }
+
+  @UnitTest
+  def issue17DisallowDoctypeDecl: Unit = {
+    assertFalse(defaultParserFactory.getFeature("http://apache.org/xml/features/disallow-doctype-decl"))
+  }
+
+  @UnitTest
+  def issue17ExternalParameterEntities: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/external-parameter-entities"))
+  }
+
+  @UnitTest
+  def issue17ResolveDtdUris: Unit = {
+    assertTrue(defaultParserFactory.getFeature("http://xml.org/sax/features/resolve-dtd-uris"))
+  }
+
+  @UnitTest
+  def issue17isXIncludeAware: Unit = {
+    assertFalse(XML.parser.isXIncludeAware)
+  }
+
+  @UnitTest
+  def issue17isNamespaceAware: Unit = {
+    assertFalse(XML.parser.isNamespaceAware)
   }
 
   @UnitTest
@@ -589,6 +623,131 @@ class XMLTestJVM {
     val pp = new xml.PrettyPrinter(80, 2, minimizeEmpty = true)
     val x = <node><leaf></leaf></node>
     assertEquals("<node>\n  <leaf/>\n</node>", pp.format(x))
+  }
+
+  @UnitTest
+  def issue231: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
+    val x = <a b="c"/>
+    val formatted = pp.format(x)
+    val expected =
+      """|<a
+         |b="c"/>
+         |""".stripMargin
+    assertEquals(x, XML.loadString(formatted))
+    assertEquals(expected, formatted)
+  }
+
+  @UnitTest
+  def issue231_withoutAttributes: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
+    val x = <abcdefg/>
+    val expected =
+      """|<abcdefg/>
+         |""".stripMargin
+    val formatted = pp.format(x)
+    assertEquals(x, XML.loadString(formatted))
+    assertEquals(expected, formatted)
+  }
+
+  @UnitTest
+  def issue231_children: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
+    val x = <a b="c"><d/><e><f g="h"></f><i/></e></a>
+    val formatted = pp.format(x)
+    val expected =
+      """|<a 
+         |b="c">
+         |  <d
+         |  />
+         |  <e>
+         |    <f
+         |    g="h"/>
+         |    <i
+         |    />
+         |  </e>
+         |</a>
+         |""".stripMargin
+    assertEquals(expected, formatted)
+  }
+
+  @UnitTest
+  def issue231_elementText: Unit = {
+    val pp = new xml.PrettyPrinter(4, 2, minimizeEmpty = true)
+    val x = <a>x<b/><c>y</c><d/></a>
+    val formatted = pp.format(x)
+    val expected =
+      """|<a>
+         |  x
+         |  <b
+         |  />
+         |  <c>
+         |    y
+         |  </c>
+         |  <d
+         |  />
+         |</a>""".stripMargin
+    assertEquals(expected, formatted)
+  }
+
+  def toSource(s: String) = new scala.io.Source {
+    val iter = s.iterator
+    override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err): Unit = {}
+  }
+
+  @UnitTest
+  def xTokenTest: Unit = {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("a"), false)
+    assertEquals((): Unit, x.xToken('b'))
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def xCharDataFailure: Unit = {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    x.xCharData
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def xCommentFailure: Unit = {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    x.xComment
+  }
+
+  @UnitTest
+  def xmlProcInstrTest: Unit = {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("aa"), false)
+
+    assertEquals(new UnprefixedAttribute("aa", Text(""), Null), x.xmlProcInstr())
+  }
+
+  @UnitTest(expected = classOf[FatalError])
+  def notationDeclFailure: Unit = {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    x.notationDecl()
+  }
+
+  @UnitTest
+  def pubidLiteralTest: Unit = {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    assertEquals("", x.pubidLiteral())
+  }
+
+  @UnitTest
+  def xAttributeValueTest: Unit = {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource("'"), false)
+
+    assertEquals("", x.xAttributeValue())
+  }
+
+  @UnitTest
+  def xEntityValueTest: Unit = {
+    val x = xml.parsing.ConstructingParser.fromSource(toSource(""), false)
+
+    assertEquals("", x.xEntityValue())
   }
 
 }

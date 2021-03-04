@@ -1,14 +1,19 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2002-2018, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
 
+import scala.collection.Seq
 import Utility.sbToString
 
 /**
@@ -67,11 +72,11 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
 
   def buildString(stop: NamespaceBinding): String = sbToString(buildString(_, stop))
 
-  def buildString(sb: StringBuilder, stop: NamespaceBinding) {
+  def buildString(sb: StringBuilder, stop: NamespaceBinding): Unit = {
     shadowRedefined(stop).doBuildString(sb, stop)
   }
 
-  private def doBuildString(sb: StringBuilder, stop: NamespaceBinding) {
+  private def doBuildString(sb: StringBuilder, stop: NamespaceBinding): Unit = {
     if (List(null, stop, TopScope).contains(this)) return
 
     val s = " xmlns%s=\"%s\"".format(

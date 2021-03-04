@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2018, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -107,7 +111,7 @@ object XML extends XMLLoader[Elem] {
    *  @param xmlDecl  if true, write xml declaration
    *  @param doctype  if not null, write doctype declaration
    */
-  final def write(w: java.io.Writer, node: Node, enc: String, xmlDecl: Boolean, doctype: dtd.DocType, minimizeTags: MinimizeMode.Value = MinimizeMode.Default) {
+  final def write(w: java.io.Writer, node: Node, enc: String, xmlDecl: Boolean, doctype: dtd.DocType, minimizeTags: MinimizeMode.Value = MinimizeMode.Default): Unit = {
     /* TODO: optimize by giving writer parameter to toXML*/
     if (xmlDecl) w.write("<?xml version='1.0' encoding='" + enc + "'?>\n")
     if (doctype ne null) w.write(doctype.toString() + "\n")
@@ -117,5 +121,5 @@ object XML extends XMLLoader[Elem] {
 
 object Properties extends scala.util.PropertiesTrait {
   protected def propCategory    = "scala-xml"
-  protected def pickJarBasedOn  = classOf[scala.xml.pull.XMLEventReader]
+  protected def pickJarBasedOn  = classOf[scala.xml.Node]
 }

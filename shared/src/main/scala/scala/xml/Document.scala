@@ -1,13 +1,19 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2018, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
+
+import scala.collection.Seq
 
 /**
  * A document information item (according to InfoSet spec). The comments
@@ -18,7 +24,7 @@ package xml
  *  @author  Burak Emir
  */
 @SerialVersionUID(-2289320563321795109L)
-class Document extends NodeSeq with pull.XMLEvent with Serializable {
+class Document extends NodeSeq with Serializable {
 
   /**
    * An ordered list of child information items, in document

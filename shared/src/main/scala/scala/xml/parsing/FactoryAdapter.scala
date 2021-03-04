@@ -1,16 +1,20 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2018, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
 package parsing
 
-import scala.collection.{ mutable, Iterator }
+import scala.collection.Seq
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 
@@ -39,10 +43,34 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
   var rootElem: Node = null
 
   val buffer = new StringBuilder()
-  val attribStack = new mutable.Stack[MetaData]
-  val hStack = new mutable.Stack[Node] // [ element ] contains siblings
-  val tagStack = new mutable.Stack[String]
-  var scopeStack = new mutable.Stack[NamespaceBinding]
+  /** List of attributes
+    * 
+    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
+    * 
+    * @since 2.0.0 
+    */
+  var attribStack = List.empty[MetaData]
+  /** List of elements
+    * 
+    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
+    * 
+    * @since 2.0.0 
+    */
+  var hStack = List.empty[Node] // [ element ] contains siblings
+  /** List of element names
+    * 
+    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
+    * 
+    * @since 2.0.0 
+    */
+  var tagStack = List.empty[String]
+  /** List of namespaces
+    * 
+    * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
+    * 
+    * @since 2.0.0 
+    */
+  var scopeStack = List.empty[NamespaceBinding]
 
   var curTag: String = null
   var capture: Boolean = false
@@ -122,19 +150,19 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
     attributes: Attributes): Unit =
     {
       captureText()
-      tagStack push curTag
+      tagStack = curTag :: tagStack
       curTag = qname
 
       val localName = splitName(qname)._2
       capture = nodeContainsText(localName)
 
-      hStack push null
+      hStack =  null :: hStack
       var m: MetaData = Null
       var scpe: NamespaceBinding =
         if (scopeStack.isEmpty) TopScope
-        else scopeStack.top
+        else scopeStack.head
 
-      for (i <- 0 until attributes.getLength()) {
+      for (i <- (0 until attributes.getLength).reverse) {
         val qname = attributes getQName i
         val value = attributes getValue i
         val (pre, key) = splitName(qname)
@@ -147,8 +175,8 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
           m = Attribute(Option(pre), key, Text(value), m)
       }
 
-      scopeStack push scpe
-      attribStack push m
+      scopeStack = scpe :: scopeStack
+      attribStack =  m :: attribStack
     }
 
   /**
@@ -156,7 +184,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
    */
   def captureText(): Unit = {
     if (capture && buffer.length > 0)
-      hStack push createText(buffer.toString)
+      hStack = createText(buffer.toString) :: hStack
 
     buffer.clear()
   }
@@ -170,25 +198,32 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
    */
   override def endElement(uri: String, _localName: String, qname: String): Unit = {
     captureText()
-    val metaData = attribStack.pop()
+    val metaData = attribStack.head
+    attribStack = attribStack.tail
 
     // reverse order to get it right
-    val v = (Iterator continually hStack.pop takeWhile (_ != null)).toList.reverse
+    val v = hStack.takeWhile(_ != null).reverse
+    hStack = hStack.dropWhile(_ != null) match {
+      case null :: hs => hs
+      case hs => hs
+    }
     val (pre, localName) = splitName(qname)
-    val scp = scopeStack.pop()
+    val scp = scopeStack.head
+    scopeStack = scopeStack.tail
 
     // create element
     rootElem = createNode(pre, localName, metaData, scp, v)
-    hStack push rootElem
-    curTag = tagStack.pop()
+    hStack = rootElem :: hStack
+    curTag = tagStack.head
+    tagStack = tagStack.tail
     capture = curTag != null && nodeContainsText(curTag) // root level
   }
 
   /**
    * Processing instruction.
    */
-  override def processingInstruction(target: String, data: String) {
+  override def processingInstruction(target: String, data: String): Unit = {
     captureText()
-    hStack pushAll createProcInstr(target, data)
+    hStack = hStack.reverse_:::(createProcInstr(target, data).toList)
   }
 }

@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2018, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |                                         **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -23,21 +27,23 @@ trait XMLLoader[T <: Node] {
   import scala.xml.Source._
   def adapter: FactoryAdapter = new NoBindingFactoryAdapter()
 
-  /* Override this to use a different SAXParser. */
-  def parser: SAXParser = {
-    val parser = SAXParserFactory.newInstance()
-
-    parser.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
-    parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
-    parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
-    parser.setFeature("http://xml.org/sax/features/external-parameter-entities", false)
-    parser.setFeature("http://xml.org/sax/features/external-general-entities", false)
-    parser.setFeature("http://xml.org/sax/features/resolve-dtd-uris", false)
-    parser.setXIncludeAware(false)
-    parser.setNamespaceAware(false)
-
-    parser.newSAXParser()
+  private lazy val parserInstance = new ThreadLocal[SAXParser] {
+    override def initialValue = {
+      val parser = SAXParserFactory.newInstance()
+      parser.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
+      parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+      parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
+      parser.setFeature("http://xml.org/sax/features/external-parameter-entities", false)
+      parser.setFeature("http://xml.org/sax/features/external-general-entities", false)
+      parser.setFeature("http://xml.org/sax/features/resolve-dtd-uris", false)
+      parser.setXIncludeAware(false)
+      parser.setNamespaceAware(false)
+      parser.newSAXParser()
+    }
   }
+
+  /* Override this to use a different SAXParser. */
+  def parser: SAXParser = parserInstance.get
 
   /**
    * Loads XML from the given InputSource, using the supplied parser.
@@ -46,9 +52,9 @@ trait XMLLoader[T <: Node] {
   def loadXML(source: InputSource, parser: SAXParser): T = {
     val newAdapter = adapter
 
-    newAdapter.scopeStack push TopScope
+    newAdapter.scopeStack = TopScope :: newAdapter.scopeStack
     parser.parse(source, newAdapter)
-    newAdapter.scopeStack.pop()
+    newAdapter.scopeStack = newAdapter.scopeStack.tail
 
     newAdapter.rootElem.asInstanceOf[T]
   }

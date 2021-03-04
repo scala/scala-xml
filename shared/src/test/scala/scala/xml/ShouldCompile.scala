@@ -6,12 +6,6 @@ package scala.xml
 import scala.collection._
 import scala.collection.mutable.ArrayBuffer
 
-// t1626
-object o {
-  val n = <a xmlns=""/>
-  n.namespace == null
-}
-
 // t1761
 class Foo {
   val elements: Seq[Node] = Nil
@@ -64,7 +58,7 @@ class t2281B {
 
 // SI-5858
 object SI_5858 {
-  new Elem(null, null, Null, TopScope, Nil: _*) // was ambiguous
+  new Elem(null, null, Null, TopScope, true, Nil: _*) // was ambiguous
 }
 
 class Floozy {

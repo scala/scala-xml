@@ -1,14 +1,20 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2002-2018, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
 package transform
+
+import scala.collection.Seq
 
 /**
  * A class for XML transformations.
@@ -32,7 +38,7 @@ abstract class BasicTransformer extends Function1[Node, Node] {
    */
   def transform(ns: Seq[Node]): Seq[Node] = {
     val changed = ns flatMap transform
-    if (changed.length != ns.length || (changed, ns).zipped.exists(_ != _)) changed
+    if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
     else ns
 }
 

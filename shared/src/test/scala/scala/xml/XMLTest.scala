@@ -9,6 +9,7 @@ import org.junit.Assert.assertEquals
 // import scala.xml.parsing.ConstructingParser
 import java.io.StringWriter
 import scala.collection.Iterable
+import scala.collection.Seq
 import scala.xml.Utility.sort
 
 object XMLTest {
@@ -144,6 +145,16 @@ class XMLTest {
     assertEquals(expected, actual)
   }
 
+  @UnitTest(expected=classOf[IllegalArgumentException])
+  def failEmptyStringChildren: Unit = {
+    <x/> \ ""
+  }
+
+  @UnitTest(expected=classOf[IllegalArgumentException])
+  def failEmptyStringDescendants: Unit = {
+    <x/> \\ ""
+  }
+
   @UnitTest
   def namespaces: Unit = {
     val cuckoo = <cuckoo xmlns="http://cuckoo.com">
@@ -163,57 +174,6 @@ class XMLTest {
     val expected = """<b:bar xmlns:b="barUrl"><f:foo xmlns:f="fooUrl"></f:foo></b:bar>"""
     val actual = bar.toString
     assertEquals(expected, actual)
-  }
-
-  @UnitTest
-  def validationOfElements: Unit = {
-    val vtor = new scala.xml.dtd.ElementValidator();
-    {
-      import scala.xml.dtd.ELEMENTS
-      import scala.xml.dtd.ContentModel._
-      vtor.setContentModel(
-        ELEMENTS(
-          Sequ(
-            Letter(ElemName("bar")),
-            Star(Letter(ElemName("baz"))))));
-    }
-    assertTrue(vtor(<foo><bar/><baz/><baz/></foo>))
-
-    {
-      import scala.xml.dtd.MIXED
-      import scala.xml.dtd.ContentModel._
-
-      vtor.setContentModel(
-        MIXED(
-          Alt(Letter(ElemName("bar")),
-            Letter(ElemName("baz")),
-            Letter(ElemName("bal")))));
-    }
-
-    assertTrue(vtor(<foo><bar/><baz/><baz/></foo>))
-    assertTrue(vtor(<foo>ab<bar/>cd<baz/>ed<baz/>gh</foo>))
-    assertFalse(vtor(<foo> <ugha/> <bugha/> </foo>))
-  }
-
-  def validationfOfAttributes: Unit = {
-    val vtor = new scala.xml.dtd.ElementValidator();
-    vtor.setContentModel(null)
-    vtor.setMetaData(List())
-    assertFalse(vtor(<foo bar="hello"/>))
-
-    {
-      import scala.xml.dtd._
-      vtor setMetaData List(AttrDecl("bar", "CDATA", IMPLIED))
-    }
-    assertFalse(vtor(<foo href="http://foo.com" bar="hello"/>))
-    assertTrue(vtor(<foo bar="hello"/>))
-
-    {
-      import scala.xml.dtd._
-      vtor.setMetaData(List(AttrDecl("bar", "CDATA", REQUIRED)))
-    }
-    assertFalse(vtor(<foo href="http://foo.com"/>))
-    assertTrue(vtor(<foo bar="http://foo.com"/>))
   }
 
   def Elem(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*): Elem =
@@ -260,7 +220,7 @@ class XMLTest {
   }
 
   @UnitTest
-  def XmlEy {
+  def XmlEy: Unit = {
     assertTrue((ax \ "@{the namespace from outer space}foo") xml_== "baz")
     assertTrue((cx \ "@{the namespace from outer space}foo") xml_== "baz")
 
@@ -296,10 +256,10 @@ class XMLTest {
   @UnitTest
   def escape =
     assertEquals("""
- &quot;Come, come again, whoever you are, come!
+ "Come, come again, whoever you are, come!
 Heathen, fire worshipper or idolatrous, come!
 Come even if you broke your penitence a hundred times,
-Ours is the portal of hope, come as you are.&quot;
+Ours is the portal of hope, come as you are."
                               Mevlana Celaleddin Rumi""", <![CDATA[
  "Come, come again, whoever you are, come!
 Heathen, fire worshipper or idolatrous, come!
@@ -348,10 +308,6 @@ Ours is the portal of hope, come as you are."
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace }>
     </wsdl:definitions>;
 
-  def wsdlTemplate3(serviceName: String): Node =
-    <wsdl:definitions name={ serviceName } xmlns:tns={ new _root_.scala.xml.Text("target3") }>
-    </wsdl:definitions>;
-
   def wsdlTemplate4(serviceName: String, targetNamespace: () => String): Node =
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace() }>
     </wsdl:definitions>;
@@ -362,10 +318,15 @@ Ours is the portal of hope, come as you are."
     </wsdl:definitions>""", wsdlTemplate1("service1") toString)
     assertEquals("""<wsdl:definitions name="service2" xmlns:tns="target2">
     </wsdl:definitions>""", wsdlTemplate2("service2", "target2") toString)
-    assertEquals("""<wsdl:definitions name="service3" xmlns:tns="target3">
-    </wsdl:definitions>""", wsdlTemplate3("service3") toString)
     assertEquals("""<wsdl:definitions name="service4" xmlns:tns="target4">
     </wsdl:definitions>""", wsdlTemplate4("service4", () => "target4") toString)
+  }
+
+  @UnitTest
+  def t547: Unit = {
+    // ambiguous toString problem from #547
+    val atom: scala.xml.Atom[Unit] = new scala.xml.Atom(())
+    assertEquals(().toString, atom.toString)
   }
 
   @UnitTest
@@ -416,7 +377,31 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
-  def t5052 {
+  def t4124: Unit = {
+    val body: Node = <elem>hi</elem>
+    assertEquals("hi", ((body: AnyRef, "foo"): @unchecked) match {
+      case (node: Node, "bar")        => "bye"
+      case (ser: Serializable, "foo") => "hi"
+    })
+
+    assertEquals("hi", ((body, "foo"): @unchecked) match {
+      case (node: Node, "bar")        => "bye"
+      case (ser: Serializable, "foo") => "hi"
+    })
+
+    assertEquals("bye", ((body: AnyRef, "foo"): @unchecked) match {
+      case (node: Node, "foo")        => "bye"
+      case (ser: Serializable, "foo") => "hi"
+    })
+
+    assertEquals("bye", ((body: AnyRef, "foo"): @unchecked) match {
+      case (node: Node, "foo")        => "bye"
+      case (ser: Serializable, "foo") => "hi"
+    })
+  }
+
+  @UnitTest
+  def t5052: Unit = {
     assertTrue(<elem attr={ null: String }/> xml_== <elem/>)
     assertTrue(<elem attr={ None }/> xml_== <elem/>)
     assertTrue(<elem/> xml_== <elem attr={ null: String }/>)
@@ -425,7 +410,7 @@ Ours is the portal of hope, come as you are."
 
   @UnitTest
   def t5115 = {
-    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size, i.iterator.size)
+    def assertHonorsIterableContract(i: Iterable[_]) = assertEquals(i.size.toLong, i.iterator.size.toLong)
 
     assertHonorsIterableContract(<a/>.attributes)
     assertHonorsIterableContract(<a x=""/>.attributes)
@@ -438,7 +423,23 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
-  def t5843 {
+  def t5645: Unit = {
+
+    val bar = "baz"
+    val script = <script type="text/javascript">
+      foo("{bar}");
+    </script>
+
+    val expected =
+      """|<script type="text/javascript">
+         |      foo("baz");
+         |    </script>""".stripMargin
+
+    assertEquals(expected, script.toString)
+  }
+
+  @UnitTest
+  def t5843: Unit = {
     val foo = scala.xml.Attribute(null, "foo", "1", scala.xml.Null)
     val bar = scala.xml.Attribute(null, "bar", "2", foo)
     val ns = scala.xml.NamespaceBinding(null, "uri", scala.xml.TopScope)
@@ -455,7 +456,7 @@ Ours is the portal of hope, come as you are."
   }
 
   @UnitTest
-  def t7074 {
+  def t7074: Unit = {
     assertEquals("""<a/>""", sort(<a/>) toString)
     assertEquals("""<a b="2" c="3" d="1"/>""", sort(<a d="1" b="2" c="3"/>) toString)
     assertEquals("""<a b="2" c="4" d="1" e="3" f="5"/>""", sort(<a d="1" b="2" e="3" c="4" f="5"/>) toString)
@@ -533,5 +534,16 @@ Ours is the portal of hope, come as you are."
     val sb = new StringBuilder
     pp.format(x, sb)
     assertEquals(expected, sb.toString)
+  }
+
+  @UnitTest
+  def i1976: Unit = {
+    val node = <node>{ "whatever " }</node>
+    assertEquals("whatever ", node.child.text)
+  }
+
+  @UnitTest
+  def i6547: Unit = {
+    <foo a="hello &name; aaa"/>
   }
 }

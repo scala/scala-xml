@@ -16,7 +16,7 @@ class XMLSyntaxTestJVM {
           case _ => super.replacementText(entityName);
         }
       }
-      nextch; // !!important, to initialize the parser
+      nextch(); // !!important, to initialize the parser
     }
     val parsed = parser.element(TopScope) // parse the source as element
     // alternatively, we could call document()

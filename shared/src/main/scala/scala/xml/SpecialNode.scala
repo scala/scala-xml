@@ -1,10 +1,14 @@
-/*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2018, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
-\*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -13,12 +17,9 @@ package xml
  * `SpecialNode` is a special XML node which represents either text
  *  `(PCDATA)`, a comment, a `PI`, or an entity ref.
  *
- *  `SpecialNode`s also play the role of [[scala.xml.pull.XMLEvent]]s for
- *  pull-parsing.
- *
  *  @author Burak Emir
  */
-abstract class SpecialNode extends Node with pull.XMLEvent {
+abstract class SpecialNode extends Node {
 
   /** always empty */
   final override def attributes = Null

@@ -54,4 +54,11 @@ class MetaDataTest {
     assertEquals(new Atom(3), domatch(z2))
   }
 
+  @Test
+  def reverseTest: Unit = {
+    assertEquals("", Null.reverse.toString)
+    assertEquals(""" b="c"""", <a b="c"/>.attributes.reverse.toString)
+    assertEquals(""" d="e" b="c"""", <a b="c" d="e"/>.attributes.reverse.toString)
+  }
+
 }

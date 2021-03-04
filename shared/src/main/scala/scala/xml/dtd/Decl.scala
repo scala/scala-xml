@@ -1,10 +1,14 @@
-/*                     __                                               *\
- **     ________ ___   / /  ___     Scala API                            **
- **    / __/ __// _ | / /  / _ |    (c) 2003-2018, LAMP/EPFL             **
- **  __\ \/ /__/ __ |/ /__/ __ |    http://www.scala-lang.org/           **
- ** /____/\___/_/ |_/____/_/ | |                                         **
- **                          |/                                          **
- \*                                                                      */
+/*
+ * Scala (https://www.scala-lang.org)
+ *
+ * Copyright EPFL and Lightbend, Inc.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
 
 package scala
 package xml
@@ -26,6 +30,7 @@ import Utility.sbToString
 sealed abstract class Decl
 
 sealed abstract class MarkupDecl extends Decl {
+  override def toString(): String = sbToString(buildString)
   def buildString(sb: StringBuilder): StringBuilder
 }
 
@@ -103,7 +108,7 @@ sealed abstract class EntityDef {
 }
 
 case class IntDef(value: String) extends EntityDef {
-  private def validateValue() {
+  private def validateValue(): Unit = {
     var tmp = value
     var ix = tmp indexOf '%'
     while (ix != -1) {
