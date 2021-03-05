@@ -315,10 +315,7 @@ class XMLTestJVM {
     val inputStream = new java.io.ByteArrayInputStream(outputStream.toByteArray)
     val streamReader = new java.io.InputStreamReader(inputStream, XML.encoding)
 
-    def unescapeQuotes(str: String) = 
-      "&quot;".r.replaceFirstIn(str, "\"")
-    val xmlFixed = unescapeQuotes(xml.toString)
-    assertEquals(xmlFixed, XML.load(streamReader).toString)
+    assertEquals(xml.toString, XML.load(streamReader).toString)
   }
 
   @UnitTest
