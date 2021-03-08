@@ -53,4 +53,9 @@ export CI_SNAPSHOT_RELEASE="${projectPrefix}publish"
 # for now, until we're confident in the new release scripts, just close the staging repo.
 export CI_SONATYPE_RELEASE="; sonatypePrepare; sonatypeBundleUpload; sonatypeClose"
 
+# change this only when we need to update the sbt-the-bash-script
+SBT_LAUNCH_VER=1.4.8
+curl -L --silent "https://github.com/sbt/sbt/releases/download/v$SBT_LAUNCH_VER/sbt-$SBT_LAUNCH_VER.tgz" > $HOME/sbt.tgz
+tar zxf $HOME/sbt.tgz
+export PATH="$HOME/sbt/bin:$PATH"
 sbt clean ${projectPrefix}test ${projectPrefix}publishLocal $releaseTask
