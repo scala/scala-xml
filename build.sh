@@ -58,4 +58,5 @@ SBT_LAUNCH_VER=1.4.8
 curl -L --silent "https://github.com/sbt/sbt/releases/download/v$SBT_LAUNCH_VER/sbt-$SBT_LAUNCH_VER.tgz" > $HOME/sbt.tgz
 tar zxf $HOME/sbt.tgz
 export PATH="$HOME/sbt/bin:$PATH"
+which sbt
 sbt clean ${projectPrefix}test ${projectPrefix}publishLocal $releaseTask
