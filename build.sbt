@@ -3,6 +3,9 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 ThisBuild / startYear := Some(2002)
 ThisBuild / licenses += (("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")))
 
+ThisBuild / versionScheme := Some("early-semver")
+ThisBuild / versionPolicyIntention := Compatibility.BinaryAndSourceCompatible
+
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
     unmanagedSourceDirectories.value.flatMap { dir =>
@@ -59,74 +62,16 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           |""".stripMargin)),
 
     scalaModuleMimaPreviousVersion := {
-      if (isDotty.value) None // No such release yet
-      else Some("1.3.0")
+      // pending resolution of https://github.com/scalacenter/sbt-version-policy/issues/62
+      if (isDotty.value) None
+      else Some("2.0.0-M5")
     },
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
       Seq(
-        // scala-xml 1.1.1 deprecated XMLEventReader, so it broke
-        // binary compatibility for 2.0.0 in the following way:
-        exclude[MissingClassProblem]("scala.xml.pull.EvComment"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvComment$"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvElemEnd"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvElemEnd$"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvElemStart"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvElemStart$"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvEntityRef"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvEntityRef$"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvProcInstr"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvProcInstr$"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvText"),
-        exclude[MissingClassProblem]("scala.xml.pull.EvText$"),
-        exclude[MissingClassProblem]("scala.xml.pull.ExceptionEvent"),
-        exclude[MissingClassProblem]("scala.xml.pull.ExceptionEvent$"),
-        exclude[MissingClassProblem]("scala.xml.pull.ProducerConsumerIterator"),
-        exclude[MissingClassProblem]("scala.xml.pull.XMLEvent"),
-        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader"),
-        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader$POISON$"),
-        exclude[MissingClassProblem]("scala.xml.pull.XMLEventReader$Parser"),
-        exclude[MissingClassProblem]("scala.xml.pull.package"),
-        exclude[MissingClassProblem]("scala.xml.pull.package$"),
-        exclude[MissingTypesProblem]("scala.xml.Atom"),
-        exclude[MissingTypesProblem]("scala.xml.Comment"),
-        exclude[MissingTypesProblem]("scala.xml.Document"),
-        exclude[MissingTypesProblem]("scala.xml.EntityRef"),
-        exclude[MissingTypesProblem]("scala.xml.PCData"),
-        exclude[MissingTypesProblem]("scala.xml.ProcInstr"),
-        exclude[MissingTypesProblem]("scala.xml.SpecialNode"),
-        exclude[MissingTypesProblem]("scala.xml.Text"),
-        exclude[MissingTypesProblem]("scala.xml.Unparsed"),
-        // Miscellaneous deprecations
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$TopIter$"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$Node$"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$Point$"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$TopIter"),
-        exclude[MissingClassProblem]("scala.xml.dtd.impl.PointedHedgeExp$Node"),
-        exclude[MissingClassProblem]("scala.xml.dtd.Scanner"),
-        exclude[MissingClassProblem]("scala.xml.dtd.ContentModelParser$"),
-        exclude[MissingClassProblem]("scala.xml.dtd.ContentModelParser"),
-        exclude[MissingClassProblem]("scala.xml.dtd.ElementValidator"),
-        exclude[MissingClassProblem]("scala.xml.dtd.ElementValidator"),
-        exclude[MissingClassProblem]("scala.xml.factory.Binder"),
-        exclude[MissingClassProblem]("scala.xml.parsing.ValidatingMarkupHandler"),
-        exclude[MissingClassProblem]("scala.xml.persistent.CachedFileStorage"),
-        exclude[MissingClassProblem]("scala.xml.persistent.Index"),
-        exclude[MissingClassProblem]("scala.xml.persistent.SetStorage"),
-        exclude[DirectMissingMethodProblem]("scala.xml.dtd.ContentModel.parse"),
-        exclude[DirectMissingMethodProblem]("scala.xml.Elem.this"),
-        exclude[DirectMissingMethodProblem]("scala.xml.Elem.apply"),
-        exclude[DirectMissingMethodProblem]("scala.xml.Elem.processXml"),
-        exclude[DirectMissingMethodProblem]("scala.xml.Elem.xmlToProcess"),
-        // Scala 2.12 deprecated mutable.Stack, so we broke
-        // binary compatibility for 2.0.0 in the following way:
-        exclude[IncompatibleMethTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack_="),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.hStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.scopeStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.attribStack"),
-        exclude[IncompatibleResultTypeProblem]("scala.xml.parsing.FactoryAdapter.tagStack"),
+        // because we reverted #279
+        exclude[DirectMissingMethodProblem]("scala.xml.Utility.escapeText"),
         // New MiMa checks for generic signature changes
         exclude[IncompatibleSignatureProblem]("*"),
       )
