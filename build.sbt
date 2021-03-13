@@ -74,6 +74,10 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         exclude[DirectMissingMethodProblem]("scala.xml.Utility.escapeText"),
         // New MiMa checks for generic signature changes
         exclude[IncompatibleSignatureProblem]("*"),
+        // afaict this is just a JDK 8 vs 15 difference, producing a false positive when
+        // we compare classes built on JDK 15 (which we only do on CI, not at release time)
+        // to previous-version artifacts that were built on 8.  see scala/scala-xml#501
+        exclude[DirectMissingMethodProblem]("scala.xml.include.sax.XIncluder.declaration"),
       )
     },
 
