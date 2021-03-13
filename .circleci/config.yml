@@ -58,7 +58,7 @@ jobs:
       - run: java -version
       - sbt_cmd:
           scala_version: << parameters.scala_version >>
-          sbt_tasks: xml/update xml/compile xml/test:compile xml/test xml/doc xml/package xml/osgiBundle
+          sbt_tasks: xml/update xml/compile xml/Test/compile xml/test xml/doc xml/package xml/osgiBundle xml/versionPolicyCheck
   scalajs_job:
     executor: scala_jdk8_executor
     parameters:
@@ -78,7 +78,7 @@ jobs:
       - run: node -v
       - sbt_cmd:
           scala_version: << parameters.scala_version >>
-          sbt_tasks: xmlJS/update xmlJS/compile xmlJS/test:compile xmlJS/test xmlJS/doc xmlJS/package
+          sbt_tasks: xmlJS/update xmlJS/compile xmlJS/Test/compile xmlJS/test xmlJS/doc xmlJS/package
   scalanative_job:
     executor: scala_native_executor
     parameters:
