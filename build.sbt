@@ -58,7 +58,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     scalaModuleMimaPreviousVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
       // pending resolution of https://github.com/scalacenter/sbt-version-policy/issues/62
       case Some((3, _)) => None
-      case _            => Some("2.0.0-M5")
+      case _            => Some("2.0.0-RC1")
     }),
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._

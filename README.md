@@ -16,7 +16,7 @@ How to documentation is available in the [wiki](https://github.com/scala/scala-x
 
 The latest stable release of Scala XML is 1.3.0.
 
-Our experimental milestones in the 2.0.0-Mx series include support for Scala 3 prerelease versions. See also the changes for 2.0 in `CHANGELOG.md`.
+The 2.0.0-RCx series supports Scala 3. See also the changes for 2.0 in `CHANGELOG.md`.
 
 ## Maintenance status
 
