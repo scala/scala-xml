@@ -7,9 +7,6 @@ executors:
   scala_jdk11_executor:
     docker:
       - image: circleci/openjdk:11-jdk
-  scala_jdk15_executor:
-    docker:
-      - image: circleci/openjdk:15-buster
   scala_jdk16_executor:
     docker:
       - image: circleci/openjdk:16-buster
@@ -119,13 +116,13 @@ workflows:
           java_version: jdk8
           scala_version: 2.13.5
       - scala_job:
+          name: 3.0.0-RC2
+          java_version: jdk8
+          scala_version: 3.0.0-RC2
+      - scala_job:
           name: 3.0.0-RC1
           java_version: jdk8
           scala_version: 3.0.0-RC1
-      - scala_job:
-          name: 3.0.0-M3
-          java_version: jdk8
-          scala_version: 3.0.0-M3
       - scala_job:
           name: jdk11_2.12
           java_version: jdk11
@@ -137,19 +134,7 @@ workflows:
       - scala_job:
           name: jdk11_3.0
           java_version: jdk11
-          scala_version: 3.0.0-RC1
-      - scala_job:
-          name: jdk15_2.12
-          java_version: jdk15
-          scala_version: 2.12.13
-      - scala_job:
-          name: jdk15_2.13
-          java_version: jdk15
-          scala_version: 2.13.5
-      - scala_job:
-          name: jdk15_3.0
-          java_version: jdk15
-          scala_version: 3.0.0-RC1
+          scala_version: 3.0.0-RC2
       - scala_job:
           name: jdk16_2.12
           java_version: jdk16
@@ -161,7 +146,7 @@ workflows:
       - scala_job:
           name: jdk16_3.0
           java_version: jdk16
-          scala_version: 3.0.0-RC1
+          scala_version: 3.0.0-RC2
       - scalajs_job:
           name: sjs1.0_2.12
           scala_version: 2.12.13

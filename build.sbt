@@ -32,22 +32,16 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .jvmSettings(ScalaModulePlugin.scalaModuleOsgiSettings)
   .settings(
     name    := "scala-xml",
-    scalacOptions ++= {
-      val opts =
-        if (isDotty.value)
-          "-language:Scala2"
-        else
-          // Compiler team advised avoiding the -Xsource:2.14 option for releases.
-          // The output with -Xsource should be periodically checked, though.
-          "-deprecation:false -feature -Xlint:-stars-align,-nullary-unit,_"
-      opts.split("\\s+").to[Seq]
-    },
+    scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, _)) =>
+        Seq("-language:Scala2")
+      case _ =>
+        // Compiler team advised avoiding the -Xsource:2.14 option for releases.
+        // The output with -Xsource should be periodically checked, though.
+        Seq("-deprecation:false", "-feature", "-Xlint:-stars-align,-nullary-unit,_")
+    }),
 
     Test / scalacOptions  += "-Xxml:coalescing",
-
-    // don't run Dottydoc, it errors and isn't needed anyway.
-    // but we leave `publishArtifact` set to true, otherwise Sonatype won't let us publish
-    Compile / doc / sources := (if (isDotty.value) Seq() else (Compile / doc/ sources).value),
 
     headerLicense  := Some(HeaderLicense.Custom(
       s"""|Scala (https://www.scala-lang.org)
@@ -61,11 +55,11 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           |additional information regarding copyright ownership.
           |""".stripMargin)),
 
-    scalaModuleMimaPreviousVersion := {
+    scalaModuleMimaPreviousVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
       // pending resolution of https://github.com/scalacenter/sbt-version-policy/issues/62
-      if (isDotty.value) None
-      else Some("2.0.0-M5")
-    },
+      case Some((3, _)) => None
+      case _            => Some("2.0.0-M5")
+    }),
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
@@ -74,8 +68,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         exclude[DirectMissingMethodProblem]("scala.xml.Utility.escapeText"),
         // New MiMa checks for generic signature changes
         exclude[IncompatibleSignatureProblem]("*"),
-        // afaict this is just a JDK 8 vs 15 difference, producing a false positive when
-        // we compare classes built on JDK 15 (which we only do on CI, not at release time)
+        // afaict this is just a JDK 8 vs 16 difference, producing a false positive when
+        // we compare classes built on JDK 16 (which we only do on CI, not at release time)
         // to previous-version artifacts that were built on 8.  see scala/scala-xml#501
         exclude[DirectMissingMethodProblem]("scala.xml.include.sax.XIncluder.declaration"),
       )
@@ -115,12 +109,12 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies += "junit" % "junit" % "4.13.2" % Test,
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.12.0" % Test,
-    libraryDependencies ++= {
-      if (isDotty.value)
+    libraryDependencies ++= (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, _)) =>
         Seq()
-      else
+      case _ =>
         Seq(("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test).exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}"))
-    }
+    }),
   )
   .jsSettings(
     // Scala.js cannot run forked tests

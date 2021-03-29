@@ -5,8 +5,8 @@ import: scala/scala-dev:travis/default.yml
 language: scala
 
 scala:
+  - 3.0.0-RC2
   - 3.0.0-RC1
-  - 3.0.0-M3
   - 2.12.13
   - 2.13.5
 
@@ -15,13 +15,13 @@ env:
   - SCALAJS_VERSION=1.5.0     ADOPTOPENJDK=8
   - SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
   - SCALAJS_VERSION=          ADOPTOPENJDK=11
-  - SCALAJS_VERSION=          ADOPTOPENJDK=15
+  - SCALAJS_VERSION=          ADOPTOPENJDK=16
 
 jobs:
   exclude:
-    - scala: 3.0.0-M3
-      env: SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
     - scala: 3.0.0-RC1
+      env: SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
+    - scala: 3.0.0-RC2
       env: SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
 
 install:
