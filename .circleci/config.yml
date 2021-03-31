@@ -150,11 +150,11 @@ workflows:
       - scalajs_job:
           name: sjs1.0_2.12
           scala_version: 2.12.13
-          scalajs_version: 1.5.0
+          scalajs_version: 1.5.1
       - scalajs_job:
           name: sjs1.0_2.13
           scala_version: 2.13.5
-          scalajs_version: 1.5.0
+          scalajs_version: 1.5.1
       - scalanative_job:
           name: native0.4_2.12
           scala_version: 2.12.13
