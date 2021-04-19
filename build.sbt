@@ -60,14 +60,13 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       case Some((3, _)) => None
       case _            => Some("2.0.0-RC1")
     }),
+    mimaReportSignatureProblems := true,
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
       Seq(
         // because we reverted #279
         exclude[DirectMissingMethodProblem]("scala.xml.Utility.escapeText"),
-        // New MiMa checks for generic signature changes
-        exclude[IncompatibleSignatureProblem]("*"),
         // afaict this is just a JDK 8 vs 16 difference, producing a false positive when
         // we compare classes built on JDK 16 (which we only do on CI, not at release time)
         // to previous-version artifacts that were built on 8.  see scala/scala-xml#501
