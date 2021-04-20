@@ -66,6 +66,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       Seq(
         // because we reverted #279
         exclude[DirectMissingMethodProblem]("scala.xml.Utility.escapeText"),
+        exclude[MissingClassProblem]("scala.xml.Properties*"),
         // New MiMa checks for generic signature changes
         exclude[IncompatibleSignatureProblem]("*"),
         // afaict this is just a JDK 8 vs 16 difference, producing a false positive when
