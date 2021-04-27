@@ -122,7 +122,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   )
   .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
   .nativeSettings(
-    scalaModuleMimaPreviousVersion := None, // No such release yet
     // Scala Native cannot run forked tests
     Test / fork := false,
     libraryDependencies += "org.scala-native" %%% "junit-runtime" % nativeVersion % Test,
