@@ -55,6 +55,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           |additional information regarding copyright ownership.
           |""".stripMargin)),
 
+    // Note: See discussion on Mima in https://github.com/scala/scala-xml/pull/517
     scalaModuleMimaPreviousVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
       // pending resolution of https://github.com/scalacenter/sbt-version-policy/issues/62
       case Some((3, _)) => None
