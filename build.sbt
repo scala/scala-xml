@@ -32,6 +32,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .jvmSettings(ScalaModulePlugin.scalaModuleOsgiSettings)
   .settings(
     name    := "scala-xml",
+    scalaModuleAutomaticModuleName := Some("scala.xml"),
     scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((3, _)) =>
         Seq("-language:Scala2")
