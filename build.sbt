@@ -66,6 +66,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
       Seq(
+        // Deprecated in 2.0.0-RC2
+        exclude[MissingClassProblem]("scala.xml.factory.LoggedNodeFactory"),
+        exclude[DirectMissingMethodProblem]("scala.xml.parsing.MarkupHandler.log"),
         // because we reverted #279
         exclude[DirectMissingMethodProblem]("scala.xml.Utility.escapeText"),
         exclude[MissingClassProblem]("scala.xml.Properties*"),
