@@ -4,10 +4,10 @@ val scalaJSVersion =
 val scalaNativeVersion =
   Option(System.getenv("SCALANATIVE_VERSION")).filter(_.nonEmpty).getOrElse("0.4.0")
 
-addSbtPlugin("org.scala-lang.modules" % "sbt-scala-module" % "2.2.4")
+addSbtPlugin("org.scala-lang.modules" % "sbt-scala-module" % "2.3.0")
 addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "1.0.0")
 addSbtPlugin("org.portable-scala" % "sbt-scala-native-crossproject" % "1.0.0")
 addSbtPlugin("org.scala-js" % "sbt-scalajs" % scalaJSVersion)
 addSbtPlugin("org.scala-native" % "sbt-scala-native" % scalaNativeVersion)
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.6.0")
-addSbtPlugin("ch.epfl.scala" % "sbt-version-policy" % "1.0.0-RC5")
+addSbtPlugin("ch.epfl.scala" % "sbt-version-policy" % "1.0.0")

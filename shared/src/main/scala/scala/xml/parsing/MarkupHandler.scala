@@ -129,7 +129,4 @@ abstract class MarkupHandler {
   def unparsedEntityDecl(name: String, extID: ExternalID, notat: String): Unit = ()
   def notationDecl(notat: String, extID: ExternalID): Unit = ()
   def reportSyntaxError(pos: Int, str: String): Unit
-
-  @deprecated("This method and its usages will be removed. Use a debugger to debug code.", "2.11")
-  def log(msg: String): Unit = {}
 }
