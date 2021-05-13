@@ -119,7 +119,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       case Some((3, _)) =>
         Seq()
       case _ =>
-        Seq(("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test).exclude("org.scala-lang.modules", s"scala-xml_${scalaBinaryVersion.value}"))
+        Seq("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test)
     }),
   )
   .jsSettings(
