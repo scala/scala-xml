@@ -8,7 +8,7 @@ class CompilerErrors extends CompilerTesting {
     // the error message here differs a bit by Scala version
     import util.Properties.versionNumberString
     val thing =
-      if (versionNumberString.startsWith("2.11") || versionNumberString.startsWith("2.12")) "method value"
+      if (versionNumberString.startsWith("2.12")) "method value"
       else "method"
     expectXmlError(s"""|overloaded $thing apply with alternatives:
                        |  (f: scala.xml.Node => Boolean)scala.xml.NodeSeq <and>
