@@ -37,8 +37,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       case Some((3, _)) =>
         Seq("-language:Scala2")
       case _ =>
-        // Compiler team advised avoiding the -Xsource:2.14 option for releases.
-        // The output with -Xsource should be periodically checked, though.
+        // Compiler team advised avoiding the -Xsource:3 option for releases.
+        // The output with -Xsource:3 should be periodically checked, though.
         Seq("-deprecation:false", "-feature", "-Xlint:-stars-align,-nullary-unit,_")
     }),
 
@@ -56,23 +56,13 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           |additional information regarding copyright ownership.
           |""".stripMargin)),
 
-    // Note: See discussion on Mima in https://github.com/scala/scala-xml/pull/517
-    scalaModuleMimaPreviousVersion := (CrossVersion.partialVersion(scalaVersion.value) match {
-      // pending resolution of https://github.com/scalacenter/sbt-version-policy/issues/62
-      case Some((3, _)) => None
-      case _            => Some("2.0.0-RC1")
-    }),
+    // Note: See discussion on non-JVM Mima in https://github.com/scala/scala-xml/pull/517
+    scalaModuleMimaPreviousVersion := Some("2.0.0"),
     mimaReportSignatureProblems := true,
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
       Seq(
-        // Deprecated in 2.0.0-RC2
-        exclude[MissingClassProblem]("scala.xml.factory.LoggedNodeFactory"),
-        exclude[DirectMissingMethodProblem]("scala.xml.parsing.MarkupHandler.log"),
-        // because we reverted #279
-        exclude[DirectMissingMethodProblem]("scala.xml.Utility.escapeText"),
-        exclude[MissingClassProblem]("scala.xml.Properties*"),
         // afaict this is just a JDK 8 vs 16 difference, producing a false positive when
         // we compare classes built on JDK 16 (which we only do on CI, not at release time)
         // to previous-version artifacts that were built on 8.  see scala/scala-xml#501

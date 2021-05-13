@@ -1,8 +1,8 @@
 scala-xml
 [![Travis](https://img.shields.io/travis/scala/scala-xml.svg)](https://travis-ci.org/scala/scala-xml)
-[![latest release for 2.11](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.11.svg?label=scala+2.11)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.11)
 [![latest release for 2.12](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.12.svg?label=scala+2.12)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.12)
 [![latest release for 2.13](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.13.svg?label=scala+2.13)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.13)
+[![latest release for 3.0](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_3.svg?label=scala+3)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_3)
 [![Gitter](https://badges.gitter.im/Join+Chat.svg)](https://gitter.im/scala/scala-xml)
 =========
 
@@ -14,9 +14,7 @@ API documentation is available [here](https://javadoc.io/doc/org.scala-lang.modu
 
 How to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
 
-The latest stable release of Scala XML is 1.3.0.
-
-The 2.0.0-RCx series supports Scala 3. See also the changes for 2.0 in `CHANGELOG.md`.
+The latest stable release of Scala XML is 2.0.0.
 
 ## Maintenance status
 
