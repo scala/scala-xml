@@ -1,5 +1,38 @@
 # Scala XML Changes
 
+## 2.0.0 (2021-05-13)
+
+Published for Scala 2.12 and 2.13, Scala 3.0.0 (and -RC3), Scala.js 1.5, and Scala Native 0.4.
+
+- Support Scala 3.0.0
+- Drop `scala.xml.Properties
+- Remove deprecated logging
+
+## 2.0.0-RC1 (2021-03-29)
+
+NOTICE: The safe-defaults change may be a breaking change for some users. Details on PR.
+
+- Set safe defaults for parser settings
+- Use a `ThreadLocal` to allow reusing parser instances
+- Declare version policy
+
+Published for Scala 2.12 and 2.13, Scala 3.0.0-RC2 and -RC1, Scala.js 1.5, and Scala Native 0.4.
+
+## 2.0.0-M4 (2021-02-16)
+
+Published for Scala 2.12 and 2.13, Scala 3.0.0-RC1 and -M3, Scala.js 1.5, and Scala Native 0.4.
+
+- Support Scala 3.0.0-RC1 (and drop 3.0.0-M2)
+- Upgrade Scala.js to 1.5.0
+
+## 2.0.0-M3 (2021-01-30)
+
+Published for Scala 2.12 and 2.13, Scala 3.0.0-M2 and -M3, Scala.js 1.4, and Scala Native 0.4.
+
+- Add support for Scala Native 0.4
+- Make RuleTransformer fully recursive
+- Fix invalid comment edge case
+
 ## 2.0.0-M2 (2020-09-15)
 
 Published for Scala 2.12 and 2.13, Scala.js 1.2.0,
