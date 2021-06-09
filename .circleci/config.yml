@@ -17,7 +17,7 @@ commands:
     parameters:
       scala_version:
         type: string
-        default: 2.12.13
+        default: 2.12.14
       sbt_tasks:
         type: string
         default: update compile test:compile test doc package osgiBundle
@@ -41,7 +41,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.13
+        default: 2.12.14
         type: string
       java_version:
         description: "Java version"
@@ -58,7 +58,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.13
+        default: 2.12.14
         type: string
       scalajs_version:
         description: "ScalaJS version"
@@ -78,7 +78,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.13
+        default: 2.12.14
         type: string
       scalanative_version:
         description: "Scala Native version"
@@ -103,9 +103,9 @@ workflows:
   build:
     jobs:
       - scala_job:
-          name: 2.12.13
+          name: 2.12.14
           java_version: jdk8
-          scala_version: 2.12.13
+          scala_version: 2.12.14
       - scala_job:
           name: 2.13.6
           java_version: jdk8
@@ -121,7 +121,7 @@ workflows:
       - scala_job:
           name: jdk11_2.12
           java_version: jdk11
-          scala_version: 2.12.13
+          scala_version: 2.12.14
       - scala_job:
           name: jdk11_2.13
           java_version: jdk11
@@ -133,7 +133,7 @@ workflows:
       - scala_job:
           name: jdk16_2.12
           java_version: jdk16
-          scala_version: 2.12.13
+          scala_version: 2.12.14
       - scala_job:
           name: jdk16_2.13
           java_version: jdk16
@@ -144,15 +144,15 @@ workflows:
           scala_version: 3.0.0
       - scalajs_job:
           name: sjs1.0_2.12
-          scala_version: 2.12.13
-          scalajs_version: 1.6.0
+          scala_version: 2.12.14
+          scalajs_version: 1.5.1
       - scalajs_job:
           name: sjs1.0_2.13
           scala_version: 2.13.6
           scalajs_version: 1.6.0
       - scalanative_job:
           name: native0.4_2.12
-          scala_version: 2.12.13
+          scala_version: 2.12.14
           scalanative_version: 0.4.0
       - scalanative_job:
           name: native0.4_2.13
