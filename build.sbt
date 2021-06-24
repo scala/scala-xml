@@ -4,7 +4,9 @@ ThisBuild / startYear := Some(2002)
 ThisBuild / licenses += (("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")))
 
 ThisBuild / versionScheme := Some("early-semver")
-ThisBuild / versionPolicyIntention := Compatibility.BinaryAndSourceCompatible
+ThisBuild / versionPolicyIntention := Compatibility.BinaryCompatible
+// because it doesn't declare it itself
+ThisBuild / versionPolicyDependencySchemes += "org.scala-js" %% "scalajs-library" % "semver-spec"
 
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
