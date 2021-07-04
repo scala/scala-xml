@@ -117,7 +117,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     // Scala.js cannot run forked tests
     Test / fork := false
   )
-  .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
+  .jsEnablePlugins(ScalaJSJUnitPlugin)
   .nativeSettings(
     // Scala Native cannot run forked tests
     Test / fork := false,
