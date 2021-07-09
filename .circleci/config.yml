@@ -111,13 +111,9 @@ workflows:
           java_version: jdk8
           scala_version: 2.13.6
       - scala_job:
-          name: 3.0.0
+          name: 3.0.1
           java_version: jdk8
-          scala_version: 3.0.0
-      - scala_job:
-          name: 3.0.0-RC3
-          java_version: jdk8
-          scala_version: 3.0.0-RC3
+          scala_version: 3.0.1
       - scala_job:
           name: jdk11_2.12
           java_version: jdk11
@@ -129,7 +125,7 @@ workflows:
       - scala_job:
           name: jdk11_3.0
           java_version: jdk11
-          scala_version: 3.0.0
+          scala_version: 3.0.1
       - scala_job:
           name: jdk16_2.12
           java_version: jdk16
@@ -141,7 +137,7 @@ workflows:
       - scala_job:
           name: jdk16_3.0
           java_version: jdk16
-          scala_version: 3.0.0
+          scala_version: 3.0.1
       - scalajs_job:
           name: sjs1.0_2.12
           scala_version: 2.12.14

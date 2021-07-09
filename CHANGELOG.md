@@ -4,7 +4,7 @@
 
 Not binary compatible with Scala XML 1.3.0.
 
-Published for Scala 2.12, 2.13, and 3.0 (and 3.0.0-RC3), Scala.js 1.5,
+Published for Scala 2.12, 2.13, and 3.0, Scala.js 1.5,
 and Scala Native 0.4.
 
 Artifacts are no longer published for Scala 2.11 and Scala.js 0.6.
