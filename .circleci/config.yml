@@ -7,9 +7,9 @@ executors:
   scala_jdk11_executor:
     docker:
       - image: circleci/openjdk:11-jdk
-  scala_jdk16_executor:
+  scala_jdk17_executor:
     docker:
-      - image: circleci/openjdk:16-buster
+      - image: circleci/openjdk:17-buster
 
 commands:
   sbt_cmd:
@@ -127,16 +127,16 @@ workflows:
           java_version: jdk11
           scala_version: 3.0.1
       - scala_job:
-          name: jdk16_2.12
-          java_version: jdk16
+          name: jdk17_2.12
+          java_version: jdk17
           scala_version: 2.12.14
       - scala_job:
-          name: jdk16_2.13
-          java_version: jdk16
+          name: jdk17_2.13
+          java_version: jdk17
           scala_version: 2.13.6
       - scala_job:
-          name: jdk16_3.0
-          java_version: jdk16
+          name: jdk17_3.0
+          java_version: jdk17
           scala_version: 3.0.1
       - scalajs_job:
           name: sjs1.0_2.12
