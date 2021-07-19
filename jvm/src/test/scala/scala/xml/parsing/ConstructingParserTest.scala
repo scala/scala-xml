@@ -75,10 +75,22 @@ class ConstructingParserTest {
   @Test
   def SI6341issue65: Unit = {
     val str = """<elem one="test" two="test2" three="test3"/>"""
-    val cpa = ConstructingParser.fromSource(io.Source.fromString(str), preserveWS = true)
+    val cpa = ConstructingParser.fromSource(Source.fromString(str), preserveWS = true)
     val cpadoc = cpa.document()
     val ppr = new PrettyPrinter(80,5)
     val out = ppr.format(cpadoc.docElem)
     assertEquals(str, out)
   }
+
+  // https://github.com/scala/scala-xml/issues/541
+  @Test
+  def issue541: Unit = {
+    val xml =
+      """|<script>// <![CDATA[
+         |[]; // ]]>
+         |</script>""".stripMargin
+    val parser = ConstructingParser.fromSource(Source.fromString(xml), preserveWS = true)
+    parser.document().docElem  // shouldn't crash
+  }
+
 }

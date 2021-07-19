@@ -58,7 +58,10 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   protected var curInput: Source = input
 
   // See ticket #3720 for motivations.
-  private class WithLookAhead(underlying: Source) extends Source {
+  // As for why it's `private[parsing]` rather than merely `private`, see
+  // https://github.com/scala/scala-xml/issues/541 ; the broader access is necessary,
+  // for now anyway, to work around https://github.com/lampepfl/dotty/issues/13096
+  private[parsing] class WithLookAhead(underlying: Source) extends Source {
     private val queue = scala.collection.mutable.Queue[Char]()
     def lookahead(): BufferedIterator[Char] = {
       val iter = queue.iterator ++ new Iterator[Char] {
