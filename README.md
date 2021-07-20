@@ -14,7 +14,7 @@ API documentation is available [here](https://javadoc.io/doc/org.scala-lang.modu
 
 How to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
 
-The latest stable release of Scala XML is 2.0.0.
+The latest stable release of Scala XML is 2.0.1.
 
 ## Maintenance status
 
