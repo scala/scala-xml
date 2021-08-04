@@ -52,7 +52,7 @@ jobs:
       - run: java -version
       - sbt_cmd:
           scala_version: << parameters.scala_version >>
-          sbt_tasks: xml/update xml/compile xml/Test/compile xml/test xml/doc xml/package xml/osgiBundle xml/versionPolicyCheck
+          sbt_tasks: xml/update xml/compile xml/Test/compile xml/test xml/doc xml/package xml/osgiBundle
   scalajs_job:
     executor: scala_jdk8_executor
     parameters:
