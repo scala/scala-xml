@@ -14,9 +14,10 @@ package scala
 package xml
 package factory
 
+import org.xml.sax.SAXNotRecognizedException
 import javax.xml.parsers.SAXParserFactory
-import parsing.{ FactoryAdapter, NoBindingFactoryAdapter }
-import java.io.{ InputStream, Reader, File, FileDescriptor }
+import parsing.{FactoryAdapter, NoBindingFactoryAdapter}
+import java.io.{File, FileDescriptor, InputStream, Reader}
 import java.net.URL
 
 /**
@@ -28,7 +29,7 @@ trait XMLLoader[T <: Node] {
   def adapter: FactoryAdapter = new NoBindingFactoryAdapter()
 
   private lazy val parserInstance = new ThreadLocal[SAXParser] {
-    override def initialValue = {
+    override def initialValue: SAXParser = {
       val parser = SAXParserFactory.newInstance()
       parser.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
       parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
@@ -51,6 +52,12 @@ trait XMLLoader[T <: Node] {
    */
   def loadXML(source: InputSource, parser: SAXParser): T = {
     val newAdapter = adapter
+
+    try {
+      parser.setProperty("http://xml.org/sax/properties/lexical-handler", newAdapter)
+    } catch {
+      case _: SAXNotRecognizedException =>
+    }
 
     newAdapter.scopeStack = TopScope :: newAdapter.scopeStack
     parser.parse(source, newAdapter)

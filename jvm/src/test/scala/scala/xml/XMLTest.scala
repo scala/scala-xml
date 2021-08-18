@@ -6,7 +6,6 @@ import org.junit.{Test => UnitTest}
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
-import scala.xml.parsing.ConstructingParser
 import java.io.StringWriter
 import java.io.ByteArrayOutputStream
 import java.io.StringReader
@@ -582,6 +581,21 @@ class XMLTestJVM {
   }
 
   @UnitTest
+  def issue508: Unit = {
+    def check(xml: String): Unit = assertEquals(xml, XML.loadString(xml).toString)
+
+    check("<a><!-- comment --> suffix</a>")
+    check("<a>prefix <!-- comment --> suffix</a>")
+    check("<a>prefix <b><!-- comment --></b> suffix</a>")
+
+    // TODO since XMLLoader retrieves FactoryAdapter.rootNode,
+    // capturing comments before and after the root element is not currently possible
+    // (by the way, the same applies to processing instructions).
+    //check("<!-- prologue --><a>text</a>")
+    //check("<a>text</a><!-- epilogue -->")
+  }
+
+  @UnitTest
   def nodeSeqNs: Unit = {
     val x = {
       <x:foo xmlns:x="abc"/><y:bar xmlns:y="def"/>
@@ -746,5 +760,4 @@ class XMLTestJVM {
 
     assertEquals("", x.xEntityValue())
   }
-
 }
