@@ -3,10 +3,8 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 ThisBuild / startYear := Some(2002)
 ThisBuild / licenses += (("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")))
 
-ThisBuild / versionScheme := Some("early-semver")
-ThisBuild / versionPolicyIntention := Compatibility.BinaryCompatible
 // because it doesn't declare it itself
-ThisBuild / versionPolicyDependencySchemes += "org.scala-js" %% "scalajs-library" % "semver-spec"
+ThisBuild / libraryDependencySchemes += "org.scala-js" %% "scalajs-library" % "semver-spec"
 
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
@@ -59,7 +57,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           |""".stripMargin)),
 
     // Note: See discussion on non-JVM Mima in https://github.com/scala/scala-xml/pull/517
-    scalaModuleMimaPreviousVersion := Some("2.0.0"),
+    versionPolicyIntention := Compatibility.BinaryAndSourceCompatible,
     mimaReportSignatureProblems := true,
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
