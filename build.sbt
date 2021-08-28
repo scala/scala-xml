@@ -4,7 +4,7 @@ ThisBuild / startYear := Some(2002)
 ThisBuild / licenses += (("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")))
 
 // because it doesn't declare it itself
-ThisBuild / libraryDependencySchemes += "org.scala-js" %% "scalajs-library" % "semver-spec"
+ThisBuild / libraryDependencySchemes += "org.scala-js" %% "scalajs-library" % "always"
 
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
