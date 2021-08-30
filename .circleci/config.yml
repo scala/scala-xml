@@ -146,6 +146,10 @@ workflows:
           name: sjs1.0_2.13
           scala_version: 2.13.6
           scalajs_version: 1.7.0
+      - scalajs_job:
+          name: sjs1.0_3
+          scala_version: 3.0.1
+          scalajs_version: 1.7.0
       - scalanative_job:
           name: native0.4_2.12
           scala_version: 2.12.14
