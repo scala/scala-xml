@@ -92,9 +92,7 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install -y clang-7
-            sudo ln -s /usr/lib/llvm-7/bin/clang /usr/local/bin/clang
-            sudo ln -s /usr/lib/llvm-7/bin/clang++ /usr/local/bin/clang++
+            sudo apt-get install -y clang
       - sbt_cmd:
           scala_version: << parameters.scala_version >>
           sbt_tasks: xmlNative/update xmlNative/compile xmlNative/test:compile xmlNative/test xmlNative/doc xmlNative/package
