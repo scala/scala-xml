@@ -18,7 +18,7 @@ env:
 
 jobs:
   exclude:
-    - scala: 3.0.1
+    - scala: 3.0.2
       env: SCALANATIVE_VERSION=0.4.0 ADOPTOPENJDK=8
 
 install:
