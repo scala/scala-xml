@@ -59,7 +59,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     // Note: Change back to BinaryAndSourceCompatible after 2.1.0 release
     versionPolicyIntention := Compatibility.BinaryCompatible,
     // Note: See discussion on non-JVM Mima in https://github.com/scala/scala-xml/pull/517
-    mimaReportSignatureProblems := true,
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
@@ -70,6 +69,11 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         exclude[DirectMissingMethodProblem]("scala.xml.include.sax.XIncluder.declaration"),
       )
     },
+    // Mima signature checking stopped working after 3.0.2 upgrade, see #557
+    mimaReportSignatureProblems := (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, _)) => false
+      case _ => true
+    }),
 
     apiMappings ++= scalaInstance.value.libraryJars.filter { file =>
       file.getName.startsWith("scala-library") && file.getName.endsWith(".jar")
