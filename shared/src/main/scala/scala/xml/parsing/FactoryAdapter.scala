@@ -43,6 +43,8 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
   var rootElem: Node = _
 
   val buffer = new StringBuilder()
+  private var inCDATA: Boolean = false
+
   /** List of attributes
     * 
     * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
@@ -101,6 +103,13 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
   def createText(text: String): Text // abstract
 
   /**
+   * creates a PCData node.
+   * @param text
+   * @return a new PCData node.
+   */
+  def createPCData(text: String): PCData // abstract
+
+  /**
    * creates a new processing instruction node.
    */
   def createProcInstr(target: String, data: String): Seq[ProcInstr]
@@ -117,7 +126,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
   val normalizeWhitespace = false
 
   /**
-   * Characters.
+   * Capture characters, possibly normalizing whitespace.
    * @param ch
    * @param offset
    * @param length
@@ -139,7 +148,20 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     }
   }
 
-  private def splitName(s: String) = {
+  /**
+   * Start of a CDATA section.
+   */
+  override def startCDATA(): Unit = {
+    captureText()
+    inCDATA = true
+  }
+
+  /**
+   * End of a CDATA section.
+   */
+  override def endCDATA(): Unit = captureText()
+
+  private def splitName(s: String): (String, String) = {
     val idx = s indexOf ':'
     if (idx < 0) (null, s)
     else (s take idx, s drop (idx + 1))
@@ -185,13 +207,17 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     }
 
   /**
-   * captures text, possibly normalizing whitespace
+   * Captures text or cdata.
    */
   def captureText(): Unit = {
-    if (capture && buffer.nonEmpty)
-      hStack = createText(buffer.toString) :: hStack
+    if (capture && buffer.nonEmpty) {
+      val text: String = buffer.toString
+      val newNode: Node = if (inCDATA) createPCData(text) else createText(text)
+      hStack =  newNode :: hStack
+    }
 
     buffer.clear()
+    inCDATA = false
   }
 
   /**
@@ -232,6 +258,9 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     hStack = hStack.reverse_:::(createProcInstr(target, data).toList)
   }
 
+  /**
+   * Comment.
+   */
   override def comment(ch: Array[Char], start: Int, length: Int): Unit = {
     captureText()
     val commentText: String = String.valueOf(ch.slice(start, start + length))

@@ -69,14 +69,12 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         // to previous-version artifacts that were built on 8.  see scala/scala-xml#501
         exclude[DirectMissingMethodProblem]("scala.xml.include.sax.XIncluder.declaration"),
 
-        // caused by the switch from DefaultHandler to DefaultHandler2:
-        exclude[MissingTypesProblem]("scala.xml.parsing.FactoryAdapter"),
-        exclude[MissingTypesProblem]("scala.xml.parsing.NoBindingFactoryAdapter"),
+        // necessitated by the switch from DefaultHandler to DefaultHandler2 in FactoryAdapter:
+        exclude[MissingTypesProblem]("scala.xml.parsing.FactoryAdapter"),                         // see #549
 
-        exclude[DirectMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.comment"),
-        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),
-        exclude[DirectMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),
-        exclude[DirectMissingMethodProblem]("scala.xml.parsing.NoBindingFactoryAdapter.createComment")
+        // necessitated by the introduction of new abstract methods in FactoryAdapter:
+        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),  // see #549
+        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createPCData")    // see #558
       )
     },
 

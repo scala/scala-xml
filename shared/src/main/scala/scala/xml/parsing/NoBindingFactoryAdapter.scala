@@ -42,4 +42,7 @@ class NoBindingFactoryAdapter extends FactoryAdapter with NodeFactory[Elem] {
 
   /** Creates a comment. */
   override def createComment(characters: String): Seq[Comment] = makeComment(characters)
+
+  /** Creates a cdata. */
+  override def createPCData(characters: String): PCData = makePCData(characters)
 }
