@@ -68,6 +68,15 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         // we compare classes built on JDK 16 (which we only do on CI, not at release time)
         // to previous-version artifacts that were built on 8.  see scala/scala-xml#501
         exclude[DirectMissingMethodProblem]("scala.xml.include.sax.XIncluder.declaration"),
+
+        // caused by the switch from DefaultHandler to DefaultHandler2:
+        exclude[MissingTypesProblem]("scala.xml.parsing.FactoryAdapter"),
+        exclude[MissingTypesProblem]("scala.xml.parsing.NoBindingFactoryAdapter"),
+
+        exclude[DirectMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.comment"),
+        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),
+        exclude[DirectMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),
+        exclude[DirectMissingMethodProblem]("scala.xml.parsing.NoBindingFactoryAdapter.createComment")
       )
     },
 

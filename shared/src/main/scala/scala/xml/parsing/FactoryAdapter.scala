@@ -16,10 +16,10 @@ package parsing
 
 import scala.collection.Seq
 import org.xml.sax.Attributes
-import org.xml.sax.helpers.DefaultHandler
+import org.xml.sax.ext.DefaultHandler2
 
 // can be mixed into FactoryAdapter if desired
-trait ConsoleErrorHandler extends DefaultHandler {
+trait ConsoleErrorHandler extends DefaultHandler2 {
   // ignore warning, crimson warns even for entity resolution!
   override def warning(ex: SAXParseException): Unit = {}
   override def error(ex: SAXParseException): Unit = printError("Error", ex)
@@ -39,8 +39,8 @@ trait ConsoleErrorHandler extends DefaultHandler {
  *  namespace bindings, without relying on namespace handling of the
  *  underlying SAX parser.
  */
-abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node] {
-  var rootElem: Node = null
+abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Node] {
+  var rootElem: Node = _
 
   val buffer = new StringBuilder()
   /** List of attributes
@@ -72,7 +72,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
     */
   var scopeStack = List.empty[NamespaceBinding]
 
-  var curTag: String = null
+  var curTag: String = _
   var capture: Boolean = false
 
   // abstract methods
@@ -105,6 +105,11 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
    */
   def createProcInstr(target: String, data: String): Seq[ProcInstr]
 
+  /**
+   * creates a new comment node.
+   */
+  def createComment(characters: String): Seq[Comment]
+
   //
   // ContentHandler methods
   //
@@ -118,7 +123,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
    * @param length
    */
   override def characters(ch: Array[Char], offset: Int, length: Int): Unit = {
-    if (!capture) return
+    if (!capture) ()
     // compliant: report every character
     else if (!normalizeWhitespace) buffer.appendAll(ch, offset, length)
     // normalizing whitespace is not compliant, but useful
@@ -170,7 +175,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
 
         if (pre == "xmlns" || (pre == null && qname == "xmlns")) {
           val arg = if (pre == null) null else key
-          scpe = new NamespaceBinding(arg, nullIfEmpty(value), scpe)
+          scpe = NamespaceBinding(arg, nullIfEmpty(value), scpe)
         } else
           m = Attribute(Option(pre), key, Text(value), m)
       }
@@ -183,7 +188,7 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
    * captures text, possibly normalizing whitespace
    */
   def captureText(): Unit = {
-    if (capture && buffer.length > 0)
+    if (capture && buffer.nonEmpty)
       hStack = createText(buffer.toString) :: hStack
 
     buffer.clear()
@@ -225,5 +230,11 @@ abstract class FactoryAdapter extends DefaultHandler with factory.XMLLoader[Node
   override def processingInstruction(target: String, data: String): Unit = {
     captureText()
     hStack = hStack.reverse_:::(createProcInstr(target, data).toList)
+  }
+
+  override def comment(ch: Array[Char], start: Int, length: Int): Unit = {
+    captureText()
+    val commentText: String = String.valueOf(ch.slice(start, start + length))
+    hStack = hStack.reverse_:::(createComment(commentText).toList)
   }
 }

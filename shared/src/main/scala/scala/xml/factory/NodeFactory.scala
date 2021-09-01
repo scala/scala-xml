@@ -34,7 +34,7 @@ trait NodeFactory[A <: Node] {
   def eqElements(ch1: Seq[Node], ch2: Seq[Node]): Boolean =
     ch1.view.zipAll(ch2.view, null, null) forall { case (x, y) => x eq y }
 
-  def nodeEquals(n: Node, pre: String, name: String, attrSeq: MetaData, scope: NamespaceBinding, children: Seq[Node]) =
+  def nodeEquals(n: Node, pre: String, name: String, attrSeq: MetaData, scope: NamespaceBinding, children: Seq[Node]): Boolean =
     n.prefix == pre &&
       n.label == name &&
       n.attributes == attrSeq &&
@@ -55,7 +55,7 @@ trait NodeFactory[A <: Node] {
     }
   }
 
-  def makeText(s: String) = Text(s)
+  def makeText(s: String): Text = Text(s)
   def makeComment(s: String): Seq[Comment] =
     if (ignoreComments) Nil else List(Comment(s))
   def makeProcInstr(t: String, s: String): Seq[ProcInstr] =
