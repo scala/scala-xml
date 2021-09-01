@@ -109,7 +109,7 @@ workflows:
           java_version: jdk8
           scala_version: 2.13.6
       - scala_job:
-          name: 3.0.1
+          name: 3.0.2
           java_version: jdk8
           scala_version: 3.0.2
       - scala_job:
