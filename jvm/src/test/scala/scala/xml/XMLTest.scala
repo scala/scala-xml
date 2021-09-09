@@ -580,19 +580,40 @@ class XMLTestJVM {
     XML.loadString(broken)
   }
 
-  @UnitTest
-  def issue508: Unit = {
-    def check(xml: String): Unit = assertEquals(xml, XML.loadString(xml).toString)
+  def roundtrip(xml: String): Unit = assertEquals(xml, XML.loadString(xml).toString)
 
-    check("<a><!-- comment --> suffix</a>")
-    check("<a>prefix <!-- comment --> suffix</a>")
-    check("<a>prefix <b><!-- comment --></b> suffix</a>")
+  @UnitTest
+  def issue508commentParsing: Unit = {
+    // confirm that comments are processed correctly now
+    roundtrip("<a><!-- comment --> suffix</a>")
+    roundtrip("<a>prefix <!-- comment --> suffix</a>")
+    roundtrip("<a>prefix <b><!-- comment --></b> suffix</a>")
+    roundtrip("<a>prefix <b><!-- multi-\nline\n comment --></b> suffix</a>")
+    roundtrip("""<a>prefix <b><!-- multi-
+                |line
+                | comment --></b> suffix</a>""".stripMargin)
+
+    // confirm that processing instructions were always processed correctly
+    roundtrip("<a><?target content ?> suffix</a>")
+    roundtrip("<a>prefix <?target content ?> suffix</a>")
+    roundtrip("<a>prefix <b><?target content?></b> suffix</a>")
 
     // TODO since XMLLoader retrieves FactoryAdapter.rootNode,
     // capturing comments before and after the root element is not currently possible
     // (by the way, the same applies to processing instructions).
     //check("<!-- prologue --><a>text</a>")
     //check("<a>text</a><!-- epilogue -->")
+  }
+
+  @UnitTest
+  def cdataParsing: Unit = {
+    roundtrip("<a><![CDATA[ cdata ]]> suffix</a>")
+    roundtrip("<a>prefix <![CDATA[ cdata ]]> suffix</a>")
+    roundtrip("<a>prefix <b><![CDATA[ cdata section]]></b> suffix</a>")
+    roundtrip("""<a>prefix <b><![CDATA[
+                | multi-
+                | line    cdata
+                |    section]]></b> suffix</a>""".stripMargin)
   }
 
   @UnitTest

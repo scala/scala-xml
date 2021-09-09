@@ -56,6 +56,8 @@ trait NodeFactory[A <: Node] {
   }
 
   def makeText(s: String): Text = Text(s)
+  def makePCData(s: String): PCData =
+    PCData(s)
   def makeComment(s: String): Seq[Comment] =
     if (ignoreComments) Nil else List(Comment(s))
   def makeProcInstr(t: String, s: String): Seq[ProcInstr] =
