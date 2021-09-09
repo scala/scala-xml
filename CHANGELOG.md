@@ -1,5 +1,21 @@
 # Scala XML Changes
 
+## 2.0.1 (2021-07-21)
+
+Binary compatible with Scala XML 2.0.0.
+
+Published for Scala 2.12 and 2.13, Scala 3, Scala.js 1.6, and Scala
+Native 0.4.
+
+### Added
+
+- No new functionality.
+
+### Fixed
+
+- Fixed runtime error for `MarkupParser` on Scala 3 by changing the
+  access modifier of internal class, `WithLookAhead` (#542)
+
 ## 2.0.0 (2021-05-13)
 
 Not binary compatible with Scala XML 1.3.0.
