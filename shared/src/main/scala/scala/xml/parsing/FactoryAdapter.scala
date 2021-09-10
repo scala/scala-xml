@@ -40,9 +40,11 @@ trait ConsoleErrorHandler extends DefaultHandler2 {
  *  underlying SAX parser.
  */
 abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Node] {
+  var prolog: List[Node] = List.empty
   var rootElem: Node = _
+  var epilogue: List[Node] = List.empty
 
-  val buffer = new StringBuilder()
+  val buffer: StringBuilder = new StringBuilder()
   private var inCDATA: Boolean = false
 
   /** List of attributes
@@ -51,28 +53,28 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     * 
     * @since 2.0.0 
     */
-  var attribStack = List.empty[MetaData]
+  var attribStack: List[MetaData] = List.empty
   /** List of elements
     * 
     * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
     * 
     * @since 2.0.0 
     */
-  var hStack = List.empty[Node] // [ element ] contains siblings
+  var hStack: List[Node] = List.empty // [ element ] contains siblings
   /** List of element names
     * 
     * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
     * 
     * @since 2.0.0 
     */
-  var tagStack = List.empty[String]
+  var tagStack: List[String] = List.empty
   /** List of namespaces
     * 
     * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
     * 
     * @since 2.0.0 
     */
-  var scopeStack = List.empty[NamespaceBinding]
+  var scopeStack: List[NamespaceBinding] = List.empty
 
   var curTag: String = _
   var capture: Boolean = false
@@ -123,7 +125,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
   // ContentHandler methods
   //
 
-  val normalizeWhitespace = false
+  val normalizeWhitespace: Boolean = false
 
   /**
    * Capture characters, possibly normalizing whitespace.
@@ -177,13 +179,20 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     attributes: Attributes): Unit =
     {
       captureText()
+
+      // capture the prolog at the start of the root element
+      if (tagStack.isEmpty) {
+        prolog = hStack.reverse
+        hStack = List.empty
+      }
+
       tagStack = curTag :: tagStack
       curTag = qname
 
       val localName = splitName(qname)._2
       capture = nodeContainsText(localName)
 
-      hStack =  null :: hStack
+      hStack = null :: hStack
       var m: MetaData = Null
       var scpe: NamespaceBinding =
         if (scopeStack.isEmpty) TopScope
@@ -193,7 +202,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
         val qname = attributes getQName i
         val value = attributes getValue i
         val (pre, key) = splitName(qname)
-        def nullIfEmpty(s: String) = if (s == "") null else s
+        def nullIfEmpty(s: String): String = if (s == "") null else s
 
         if (pre == "xmlns" || (pre == null && qname == "xmlns")) {
           val arg = if (pre == null) null else key
@@ -248,6 +257,12 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     curTag = tagStack.head
     tagStack = tagStack.tail
     capture = curTag != null && nodeContainsText(curTag) // root level
+  }
+
+  override def endDocument(): Unit =  {
+    // capture the epilogue at the end of the document
+    epilogue = hStack.init.reverse
+    hStack = hStack.last :: Nil
   }
 
   /**
