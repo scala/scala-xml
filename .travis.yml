@@ -6,7 +6,7 @@ language: scala
 
 scala:
   - 3.0.2
-  - 2.12.14
+  - 2.12.15
   - 2.13.6
 
 env:

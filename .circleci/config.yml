@@ -17,7 +17,7 @@ commands:
     parameters:
       scala_version:
         type: string
-        default: 2.12.14
+        default: 2.12.15
       sbt_tasks:
         type: string
         default: update compile test:compile test doc package osgiBundle
@@ -41,7 +41,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.14
+        default: 2.12.15
         type: string
       java_version:
         description: "Java version"
@@ -58,7 +58,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.14
+        default: 2.12.15
         type: string
       scalajs_version:
         description: "ScalaJS version"
@@ -78,7 +78,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.14
+        default: 2.12.15
         type: string
       scalanative_version:
         description: "Scala Native version"
@@ -101,9 +101,9 @@ workflows:
   build:
     jobs:
       - scala_job:
-          name: 2.12.14
+          name: 2.12.15
           java_version: jdk8
-          scala_version: 2.12.14
+          scala_version: 2.12.15
       - scala_job:
           name: 2.13.6
           java_version: jdk8
@@ -115,7 +115,7 @@ workflows:
       - scala_job:
           name: jdk11_2.12
           java_version: jdk11
-          scala_version: 2.12.14
+          scala_version: 2.12.15
       - scala_job:
           name: jdk11_2.13
           java_version: jdk11
@@ -127,7 +127,7 @@ workflows:
       - scala_job:
           name: jdk17_2.12
           java_version: jdk17
-          scala_version: 2.12.14
+          scala_version: 2.12.15
       - scala_job:
           name: jdk17_2.13
           java_version: jdk17
@@ -138,7 +138,7 @@ workflows:
           scala_version: 3.0.2
       - scalajs_job:
           name: sjs1.0_2.12
-          scala_version: 2.12.14
+          scala_version: 2.12.15
           scalajs_version: 1.7.0
       - scalajs_job:
           name: sjs1.0_2.13
@@ -150,7 +150,7 @@ workflows:
           scalajs_version: 1.7.0
       - scalanative_job:
           name: native0.4_2.12
-          scala_version: 2.12.14
+          scala_version: 2.12.15
           scalanative_version: 0.4.0
       - scalanative_job:
           name: native0.4_2.13
