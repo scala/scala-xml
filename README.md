@@ -1,5 +1,4 @@
 scala-xml
-[![Travis](https://img.shields.io/travis/scala/scala-xml.svg)](https://travis-ci.org/scala/scala-xml)
 [![latest release for 2.12](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.12.svg?label=scala+2.12)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.12)
 [![latest release for 2.13](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_2.13.svg?label=scala+2.13)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.13)
 [![latest release for 3.0](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_3.svg?label=scala+3)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_3)
