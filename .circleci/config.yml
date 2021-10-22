@@ -60,12 +60,6 @@ jobs:
         description: "Scala version"
         default: 2.12.15
         type: string
-      scalajs_version:
-        description: "ScalaJS version"
-        default: 1.1.1
-        type: string
-    environment:
-      SCALAJS_VERSION: << parameters.scalajs_version >>
     steps:
       - checkout
       - run: java -version
@@ -80,12 +74,6 @@ jobs:
         description: "Scala version"
         default: 2.12.15
         type: string
-      scalanative_version:
-        description: "Scala Native version"
-        default: 0.4.0
-        type: string
-    environment:
-      SCALANATIVE_VERSION: << parameters.scalanative_version >>
     steps:
       - checkout
       - run:
@@ -139,20 +127,15 @@ workflows:
       - scalajs_job:
           name: sjs1.0_2.12
           scala_version: 2.12.15
-          scalajs_version: 1.7.1
       - scalajs_job:
           name: sjs1.0_2.13
           scala_version: 2.13.6
-          scalajs_version: 1.7.1
       - scalajs_job:
           name: sjs1.0_3
           scala_version: 3.0.2
-          scalajs_version: 1.7.1
       - scalanative_job:
           name: native0.4_2.12
           scala_version: 2.12.15
-          scalanative_version: 0.4.0
       - scalanative_job:
           name: native0.4_2.13
           scala_version: 2.13.6
-          scalanative_version: 0.4.0
