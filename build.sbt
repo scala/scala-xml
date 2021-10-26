@@ -119,7 +119,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     OsgiKeys.exportPackage := Seq(s"scala.xml.*;version=${version.value}"),
 
     libraryDependencies += "junit" % "junit" % "4.13.2" % Test,
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % Test,
+    libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.2" % Test,
     libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.12.0" % Test,
     libraryDependencies ++= (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((3, _)) =>
