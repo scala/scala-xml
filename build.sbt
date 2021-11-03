@@ -38,6 +38,12 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     crossScalaVersions := Seq("2.13.6", "2.12.15", "3.0.2", "3.1.0"),
     scalaVersion := "2.12.15",
 
+    // Don't publish for Scala 3.1 or later, only from 3.0
+    publish / skip := (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, x)) if x > 0 => true
+      case _                     => false
+    }),
+
     scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((3, _)) =>
         Seq("-language:Scala2")
