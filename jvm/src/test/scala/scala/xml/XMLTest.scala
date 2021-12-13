@@ -586,7 +586,7 @@ class XMLTestJVM {
   def issue508commentParsing: Unit = {
     // confirm that comments are processed correctly now
     roundtrip("<a><!-- comment --> suffix</a>")
-    roundtrip("<a>prefix <!-- comment --> suffix</a>")
+    roundtrip("<a>prefix <!-- comment -->   <!-- comment2 --> suffix</a>")
     roundtrip("<a>prefix <b><!-- comment --></b> suffix</a>")
     roundtrip("<a>prefix <b><!-- multi-\nline\n comment --></b> suffix</a>")
     roundtrip("""<a>prefix <b><!-- multi-
@@ -596,13 +596,7 @@ class XMLTestJVM {
     // confirm that processing instructions were always processed correctly
     roundtrip("<a><?target content ?> suffix</a>")
     roundtrip("<a>prefix <?target content ?> suffix</a>")
-    roundtrip("<a>prefix <b><?target content?></b> suffix</a>")
-
-    // TODO since XMLLoader retrieves FactoryAdapter.rootNode,
-    // capturing comments before and after the root element is not currently possible
-    // (by the way, the same applies to processing instructions).
-    //check("<!-- prologue --><a>text</a>")
-    //check("<a>text</a><!-- epilogue -->")
+    roundtrip("<a>prefix <b><?target content?> </b> suffix</a>")
   }
 
   @UnitTest
@@ -613,7 +607,26 @@ class XMLTestJVM {
     roundtrip("""<a>prefix <b><![CDATA[
                 | multi-
                 | line    cdata
-                |    section]]></b> suffix</a>""".stripMargin)
+                |    section]]>   </b> suffix</a>""".stripMargin)
+  }
+
+  def roundtripNodes(xml: String): Unit = assertEquals(xml, XML.loadStringNodes(xml).map(_.toString).mkString(""))
+
+  @UnitTest
+  def xmlLoaderLoadNodes: Unit = {
+    roundtripNodes("<!-- prolog --><a>text</a>")
+    roundtripNodes("<!-- prolog --><?target content ?><!-- comment2 --><a>text</a>")
+    roundtripNodes("""<!-- prolog
+                     |    --><?target content ?><!--
+                     |  comment2 --><a>text</a>""".stripMargin)
+
+    roundtripNodes("<a>text</a><!-- epilogue -->")
+    roundtripNodes("<a>text</a><!-- epilogue --><?target content ?><!-- comment2 -->")
+
+    // Note: at least with the JDK's Xerces, whitespace in the prolog and epilogue gets lost in parsing:
+    // the parser does not fire any white-space related events, so:
+    // does not work: roundtripNodes("<!-- c -->  <a/>")
+    // does not work: roundtripNodes("<a/> <!-- epilogue -->")
   }
 
   @UnitTest

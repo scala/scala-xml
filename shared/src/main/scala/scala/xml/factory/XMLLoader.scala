@@ -51,19 +51,29 @@ trait XMLLoader[T <: Node] {
    *  The methods available in scala.xml.XML use the XML parser in the JDK.
    */
   def loadXML(source: InputSource, parser: SAXParser): T = {
-    val newAdapter = adapter
+    val result: FactoryAdapter = parse(source, parser)
+    result.rootElem.asInstanceOf[T]
+  }
+
+  def loadXMLNodes(source: InputSource, parser: SAXParser): Seq[Node] = {
+    val result: FactoryAdapter = parse(source, parser)
+    result.prolog ++ (result.rootElem :: result.epilogue)
+  }
+
+  private def parse(source: InputSource, parser: SAXParser): FactoryAdapter = {
+    val result: FactoryAdapter = adapter
 
     try {
-      parser.setProperty("http://xml.org/sax/properties/lexical-handler", newAdapter)
+      parser.setProperty("http://xml.org/sax/properties/lexical-handler", result)
     } catch {
       case _: SAXNotRecognizedException =>
     }
 
-    newAdapter.scopeStack = TopScope :: newAdapter.scopeStack
-    parser.parse(source, newAdapter)
-    newAdapter.scopeStack = newAdapter.scopeStack.tail
+    result.scopeStack = TopScope :: result.scopeStack
+    parser.parse(source, result)
+    result.scopeStack = result.scopeStack.tail
 
-    newAdapter.rootElem.asInstanceOf[T]
+    result
   }
 
   /** Loads XML from the given file, file descriptor, or filename. */
@@ -80,4 +90,15 @@ trait XMLLoader[T <: Node] {
 
   /** Loads XML from the given String. */
   def loadString(string: String): T = loadXML(fromString(string), parser)
+
+  /** Load XML nodes, including comments and processing instructions that precede and follow the root element. */
+  def loadFileNodes(file: File): Seq[Node] = loadXMLNodes(fromFile(file), parser)
+  def loadFileNodes(fd: FileDescriptor): Seq[Node] = loadXMLNodes(fromFile(fd), parser)
+  def loadFileNodes(name: String): Seq[Node] = loadXMLNodes(fromFile(name), parser)
+  def loadNodes(is: InputStream): Seq[Node] = loadXMLNodes(fromInputStream(is), parser)
+  def loadNodes(reader: Reader): Seq[Node] = loadXMLNodes(fromReader(reader), parser)
+  def loadNodes(sysID: String): Seq[Node] = loadXMLNodes(fromSysId(sysID), parser)
+  def loadNodes(source: InputSource): Seq[Node] = loadXMLNodes(source, parser)
+  def loadNodes(url: URL): Seq[Node] = loadXMLNodes(fromInputStream(url.openStream()), parser)
+  def loadStringNodes(string: String): Seq[Node] = loadXMLNodes(fromString(string), parser)
 }
