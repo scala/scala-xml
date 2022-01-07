@@ -629,6 +629,35 @@ class XMLTestJVM {
     // does not work: roundtripNodes("<a/> <!-- epilogue -->")
   }
 
+  // using non-namespace-aware parser, this always worked;
+  // using namespace-aware parser, this works with FactoryAdapter enhanced to handle startPrefixMapping() events;
+  // see https://github.com/scala/scala-xml/issues/506
+  def roundtrip(namespaceAware: Boolean, xml: String): Unit = {
+    val parserFactory: javax.xml.parsers.SAXParserFactory = javax.xml.parsers.SAXParserFactory.newInstance()
+    parserFactory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
+    parserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+    parserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
+    parserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false)
+    parserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false)
+    parserFactory.setFeature("http://xml.org/sax/features/resolve-dtd-uris", false)
+    parserFactory.setNamespaceAware(namespaceAware)
+    parserFactory.setXIncludeAware(namespaceAware)
+
+    assertEquals(xml, XML.withSAXParser(parserFactory.newSAXParser()).loadString(xml).toString())
+  }
+
+  @UnitTest
+  def namespaceUnaware: Unit =
+    roundtrip(namespaceAware = false, """<book xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"/>""")
+
+  @UnitTest
+  def namespaceAware: Unit =
+    roundtrip(namespaceAware = true, """<book xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"/>""")
+
+  @UnitTest
+  def namespaceAware2: Unit =
+    roundtrip(namespaceAware = true, """<book xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"><svg xmlns:svg="http://www.w3.org/2000/svg"/></book>""")
+
   @UnitTest
   def nodeSeqNs: Unit = {
     val x = {
