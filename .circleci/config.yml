@@ -96,9 +96,9 @@ workflows:
           java_version: jdk8
           scala_version: 2.12.15
       - scala_job:
-          name: 2.13.7
+          name: 2.13.8
           java_version: jdk8
-          scala_version: 2.13.7
+          scala_version: 2.13.8
       - scala_job:
           name: 3.0.2
           java_version: jdk8
@@ -114,7 +114,7 @@ workflows:
       - scala_job:
           name: jdk11_2.13
           java_version: jdk11
-          scala_version: 2.13.7
+          scala_version: 2.13.8
       - scala_job:
           name: jdk11_3.0
           java_version: jdk11
@@ -130,7 +130,7 @@ workflows:
       - scala_job:
           name: jdk17_2.13
           java_version: jdk17
-          scala_version: 2.13.7
+          scala_version: 2.13.8
       - scala_job:
           name: jdk17_3.0
           java_version: jdk17
@@ -144,7 +144,7 @@ workflows:
           scala_version: 2.12.15
       - scalajs_job:
           name: sjs1.0_2.13
-          scala_version: 2.13.7
+          scala_version: 2.13.8
       - scalajs_job:
           name: sjs1.0_3
           scala_version: 3.0.2
@@ -156,4 +156,4 @@ workflows:
           scala_version: 2.12.15
       - scalanative_job:
           name: native0.4_2.13
-          scala_version: 2.13.7
+          scala_version: 2.13.8
