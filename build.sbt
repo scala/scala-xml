@@ -140,7 +140,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   )
   .jsEnablePlugins(ScalaJSJUnitPlugin)
   .nativeSettings(
-    crossScalaVersions := Seq("2.13.8", "2.12.15", "3.1.0"),
+    crossScalaVersions := Seq("2.13.8", "2.12.15", "3.1.1"),
     mimaPreviousArtifacts := {
       // TODO remove this setting whien 2.0.2 released
       if (scalaBinaryVersion.value == "3") {
@@ -151,55 +151,39 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     },
     // Scala Native cannot run forked tests
     Test / fork := false,
-    Seq(Compile, Test).map { s =>
-      s / sources := {
-        CrossVersion.partialVersion(scalaVersion.value) match {
-          case Some((3, 0)) =>
-            Nil
-          case _ =>
-            (s / sources).value
-        }
-      }
+    libraryDependencies += "org.scala-native" %%% "junit-runtime" % nativeVersion % Test,
+    Test / scalacOptions += {
+      val log = streams.value.log
+      val retrieveDir = baseDirectory.value / "scala-native-junit-plugin-jars"
+      val lm = dependencyResolution.value
+      val cp = lm
+        .retrieve(
+          "org.scala-native" % s"junit-plugin_${scalaVersion.value}" % nativeVersion,
+          scalaModuleInfo = None,
+          retrieveDir,
+          log
+        )
+        .fold(w => throw w.resolveException, identity(_))
+      val jarPath = cp
+        .find(_.toString.contains("junit-plugin"))
+        .getOrElse(throw new Exception("Can't find Scala Native junit-plugin jar"))
+      s"-Xplugin:$jarPath"
     },
-    libraryDependencies := {
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((3, 0)) =>
-          // scala-native does not support Scala 3.0.x
-          Nil
-        case _ =>
-          libraryDependencies.value ++ Seq("org.scala-native" %%% "junit-runtime" % nativeVersion % Test)
-      }
-    },
-    Compile / doc / scalacOptions --= {
-      // TODO remove this workaround
-      // https://github.com/scala-native/scala-native/issues/2503
-      if (scalaBinaryVersion.value == "3") {
-        (Compile / doc / scalacOptions).value.filter(_.contains("-Xplugin"))
-      } else {
-        Nil
-      }
-    },
-    publish / skip := CrossVersion.partialVersion(scalaVersion.value) == Some((3, 0)),
-    Test / scalacOptions ++= {
-      if (CrossVersion.partialVersion(scalaVersion.value) != Some((3, 0))) {
-        val log = streams.value.log
-        val retrieveDir = baseDirectory.value / "scala-native-junit-plugin-jars"
-        val lm = dependencyResolution.value
-        val cp = lm
-          .retrieve(
-            "org.scala-native" % s"junit-plugin_${scalaVersion.value}" % nativeVersion,
-            scalaModuleInfo = None,
-            retrieveDir,
-            log
-          )
-          .fold(w => throw w.resolveException, identity(_))
-        val jarPath = cp
-          .find(_.toString.contains("junit-plugin"))
-          .getOrElse(throw new Exception("Can't find Scala Native junit-plugin jar"))
-        Seq(s"-Xplugin:$jarPath")
-      } else {
-        Nil
-      }
-    },
-    Test / testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v")
+    Test / testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
+    // Scala Native doesn't support Scala 3.0
+    Compile / nativeLink := { if(isScala30(scalaVersion.value)) null else (Compile / nativeLink).value },
+    Test / nativeLink := { if(isScala30(scalaVersion.value)) null else (Test / nativeLink).value },
+    Test / test := { if(isScala30(scalaVersion.value)) {} else (Test / test).value },
+    Compile / sources := { if(isScala30(scalaVersion.value)) Nil else (Compile / sources).value },
+    Test / sources := { if(isScala30(scalaVersion.value)) Nil else (Test / sources).value },
+    libraryDependencies := { if(isScala30(scalaVersion.value)) Nil else libraryDependencies.value },
+    Test / scalacOptions := { if(isScala30(scalaVersion.value)) Nil else (Test / scalacOptions).value },
+    publish / skip := { isScala30(scalaVersion.value) },
   )
+
+def isScala30(scalaVersion: String) = {
+  CrossVersion.partialVersion(scalaVersion) match {
+    case Some((3, 0)) => true
+    case _ => false
+  }
+}
