@@ -211,9 +211,24 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
           m = Attribute(Option(pre), key, Text(value), m)
       }
 
+      // Add namespace bindings for the prefix mappings declared by this element
+      // (if there are any, the parser is namespace-aware, and no namespace bindings were delivered as attributes).
+      // All `startPrefixMapping()` events will occur immediately before the corresponding `startElement()` event.
+      for ((prefix: String, uri: String) <- prefixMappings)
+        scpe = NamespaceBinding(if (prefix.isEmpty) null else prefix, uri, scpe)
+
+      // Once the `prefixMappings` are processed into `scpe`, the list is emptied out
+      // so that already-declared namespaces are not re-declared on the nested elements.
+      prefixMappings = List.empty
+
       scopeStack = scpe :: scopeStack
       attribStack =  m :: attribStack
     }
+
+  private var prefixMappings: List[(String, String)] = List.empty
+
+  override def startPrefixMapping(prefix: String, uri: String): Unit =
+    prefixMappings = (prefix, uri) :: prefixMappings
 
   /**
    * Captures text or cdata.
