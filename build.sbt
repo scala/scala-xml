@@ -142,7 +142,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .nativeSettings(
     crossScalaVersions := Seq("2.13.8", "2.12.15", "3.1.1"),
     mimaPreviousArtifacts := {
-      // TODO remove this setting whien 2.0.2 released
+      // TODO remove this setting when 2.0.2 released
       if (scalaBinaryVersion.value == "3") {
         mimaPreviousArtifacts.value.filterNot(_.revision == "2.0.1")
       } else {
