@@ -157,3 +157,6 @@ workflows:
       - scalanative_job:
           name: native0.4_2.13
           scala_version: 2.13.8
+      - scalanative_job:
+          name: native0.4_3
+          scala_version: 3.1.1

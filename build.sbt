@@ -140,7 +140,15 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   )
   .jsEnablePlugins(ScalaJSJUnitPlugin)
   .nativeSettings(
-    crossScalaVersions := Seq("2.13.8", "2.12.15"),
+    crossScalaVersions := Seq("2.13.8", "2.12.15", "3.1.1"),
+    mimaPreviousArtifacts := {
+      // TODO remove this setting when 2.0.2 released
+      if (scalaBinaryVersion.value == "3") {
+        mimaPreviousArtifacts.value.filterNot(_.revision == "2.0.1")
+      } else {
+        mimaPreviousArtifacts.value
+      }
+    },
     // Scala Native cannot run forked tests
     Test / fork := false,
     libraryDependencies += "org.scala-native" %%% "junit-runtime" % nativeVersion % Test,
@@ -161,5 +169,21 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         .getOrElse(throw new Exception("Can't find Scala Native junit-plugin jar"))
       s"-Xplugin:$jarPath"
     },
-    Test / testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v")
+    Test / testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
+    // Scala Native doesn't support Scala 3.0
+    Compile / nativeLink := { if(isScala30(scalaVersion.value)) null else (Compile / nativeLink).value },
+    Test / nativeLink := { if(isScala30(scalaVersion.value)) null else (Test / nativeLink).value },
+    Test / test := { if(isScala30(scalaVersion.value)) {} else (Test / test).value },
+    Compile / sources := { if(isScala30(scalaVersion.value)) Nil else (Compile / sources).value },
+    Test / sources := { if(isScala30(scalaVersion.value)) Nil else (Test / sources).value },
+    libraryDependencies := { if(isScala30(scalaVersion.value)) Nil else libraryDependencies.value },
+    Test / scalacOptions := { if(isScala30(scalaVersion.value)) Nil else (Test / scalacOptions).value },
+    publish / skip := { isScala30(scalaVersion.value) },
   )
+
+def isScala30(scalaVersion: String) = {
+  CrossVersion.partialVersion(scalaVersion) match {
+    case Some((3, 0)) => true
+    case _ => false
+  }
+}
