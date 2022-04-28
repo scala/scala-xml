@@ -35,7 +35,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .settings(
     name    := "scala-xml",
     scalaModuleAutomaticModuleName := Some("scala.xml"),
-    crossScalaVersions := Seq("2.13.8", "2.12.15", "3.0.2", "3.1.1"),
+    crossScalaVersions := Seq("2.13.8", "2.12.15", "3.0.2", "3.1.2"),
     scalaVersion := "2.12.15",
 
     // Don't publish for Scala 3.1 or later, only from 3.0
