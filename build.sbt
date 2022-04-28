@@ -67,7 +67,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           |additional information regarding copyright ownership.
           |""".stripMargin)),
 
-    versionPolicyIntention := Compatibility.BinaryAndSourceCompatible,
+    // should be reverted to Compatibility.BinaryAndSourceCompatible after 2.2.0 is released
+    versionPolicyIntention := Compatibility.None,
     // Note: See discussion on non-JVM Mima in https://github.com/scala/scala-xml/pull/517
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
