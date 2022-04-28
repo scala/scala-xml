@@ -92,19 +92,19 @@ workflows:
   build:
     jobs:
       - scala_job:
-          name: 2.12
+          name: 2.12.15
           java_version: jdk8
           scala_version: 2.12.15
       - scala_job:
-          name: 2.13
+          name: 2.13.8
           java_version: jdk8
           scala_version: 2.13.8
       - scala_job:
-          name: 3.0
+          name: 3.0.2
           java_version: jdk8
           scala_version: 3.0.2
       - scala_job:
-          name: 3.1
+          name: 3.1.0
           java_version: jdk8
           scala_version: 3.1.2
       - scala_job:
