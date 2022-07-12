@@ -20,7 +20,7 @@ commands:
     parameters:
       scala_version:
         type: string
-        default: 2.12.15
+        default: 2.12.16
       sbt_tasks:
         type: string
         default: update compile test:compile test doc package osgiBundle
@@ -44,7 +44,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.15
+        default: 2.12.16
         type: string
       java_version:
         description: "Java version"
@@ -61,7 +61,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.15
+        default: 2.12.16
         type: string
     steps:
       - checkout
@@ -75,7 +75,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.15
+        default: 2.12.16
         type: string
     steps:
       - checkout
@@ -92,7 +92,7 @@ workflows:
   build:
     jobs:
       - scala_job:
-          name: 2.12.15
+          name: 2.12.16
           java_version: jdk8
           scala_version: 2.12.16
       - scala_job:
