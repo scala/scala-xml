@@ -38,12 +38,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     crossScalaVersions := Seq("2.13.8", "2.12.16", "3.1.3"),
     scalaVersion := "2.12.16",
 
-    // Don't publish for Scala 3.1 or later, only from 3.0
-    publish / skip := (CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((3, x)) if x > 0 => true
-      case _                     => false
-    }),
-
     scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((3, _)) =>
         Seq("-language:Scala2")
@@ -161,20 +155,4 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       s"-Xplugin:$jarPath"
     },
     Test / testOptions += Tests.Argument(TestFrameworks.JUnit, "-a", "-s", "-v"),
-    // Scala Native doesn't support Scala 3.0
-    Compile / nativeLink := { if(isScala30(scalaVersion.value)) null else (Compile / nativeLink).value },
-    Test / nativeLink := { if(isScala30(scalaVersion.value)) null else (Test / nativeLink).value },
-    Test / test := { if(isScala30(scalaVersion.value)) {} else (Test / test).value },
-    Compile / sources := { if(isScala30(scalaVersion.value)) Nil else (Compile / sources).value },
-    Test / sources := { if(isScala30(scalaVersion.value)) Nil else (Test / sources).value },
-    libraryDependencies := { if(isScala30(scalaVersion.value)) Nil else libraryDependencies.value },
-    Test / scalacOptions := { if(isScala30(scalaVersion.value)) Nil else (Test / scalacOptions).value },
-    publish / skip := { isScala30(scalaVersion.value) },
   )
-
-def isScala30(scalaVersion: String) = {
-  CrossVersion.partialVersion(scalaVersion) match {
-    case Some((3, 0)) => true
-    case _ => false
-  }
-}
