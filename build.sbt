@@ -7,6 +7,7 @@ ThisBuild / licenses += (("Apache-2.0", url("https://www.apache.org/licenses/LIC
 
 // because it doesn't declare it itself
 ThisBuild / libraryDependencySchemes += "org.scala-js" %% "scalajs-library" % "semver-spec"
+ThisBuild / apiURL := Some(url("https://javadoc.io/doc/org.scala-lang.modules/scala-xml_2.13/"))
 
 lazy val configSettings: Seq[Setting[_]] = Seq(
   unmanagedSourceDirectories ++= {
