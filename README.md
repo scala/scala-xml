@@ -13,8 +13,6 @@ API documentation is available [here](https://javadoc.io/doc/org.scala-lang.modu
 
 How to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
 
-The latest stable release of Scala XML is 2.0.1.
-
 ## Maintenance status
 
 This library is community-maintained. The lead maintainer is [@aaron_s_hawley](https://github.com/ashawley).
