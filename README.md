@@ -35,7 +35,7 @@ The XML spec has some features that are best turned off, to avoid unsavory thing
 - [Advxml](https://github.com/geirolz/advxml) - Functional library combining scala-xml with cats-core
 - [Binding.scala](https://github.com/ThoughtWorksInc/Binding.scala) - Reactive programming library
 - [ezXML](https://github.com/JulienSt/ezXML) - Extensions for traverse, encoding, decoding and mapping XML
-- [http4s-scala-xml](https://http4s.org/v0.21/entity/) - XML literal support in http4s
+- [http4s-scala-xml](https://http4s.github.io/http4s-scala-xml/) - XML literal support in http4s
 - [Json4s XML](https://github.com/json4s/json4s) - Conversion to and from JSON
 - [monadic-html](https://github.com/OlivierBlanvillain/monadic-html) - DOM-like event-based programming with XHTML
 - [phobos](https://github.com/TinkoffCreditSystems/phobos) - Data-binding library based on stream parsing using Aalto XML
