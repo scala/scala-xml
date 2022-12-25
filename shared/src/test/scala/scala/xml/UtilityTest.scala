@@ -83,7 +83,7 @@ class UtilityTest {
   @Test
   def escapePrintablesTest: Unit = {
     for {
-      char <- (printableAscii.diff(escapedChars))
+      char <- printableAscii.diff(escapedChars)
     } yield {
       assertEquals(char.toString, Utility.escape(char.toString))
     }
@@ -120,7 +120,7 @@ class UtilityTest {
   @Test
   def escapeUnicodeExtendedControlCodesTest: Unit = {
     for {
-      char <- ('\u0080' to '\u009f') // Extended control codes (C1)
+      char <- '\u0080' to '\u009f' // Extended control codes (C1)
     } yield {
       assertEquals(char.toString, Utility.escape(char.toString))
     }
@@ -129,7 +129,7 @@ class UtilityTest {
   @Test
   def escapeUnicodeTwoBytesTest: Unit = {
     for {
-      char <- ('\u00A0' to '\u07FF') // Two bytes (cont.)
+      char <- '\u00A0' to '\u07FF' // Two bytes (cont.)
     } yield {
       assertEquals(char.toString, Utility.escape(char.toString))
     }
@@ -138,7 +138,7 @@ class UtilityTest {
   @Test
   def escapeUnicodeThreeBytesTest: Unit = {
     for {
-      char <- ('\u0800' to '\uFFFF') // Three bytes
+      char <- '\u0800' to '\uFFFF' // Three bytes
     } yield {
       assertEquals(char.toString, Utility.escape(char.toString))
     }
@@ -193,7 +193,7 @@ class UtilityTest {
     '\u001E' -> "^^",  // Record separator
     '\u001F' -> "^_",  // Unit separator
     '\u007F' -> "^?"   // Delete
-  ).toMap.withDefault {
+  ).withDefault {
     (key: Char) => key.toString
   }
 

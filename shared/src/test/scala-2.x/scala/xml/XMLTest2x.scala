@@ -10,7 +10,7 @@ class XMLTest2x {
   // t-486
   def wsdlTemplate3(serviceName: String): Node =
     <wsdl:definitions name={ serviceName } xmlns:tns={ new _root_.scala.xml.Text("target3") }>
-    </wsdl:definitions>;
+    </wsdl:definitions>
 
   @UnitTest
   def wsdl = {

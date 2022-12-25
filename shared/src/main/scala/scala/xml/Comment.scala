@@ -31,7 +31,7 @@ case class Comment(commentText: String) extends SpecialNode {
   if (commentText.contains("--")) {
     throw new IllegalArgumentException("text contains \"--\"")
   }
-  if (commentText.length > 0 && commentText.charAt(commentText.length - 1) == '-') {
+  if (commentText.nonEmpty && commentText.charAt(commentText.length - 1) == '-') {
     throw new IllegalArgumentException("The final character of a XML comment may not be '-'. See https://www.w3.org/TR/xml11//#IDA5CES")
   }
 

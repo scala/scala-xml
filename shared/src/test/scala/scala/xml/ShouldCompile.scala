@@ -64,7 +64,7 @@ object SI_5858 {
 class Floozy {
   def fooz(x: Node => String) = {}
   def foo(m: Node): Unit = fooz {
-    case Elem(_, _, _, _, n, _*) if (n == m) => "gaga"
+    case Elem(_, _, _, _, n, _*) if n == m => "gaga"
   }
 }
 

@@ -56,8 +56,8 @@ class AttributeTest {
 
   def attributeToString: Unit = {
     val expected: String = """<b x="&amp;"/>"""
-    assertEquals(expected, (<b x="&amp;"/>).toString)
-    assertEquals(expected, (<b x={"&"}/>).toString)
+    assertEquals(expected, <b x="&amp;"/>.toString)
+    assertEquals(expected, <b x={"&"}/>.toString)
   }
 
   @Test
@@ -102,31 +102,31 @@ class AttributeTest {
   @Test
   def attributePathDescendantAttributes: Unit = {
     val xml = <a><b bar="1" /><b bar="2" /></a>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "@bar"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), xml \\ "@bar")
   }
 
   @Test
   def attributeDescendantPathChildAttributes: Unit = {
     val xml = <a><b bar="1" /><b bar="2" /></a>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \ "b" \\ "@bar"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), xml \ "b" \\ "@bar")
   }
 
   @Test
   def attributeDescendantPathDescendantAttributes: Unit = {
     val xml = <a><b bar="1" /><b bar="2" /></a>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "b" \\ "@bar"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), xml \\ "b" \\ "@bar")
   }
 
   @Test
   def attributeChildDescendantPathDescendantAttributes: Unit = {
     val xml = <x><a><b bar="1" /><b bar="2" /></a></x>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \ "a" \\ "@bar"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), xml \ "a" \\ "@bar")
   }
 
   @Test
   def attributeDescendantDescendantPathDescendantAttributes: Unit = {
     val xml = <x><a><b bar="1" /><b bar="2" /></a></x>
-    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), (xml \\ "b" \\ "@bar"))
+    assertEquals(NodeSeq.fromSeq(Seq(Text("1"), Text("2"))), xml \\ "b" \\ "@bar")
   }
 
   @Test(expected=classOf[IllegalArgumentException])
@@ -138,13 +138,13 @@ class AttributeTest {
   @Test
   def attributePathNoDescendantAttributes: Unit = {
     val xml = <a><b bar="1" /><b bar="2" /></a>
-    assertEquals(NodeSeq.Empty, (xml \\ "@oops"))
+    assertEquals(NodeSeq.Empty, xml \\ "@oops")
   }
 
   @Test
   def attributePathOneChildWithAttributes: Unit = {
     val xml = <a><b bar="1" />></a>
-    assertEquals(Group(Seq(Text("1"))), (xml \ "b" \ "@bar"))
+    assertEquals(Group(Seq(Text("1"))), xml \ "b" \ "@bar")
   }
 
   @Test

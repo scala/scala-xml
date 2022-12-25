@@ -202,7 +202,7 @@ class CompilerTesting {
 
   def expectXmlErrors(msgCount: Int, msg: String, code: String) = {
     val errors = xmlErrorMessages(msg, code)
-    val errorCount = errors.filter(_ contains msg).length
+    val errorCount = errors.count(_ contains msg)
     assert(errorCount == msgCount, s"$errorCount occurrences of \'$msg\' found -- expected $msgCount in:\n${errors mkString "\n"}")
   }
 }

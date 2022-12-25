@@ -247,9 +247,10 @@ object Utility extends AnyRef with parsing.TokenTests {
     stripComments: Boolean = false,
     decodeEntities: Boolean = true,
     preserveWhitespace: Boolean = false,
-    minimizeTags: MinimizeMode.Value = MinimizeMode.Default): Unit =
+    minimizeTags: MinimizeMode.Value = MinimizeMode.Default
+  ): Unit =
     {
-      if (children.isEmpty) return
+      if (children.isEmpty) ()
       else if (children forall isAtomAndNotText) { // add space
         val it = children.iterator
         val f = it.next()
@@ -265,7 +266,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   /**
    * Returns prefix of qualified name if any.
    */
-  final def prefix(name: String): Option[String] = (name indexOf ':') match {
+  final def prefix(name: String): Option[String] = name.indexOf(':') match {
     case -1 => None
     case i  => Some(name.substring(0, i))
   }
@@ -360,7 +361,7 @@ object Utility extends AnyRef with parsing.TokenTests {
           rfb.clear()
           unescape(ref, sb) match {
             case null =>
-              if (sb.length > 0) { // flush buffer
+              if (sb.nonEmpty) { // flush buffer
                 nb += Text(sb.toString())
                 sb.clear()
               }
@@ -370,9 +371,9 @@ object Utility extends AnyRef with parsing.TokenTests {
         }
       } else sb append c
     }
-    if (sb.length > 0) { // flush buffer
+    if (sb.nonEmpty) { // flush buffer
       val x = Text(sb.toString())
-      if (nb.length == 0)
+      if (nb.isEmpty)
         return x
       else
         nb += x

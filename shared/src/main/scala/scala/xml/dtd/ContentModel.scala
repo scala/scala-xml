@@ -38,7 +38,7 @@ object ContentModel extends WordExp {
   }
 
   case class ElemName(name: String) extends Label {
-    override def toString() = """ElemName("%s")""" format name
+    override def toString = """ElemName("%s")""" format name
   }
 
   def isMixed(cm: ContentModel) = cond(cm) { case _: MIXED => true }
@@ -89,7 +89,7 @@ object ContentModel extends WordExp {
 }
 
 sealed abstract class ContentModel {
-  override def toString(): String = sbToString(buildString)
+  override def toString: String = sbToString(buildString)
   def buildString(sb: StringBuilder): StringBuilder
 }
 

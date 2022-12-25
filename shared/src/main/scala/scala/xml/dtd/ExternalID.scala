@@ -27,7 +27,7 @@ sealed abstract class ExternalID extends parsing.TokenTests {
 
   // public != null: PUBLIC " " publicLiteral " " [systemLiteral]
   // public == null: SYSTEM " " systemLiteral
-  override def toString(): String = {
+  override def toString: String = {
     lazy val quotedSystemLiteral = quoted(systemId)
     lazy val quotedPublicLiteral = quoted(publicId)
 

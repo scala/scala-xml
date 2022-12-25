@@ -42,7 +42,7 @@ abstract class MarkupHandler {
   }
 
   def replacementText(entityName: String): Source =
-    Source fromString ((ent get entityName) match {
+    Source.fromString(ent.get(entityName) match {
       case Some(ParsedEntityDecl(_, IntDef(value)))    => value
       case Some(ParameterEntityDecl(_, IntDef(value))) => " %s " format value
       case Some(_)                                     => "<!-- %s; -->" format entityName
@@ -120,10 +120,10 @@ abstract class MarkupHandler {
     }
 
   def parameterEntityDecl(name: String, edef: EntityDef): Unit =
-    someEntityDecl(name, edef, ParameterEntityDecl.apply _)
+    someEntityDecl(name, edef, ParameterEntityDecl.apply)
 
   def parsedEntityDecl(name: String, edef: EntityDef): Unit =
-    someEntityDecl(name, edef, ParsedEntityDecl.apply _)
+    someEntityDecl(name, edef, ParsedEntityDecl.apply)
 
   def peReference(name: String): Unit = { decls ::= PEReference(name) }
   def unparsedEntityDecl(name: String, extID: ExternalID, notat: String): Unit = ()

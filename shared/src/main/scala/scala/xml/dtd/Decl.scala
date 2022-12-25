@@ -30,7 +30,7 @@ import Utility.sbToString
 sealed abstract class Decl
 
 sealed abstract class MarkupDecl extends Decl {
-  override def toString(): String = sbToString(buildString)
+  override def toString: String = sbToString(buildString)
   def buildString(sb: StringBuilder): StringBuilder
 }
 
@@ -60,7 +60,7 @@ case class AttListDecl(name: String, attrs: List[AttrDecl])
  *  directly.
  */
 case class AttrDecl(name: String, tpe: String, default: DefaultDecl) {
-  override def toString(): String = sbToString(buildString)
+  override def toString: String = sbToString(buildString)
 
   def buildString(sb: StringBuilder): StringBuilder = {
     sb append "  " append name append ' ' append tpe append ' '

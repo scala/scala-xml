@@ -56,7 +56,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   def startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes) = {
     try {
       out.write("<" + qualifiedName)
-      var i = 0; while (i < atts.getLength()) {
+      var i = 0; while (i < atts.getLength) {
         out.write(" ")
         out.write(atts.getQName(i))
         out.write("='")

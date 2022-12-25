@@ -51,7 +51,7 @@ object EncodingHeuristics {
   def readEncodingFromStream(in: InputStream): String = {
     var ret: String = null
     val bytesToRead = 1024 // enough to read most XML encoding declarations
-    def resetAndRet = { in.reset; ret }
+    def resetAndRet = { in.reset(); ret }
 
     // This may fail if there are a lot of space characters before the end
     // of the encoding declaration
@@ -79,7 +79,7 @@ object EncodingHeuristics {
       // Use Latin-1 (ISO-8859-1) because all byte sequences are legal.
       val declaration = new String(data, 0, length, "ISO-8859-1")
       val regexp = """(?m).*?encoding\s*=\s*["'](.+?)['"]""".r
-      (regexp findFirstMatchIn declaration) match {
+      regexp.findFirstMatchIn(declaration) match {
         case None     => default
         case Some(md) => md.subgroups(0)
       }

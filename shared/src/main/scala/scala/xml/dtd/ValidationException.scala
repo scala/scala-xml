@@ -25,21 +25,21 @@ object MakeValidationException {
       value + "\", but document tries \"" + actual + "\"")
 
   def fromNonEmptyElement() =
-    new ValidationException("element should be *empty*")
+    ValidationException("element should be *empty*")
 
   def fromUndefinedElement(label: String) =
-    new ValidationException("element \"" + label + "\" not allowed here")
+    ValidationException("element \"" + label + "\" not allowed here")
 
   def fromUndefinedAttribute(key: String) =
-    new ValidationException("attribute " + key + " not allowed here")
+    ValidationException("attribute " + key + " not allowed here")
 
   def fromMissingAttribute(allKeys: Set[String]) = {
     val sb = new StringBuilder("missing value for REQUIRED attribute")
     if (allKeys.size > 1) sb.append('s')
     allKeys foreach (k => sb append "'%s'".format(k))
-    new ValidationException(sb.toString())
+    ValidationException(sb.toString())
   }
 
   def fromMissingAttribute(key: String, tpe: String) =
-    new ValidationException("missing value for REQUIRED attribute %s of type %s".format(key, tpe))
+    ValidationException("missing value for REQUIRED attribute %s of type %s".format(key, tpe))
 }

@@ -16,12 +16,12 @@ package include.sax
 
 import scala.xml.include._
 
-import org.xml.sax.{ Attributes, XMLReader, Locator }
-import org.xml.sax.helpers.{ XMLReaderFactory, XMLFilterImpl, NamespaceSupport, AttributesImpl }
+import org.xml.sax.{Attributes, Locator, XMLReader}
+import org.xml.sax.helpers.{AttributesImpl, NamespaceSupport, XMLFilterImpl, XMLReaderFactory}
 
-import java.io.{ BufferedInputStream, InputStreamReader, IOException, UnsupportedEncodingException }
+import java.io.{BufferedInputStream, IOException, InputStreamReader, UnsupportedEncodingException}
 import java.util.Stack
-import java.net.{ URL, MalformedURLException }
+import java.net.{MalformedURLException, URL}
 
 /**
  * This is a SAX filter which resolves all XInclude include elements before
@@ -92,7 +92,7 @@ class XIncludeFilter extends XMLFilterImpl {
   // there????
   override def setDocumentLocator(locator: Locator): Unit = {
     locators push locator
-    val base = locator.getSystemId()
+    val base = locator.getSystemId
     try {
       bases.push(new URL(base))
     } catch {
@@ -124,7 +124,7 @@ class XIncludeFilter extends XMLFilterImpl {
       // Adjust bases stack by pushing either the new
       // value of xml:base or the base of the parent
       val base = atts.getValue(NamespaceSupport.XMLNS, "base")
-      val parentBase = bases.peek().asInstanceOf[URL]
+      val parentBase = bases.peek()
       var currentBase = parentBase
       if (base != null) {
         try {
@@ -164,7 +164,7 @@ class XIncludeFilter extends XMLFilterImpl {
           // add xml:base attribute if necessary
           val attsImpl = new AttributesImpl(atts)
           attsImpl.addAttribute(NamespaceSupport.XMLNS, "base",
-            "xml:base", "CDATA", currentBase.toExternalForm())
+            "xml:base", "CDATA", currentBase.toExternalForm)
           atts = attsImpl
           atRoot = false
         }
@@ -226,16 +226,16 @@ class XIncludeFilter extends XMLFilterImpl {
   // convenience method for error messages
   private def getLocation(): String = {
     var locationString = ""
-    val locator = locators.peek().asInstanceOf[Locator]
+    val locator = locators.peek()
     var publicID = ""
     var systemID = ""
     var column = -1
     var line = -1
     if (locator != null) {
-      publicID = locator.getPublicId()
-      systemID = locator.getSystemId()
-      line = locator.getLineNumber()
-      column = locator.getColumnNumber()
+      publicID = locator.getPublicId
+      systemID = locator.getSystemId
+      line = locator.getLineNumber
+      column = locator.getColumnNumber
     }
     locationString = (" in document included from " + publicID
       + " at " + systemID
@@ -261,7 +261,7 @@ class XIncludeFilter extends XMLFilterImpl {
     if (encoding == null || encoding.trim().equals("")) encoding = "UTF-8"
     var source: URL = null
     try {
-      val base = bases.peek().asInstanceOf[URL]
+      val base = bases.peek()
       source = new URL(base, url)
     } catch {
       case e: MalformedURLException =>
@@ -273,9 +273,9 @@ class XIncludeFilter extends XMLFilterImpl {
 
     try {
       val uc = source.openConnection()
-      val in = new BufferedInputStream(uc.getInputStream())
-      val encodingFromHeader = uc.getContentEncoding()
-      var contentType = uc.getContentType()
+      val in = new BufferedInputStream(uc.getInputStream)
+      val encodingFromHeader = uc.getContentEncoding
+      var contentType = uc.getContentType
       if (encodingFromHeader != null)
         encoding = encodingFromHeader
       else {
@@ -305,7 +305,7 @@ class XIncludeFilter extends XMLFilterImpl {
           + encoding + getLocation(), e)
       case e: IOException =>
         throw new SAXException("Document not found: "
-          + source.toExternalForm() + getLocation(), e)
+          + source.toExternalForm + getLocation(), e)
     }
 
   }
@@ -342,7 +342,7 @@ class XIncludeFilter extends XMLFilterImpl {
         }
 
       parser setContentHandler this
-      val resolver = this.getEntityResolver()
+      val resolver = this.getEntityResolver
       if (resolver != null)
         parser setEntityResolver resolver
 
@@ -357,14 +357,14 @@ class XIncludeFilter extends XMLFilterImpl {
 
       bases push source
       atRoot = true
-      parser parse source.toExternalForm()
+      parser parse source.toExternalForm
 
       // restore old level and base
       this.level = previousLevel
       bases.pop()
     } catch {
       case e: IOException =>
-        throw new SAXException("Document not found: " + source.toExternalForm() + getLocation(), e)
+        throw new SAXException("Document not found: " + source.toExternalForm + getLocation(), e)
     }
   }
 }

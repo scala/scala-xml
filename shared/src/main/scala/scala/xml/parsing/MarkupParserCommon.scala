@@ -164,11 +164,11 @@ private[scala] trait MarkupParserCommon extends TokenTests {
    * see [66]
    */
   def xCharRef(ch: () => Char, nextch: () => Unit): String =
-    Utility.parseCharRef(ch, nextch, reportSyntaxError _, truncatedError _)
+    Utility.parseCharRef(ch, nextch, reportSyntaxError, truncatedError)
 
   def xCharRef(it: Iterator[Char]): String = {
     var c = it.next()
-    Utility.parseCharRef(() => c, () => { c = it.next() }, reportSyntaxError _, truncatedError _)
+    Utility.parseCharRef(() => c, () => { c = it.next() }, reportSyntaxError, truncatedError)
   }
 
   def xCharRef: String = xCharRef(() => ch, () => nextch())

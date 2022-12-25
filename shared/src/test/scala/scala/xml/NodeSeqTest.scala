@@ -46,7 +46,7 @@ class NodeSeqTest {
     val exp: NodeBuffer = {
       <a>Hello</a><b>Hi</b>
     }
-    assertEquals(exp, res)
+    assertEquals(exp.toSeq, res)
   }
 
   @Test

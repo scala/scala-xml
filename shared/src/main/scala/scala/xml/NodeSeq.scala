@@ -60,7 +60,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     val these = this.iterator
     val those = that.iterator
     while (these.hasNext && those.hasNext)
-      if (these.next xml_!= those.next)
+      if (these.next() xml_!= those.next())
         return false
 
     !these.hasNext && !those.hasNext
@@ -118,11 +118,11 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
       NodeSeq fromSeq (this flatMap (_.child) filter cond)
 
     that match {
-      case ""                                        => fail
-      case "_"                                       => makeSeq(!_.isAtom)
-      case "@"                                       => fail
-      case _ if (that(0) == '@' && this.length == 1) => atResult
-      case _                                         => makeSeq(_.label == that)
+      case ""                                      => fail
+      case "_"                                     => makeSeq(!_.isAtom)
+      case "@"                                     => fail
+      case _ if that(0) == '@' && this.length == 1 => atResult
+      case _                                       => makeSeq(_.label == that)
     }
   }
 

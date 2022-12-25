@@ -55,11 +55,11 @@ class XMLSyntaxTest {
   @Test
   def test2(): Unit = {
     val x1: Option[Seq[Node]] = Some(<b>hello</b>)
-    val n1 = <elem key={x1} />;
+    val n1 = <elem key={x1} />
     assertEquals(x1, n1.attribute("key"))
 
     val x2: Option[Seq[Node]] = None
-    val n2 = <elem key={x2} />;
+    val n2 = <elem key={x2} />
     assertEquals(x2, n2.attribute("key"))
   }
 

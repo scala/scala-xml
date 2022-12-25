@@ -12,11 +12,11 @@ class XMLSyntaxTestJVM {
     object parser extends xml.parsing.ConstructingParser(s, false /*ignore ws*/) {
       override def replacementText(entityName: String): io.Source = {
         entityName match {
-          case "nbsp" => io.Source.fromString("\u0160");
-          case _ => super.replacementText(entityName);
+          case "nbsp" => io.Source.fromString("\u0160")
+          case _ => super.replacementText(entityName)
         }
       }
-      nextch(); // !!important, to initialize the parser
+      nextch() // !!important, to initialize the parser
     }
     val parsed = parser.element(TopScope) // parse the source as element
     // alternatively, we could call document()

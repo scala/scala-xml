@@ -134,7 +134,7 @@ abstract class MetaData
   /** if owner is the element of this metadata item, returns namespace */
   def getNamespace(owner: Node): String
 
-  def hasNext = (Null != next)
+  def hasNext = Null != next
 
   def length: Int = length(0)
 

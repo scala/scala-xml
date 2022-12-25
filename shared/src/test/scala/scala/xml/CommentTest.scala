@@ -18,12 +18,12 @@ final class CommentTest {
   @Test
   def validCommentWithDash: Unit = {
     val valid: String = "valid-comment"
-    assertEquals(s"<!--${valid}-->", Comment(valid).toString)
+    assertEquals(s"<!--$valid-->", Comment(valid).toString)
   }
 
   @Test
   def validEmptyComment: Unit = {
     val valid: String = ""
-    assertEquals(s"<!--${valid}-->", Comment(valid).toString)
+    assertEquals(s"<!--$valid-->", Comment(valid).toString)
   }
 }
