@@ -14,8 +14,8 @@ package scala
 package xml
 
 import factory.XMLLoader
-import java.io.{ File, FileDescriptor, FileInputStream, FileOutputStream }
-import java.io.{ InputStream, Reader, StringReader }
+import java.io.{File, FileDescriptor, FileInputStream, FileOutputStream}
+import java.io.{InputStream, Reader, StringReader}
 import java.nio.channels.Channels
 import scala.util.control.Exception.ultimately
 
@@ -71,6 +71,10 @@ object XML extends XMLLoader[Elem] {
   /** Returns an XMLLoader whose load* methods will use the supplied SAXParser. */
   def withSAXParser(p: SAXParser): XMLLoader[Elem] =
     new XMLLoader[Elem] { override val parser: SAXParser = p }
+
+  /** Returns an XMLLoader whose load* methods will use the supplied XMLReader. */
+  def withXMLReader(r: XMLReader): XMLLoader[Elem] =
+    new XMLLoader[Elem] { override val reader: XMLReader = r }
 
   /**
    * Saves a node to a file with given filename using given encoding

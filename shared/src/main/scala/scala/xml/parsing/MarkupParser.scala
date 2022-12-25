@@ -98,8 +98,9 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   var extIndex = -1
 
   /** holds temporary values of pos */
-  // Note: this is clearly an override, but if marked as such it causes a "...cannot override a mutable variable"
-  // error with Scala 3; does it work with Scala 3 if not explicitly marked as an override remains to be seen...
+  // Note: if marked as an override, this causes a "...cannot override a mutable variable" error with Scala 3;
+  // SethTisue noted on Oct 14, 2021 that lampepfl/dotty#13744 should fix it - and it probably did,
+  // but Scala XML still builds against Scala 3 version that has this bug, so this still can not be marked as an override :(
   var tmppos: Int = _
 
   /** holds the next character */

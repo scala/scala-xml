@@ -658,6 +658,34 @@ class XMLTestJVM {
     roundtrip(namespaceAware = true, """<book xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"><svg xmlns:svg="http://www.w3.org/2000/svg"/></book>""")
 
   @UnitTest
+  def useXMLReaderWithXMLFilter(): Unit = {
+    val parent: org.xml.sax.XMLReader = javax.xml.parsers.SAXParserFactory.newInstance.newSAXParser.getXMLReader
+    val filter: org.xml.sax.XMLFilter = new org.xml.sax.helpers.XMLFilterImpl(parent) {
+      override def characters(ch: Array[Char], start: Int, length: Int): Unit = {
+        for (i <- 0 until length) if (ch(start+i) == 'a') ch(start+i) = 'b'
+        super.characters(ch, start, length)
+      }
+    }
+    assertEquals(XML.withXMLReader(filter).loadString("<a>caffeeaaay</a>").toString, "<a>cbffeebbby</a>")
+  }
+
+  @UnitTest
+  def checkThatErrorHandlerIsNotOverwritten(): Unit = {
+    var gotAnError: Boolean = false
+    XML.reader.setErrorHandler(new org.xml.sax.ErrorHandler {
+      override def warning(e: SAXParseException): Unit = gotAnError = true
+      override def error(e: SAXParseException): Unit = gotAnError = true
+      override def fatalError(e: SAXParseException): Unit = gotAnError = true
+    })
+    try {
+      XML.loadString("<a>")
+    } catch {
+      case _: org.xml.sax.SAXParseException =>
+    }
+    assertTrue(gotAnError)
+  }
+
+  @UnitTest
   def nodeSeqNs: Unit = {
     val x = {
       <x:foo xmlns:x="abc"/><y:bar xmlns:y="def"/>

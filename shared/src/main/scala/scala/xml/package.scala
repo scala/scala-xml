@@ -80,5 +80,6 @@ package object xml {
   type SAXParseException = org.xml.sax.SAXParseException
   type EntityResolver = org.xml.sax.EntityResolver
   type InputSource = org.xml.sax.InputSource
+  type XMLReader = org.xml.sax.XMLReader
   type SAXParser = javax.xml.parsers.SAXParser
 }
