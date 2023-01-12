@@ -30,7 +30,7 @@ abstract class BasicTransformer extends Function1[Node, Node] {
    *  to NodeBuffer.
    */
   def transform(it: Iterator[Node], nb: NodeBuffer): Seq[Node] =
-    it.foldLeft(nb)(_ ++= transform(_)).toSeq
+    it.foldLeft(nb)(_ ++= transform(_))
 
   /**
    * Call transform(Node) to each node in ns, yield ns if nothing changes,

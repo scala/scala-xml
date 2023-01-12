@@ -42,7 +42,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
   def getPrefix(_uri: String): String =
     if (_uri == uri) prefix else parent getPrefix _uri
 
-  override def toString(): String = sbToString(buildString(_, TopScope))
+  override def toString: String = sbToString(buildString(_, TopScope))
 
   private def shadowRedefined(stop: NamespaceBinding): NamespaceBinding = {
     def prefixList(x: NamespaceBinding): List[String] =
@@ -50,7 +50,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
       else x.prefix :: prefixList(x.parent)
     def fromPrefixList(l: List[String]): NamespaceBinding = l match {
       case Nil     => stop
-      case x :: xs => new NamespaceBinding(x, this.getURI(x), fromPrefixList(xs))
+      case x :: xs => NamespaceBinding(x, this.getURI(x), fromPrefixList(xs))
     }
     val ps0 = prefixList(this).reverse
     val ps = ps0.distinct
@@ -80,8 +80,8 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
     if (List(null, stop, TopScope).contains(this)) return
 
     val s = " xmlns%s=\"%s\"".format(
-      (if (prefix != null) ":" + prefix else ""),
-      (if (uri != null) uri else "")
+      if (prefix != null) ":" + prefix else "",
+      if (uri != null) uri else ""
     )
     parent.doBuildString(sb append s, stop) // copy(ignore)
   }

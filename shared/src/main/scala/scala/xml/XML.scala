@@ -94,7 +94,7 @@ object XML extends XMLLoader[Elem] {
     doctype: dtd.DocType = null): Unit =
     {
       val fos = new FileOutputStream(filename)
-      val w = Channels.newWriter(fos.getChannel(), enc)
+      val w = Channels.newWriter(fos.getChannel, enc)
 
       ultimately(w.close())(
         write(w, node, enc, xmlDecl, doctype)

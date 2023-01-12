@@ -52,7 +52,7 @@ object XhtmlEntities {
   val entMap: Map[String, Char] = Map.empty[String, Char] ++ entList.map { case (name, value) => (name, value.toChar) }
 
   val entities = entList.
-    map { case (name, value) => (name, new ParsedEntityDecl(name, new IntDef(value.toChar.toString))) }
+    map { case (name, value) => (name, ParsedEntityDecl(name, IntDef(value.toChar.toString))) }
 
   def apply() = entities
 }

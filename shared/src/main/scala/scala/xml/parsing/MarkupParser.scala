@@ -71,8 +71,8 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       iter.buffered
     }
     val iter = new Iterator[Char] {
-      def hasNext = underlying.hasNext || !queue.isEmpty
-      def next() = if (!queue.isEmpty) queue.dequeue() else underlying.next()
+      def hasNext = underlying.hasNext || queue.nonEmpty
+      def next() = if (queue.nonEmpty) queue.dequeue() else underlying.next()
     }
   }
 
@@ -265,7 +265,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       case _: EntityRef => // todo: fix entities, shouldn't be "special"
         reportSyntaxError("no entity references allowed here")
       case s: SpecialNode =>
-        if (s.toString.trim().length > 0) //non-empty text nodes not allowed
+        if (s.toString.trim.nonEmpty) //non-empty text nodes not allowed
           elemCount += 2
       case m: Node =>
         elemCount += 1
@@ -328,7 +328,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       Utility.prefix(qname) match {
         case Some("xmlns") =>
           val prefix = qname.substring(6 /*xmlns:*/ , qname.length)
-          scope = new NamespaceBinding(prefix, value, scope)
+          scope = NamespaceBinding(prefix, value, scope)
 
         case Some(prefix) =>
           val key = qname.substring(prefix.length + 1, qname.length)
@@ -336,7 +336,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
         case _ =>
           if (qname == "xmlns")
-            scope = new NamespaceBinding(null, value, scope)
+            scope = NamespaceBinding(null, value, scope)
           else
             aMap = new UnprefixedAttribute(qname, Text(value), aMap)
       }
@@ -503,14 +503,14 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       xToken("YSTEM")
       xSpace()
       val sysID = systemLiteral()
-      new SystemID(sysID)
+      SystemID(sysID)
     case 'P' =>
       nextch(); xToken("UBLIC")
       xSpace()
       val pubID = pubidLiteral()
       xSpace()
       val sysID = systemLiteral()
-      new PublicID(pubID, sysID)
+      PublicID(pubID, sysID)
   }
 
   /**
@@ -934,7 +934,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
         systemLiteral()
       else
         null
-      new PublicID(pubID, sysID)
+      PublicID(pubID, sysID)
     } else {
       reportSyntaxError("PUBLIC or SYSTEM expected")
       truncatedError("died parsing notationdecl")

@@ -57,7 +57,7 @@ object Xhtml {
       }
       def shortForm =
         minimizeTags &&
-          (x.child == null || x.child.length == 0) &&
+          (x.child == null || x.child.isEmpty) &&
           (minimizableElements contains x.label)
 
       x match {

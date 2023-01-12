@@ -28,9 +28,9 @@ class XMLTest {
 
     val pelems_1 = for (x <- p \ "bar"; y <- p \ "baz") yield {
       Text(x.attributes("value").toString + y.attributes("bazValue").toString + "!")
-    };
+    }
 
-    val pelems_2 = NodeSeq.fromSeq(List(Text("38!"), Text("58!")));
+    val pelems_2 = NodeSeq.fromSeq(List(Text("38!"), Text("58!")))
     assertTrue(pelems_1 sameElements pelems_2)
     assertTrue(Text("8") sameElements (p \\ "@bazValue"))
   }
@@ -42,7 +42,7 @@ class XMLTest {
         <book><title>Blabla</title></book>
         <book><title>Blubabla</title></book>
         <book><title>Baaaaaaalabla</title></book>
-      </bks>;
+      </bks>
 
     val reviews =
       <reviews>
@@ -64,16 +64,16 @@ class XMLTest {
             rem 2
           </remarks>
         </entry>
-      </reviews>;
+      </reviews>
 
     val results1 = new scala.xml.PrettyPrinter(80, 5).formatNodes(
-      for (
-        t <- books \\ "title";
+      for {
+        t <- books \\ "title"
         r <- reviews \\ "entry" if (r \ "title") xml_== t
-      ) yield <result>
+      } yield <result>
                 { t }
                 { r \ "remarks" }
-              </result>);
+              </result>)
     val results1Expected = """<result>
     |     <title>Blabla</title>
     |     <remarks> Hallo Welt. </remarks>
@@ -110,7 +110,7 @@ class XMLTest {
           <phone where="work">  +41 21 693 68 67</phone>
           <phone where="mobile">+41 79 602 23 23</phone>
         </entry>
-      </phonebook>;
+      </phonebook>
 
     val addrBook =
       <addrbook>
@@ -125,13 +125,13 @@ class XMLTest {
           <street> Elm Street</street>
           <city>Dolphin City</city>
         </entry>
-      </addrbook>;
+      </addrbook>
 
     val actual: String = new scala.xml.PrettyPrinter(80, 5).formatNodes(
-      for (
-        t <- addrBook \\ "entry";
+      for {
+        t <- addrBook \\ "entry"
         r <- phoneBook \\ "entry" if (t \ "name") xml_== (r \ "name")
-      ) yield <result>
+      } yield <result>
                 { t.child }
                 { r \ "phone" }
               </result>)
@@ -160,7 +160,7 @@ class XMLTest {
     val cuckoo = <cuckoo xmlns="http://cuckoo.com">
                    <foo/>
                    <bar/>
-                 </cuckoo>;
+                 </cuckoo>
     assertEquals("http://cuckoo.com", cuckoo.namespace)
     for (n <- cuckoo \ "_") {
       assertEquals("http://cuckoo.com", n.namespace)
@@ -197,7 +197,7 @@ class XMLTest {
   @UnitTest
   def dodgyNamespace = {
     val x = <flog xmlns:ee="http://ee.com"><foo xmlns:dog="http://dog.com"><dog:cat/></foo></flog>
-    assertTrue(x.toString.matches(".*xmlns:dog=\"http://dog.com\".*"));
+    assertTrue(x.toString.matches(".*xmlns:dog=\"http://dog.com\".*"))
   }
 
   val ax = <hello foo="bar" x:foo="baz" xmlns:x="the namespace from outer space">
@@ -302,15 +302,15 @@ Ours is the portal of hope, come as you are."
   // t-486
   def wsdlTemplate1(serviceName: String): Node =
     <wsdl:definitions name={ serviceName } xmlns:tns={ "target1" }>
-    </wsdl:definitions>;
+    </wsdl:definitions>
 
   def wsdlTemplate2(serviceName: String, targetNamespace: String): Node =
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace }>
-    </wsdl:definitions>;
+    </wsdl:definitions>
 
   def wsdlTemplate4(serviceName: String, targetNamespace: () => String): Node =
     <wsdl:definitions name={ serviceName } xmlns:tns={ targetNamespace() }>
-    </wsdl:definitions>;
+    </wsdl:definitions>
 
   @UnitTest
   def wsdl = {

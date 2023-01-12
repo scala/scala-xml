@@ -34,7 +34,7 @@ private[dtd] abstract class DetWordAutom[T <: AnyRef] {
   def isSink(q: Int) = delta(q).isEmpty && default(q) == q
   def next(q: Int, label: T) = delta(q).getOrElse(label, default(q))
 
-  override def toString() = {
+  override def toString = {
     val sb = new StringBuilder("[DetWordAutom  nstates=")
     sb.append(nstates)
     sb.append(" finals=")

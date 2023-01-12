@@ -45,7 +45,7 @@ trait NodeFactory[A <: Node] {
     val hash = Utility.hashCode(pre, name, attrSeq.##, scope.##, children)
     def cons(old: List[A]) = construct(hash, old, pre, name, attrSeq, scope, children)
 
-    (cache get hash) match {
+    cache.get(hash) match {
       case Some(list) => // find structurally equal
         list.find(nodeEquals(_, pre, name, attrSeq, scope, children)) match {
           case Some(x) => x

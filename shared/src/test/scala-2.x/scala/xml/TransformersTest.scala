@@ -66,10 +66,9 @@ class TransformersTest {
     new RuleTransformer(new RewriteRule {
       override def transform(n: Node): Seq[Node] = {
         n match {
-          case t: Text if !t.text.trim.isEmpty => {
+          case t: Text if t.text.trim.nonEmpty =>
             i += 1
             Text(t.text + "!")
-          }
           case _ => n
         }
       }

@@ -30,7 +30,7 @@ case class DocType(name: String, extID: ExternalID, intSubset: Seq[dtd.Decl]) {
     throw new IllegalArgumentException(name + " must be an XML Name")
 
   /** returns "&lt;!DOCTYPE + name + extID? + ("["+intSubSet+"]")? >" */
-  final override def toString() = {
+  final override def toString = {
     def intString =
       if (intSubset.isEmpty) ""
       else intSubset.mkString("[", "", "]")

@@ -54,7 +54,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
 
     addFinal(q0) // initial state may also be a final state
 
-    while (!rest.isEmpty) {
+    while (rest.nonEmpty) {
       val P = rest.head
       rest = rest.tail
       // assign a number to this bitset

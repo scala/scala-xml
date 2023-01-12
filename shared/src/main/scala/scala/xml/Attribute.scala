@@ -53,7 +53,7 @@ object Attribute {
  *
  *  @author  Burak Emir
  */
-abstract trait Attribute extends MetaData {
+trait Attribute extends MetaData {
   def pre: String // will be null if unprefixed
   val key: String
   val value: Seq[Node]

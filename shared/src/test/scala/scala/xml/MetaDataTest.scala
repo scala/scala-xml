@@ -14,23 +14,23 @@ class MetaDataTest {
 
   @Test
   def absentElementPrefixed2: Unit = {
-    assertEquals(None, Null.get("za://foo.com", TopScope, "bar" ))
-    assertEquals(None, Null.get("bar"))
+    assertEquals(Option.empty, Null.get("za://foo.com", TopScope, "bar" ))
+    assertEquals(Option.empty, Null.get("bar"))
   }
 
   @Test
   def presentElement1: Unit = {
     val x = new PrefixedAttribute("zo","bar", new Atom(42), Null)
-    val s = new NamespaceBinding("zo","za://foo.com", TopScope)
+    val s = NamespaceBinding("zo","za://foo.com", TopScope)
     assertEquals(new Atom(42), x("za://foo.com", s, "bar" ))
     assertEquals(null, x("bar"))
     assertEquals(Some(new Atom(42)), x.get("za://foo.com", s, "bar"))
-    assertEquals(None, x.get("bar"))
+    assertEquals(Option.empty, x.get("bar"))
   }
 
   @Test
   def presentElement2: Unit = {
-    val s = new NamespaceBinding("zo","za://foo.com", TopScope)
+    val s = NamespaceBinding("zo","za://foo.com", TopScope)
     val x1 = new PrefixedAttribute("zo","bar", new Atom(42), Null)
     val x = new UnprefixedAttribute("bar","meaning", x1)
     assertEquals(null, x(null, s, "bar"))
@@ -43,7 +43,7 @@ class MetaDataTest {
   def attributeExtractor: Unit = {
     def domatch(x:Node): Node = {
       x match {
-            case Node("foo", md @ UnprefixedAttribute(_, value, _), _*) if !value.isEmpty =>
+            case Node("foo", md @ UnprefixedAttribute(_, value, _), _*) if value.nonEmpty =>
                  md("bar")(0)
             case _ => new Atom(3)
       }

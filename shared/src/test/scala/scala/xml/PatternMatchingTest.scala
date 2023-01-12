@@ -18,7 +18,7 @@ class PatternMatchingTest {
   }
 
   def matchList(args: List[String]) =
-    Elem(null, "bla", Null, TopScope, minimizeEmpty = true, (args map { x => Text(x) }): _*) match {
+    Elem(null, "bla", Null, TopScope, minimizeEmpty = true, args.map { x => Text(x) }: _*) match {
       case Elem(_, _, _, _, Text("1"), _*) => true
     }
 
@@ -58,9 +58,11 @@ class PatternMatchingTest {
 
   object SafeNodeSeq {
     def unapplySeq(any: Any): Option[Seq[Node]] = any match {
-      case s: Seq[_] => Some((s flatMap (_ match {
-        case n: Node => n case _ => NodeSeq.Empty
-      })).toSeq) case _ => None
+      case s: Seq[_] => Some(s flatMap {
+        case n: Node => n
+        case _ => NodeSeq.Empty
+      })
+      case _ => None
     }
   }
 
@@ -73,7 +75,7 @@ class PatternMatchingTest {
         <title>Blabla</title>
         <title>Blubabla</title>
         <title>Baaaaaaalabla</title>
-      </bks>;
+      </bks>
 
     assertTrue(NodeSeq.fromSeq(books.child) match {
       case t @ Seq(<title>Blabla</title>) => false

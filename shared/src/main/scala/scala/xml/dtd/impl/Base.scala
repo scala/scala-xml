@@ -58,7 +58,7 @@ private[dtd] abstract class Base {
   // The empty Sequ.
   case object Eps extends RegExp {
     final lazy val isNullable = true
-    override def toString() = "Eps"
+    override def toString = "Eps"
   }
 
   /** this class can be used to add meta information to regexps. */

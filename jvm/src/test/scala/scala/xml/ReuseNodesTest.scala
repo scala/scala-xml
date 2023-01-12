@@ -20,12 +20,12 @@ object ReuseNodesTest {
   class OriginalTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
     override def transform(ns: Seq[Node]): Seq[Node] = {
       val xs = ns.toStream map transform
-      val (xs1, xs2) = xs zip ns span { case (x, n) => unchanged(n, x) }
+      val (xs1, xs2) = xs.zip(ns).span { case (x, n) => unchanged(n, x) }
        
       if (xs2.isEmpty) ns
-      else (xs1 map (_._2)) ++ xs2.head._1 ++ transform(ns drop (xs1.length + 1))
+      else xs1.map(_._2) ++ xs2.head._1 ++ transform(ns.drop(xs1.length + 1))
     }
-    override def transform(n:Node): Seq[Node] = super.transform(n)
+    override def transform(n: Node): Seq[Node] = super.transform(n)
   }
 
   class ModifiedTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
@@ -35,18 +35,18 @@ object ReuseNodesTest {
       if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
       else ns
     }
-    override def transform(n:Node): Seq[Node] = super.transform(n)
+    override def transform(n: Node): Seq[Node] = super.transform(n)
   }
 
   class AlternateTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
     override def transform(ns: Seq[Node]): Seq[Node] = {
-      val xs = ns.toStream map transform
-      val (xs1, xs2) = xs zip ns span { case (x, n) => unchanged(n, x) }
+      val xs = ns.toStream.map(transform)
+      val (xs1, xs2) = xs.zip(ns).span { case (x, n) => unchanged(n, x) }
        
       if (xs2.isEmpty) ns
-      else (xs1 map (_._2)) ++ xs2.head._1 ++ transform(ns drop (xs1.length + 1))
+      else xs1.map(_._2) ++ xs2.head._1 ++ transform(ns.drop(xs1.length + 1))
     }
-    override def transform(n:Node): Seq[Node] = super.transform(n)
+    override def transform(n: Node): Seq[Node] = super.transform(n)
   }
    
   def rewriteRule = new RewriteRule {
@@ -68,34 +68,33 @@ object ReuseNodesTest {
 class ReuseNodesTest {
    
   @Theory
-  def transformReferentialEquality(rt:RuleTransformer) = { 
+  def transformReferentialEquality(rt: RuleTransformer) = {
     val original = <p><lost/></p>
     val tranformed = rt.transform(original)
     assertSame(original, tranformed)
   }
       
   @Theory
-  def transformReferentialEqualityOnly(rt:RuleTransformer) = { 
+  def transformReferentialEqualityOnly(rt: RuleTransformer) = {
     val original = <changed><change><lost/><a><b><c/></b></a></change><a><b><c/></b></a></changed>
     val transformed = rt.transform(original)
     recursiveAssert(original,transformed)
   }
   
-  def recursiveAssert(original:Seq[Node], transformed:Seq[Node]):Unit = {
-    original zip transformed foreach { 
+  def recursiveAssert(original: Seq[Node], transformed: Seq[Node]): Unit = {
+    original.zip(transformed).foreach {
       case (x, y) => recursiveAssert(x, y) 
     }
   }
   
-  def recursiveAssert(original:Node, transformed:Node):Unit = {
+  def recursiveAssert(original: Node, transformed: Node): Unit = {
     transformed.label match { 
       case "changed" => // do nothing expect this node to be changed
         recursiveAssert(original.child,transformed.child)
-      case _ => {
+      case _ =>
         assertSame(original, transformed)
-        // No need to check for children, node being immuatable 
+        // No need to check for children, node being immuatable
         // children can't be different if parents are referentially equal
-      }
     }
   }
 }

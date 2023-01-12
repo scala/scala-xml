@@ -38,7 +38,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
   class Item
   case object Break extends Item {
-    override def toString() = "\\"
+    override def toString = "\\"
   }
   case class Box(col: Int, s: String) extends Item
   case class Para(s: String) extends Item
@@ -146,12 +146,12 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
     test.length < width - cur
 
   private def doPreserve(node: Node) =
-    node.attribute(XML.namespace, XML.space).map(_.toString == XML.preserve) getOrElse false
+    node.attribute(XML.namespace, XML.space).exists(_.toString == XML.preserve)
 
   protected def traverse(node: Node, pscope: NamespaceBinding, ind: Int): Unit = node match {
 
     case Text(s) if s.trim() == "" =>
-      ;
+
     case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr =>
       makeBox(ind, node.toString().trim())
     case g@Group(xs) =>
@@ -186,9 +186,9 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
           makeBox(ind, stg.substring(0, len2))
           makeBreak() // todo: break the rest in pieces
           /*{ //@todo
-             val sq:Seq[String] = stg.split(" ");
-             val it = sq.iterator;
-             it.next;
+             val sq:Seq[String] = stg.split(" ")
+             val it = sq.iterator
+             it.next
              for (c <- it) {
                makeBox(ind+len2-2, c)
                makeBreak()
