@@ -129,8 +129,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     }),
   )
   .jsSettings(
-    versionPolicyCheck / skip := true,
-    versionCheck       / skip := true,
     // Scala.js cannot run forked tests
     Test / fork := false
   )
