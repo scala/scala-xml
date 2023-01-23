@@ -62,8 +62,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           |additional information regarding copyright ownership.
           |""".stripMargin)),
 
-    // should be reverted to Compatibility.BinaryAndSourceCompatible after 2.2.0 is released
-    versionPolicyIntention := Compatibility.None,
+    versionPolicyIntention := Compatibility.BinaryCompatible,
     // Note: See discussion on non-JVM Mima in https://github.com/scala/scala-xml/pull/517
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
@@ -135,6 +134,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   )
   .jsEnablePlugins(ScalaJSJUnitPlugin)
   .nativeSettings(
+    versionPolicyCheck / skip := true,
+    versionCheck       / skip := true,
     // Scala Native cannot run forked tests
     Test / fork := false,
     libraryDependencies += "org.scala-native" %%% "junit-runtime" % nativeVersion % Test,
