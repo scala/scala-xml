@@ -5,23 +5,23 @@ scala-xml
 [![Gitter](https://badges.gitter.im/Join+Chat.svg)](https://gitter.im/scala/scala-xml)
 =========
 
-The standard Scala XML library. Please file XML issues here, not at https://github.com/scala/bug/issues.
+The standard Scala XML library. Please file XML issues here, not at https://github.com/scala/bug/issues or http://github.com/lampepfl/dotty/issues.
 
-The decoupling of scala-xml from the Scala compiler and standard library is possible because the compiler desugars XML literals in Scala source code into a set of method calls. Alternative implementations of these calls are welcome! (The calls are unfortunately only defined by the [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala).)
+The decoupling of scala-xml from the Scala compiler and standard library is possible because the compiler desugars XML literals in Scala source code into a set of method calls. Alternative implementations of these calls are welcome! (This [implementation](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala) shows the calls needed.)
 
 API documentation is available [here](https://javadoc.io/doc/org.scala-lang.modules/scala-xml_2.13/).
 
-How to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
+How-to documentation is available in the [wiki](https://github.com/scala/scala-xml/wiki)
 
 ## Maintenance status
 
 This library is community-maintained. Maintainers with merge rights include [@aaron_s_hawley](https://github.com/ashawley) and [@dubinsky](https://github.com/dubinsky).
 
-Contributors are welcome, and should read the [contributor guide](https://github.com/scala/scala-xml/wiki/Contributor-guide) on the wiki.
+Contributors are welcome. Please consult the [contributor guide](https://github.com/scala/scala-xml/wiki/Contributor-guide) on the wiki.
 
 ## Issues
 
-Many old issues from the Scala JIRA issue tracker have been migrated
+Some old issues from the Scala issue tracker have been migrated
 here, but not all of them. Community assistance identifying and
 migrating still-relevant issues is welcome.  See [this
 page](https://github.com/scala/scala-xml/issues/62) for details.
