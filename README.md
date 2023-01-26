@@ -15,7 +15,7 @@ How to documentation is available in the [wiki](https://github.com/scala/scala-x
 
 ## Maintenance status
 
-This library is community-maintained. The lead maintainer is [@aaron_s_hawley](https://github.com/ashawley).
+This library is community-maintained. Maintainers with merge rights include [@aaron_s_hawley](https://github.com/ashawley) and [@dubinsky](https://github.com/dubinsky).
 
 Contributors are welcome, and should read the [contributor guide](https://github.com/scala/scala-xml/wiki/Contributor-guide) on the wiki.
 
