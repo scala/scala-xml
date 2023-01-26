@@ -14,7 +14,7 @@ package scala
 package xml
 package factory
 
-import org.xml.sax.SAXNotRecognizedException
+import org.xml.sax.{SAXNotRecognizedException, XMLReader}
 import javax.xml.parsers.SAXParserFactory
 import parsing.{FactoryAdapter, NoBindingFactoryAdapter}
 import java.io.{File, FileDescriptor, InputStream, Reader}
@@ -46,59 +46,77 @@ trait XMLLoader[T <: Node] {
   /* Override this to use a different SAXParser. */
   def parser: SAXParser = parserInstance.get
 
+  /* Override this to use a different XMLReader. */
+  def reader: XMLReader = parser.getXMLReader
+
   /**
    * Loads XML from the given InputSource, using the supplied parser.
    *  The methods available in scala.xml.XML use the XML parser in the JDK.
    */
-  def loadXML(source: InputSource, parser: SAXParser): T = {
-    val result: FactoryAdapter = parse(source, parser)
+  def loadXML(source: InputSource, parser: SAXParser): T = loadXML(source, parser.getXMLReader)
+
+  def loadXMLNodes(source: InputSource, parser: SAXParser): Seq[Node] = loadXMLNodes(source, parser.getXMLReader)
+
+  private def loadXML(source: InputSource, reader: XMLReader): T = {
+    val result: FactoryAdapter = parse(source, reader)
     result.rootElem.asInstanceOf[T]
   }
-
-  def loadXMLNodes(source: InputSource, parser: SAXParser): Seq[Node] = {
-    val result: FactoryAdapter = parse(source, parser)
+  
+  private def loadXMLNodes(source: InputSource, reader: XMLReader): Seq[Node] = {
+    val result: FactoryAdapter = parse(source, reader)
     result.prolog ++ (result.rootElem :: result.epilogue)
   }
 
-  private def parse(source: InputSource, parser: SAXParser): FactoryAdapter = {
+  private def parse(source: InputSource, reader: XMLReader): FactoryAdapter = {
+    if (source == null) throw new IllegalArgumentException("InputSource cannot be null")
+
     val result: FactoryAdapter = adapter
 
+    reader.setContentHandler(result)
+    reader.setDTDHandler(result)
+    /* Do not overwrite pre-configured EntityResolver. */
+    if (reader.getEntityResolver == null) reader.setEntityResolver(result)
+    /* Do not overwrite pre-configured ErrorHandler. */
+    if (reader.getErrorHandler == null) reader.setErrorHandler(result)
+
     try {
-      parser.setProperty("http://xml.org/sax/properties/lexical-handler", result)
+      reader.setProperty("http://xml.org/sax/properties/lexical-handler", result)
     } catch {
       case _: SAXNotRecognizedException =>
     }
 
     result.scopeStack = TopScope :: result.scopeStack
-    parser.parse(source, result)
+    reader.parse(source)
     result.scopeStack = result.scopeStack.tail
 
     result
   }
 
-  /** Loads XML from the given file, file descriptor, or filename. */
-  def loadFile(file: File): T = loadXML(fromFile(file), parser)
-  def loadFile(fd: FileDescriptor): T = loadXML(fromFile(fd), parser)
-  def loadFile(name: String): T = loadXML(fromFile(name), parser)
+  /** loads XML from given InputSource. */
+  def load(source: InputSource): T = loadXML(source, reader)
 
-  /** loads XML from given InputStream, Reader, sysID, InputSource, or URL. */
-  def load(is: InputStream): T = loadXML(fromInputStream(is), parser)
-  def load(reader: Reader): T = loadXML(fromReader(reader), parser)
-  def load(sysID: String): T = loadXML(fromSysId(sysID), parser)
-  def load(source: InputSource): T = loadXML(source, parser)
-  def load(url: URL): T = loadXML(fromInputStream(url.openStream()), parser)
+  /** Loads XML from the given file, file descriptor, or filename. */
+  def loadFile(file: File): T = load(fromFile(file))
+  def loadFile(fd: FileDescriptor): T = load(fromFile(fd))
+  def loadFile(name: String): T = load(fromFile(name))
+
+  /** loads XML from given InputStream, Reader, sysID, or URL. */
+  def load(is: InputStream): T = load(fromInputStream(is))
+  def load(reader: Reader): T = load(fromReader(reader))
+  def load(sysID: String): T = load(fromSysId(sysID))
+  def load(url: URL): T = load(fromInputStream(url.openStream()))
 
   /** Loads XML from the given String. */
-  def loadString(string: String): T = loadXML(fromString(string), parser)
+  def loadString(string: String): T = load(fromString(string))
 
   /** Load XML nodes, including comments and processing instructions that precede and follow the root element. */
-  def loadFileNodes(file: File): Seq[Node] = loadXMLNodes(fromFile(file), parser)
-  def loadFileNodes(fd: FileDescriptor): Seq[Node] = loadXMLNodes(fromFile(fd), parser)
-  def loadFileNodes(name: String): Seq[Node] = loadXMLNodes(fromFile(name), parser)
-  def loadNodes(is: InputStream): Seq[Node] = loadXMLNodes(fromInputStream(is), parser)
-  def loadNodes(reader: Reader): Seq[Node] = loadXMLNodes(fromReader(reader), parser)
-  def loadNodes(sysID: String): Seq[Node] = loadXMLNodes(fromSysId(sysID), parser)
-  def loadNodes(source: InputSource): Seq[Node] = loadXMLNodes(source, parser)
-  def loadNodes(url: URL): Seq[Node] = loadXMLNodes(fromInputStream(url.openStream()), parser)
-  def loadStringNodes(string: String): Seq[Node] = loadXMLNodes(fromString(string), parser)
+  def loadNodes(source: InputSource): Seq[Node] = loadXMLNodes(source, reader)
+  def loadFileNodes(file: File): Seq[Node] = loadNodes(fromFile(file))
+  def loadFileNodes(fd: FileDescriptor): Seq[Node] = loadNodes(fromFile(fd))
+  def loadFileNodes(name: String): Seq[Node] = loadNodes(fromFile(name))
+  def loadNodes(is: InputStream): Seq[Node] = loadNodes(fromInputStream(is))
+  def loadNodes(reader: Reader): Seq[Node] = loadNodes(fromReader(reader))
+  def loadNodes(sysID: String): Seq[Node] = loadNodes(fromSysId(sysID))
+  def loadNodes(url: URL): Seq[Node] = loadNodes(fromInputStream(url.openStream()))
+  def loadStringNodes(string: String): Seq[Node] = loadNodes(fromString(string))
 }
