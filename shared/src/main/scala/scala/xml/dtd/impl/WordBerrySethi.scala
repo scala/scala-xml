@@ -159,11 +159,11 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
         val defaultArr = (0 until pos map (k => immutable.BitSet(defaultq(k): _*))).toArray
 
         new NondetWordAutom[_labelT] {
-          val nstates = pos
-          val labels = WordBerrySethi.this.labels.toList
-          val finals = finalsArr
-          val delta = deltaArr
-          val default = defaultArr
+          override val nstates = pos
+          override val labels = WordBerrySethi.this.labels.toList
+          override val finals = finalsArr
+          override val delta = deltaArr
+          override val default = defaultArr
         }
       case z =>
         automatonFrom(Sequ(z.asInstanceOf[this.lang._regexpT]), finalTag)

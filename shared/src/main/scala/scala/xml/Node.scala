@@ -165,7 +165,7 @@ abstract class Node extends NodeSeq {
   /**
    *  returns a sequence consisting of only this node
    */
-  def theSeq: Seq[Node] = this :: Nil
+  override def theSeq: Seq[Node] = this :: Nil
 
   /**
    * String representation of this node

@@ -22,7 +22,7 @@ package xml
 case class EntityRef(entityName: String) extends SpecialNode {
   final override def doCollectNamespaces = false
   final override def doTransform = false
-  def label = "#ENTITY"
+  override def label = "#ENTITY"
 
   override def text = entityName match {
     case "lt"   => "<"

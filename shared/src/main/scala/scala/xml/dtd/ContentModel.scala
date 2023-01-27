@@ -28,8 +28,8 @@ object ContentModelLaundry extends ContentModelLaundry {
 
 object ContentModel extends WordExp {
 
-  type _labelT = ElemName
-  type _regexpT = RegExp
+  override type _labelT = ElemName
+  override type _regexpT = RegExp
 
   @deprecated("Avoidance", since="2.10")
   trait Translator extends WordBerrySethi
@@ -114,7 +114,7 @@ sealed abstract class DFAContentModel extends ContentModel {
   }
 }
 
-case class MIXED(r: RegExp) extends DFAContentModel {
+case class MIXED(override val r: RegExp) extends DFAContentModel {
   import ContentModel.Alt
 
   override def buildString(sb: StringBuilder): StringBuilder = {
@@ -126,7 +126,7 @@ case class MIXED(r: RegExp) extends DFAContentModel {
   }
 }
 
-case class ELEMENTS(r: RegExp) extends DFAContentModel {
+case class ELEMENTS(override val r: RegExp) extends DFAContentModel {
   override def buildString(sb: StringBuilder): StringBuilder =
     ContentModel.buildString(r, sb)
 }

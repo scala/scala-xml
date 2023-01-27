@@ -33,16 +33,16 @@ import Utility.Escapes.{ pairs => unescape }
 trait MarkupParser extends MarkupParserCommon with TokenTests {
   self: MarkupParser with MarkupHandler =>
 
-  type PositionType = Int
-  type InputType = Source
-  type ElementType = NodeSeq
-  type AttributesType = (MetaData, NamespaceBinding)
-  type NamespaceType = NamespaceBinding
+  override type PositionType = Int
+  override type InputType = Source
+  override type ElementType = NodeSeq
+  override type AttributesType = (MetaData, NamespaceBinding)
+  override type NamespaceType = NamespaceBinding
 
-  def truncatedError(msg: String): Nothing = throw FatalError(msg)
-  def errorNoEnd(tag: String) = throw FatalError("expected closing tag of " + tag)
+  override def truncatedError(msg: String): Nothing = throw FatalError(msg)
+  override def errorNoEnd(tag: String) = throw FatalError("expected closing tag of " + tag)
 
-  def xHandleError(that: Char, msg: String) = reportSyntaxError(msg)
+  override def xHandleError(that: Char, msg: String) = reportSyntaxError(msg)
 
   val input: Source
 
@@ -65,18 +65,18 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     private val queue = scala.collection.mutable.Queue[Char]()
     def lookahead(): BufferedIterator[Char] = {
       val iter = queue.iterator ++ new Iterator[Char] {
-        def hasNext = underlying.hasNext
-        def next() = { val x = underlying.next(); queue += x; x }
+        override def hasNext = underlying.hasNext
+        override def next() = { val x = underlying.next(); queue += x; x }
       }
       iter.buffered
     }
-    val iter = new Iterator[Char] {
-      def hasNext = underlying.hasNext || queue.nonEmpty
-      def next() = if (queue.nonEmpty) queue.dequeue() else underlying.next()
+    override val iter = new Iterator[Char] {
+      override def hasNext = underlying.hasNext || queue.nonEmpty
+      override def next() = if (queue.nonEmpty) queue.dequeue() else underlying.next()
     }
   }
 
-  def lookahead(): BufferedIterator[Char] = curInput match {
+  override def lookahead(): BufferedIterator[Char] = curInput match {
     case curInputWLA: WithLookAhead =>
       curInputWLA.lookahead()
     case _ =>
@@ -107,7 +107,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   var nextChNeeded: Boolean = false
   var reachedEof: Boolean = false
   var lastChRead: Char = _
-  def ch: Char = {
+  override def ch: Char = {
     if (nextChNeeded) {
       if (curInput.hasNext) {
         lastChRead = curInput.next()
@@ -135,7 +135,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
   protected var doc: Document = null
 
-  def eof: Boolean = { ch; reachedEof }
+  override def eof: Boolean = { ch; reachedEof }
 
   //
   // methods
@@ -294,17 +294,17 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     this
   }
 
-  protected def ch_returning_nextch: Char = { val res = ch; nextch(); res }
+  override protected def ch_returning_nextch: Char = { val res = ch; nextch(); res }
 
-  def mkAttributes(name: String, pscope: NamespaceBinding): AttributesType =
+  override def mkAttributes(name: String, pscope: NamespaceBinding): AttributesType =
     if (isNameStart (ch)) xAttributes(pscope)
     else (Null, pscope)
 
-  def mkProcInstr(position: Int, name: String, text: String): ElementType =
+  override def mkProcInstr(position: Int, name: String, text: String): ElementType =
     handle.procInstr(position, name, text)
 
   /** this method tells ch to get the next character when next called */
-  def nextch(): Unit = {
+  override def nextch(): Unit = {
     // Read current ch if needed
     ch
 
@@ -945,8 +945,8 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     handle.notationDecl(notat, extID)
   }
 
-  def reportSyntaxError(pos: Int, str: String): Unit = { curInput.reportError(pos, str) }
-  def reportSyntaxError(str: String): Unit = { reportSyntaxError(pos, str) }
+  override def reportSyntaxError(pos: Int, str: String): Unit = { curInput.reportError(pos, str) }
+  override def reportSyntaxError(str: String): Unit = { reportSyntaxError(pos, str) }
   def reportValidationError(pos: Int, str: String): Unit = { reportSyntaxError(pos, str) }
 
   def push(entityName: String): Unit = {

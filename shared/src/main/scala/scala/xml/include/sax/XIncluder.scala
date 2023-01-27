@@ -28,9 +28,9 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   var out = new OutputStreamWriter(outs, encoding)
 
-  def setDocumentLocator(locator: Locator): Unit = {}
+  override def setDocumentLocator(locator: Locator): Unit = {}
 
-  def startDocument(): Unit = {
+  override def startDocument(): Unit = {
     try {
       out.write("<?xml version='1.0' encoding='"
         + encoding + "'?>\r\n")
@@ -40,7 +40,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def endDocument(): Unit = {
+  override def endDocument(): Unit = {
     try {
       out.flush()
     } catch {
@@ -49,11 +49,11 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def startPrefixMapping(prefix: String, uri: String): Unit = {}
+  override def startPrefixMapping(prefix: String, uri: String): Unit = {}
 
-  def endPrefixMapping(prefix: String): Unit = {}
+  override def endPrefixMapping(prefix: String): Unit = {}
 
-  def startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes) = {
+  override def startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes) = {
     try {
       out.write("<" + qualifiedName)
       var i = 0; while (i < atts.getLength) {
@@ -74,7 +74,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def endElement(namespaceURI: String, localName: String, qualifiedName: String): Unit = {
+  override def endElement(namespaceURI: String, localName: String, qualifiedName: String): Unit = {
     try {
       out.write("</" + qualifiedName + ">")
     } catch {
@@ -85,7 +85,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   // need to escape characters that are not in the given
   // encoding using character references????
-  def characters(ch: Array[Char], start: Int, length: Int): Unit = {
+  override def characters(ch: Array[Char], start: Int, length: Int): Unit = {
     try {
       var i = 0; while (i < length) {
         val c = ch(start + i)
@@ -104,12 +104,12 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def ignorableWhitespace(ch: Array[Char], start: Int, length: Int): Unit = {
+  override def ignorableWhitespace(ch: Array[Char], start: Int, length: Int): Unit = {
     this.characters(ch, start, length)
   }
 
   // do I need to escape text in PI????
-  def processingInstruction(target: String, data: String): Unit = {
+  override def processingInstruction(target: String, data: String): Unit = {
     try {
       out.write("<?" + target + " " + data + "?>")
     } catch {
@@ -118,7 +118,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  def skippedEntity(name: String): Unit = {
+  override def skippedEntity(name: String): Unit = {
     try {
       out.write("&" + name + ";")
     } catch {
@@ -131,7 +131,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   private var inDTD: Boolean = false
   private var entities = List.empty[String]
 
-  def startDTD(name: String, publicID: String, systemID: String): Unit = {
+  override def startDTD(name: String, publicID: String, systemID: String): Unit = {
     inDTD = true
     // if this is the source document, output a DOCTYPE declaration
     if (entities.isEmpty) {
@@ -146,18 +146,18 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
       }
     }
   }
-  def endDTD(): Unit = {}
+  override def endDTD(): Unit = {}
 
-  def startEntity(name: String): Unit = {
+  override def startEntity(name: String): Unit = {
     entities =  name :: entities
   }
 
-  def endEntity(name: String): Unit = {
+  override def endEntity(name: String): Unit = {
     entities = entities.tail
   }
 
-  def startCDATA(): Unit = {}
-  def endCDATA(): Unit = {}
+  override def startCDATA(): Unit = {}
+  override def endCDATA(): Unit = {}
 
   // Just need this reference so we can ask if a comment is
   // inside an include element or not
@@ -167,7 +167,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     this.filter = filter
   }
 
-  def comment(ch: Array[Char], start: Int, length: Int): Unit = {
+  override def comment(ch: Array[Char], start: Int, length: Int): Unit = {
     if (!inDTD && !filter.insideIncludeElement()) {
       try {
         out.write("<!--")

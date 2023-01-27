@@ -21,12 +21,12 @@ import scala.collection.Seq
  *  @author Burak Emir
  */
 class UnprefixedAttribute(
-  val key: String,
-  val value: Seq[Node],
+  override val key: String,
+  override val value: Seq[Node],
   next1: MetaData)
   extends Attribute {
-  final val pre = null
-  val next = if (value ne null) next1 else next1.remove(key)
+  final override val pre = null
+  override val next = if (value ne null) next1 else next1.remove(key)
 
   /** same as this(key, Text(value), next), or no attribute if value is null */
   def this(key: String, value: String, next: MetaData) =
@@ -37,9 +37,9 @@ class UnprefixedAttribute(
     this(key, value.orNull, next)
 
   /** returns a copy of this unprefixed attribute with the given next field*/
-  def copy(next: MetaData) = new UnprefixedAttribute(key, value, next)
+  override def copy(next: MetaData) = new UnprefixedAttribute(key, value, next)
 
-  final def getNamespace(owner: Node): String = null
+  final override def getNamespace(owner: Node): String = null
 
   /**
    * Gets value of unqualified (unprefixed) attribute with given key, null if not found
@@ -47,7 +47,7 @@ class UnprefixedAttribute(
    * @param  key
    * @return value as Seq[Node] if key is found, null otherwise
    */
-  def apply(key: String): Seq[Node] =
+  override def apply(key: String): Seq[Node] =
     if (key == this.key) value else next(key)
 
   /**
@@ -58,7 +58,7 @@ class UnprefixedAttribute(
    * @param  key
    * @return ..
    */
-  def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] =
+  override def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] =
     next(namespace, scope, key)
 }
 object UnprefixedAttribute {

@@ -27,7 +27,7 @@ import scala.collection.Seq
 object NodeSeq {
   final val Empty = fromSeq(Nil)
   def fromSeq(s: Seq[Node]): NodeSeq = new NodeSeq {
-    def theSeq = s
+    override def theSeq = s
   }
 
   // ---
@@ -50,10 +50,10 @@ object NodeSeq {
  */
 abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with ScalaVersionSpecificNodeSeq with Equality with Serializable {
   def theSeq: Seq[Node]
-  def length = theSeq.length
+  override def length = theSeq.length
   override def iterator = theSeq.iterator
 
-  def apply(i: Int): Node = theSeq(i)
+  override def apply(i: Int): Node = theSeq(i)
   def apply(f: Node => Boolean): NodeSeq = filter(f)
 
   def xml_sameElements[A](that: Iterable[A]): Boolean = {
@@ -66,7 +66,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     !these.hasNext && !those.hasNext
   }
 
-  protected def basisForHashCode: Seq[Any] = theSeq
+  override protected def basisForHashCode: Seq[Any] = theSeq
 
   override def canEqual(other: Any) = other match {
     case _: NodeSeq => true

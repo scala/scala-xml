@@ -41,13 +41,13 @@ class Atom[+A](val data: A) extends SpecialNode with Serializable {
   final override def doCollectNamespaces = false
   final override def doTransform = false
 
-  def label = "#PCDATA"
+  override def label = "#PCDATA"
 
   /**
    * Returns text, with some characters escaped according to the XML
    *  specification.
    */
-  def buildString(sb: StringBuilder): StringBuilder =
+  override def buildString(sb: StringBuilder): StringBuilder =
     Utility.escape(data.toString, sb)
 
   override def text: String = data.toString

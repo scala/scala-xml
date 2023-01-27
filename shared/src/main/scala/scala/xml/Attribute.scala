@@ -55,27 +55,27 @@ object Attribute {
  */
 trait Attribute extends MetaData {
   def pre: String // will be null if unprefixed
-  val key: String
-  val value: Seq[Node]
-  val next: MetaData
+  override val key: String
+  override val value: Seq[Node]
+  override val next: MetaData
 
-  def apply(key: String): Seq[Node]
-  def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node]
-  def copy(next: MetaData): Attribute
+  override def apply(key: String): Seq[Node]
+  override def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node]
+  override def copy(next: MetaData): Attribute
 
-  def remove(key: String) =
+  override def remove(key: String) =
     if (!isPrefixed && this.key == key) next
     else copy(next remove key)
 
-  def remove(namespace: String, scope: NamespaceBinding, key: String) =
+  override def remove(namespace: String, scope: NamespaceBinding, key: String) =
     if (this.key == key && (scope getURI pre) == namespace) next
     else copy(next.remove(namespace, scope, key))
 
-  def isPrefixed: Boolean = pre != null
+  override def isPrefixed: Boolean = pre != null
 
-  def getNamespace(owner: Node): String
+  override def getNamespace(owner: Node): String
 
-  def wellformed(scope: NamespaceBinding): Boolean = {
+  override def wellformed(scope: NamespaceBinding): Boolean = {
     val arg = if (isPrefixed) scope getURI pre else null
     (next(arg, scope, key) == null) && (next wellformed scope)
   }
@@ -94,7 +94,7 @@ trait Attribute extends MetaData {
   /**
    * Appends string representation of only this attribute to stringbuffer.
    */
-  protected def toString1(sb: StringBuilder): Unit = {
+  override protected def toString1(sb: StringBuilder): Unit = {
     if (value == null)
       return
     if (isPrefixed)

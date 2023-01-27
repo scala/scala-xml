@@ -30,14 +30,14 @@ case object Null extends MetaData {
   override def append(m: MetaData, scope: NamespaceBinding = TopScope): MetaData = m
   override def filter(f: MetaData => Boolean): MetaData = this
 
-  def copy(next: MetaData) = next
-  def getNamespace(owner: Node) = null
+  override def copy(next: MetaData) = next
+  override def getNamespace(owner: Node) = null
 
   override def hasNext = false
-  def next = null
-  def key = null
-  def value = null
-  def isPrefixed = false
+  override def next = null
+  override def key = null
+  override def value = null
+  override def isPrefixed = false
 
   override def length = 0
   override def length(i: Int) = i
@@ -48,12 +48,12 @@ case object Null extends MetaData {
   }
   override protected def basisForHashCode: Seq[Any] = Nil
 
-  def apply(namespace: String, scope: NamespaceBinding, key: String) = null
-  def apply(key: String) =
+  override def apply(namespace: String, scope: NamespaceBinding, key: String) = null
+  override def apply(key: String) =
     if (isNameStart(key.head)) null
     else throw new IllegalArgumentException("not a valid attribute name '" + key + "', so can never match !")
 
-  protected def toString1(sb: StringBuilder) = ()
+  override protected def toString1(sb: StringBuilder) = ()
   override protected def toString1(): String = ""
 
   override def toString(): String = ""
@@ -62,6 +62,6 @@ case object Null extends MetaData {
 
   override def wellformed(scope: NamespaceBinding) = true
 
-  def remove(key: String) = this
-  def remove(namespace: String, scope: NamespaceBinding, key: String) = this
+  override def remove(key: String) = this
+  override def remove(namespace: String, scope: NamespaceBinding, key: String) = this
 }

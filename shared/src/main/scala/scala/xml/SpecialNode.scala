@@ -28,7 +28,7 @@ abstract class SpecialNode extends Node {
   final override def namespace = null
 
   /** always empty */
-  final def child = Nil
+  final override def child = Nil
 
   /** Append string representation to the given string buffer argument. */
   def buildString(sb: StringBuilder): StringBuilder

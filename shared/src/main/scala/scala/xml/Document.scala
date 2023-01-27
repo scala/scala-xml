@@ -96,7 +96,7 @@ class Document extends NodeSeq with Serializable {
 
   // methods for NodeSeq
 
-  def theSeq: Seq[Node] = this.docElem
+  override def theSeq: Seq[Node] = this.docElem
 
   override def canEqual(other: Any) = other match {
     case _: Document => true

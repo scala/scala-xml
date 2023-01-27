@@ -38,7 +38,7 @@ private[dtd] abstract class Base {
   }
 
   class Alt private (val rs: _regexpT*) extends RegExp {
-    final val isNullable = rs exists (_.isNullable)
+    final override val isNullable = rs exists (_.isNullable)
   }
 
   object Sequ {
@@ -48,22 +48,22 @@ private[dtd] abstract class Base {
   }
 
   class Sequ private (val rs: _regexpT*) extends RegExp {
-    final val isNullable = rs forall (_.isNullable)
+    final override val isNullable = rs forall (_.isNullable)
   }
 
   case class Star(r: _regexpT) extends RegExp {
-    final lazy val isNullable = true
+    final override lazy val isNullable = true
   }
 
   // The empty Sequ.
   case object Eps extends RegExp {
-    final lazy val isNullable = true
+    final override lazy val isNullable = true
     override def toString = "Eps"
   }
 
   /** this class can be used to add meta information to regexps. */
   class Meta(r1: _regexpT) extends RegExp {
-    final val isNullable = r1.isNullable
+    final override val isNullable = r1.isNullable
     def r = r1
   }
 }

@@ -22,8 +22,8 @@ import scala.io.Source
  *
  *  @author (c) David Pollak, 2007 WorldWide Conferencing, LLC.
  */
-class XhtmlParser(val input: Source) extends ConstructingHandler with MarkupParser with ExternalSources {
-  val preserveWS = true
+class XhtmlParser(override val input: Source) extends ConstructingHandler with MarkupParser with ExternalSources {
+  override val preserveWS = true
   ent ++= XhtmlEntities()
 }
 
