@@ -22,14 +22,14 @@ package parsing
 abstract class ConstructingHandler extends MarkupHandler {
   val preserveWS: Boolean
 
-  def elem(pos: Int, pre: String, label: String, attrs: MetaData,
+  override def elem(pos: Int, pre: String, label: String, attrs: MetaData,
            pscope: NamespaceBinding, empty: Boolean, nodes: NodeSeq): NodeSeq =
     Elem(pre, label, attrs, pscope, empty, nodes: _*)
 
-  def procInstr(pos: Int, target: String, txt: String) =
+  override def procInstr(pos: Int, target: String, txt: String) =
     ProcInstr(target, txt)
 
-  def comment(pos: Int, txt: String) = Comment(txt)
-  def entityRef(pos: Int, n: String) = EntityRef(n)
-  def text(pos: Int, txt: String) = Text(txt)
+  override def comment(pos: Int, txt: String) = Comment(txt)
+  override def entityRef(pos: Int, n: String) = EntityRef(n)
+  override def text(pos: Int, txt: String) = Text(txt)
 }

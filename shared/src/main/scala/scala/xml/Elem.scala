@@ -53,11 +53,11 @@ object Elem {
  */
 class Elem(
   override val prefix: String,
-  val label: String,
+  override val label: String,
   attributes1: MetaData,
   override val scope: NamespaceBinding,
   val minimizeEmpty: Boolean,
-  val child: Node*
+  override val child: Node*
 ) extends Node with Serializable {
 
   final override def doCollectNamespaces = true

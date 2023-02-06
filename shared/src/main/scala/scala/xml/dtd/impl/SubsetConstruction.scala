@@ -104,10 +104,10 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     finals foreach { case (k, v) => finalsR(indexMap(k)) = v }
 
     new DetWordAutom[T] {
-      val nstates = nstatesR
-      val delta = deltaR
-      val default = defaultR
-      val finals = finalsR
+      override val nstates = nstatesR
+      override val delta = deltaR
+      override val default = defaultR
+      override val finals = finalsR
     }
   }
 }

@@ -12,7 +12,7 @@ class ConstructingParserTest {
   def t9060 = {
     val a = """<a xmlns:b·="http://example.com"/>"""
     val source = new Source {
-      val iter = a.iterator
+      override val iter = a.iterator
       override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err) = {}
     }
     val doc = ConstructingParser.fromSource(source, false).content(TopScope)
@@ -42,7 +42,7 @@ class ConstructingParserTest {
 </book>
 
     val source = new Source {
-      val iter = xml.iterator
+      override val iter = xml.iterator
       override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err) = {}
     }
 
@@ -65,7 +65,7 @@ class ConstructingParserTest {
          |</book>""".stripMargin
 
     val source = new Source {
-      val iter = xml.iterator
+      override val iter = xml.iterator
       override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err) = {}
     }
 

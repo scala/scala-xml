@@ -41,7 +41,7 @@ final case class Group(nodes: Seq[Node]) extends Node {
    */
   private def fail(msg: String) = throw new UnsupportedOperationException("class Group does not support method '%s'" format msg)
 
-  def label = fail("label")
+  override def label = fail("label")
   override def attributes = fail("attributes")
   override def namespace = fail("namespace")
   override def child = fail("child")

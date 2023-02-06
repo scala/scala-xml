@@ -19,8 +19,8 @@ private[xml] object ScalaVersionSpecific {
   import NodeSeq.Coll
   type CBF[-From, -A, +C] = CanBuildFrom[From, A, C]
   object NodeSeqCBF extends CanBuildFrom[Coll, Node, NodeSeq] {
-    def apply(from: Coll) = NodeSeq.newBuilder
-    def apply() = NodeSeq.newBuilder
+    override def apply(from: Coll) = NodeSeq.newBuilder
+    override def apply() = NodeSeq.newBuilder
   }
 }
 

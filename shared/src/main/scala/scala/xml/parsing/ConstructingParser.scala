@@ -49,7 +49,7 @@ object ConstructingParser {
  * }
  * }}}
  */
-class ConstructingParser(val input: Source, val preserveWS: Boolean)
+class ConstructingParser(override val input: Source, override val preserveWS: Boolean)
   extends ConstructingHandler
   with ExternalSources
   with MarkupParser

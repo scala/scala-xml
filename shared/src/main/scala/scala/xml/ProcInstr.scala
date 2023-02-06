@@ -31,7 +31,7 @@ case class ProcInstr(target: String, proctext: String) extends SpecialNode {
   final override def doCollectNamespaces = false
   final override def doTransform = false
 
-  final def label = "#PI"
+  final override def label = "#PI"
   override def text = ""
 
   /**

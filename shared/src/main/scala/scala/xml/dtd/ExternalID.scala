@@ -48,8 +48,8 @@ sealed abstract class ExternalID extends parsing.TokenTests {
  *  @author Burak Emir
  *  @param  systemId the system identifier literal
  */
-case class SystemID(systemId: String) extends ExternalID {
-  val publicId = null
+case class SystemID(override val systemId: String) extends ExternalID {
+  override val publicId = null
 
   if (!checkSysID(systemId))
     throw new IllegalArgumentException("can't use both \" and ' in systemId")
@@ -62,7 +62,7 @@ case class SystemID(systemId: String) extends ExternalID {
  *  @param  publicId the public identifier literal
  *  @param  systemId (can be null for notation pubIDs) the system identifier literal
  */
-case class PublicID(publicId: String, systemId: String) extends ExternalID {
+case class PublicID(override val publicId: String, override val systemId: String) extends ExternalID {
   if (!checkPubID(publicId))
     throw new IllegalArgumentException("publicId must consist of PubidChars")
 
@@ -85,8 +85,8 @@ case class PublicID(publicId: String, systemId: String) extends ExternalID {
  *  @author Michael Bayne
  */
 object NoExternalID extends ExternalID {
-  val publicId = null
-  val systemId = null
+  override val publicId = null
+  override val systemId = null
 
   override def toString = ""
 }

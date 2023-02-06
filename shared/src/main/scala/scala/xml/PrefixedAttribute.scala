@@ -24,12 +24,12 @@ import scala.collection.Seq
  *  @param next1
  */
 class PrefixedAttribute(
-  val pre: String,
-  val key: String,
-  val value: Seq[Node],
+  override val pre: String,
+  override val key: String,
+  override val value: Seq[Node],
   val next1: MetaData)
   extends Attribute {
-  val next = if (value ne null) next1 else next1.remove(key)
+  override val next = if (value ne null) next1 else next1.remove(key)
 
   /** same as this(pre, key, Text(value), next), or no attribute if value is null */
   def this(pre: String, key: String, value: String, next: MetaData) =
@@ -43,19 +43,19 @@ class PrefixedAttribute(
    * Returns a copy of this unprefixed attribute with the given
    *  next field.
    */
-  def copy(next: MetaData) =
+  override def copy(next: MetaData) =
     new PrefixedAttribute(pre, key, value, next)
 
-  def getNamespace(owner: Node) =
+  override def getNamespace(owner: Node) =
     owner.getNamespace(pre)
 
   /** forwards the call to next (because caller looks for unprefixed attribute */
-  def apply(key: String): Seq[Node] = next(key)
+  override def apply(key: String): Seq[Node] = next(key)
 
   /**
    * gets attribute value of qualified (prefixed) attribute with given key
    */
-  def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] = {
+  override def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] = {
     if (key == this.key && scope.getURI(pre) == namespace)
       value
     else

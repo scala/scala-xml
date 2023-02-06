@@ -30,10 +30,10 @@ class XMLTestJVM {
   @UnitTest
   def equality = {
     val c = new Node {
-      def label = "hello"
+      override def label = "hello"
       override def hashCode() =
         Utility.hashCode(prefix, label, this.attributes.hashCode(), scope.hashCode(), child)
-      def child = Elem(null, "world", e, sc)
+      override def child = Elem(null, "world", e, sc)
       //def attributes = e
       override def text = ""
     }
@@ -792,7 +792,7 @@ class XMLTestJVM {
   }
 
   def toSource(s: String) = new scala.io.Source {
-    val iter = s.iterator
+    override val iter = s.iterator
     override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err): Unit = {}
   }
 

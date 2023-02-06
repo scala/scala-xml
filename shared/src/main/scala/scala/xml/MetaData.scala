@@ -150,7 +150,7 @@ abstract class MetaData
     case m: MetaData => this.asAttrMap == m.asAttrMap
     case _           => false
   }
-  protected def basisForHashCode: Seq[Any] = List(this.asAttrMap)
+  override protected def basisForHashCode: Seq[Any] = List(this.asAttrMap)
 
   /** filters this sequence of meta data */
   override def filter(f: MetaData => Boolean): MetaData =
