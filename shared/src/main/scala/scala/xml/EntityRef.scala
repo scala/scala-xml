@@ -20,11 +20,11 @@ package xml
  * @param   entityName the name of the entity reference, for example `amp`.
  */
 case class EntityRef(entityName: String) extends SpecialNode {
-  final override def doCollectNamespaces = false
-  final override def doTransform = false
-  override def label = "#ENTITY"
+  final override def doCollectNamespaces: Boolean = false
+  final override def doTransform: Boolean = false
+  override def label: String = "#ENTITY"
 
-  override def text = entityName match {
+  override def text: String = entityName match {
     case "lt"   => "<"
     case "gt"   => ">"
     case "amp"  => "&"
@@ -39,7 +39,6 @@ case class EntityRef(entityName: String) extends SpecialNode {
    *  @param  sb the string buffer.
    *  @return the modified string buffer `sb`.
    */
-  override def buildString(sb: StringBuilder) =
+  override def buildString(sb: StringBuilder): StringBuilder =
     sb.append("&").append(entityName).append(";")
-
 }

@@ -38,11 +38,11 @@ object ContentModel extends WordExp {
   }
 
   case class ElemName(name: String) extends Label {
-    override def toString = """ElemName("%s")""" format name
+    override def toString: String = """ElemName("%s")""" format name
   }
 
-  def isMixed(cm: ContentModel) = cond(cm) { case _: MIXED => true }
-  def containsText(cm: ContentModel) = (cm == PCDATA) || isMixed(cm)
+  def isMixed(cm: ContentModel): Boolean = cond(cm) { case _: MIXED => true }
+  def containsText(cm: ContentModel): Boolean = (cm == PCDATA) || isMixed(cm)
 
   def getLabels(r: RegExp): Set[String] = {
     def traverse(r: RegExp): Set[String] = r match { // !!! check for match translation problem
@@ -105,11 +105,11 @@ case object ANY extends ContentModel {
   override def buildString(sb: StringBuilder): StringBuilder = sb.append("ANY")
 }
 sealed abstract class DFAContentModel extends ContentModel {
-  import ContentModel.{ ElemName, Translator }
+  import ContentModel.{ElemName, Translator}
   def r: RegExp
 
   lazy val dfa: DetWordAutom[ElemName] = {
-    val nfa = Translator.automatonFrom(r, 1)
+    val nfa: NondetWordAutom[ElemName] = Translator.automatonFrom(r, 1)
     new SubsetConstruction(nfa).determinize
   }
 }
@@ -118,7 +118,7 @@ case class MIXED(override val r: RegExp) extends DFAContentModel {
   import ContentModel.Alt
 
   override def buildString(sb: StringBuilder): StringBuilder = {
-    val newAlt = r match { case Alt(rs@_*) => Alt(rs drop 1: _*) }
+    val newAlt: Alt = r match { case Alt(rs@_*) => Alt(rs drop 1: _*) }
 
     sb append "(#PCDATA|"
     ContentModel.buildString(newAlt: RegExp, sb)

@@ -7,7 +7,7 @@ import org.junit.Assert.assertEquals
 class DeclTest {
 
   @Test
-  def elemDeclToString: Unit = {
+  def elemDeclToString(): Unit = {
     assertEquals(
       "<!ELEMENT x (#PCDATA)>",
       ElemDecl("x", PCDATA).toString
@@ -15,14 +15,14 @@ class DeclTest {
   }
 
   @Test
-  def attListDeclToString: Unit = {
+  def attListDeclToString(): Unit = {
 
-    val expected =
+    val expected: String =
       """|<!ATTLIST x
          |  y CDATA #REQUIRED
          |  z CDATA #REQUIRED>""".stripMargin
 
-    val actual = AttListDecl("x",
+    val actual: String = AttListDecl("x",
       List(
         AttrDecl("y", "CDATA", REQUIRED),
         AttrDecl("z", "CDATA", REQUIRED)
@@ -33,7 +33,7 @@ class DeclTest {
   }
 
   @Test
-  def parsedEntityDeclToString: Unit = {
+  def parsedEntityDeclToString(): Unit = {
     assertEquals(
       """<!ENTITY foo SYSTEM "bar">""",
       ParsedEntityDecl("foo", ExtDef(SystemID("bar"))).toString

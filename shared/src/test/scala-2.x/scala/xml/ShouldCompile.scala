@@ -5,6 +5,6 @@ package scala.xml
 
 // t1626
 object o {
-  val n = <a xmlns=""/>
+  val n: Elem = <a xmlns=""/>
   n.namespace == null
 }

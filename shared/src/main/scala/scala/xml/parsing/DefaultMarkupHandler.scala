@@ -18,14 +18,13 @@ package parsing
 abstract class DefaultMarkupHandler extends MarkupHandler {
 
   override def elem(pos: Int, pre: String, label: String, attrs: MetaData,
-           scope: NamespaceBinding, empty: Boolean, args: NodeSeq) = NodeSeq.Empty
+           scope: NamespaceBinding, empty: Boolean, args: NodeSeq): NodeSeq = NodeSeq.Empty
 
-  override def procInstr(pos: Int, target: String, txt: String) = NodeSeq.Empty
+  override def procInstr(pos: Int, target: String, txt: String): NodeSeq = NodeSeq.Empty
 
   override def comment(pos: Int, comment: String): NodeSeq = NodeSeq.Empty
 
-  override def entityRef(pos: Int, n: String) = NodeSeq.Empty
+  override def entityRef(pos: Int, n: String): NodeSeq = NodeSeq.Empty
 
-  override def text(pos: Int, txt: String) = NodeSeq.Empty
-
+  override def text(pos: Int, txt: String): NodeSeq = NodeSeq.Empty
 }

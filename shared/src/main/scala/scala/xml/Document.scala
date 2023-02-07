@@ -92,13 +92,13 @@ class Document extends NodeSeq with Serializable {
    *  then certain properties (indicated in their descriptions below) may
    *  be unknown. If it is true, those properties are never unknown.
    */
-  var allDeclarationsProcessed = false
+  var allDeclarationsProcessed: Boolean = false
 
   // methods for NodeSeq
 
   override def theSeq: Seq[Node] = this.docElem
 
-  override def canEqual(other: Any) = other match {
+  override def canEqual(other: Any): Boolean = other match {
     case _: Document => true
     case _           => false
   }

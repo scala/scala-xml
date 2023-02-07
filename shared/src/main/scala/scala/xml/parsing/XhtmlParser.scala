@@ -23,7 +23,7 @@ import scala.io.Source
  *  @author (c) David Pollak, 2007 WorldWide Conferencing, LLC.
  */
 class XhtmlParser(override val input: Source) extends ConstructingHandler with MarkupParser with ExternalSources {
-  override val preserveWS = true
+  override val preserveWS: Boolean = true
   ent ++= XhtmlEntities()
 }
 

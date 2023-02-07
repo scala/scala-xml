@@ -13,7 +13,7 @@
 package scala
 package xml.dtd.impl
 
-import scala.collection.{ immutable, mutable }
+import scala.collection.{immutable, mutable}
 import scala.collection.Seq
 
 /**
@@ -98,7 +98,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
   }
 
   protected def makeTransition(src: Int, dest: Int, label: _labelT): Unit = {
-    val q = deltaq(src)
+    val q: mutable.Map[lang._labelT, List[Int]] = deltaq(src)
     q.update(label, dest :: q.getOrElse(label, Nil))
   }
 
@@ -148,22 +148,22 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
         if (x.isNullable) // initial state is final
           finals = finals.updated(0, finalTag)
 
-        val delta1 = deltaq.zipWithIndex.map(_.swap).toMap
-        val finalsArr = (0 until pos map (k => finals.getOrElse(k, 0))).toArray // 0 == not final
+        val delta1: immutable.Map[Int, mutable.HashMap[lang._labelT, List[Int]]] = deltaq.zipWithIndex.map(_.swap).toMap
+        val finalsArr: Array[Int] = (0 until pos map (k => finals.getOrElse(k, 0))).toArray // 0 == not final
 
         val deltaArr: Array[mutable.Map[_labelT, immutable.BitSet]] =
           (0 until pos map { x =>
             mutable.HashMap(delta1(x).toSeq map { case (k, v) => k -> immutable.BitSet(v: _*) }: _*)
           }).toArray
 
-        val defaultArr = (0 until pos map (k => immutable.BitSet(defaultq(k): _*))).toArray
+        val defaultArr: Array[immutable.BitSet] = (0 until pos map (k => immutable.BitSet(defaultq(k): _*))).toArray
 
         new NondetWordAutom[_labelT] {
-          override val nstates = pos
-          override val labels = WordBerrySethi.this.labels.toList
-          override val finals = finalsArr
-          override val delta = deltaArr
-          override val default = defaultArr
+          override val nstates: Int = pos
+          override val labels: Seq[lang._labelT] = WordBerrySethi.this.labels.toList
+          override val finals: Array[Int] = finalsArr
+          override val delta: Array[mutable.Map[lang._labelT, immutable.BitSet]] = deltaArr
+          override val default: Array[immutable.BitSet] = defaultArr
         }
       case z =>
         automatonFrom(Sequ(z.asInstanceOf[this.lang._regexpT]), finalTag)

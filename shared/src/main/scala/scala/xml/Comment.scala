@@ -23,10 +23,10 @@ package xml
  */
 case class Comment(commentText: String) extends SpecialNode {
 
-  override def label = "#REM"
-  override def text = ""
-  final override def doCollectNamespaces = false
-  final override def doTransform = false
+  override def label: String = "#REM"
+  override def text: String = ""
+  final override def doCollectNamespaces: Boolean = false
+  final override def doTransform: Boolean = false
 
   if (commentText.contains("--")) {
     throw new IllegalArgumentException("text contains \"--\"")
@@ -38,6 +38,6 @@ case class Comment(commentText: String) extends SpecialNode {
   /**
    * Appends &quot;<!-- text -->&quot; to this string buffer.
    */
-  override def buildString(sb: StringBuilder) =
+  override def buildString(sb: StringBuilder): StringBuilder =
     sb append "<!--" append commentText append "-->"
 }

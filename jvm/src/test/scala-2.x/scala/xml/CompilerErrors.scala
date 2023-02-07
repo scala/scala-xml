@@ -4,10 +4,10 @@ import org.junit.Test
 
 class CompilerErrors extends CompilerTesting {
   @Test
-  def t7185() = {
+  def t7185(): Unit = {
     // the error message here differs a bit by Scala version
     import util.Properties.versionNumberString
-    val thing =
+    val thing: String =
       if (versionNumberString.startsWith("2.12")) "method value"
       else "method"
     expectXmlError(s"""|overloaded $thing apply with alternatives:
@@ -20,7 +20,7 @@ class CompilerErrors extends CompilerTesting {
   }
 
   @Test
-  def t1878_typer() =
+  def t1878_typer(): Unit =
     expectXmlError("_* may only come last",
      """|object Test extends App {
         |  // illegal - bug #1764
@@ -31,14 +31,14 @@ class CompilerErrors extends CompilerTesting {
 
 
   @Test
-  def t1017() =
+  def t1017(): Unit =
     expectXmlErrors(1, "not found: value foo",
      """|object Test {
         |  <x><x><x><x><x><x><x><x><x><x><x><x><x><x><x><x><x><x>{ foo }</x></x></x></x></x></x></x></x></x></x></x></x></x></x></x></x></x></x>
         |}""")
 
   @Test
-  def t1011() =
+  def t1011(): Unit =
     expectXmlErrors(69, "not found: value entity",
      """|import scala.xml._;
         |
@@ -177,9 +177,9 @@ class CompilerTesting {
 
   def errorMessages(errorSnippet: String, compileOptions: String = "")(code: String): List[String] = {
     import scala.tools.reflect._
-    val m  = scala.reflect.runtime.currentMirror
-    val tb = m.mkToolBox(options = compileOptions) //: ToolBox[m.universe.type]
-    val fe = tb.frontEnd
+    val m: scala.reflect.runtime.universe.Mirror  = scala.reflect.runtime.currentMirror
+    val tb: ToolBox[scala.reflect.runtime.universe.type] = m.mkToolBox(options = compileOptions) //: ToolBox[m.universe.type]
+    val fe: FrontEnd = tb.frontEnd
 
     try {
       tb.eval(tb.parse(code))
@@ -192,17 +192,17 @@ class CompilerTesting {
 
   // note: `code` should have a | margin
   // the import's needed because toolbox compiler does not accumulate imports like the real one (TODO: verify hypothesis)
-  def xmlErrorMessages(msg: String, code: String) =
+  def xmlErrorMessages(msg: String, code: String): List[String] =
     errorMessages(msg)("import scala.xml.{TopScope => $scope}\n"+ code.stripMargin)
 
-  def expectXmlError(msg: String, code: String) = {
-    val errors = xmlErrorMessages(msg, code)
+  def expectXmlError(msg: String, code: String): Unit = {
+    val errors: List[String] = xmlErrorMessages(msg, code)
     assert(errors exists (_ contains msg), errors mkString "\n")
   }
 
-  def expectXmlErrors(msgCount: Int, msg: String, code: String) = {
-    val errors = xmlErrorMessages(msg, code)
-    val errorCount = errors.count(_ contains msg)
+  def expectXmlErrors(msgCount: Int, msg: String, code: String): Unit = {
+    val errors: List[String] = xmlErrorMessages(msg, code)
+    val errorCount: Int = errors.count(_ contains msg)
     assert(errorCount == msgCount, s"$errorCount occurrences of \'$msg\' found -- expected $msgCount in:\n${errors mkString "\n"}")
   }
 }

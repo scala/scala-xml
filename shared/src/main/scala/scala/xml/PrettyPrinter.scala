@@ -33,21 +33,21 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
   def this(width: Int, step: Int) = this(width, step, minimizeEmpty = false)
 
-  val minimizeMode = if (minimizeEmpty) MinimizeMode.Always else MinimizeMode.Default
+  val minimizeMode: MinimizeMode.Value = if (minimizeEmpty) MinimizeMode.Always else MinimizeMode.Default
   class BrokenException() extends java.lang.Exception
 
   class Item
   case object Break extends Item {
-    override def toString = "\\"
+    override def toString: String = "\\"
   }
   case class Box(col: Int, s: String) extends Item
   case class Para(s: String) extends Item
 
   protected var items: List[Item] = Nil
 
-  protected var cur = 0
+  protected var cur: Int = 0
 
-  protected def reset() = {
+  protected def reset(): Unit = {
     cur = 0
     items = Nil
   }
@@ -56,10 +56,10 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
    * Try to cut at whitespace.
    */
   protected def cut(s: String, ind: Int): List[Item] = {
-    val tmp = width - cur
+    val tmp: Int = width - cur
     if (s.length <= tmp)
       return List(Box(ind, s))
-    var i = s indexOf ' '
+    var i: Int = s indexOf ' '
     if (i > tmp || i == -1) throw new BrokenException() // cannot break
 
     var last: List[Int] = Nil
@@ -69,7 +69,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
     }
     var res: List[Item] = Nil
     while (Nil != last) try {
-      val b = Box(ind, s.substring(0, last.head))
+      val b: Box = Box(ind, s.substring(0, last.head))
       cur = ind
       res = b :: Break :: cut(s.substring(last.head, s.length), ind)
       // backtrack
@@ -83,7 +83,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
   /**
    * Try to make indented box, if possible, else para.
    */
-  protected def makeBox(ind: Int, s: String) =
+  protected def makeBox(ind: Int, s: String): Unit =
     if (cur + s.length > width) { // fits in this line
       items ::= Box(ind, s)
       cur += s.length
@@ -91,18 +91,18 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
     catch { case _: BrokenException => makePara(ind, s) } // give up, para
 
   // dont respect indent in para, but afterwards
-  protected def makePara(ind: Int, s: String) = {
+  protected def makePara(ind: Int, s: String): Unit = {
     items = Break :: Para(s) :: Break :: items
     cur = ind
   }
 
   // respect indent
-  protected def makeBreak() = { // using wrapping here...
+  protected def makeBreak(): Unit = { // using wrapping here...
     items = Break :: items
     cur = 0
   }
 
-  protected def leafTag(n: Node) = {
+  protected def leafTag(n: Node): String = {
     def mkLeaf(sb: StringBuilder): Unit = {
       sb append '<'
       n nameToString sb
@@ -113,7 +113,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
   }
 
   protected def startTag(n: Node, pscope: NamespaceBinding): (String, Int) = {
-    var i = 0
+    var i: Int = 0
     def mkStart(sb: StringBuilder): Unit = {
       sb append '<'
       n nameToString sb
@@ -125,7 +125,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
     (sbToString(mkStart), i)
   }
 
-  protected def endTag(n: Node) = {
+  protected def endTag(n: Node): String = {
     def mkEnd(sb: StringBuilder): Unit = {
       sb append "</"
       n nameToString sb
@@ -135,17 +135,17 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
   }
 
   protected def childrenAreLeaves(n: Node): Boolean = {
-    def isLeaf(l: Node) = l match {
+    def isLeaf(l: Node): Boolean = l match {
       case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr => true
       case _ => false
     }
     n.child forall isLeaf
   }
 
-  protected def fits(test: String) =
+  protected def fits(test: String): Boolean =
     test.length < width - cur
 
-  private def doPreserve(node: Node) =
+  private def doPreserve(node: Node): Boolean =
     node.attribute(XML.namespace, XML.space).exists(_.toString == XML.preserve)
 
   protected def traverse(node: Node, pscope: NamespaceBinding, ind: Int): Unit = node match {
@@ -157,8 +157,8 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
     case g@Group(xs) =>
       traverse(xs.iterator, pscope, ind)
     case _ =>
-      val test = {
-        val sb = new StringBuilder()
+      val test: String = {
+        val sb: StringBuilder = new StringBuilder()
         Utility.serialize(node, pscope, sb, stripComments = false, minimizeTags = minimizeMode)
         if (doPreserve(node)) sb.toString
         else TextBuffer.fromString(sb.toString).toText(0).data
@@ -166,11 +166,11 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
       if (childrenAreLeaves(node) && fits(test)) {
         makeBox(ind, test)
       } else {
-        val ((stg, len2), etg) =
+        val ((stg: String, len2: Int), etg: String) =
           if (node.child.isEmpty && minimizeEmpty) {
             // force the tag to be self-closing
-            val firstAttribute = test.indexOf(' ')
-            val firstBreak = if (firstAttribute != -1) firstAttribute else test.lastIndexOf('/')
+            val firstAttribute: Int = test.indexOf(' ')
+            val firstBreak: Int = if (firstAttribute != -1) firstAttribute else test.lastIndexOf('/')
             ((test, firstBreak), "")
           } else {
             (startTag(node, pscope), endTag(node))
@@ -226,10 +226,10 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
   }
 
   def format(n: Node, pscope: NamespaceBinding, sb: StringBuilder): Unit = { // entry point
-    var lastwasbreak = false
+    var lastwasbreak: Boolean = false
     reset()
     traverse(n, pscope, 0)
-    var cur = 0
+    var cur: Int = 0
     for (b <- items.reverse) b match {
       case Break =>
         if (!lastwasbreak) sb.append('\n') // on windows: \r\n ?

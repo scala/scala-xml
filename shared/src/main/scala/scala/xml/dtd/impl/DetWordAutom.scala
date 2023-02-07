@@ -30,15 +30,15 @@ private[dtd] abstract class DetWordAutom[T <: AnyRef] {
   val delta: Array[scala.collection.mutable.Map[T, Int]]
   val default: Array[Int]
 
-  def isFinal(q: Int) = finals(q) != 0
-  def isSink(q: Int) = delta(q).isEmpty && default(q) == q
-  def next(q: Int, label: T) = delta(q).getOrElse(label, default(q))
+  def isFinal(q: Int): Boolean = finals(q) != 0
+  def isSink(q: Int): Boolean = delta(q).isEmpty && default(q) == q
+  def next(q: Int, label: T): Int = delta(q).getOrElse(label, default(q))
 
-  override def toString = {
-    val sb = new StringBuilder("[DetWordAutom  nstates=")
+  override def toString: String = {
+    val sb: StringBuilder = new StringBuilder("[DetWordAutom  nstates=")
     sb.append(nstates)
     sb.append(" finals=")
-    val map = finals.zipWithIndex.map(_.swap).toMap
+    val map: Map[Int, Int] = finals.zipWithIndex.map(_.swap).toMap
     sb.append(map.toString())
     sb.append(" delta=\n")
 

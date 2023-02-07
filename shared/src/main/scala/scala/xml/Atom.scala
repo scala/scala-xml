@@ -28,20 +28,20 @@ class Atom[+A](val data: A) extends SpecialNode with Serializable {
 
   override protected def basisForHashCode: Seq[Any] = Seq(data)
 
-  override def strict_==(other: Equality) = other match {
+  override def strict_==(other: Equality): Boolean = other match {
     case x: Atom[_] => data == x.data
     case _          => false
   }
 
-  override def canEqual(other: Any) = other match {
+  override def canEqual(other: Any): Boolean = other match {
     case _: Atom[_] => true
     case _          => false
   }
 
-  final override def doCollectNamespaces = false
-  final override def doTransform = false
+  final override def doCollectNamespaces: Boolean = false
+  final override def doTransform: Boolean = false
 
-  override def label = "#PCDATA"
+  override def label: String = "#PCDATA"
 
   /**
    * Returns text, with some characters escaped according to the XML
@@ -51,5 +51,4 @@ class Atom[+A](val data: A) extends SpecialNode with Serializable {
     Utility.escape(data.toString, sb)
 
   override def text: String = data.toString
-
 }

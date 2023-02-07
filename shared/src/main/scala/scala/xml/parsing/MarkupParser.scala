@@ -40,9 +40,9 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   override type NamespaceType = NamespaceBinding
 
   override def truncatedError(msg: String): Nothing = throw FatalError(msg)
-  override def errorNoEnd(tag: String) = throw FatalError("expected closing tag of " + tag)
+  override def errorNoEnd(tag: String): Nothing = throw FatalError("expected closing tag of " + tag)
 
-  override def xHandleError(that: Char, msg: String) = reportSyntaxError(msg)
+  override def xHandleError(that: Char, msg: String): Unit = reportSyntaxError(msg)
 
   val input: Source
 
@@ -62,17 +62,17 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   // https://github.com/scala/scala-xml/issues/541 ; the broader access is necessary,
   // for now anyway, to work around https://github.com/lampepfl/dotty/issues/13096
   private[parsing] class WithLookAhead(underlying: Source) extends Source {
-    private val queue = scala.collection.mutable.Queue[Char]()
+    private val queue: scala.collection.mutable.Queue[Char] = scala.collection.mutable.Queue[Char]()
     def lookahead(): BufferedIterator[Char] = {
-      val iter = queue.iterator ++ new Iterator[Char] {
-        override def hasNext = underlying.hasNext
-        override def next() = { val x = underlying.next(); queue += x; x }
+      val iter: Iterator[Char] = queue.iterator ++ new Iterator[Char] {
+        override def hasNext: Boolean = underlying.hasNext
+        override def next(): Char = { val x: Char = underlying.next(); queue += x; x }
       }
       iter.buffered
     }
-    override val iter = new Iterator[Char] {
-      override def hasNext = underlying.hasNext || queue.nonEmpty
-      override def next() = if (queue.nonEmpty) queue.dequeue() else underlying.next()
+    override val iter: Iterator[Char] = new Iterator[Char] {
+      override def hasNext: Boolean = underlying.hasNext || queue.nonEmpty
+      override def next(): Char = if (queue.nonEmpty) queue.dequeue() else underlying.next()
     }
   }
 
@@ -80,7 +80,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     case curInputWLA: WithLookAhead =>
       curInputWLA.lookahead()
     case _ =>
-      val newInput = new WithLookAhead(curInput)
+      val newInput: WithLookAhead = new WithLookAhead(curInput)
       curInput = newInput
       newInput.lookahead()
   }
@@ -95,7 +95,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   var pos: Int = _
 
   /* used when reading external subset */
-  var extIndex = -1
+  var extIndex: Int = -1
 
   /** holds temporary values of pos */
   // Note: if marked as an override, this causes a "...cannot override a mutable variable" error with Scala 3;
@@ -113,7 +113,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
         lastChRead = curInput.next()
         pos = curInput.pos
       } else {
-        val ilen = inpStack.length
+        val ilen: Int = inpStack.length
         //Console.println("  ilen = "+ilen+ " extIndex = "+extIndex);
         if ((ilen != extIndex) && (ilen > 0)) {
           /* for external source, inpStack == Nil ! need notify of eof! */
@@ -129,11 +129,11 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   }
 
   /** character buffer, for names */
-  protected val cbuf = new StringBuilder()
+  protected val cbuf: StringBuilder = new StringBuilder()
 
-  var dtd: DTD = null
+  var dtd: DTD = _
 
-  protected var doc: Document = null
+  protected var doc: Document = _
 
   override def eof: Boolean = { ch; reachedEof }
 
@@ -149,7 +149,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def xmlProcInstr(): MetaData = {
     xToken("xml")
     xSpace()
-    val (md, scp) = xAttributes(TopScope)
+    val (md: MetaData, scp: NamespaceBinding) = xAttributes(TopScope)
     if (scp != TopScope)
       reportSyntaxError("no xmlns definitions here, please.")
     xToken('?')
@@ -165,8 +165,8 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     var info_enc: Option[String] = None
     var info_stdl: Option[Boolean] = None
 
-    val m = xmlProcInstr()
-    var n = 0
+    val m: MetaData = xmlProcInstr()
+    var n: Int = 0
 
     if (isProlog)
       xSpaceOpt()
@@ -201,7 +201,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
 
     if (m.length - n != 0) {
-      val s = if (isProlog) "SDDecl? " else ""
+      val s: String = if (isProlog) "SDDecl? " else ""
       reportSyntaxError("VersionInfo EncodingDecl? %sor '?>' expected!" format s)
     }
 
@@ -252,13 +252,13 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
       children = content(TopScope) // DTD handled as side effect
     } else {
-      val ts = new NodeBuffer()
+      val ts: NodeBuffer = new NodeBuffer()
       content1(TopScope, ts) // DTD handled as side effect
       ts &+ content(TopScope)
       children = NodeSeq.fromSeq(ts)
     }
     //println("[MarkupParser::document] children now: "+children.toList)
-    var elemCount = 0
+    var elemCount: Int = 0
     var theNode: Node = null
     for (c <- children) c match {
       case _: ProcInstr =>
@@ -283,7 +283,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   }
 
   /** append Unicode character to name buffer*/
-  protected def putChar(c: Char) = cbuf append c
+  protected def putChar(c: Char): StringBuilder = cbuf append c
 
   /**
    * As the current code requires you to call nextch once manually
@@ -294,7 +294,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     this
   }
 
-  override protected def ch_returning_nextch: Char = { val res = ch; nextch(); res }
+  override protected def ch_returning_nextch: Char = { val res: Char = ch; nextch(); res }
 
   override def mkAttributes(name: String, pscope: NamespaceBinding): AttributesType =
     if (isNameStart (ch)) xAttributes(pscope)
@@ -322,17 +322,17 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     var scope: NamespaceBinding = pscope
     var aMap: MetaData = Null
     while (isNameStart(ch)) {
-      val qname = xName
+      val qname: String = xName
       xEQ() // side effect
-      val value = xAttributeValue()
+      val value: String = xAttributeValue()
 
       Utility.prefix(qname) match {
         case Some("xmlns") =>
-          val prefix = qname.substring(6 /*xmlns:*/ , qname.length)
+          val prefix: String = qname.substring(6 /*xmlns:*/ , qname.length)
           scope = NamespaceBinding(prefix, value, scope)
 
         case Some(prefix) =>
-          val key = qname.substring(prefix.length + 1, qname.length)
+          val key: String = qname.substring(prefix.length + 1, qname.length)
           aMap = new PrefixedAttribute(prefix, key, Text(value), aMap)
 
         case _ =>
@@ -360,14 +360,14 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  }}}
    */
   def xEntityValue(): String = {
-    val endch = ch
+    val endch: Char = ch
     nextch()
     while (ch != endch && !eof) {
       putChar(ch)
       nextch()
     }
     nextch()
-    val str = cbuf.toString()
+    val str: String = cbuf.toString()
     cbuf.setLength(0)
     str
   }
@@ -449,10 +449,10 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  }}}
    */
   def content(pscope: NamespaceBinding): NodeSeq = {
-    val ts = new NodeBuffer
-    var exit = eof
+    val ts: NodeBuffer = new NodeBuffer
+    var exit: Boolean = eof
     // todo: optimize seq repr.
-    def done = NodeSeq.fromSeq(ts.toList)
+    def done: NodeSeq = NodeSeq.fromSeq(ts.toList)
 
     while (!exit) {
       tmppos = pos
@@ -473,11 +473,11 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
           nextch(); ch match {
             case '#' => // CharacterRef
               nextch()
-              val theChar = handle.text(tmppos, xCharRef(() => ch, () => nextch()))
+              val theChar: NodeSeq = handle.text(tmppos, xCharRef(() => ch, () => nextch()))
               xToken(';')
               ts &+ theChar
             case _ => // EntityRef
-              val n = xName
+              val n: String = xName
               xToken(';')
 
               if (unescape contains n) {
@@ -503,14 +503,14 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       nextch()
       xToken("YSTEM")
       xSpace()
-      val sysID = systemLiteral()
+      val sysID: String = systemLiteral()
       SystemID(sysID)
     case 'P' =>
       nextch(); xToken("UBLIC")
       xSpace()
-      val pubID = pubidLiteral()
+      val pubID: String = pubidLiteral()
       xSpace()
-      val sysID = systemLiteral()
+      val sysID: String = systemLiteral()
       PublicID(pubID, sysID)
   }
 
@@ -527,7 +527,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       reportSyntaxError("unexpected character (DOCTYPE already defined")
     xToken("DOCTYPE")
     xSpace()
-    val n = xName
+    val n: String = xName
     xSpaceOpt()
     //external ID
     if ('S' == ch || 'P' == ch) {
@@ -580,27 +580,28 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  }}}
    */
   def element1(pscope: NamespaceBinding): NodeSeq = {
-    val pos = this.pos
-    val (qname, (aMap, scope)) = xTag(pscope)
-    val (pre, local) = Utility.prefix(qname) match {
-      case Some(p) => (p, qname drop p.length + 1)
-      case _       => (null, qname)
+    val pos: Int = this.pos
+    val (qname: String, (aMap: MetaData, scope: NamespaceBinding)) = xTag(pscope)
+    // TODO move into Utility
+    val (pre: Option[String], local: String) = Utility.prefix(qname) match {
+      case Some(p) => (Some(p), qname drop p.length + 1)
+      case _       => (None, qname)
     }
-    val ts = {
+    val ts: NodeSeq = {
       if (ch == '/') { // empty element
         xToken("/>")
-        handle.elemStart(pos, pre, local, aMap, scope)
+        handle.elemStart(pos, pre.orNull, local, aMap, scope)
         NodeSeq.Empty
       } else { // element with content
         xToken('>')
-        handle.elemStart(pos, pre, local, aMap, scope)
-        val tmp = content(scope)
+        handle.elemStart(pos, pre.orNull, local, aMap, scope)
+        val tmp: NodeSeq = content(scope)
         xEndTag(qname)
         tmp
       }
     }
-    val res = handle.elem(pos, pre, local, aMap, scope, ts == NodeSeq.Empty, ts)
-    handle.elemEnd(pos, pre, local)
+    val res: NodeSeq = handle.elem(pos, pre.orNull, local, aMap, scope, ts == NodeSeq.Empty, ts)
+    handle.elemEnd(pos, pre.orNull, local)
     res
   }
 
@@ -610,14 +611,14 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  precondition: `xEmbeddedBlock == false` (we are not in a scala block)
    */
   private def xText: String = {
-    var exit = false
+    var exit: Boolean = false
     while (!exit) {
       putChar(ch)
       nextch()
 
       exit = eof || (ch == '<') || (ch == '&')
     }
-    val str = cbuf.toString
+    val str: String = cbuf.toString
     cbuf.setLength(0)
     str
   }
@@ -630,7 +631,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  }}}
    */
   def systemLiteral(): String = {
-    val endch = ch
+    val endch: Char = ch
     if (ch != '\'' && ch != '"')
       reportSyntaxError("quote ' or \" expected")
     nextch()
@@ -639,7 +640,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       nextch()
     }
     nextch()
-    val str = cbuf.toString()
+    val str: String = cbuf.toString()
     cbuf.setLength(0)
     str
   }
@@ -650,7 +651,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  }}}
    */
   def pubidLiteral(): String = {
-    val endch = ch
+    val endch: Char = ch
     if (ch != '\'' && ch != '"')
       reportSyntaxError("quote ' or \" expected")
     nextch()
@@ -662,7 +663,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       nextch()
     }
     nextch()
-    val str = cbuf.toString
+    val str: String = cbuf.toString
     cbuf.setLength(0)
     str
   }
@@ -685,11 +686,11 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       markupDecl()
   }
 
-  def markupDecl1() = {
-    def doInclude() = {
+  def markupDecl1(): Any = {
+    def doInclude(): Unit = {
       xToken('['); while (']' != ch && !eof) markupDecl(); nextch() // ']'
     }
-    def doIgnore() = {
+    def doIgnore(): Unit = {
       xToken('['); while (']' != ch && !eof) nextch(); nextch() // ']'
     }
     if ('?' == ch) {
@@ -723,13 +724,13 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
           ch match {
             case '%' =>
               nextch()
-              val ent = xName
+              val ent: String = xName
               xToken(';')
               xSpaceOpt()
 
               push(ent)
               xSpaceOpt()
-              val stmt = xName
+              val stmt: String = xName
               xSpaceOpt()
 
               stmt match {
@@ -765,7 +766,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def markupDecl(): Unit = ch match {
     case '%' => // parameter entity reference
       nextch()
-      val ent = xName
+      val ent: String = xName
       xToken(';')
       if (!isValidating)
         handle.peReference(ent) //  n-v: just create PE-reference
@@ -799,7 +800,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def elementDecl(): Unit = {
     xToken("EMENT")
     xSpace()
-    val n = xName
+    val n: String = xName
     xSpace()
     while ('>' != ch && !eof) {
       //Console.println("["+ch+"]")
@@ -808,7 +809,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     //Console.println("END["+ch+"]")
     nextch()
-    val cmstr = cbuf.toString()
+    val cmstr: String = cbuf.toString()
     cbuf.setLength(0)
     handle.elemDecl(n, cmstr)
   }
@@ -818,16 +819,16 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  <! attlist := ATTLIST
    *  }}}
    */
-  def attrDecl() = {
+  def attrDecl(): Unit = {
     xToken("TTLIST")
     xSpace()
-    val n = xName
+    val n: String = xName
     xSpace()
     var attList: List[AttrDecl] = Nil
 
     // later: find the elemDecl for n
     while ('>' != ch && !eof) {
-      val aname = xName
+      val aname: String = xName
       xSpace()
       // could be enumeration (foo,bar) parse this later :-/
       while ('"' != ch && '\'' != ch && '#' != ch && '<' != ch) {
@@ -835,7 +836,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
           cbuf.append(ch)
         nextch()
       }
-      val atpe = cbuf.toString
+      val atpe: String = cbuf.toString
       cbuf.setLength(0)
 
       val defdecl: DefaultDecl = ch match {
@@ -867,8 +868,8 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  <! element := ELEMENT
    *  }}}
    */
-  def entityDecl() = {
-    var isParameterEntity = false
+  def entityDecl(): Unit = {
+    var isParameterEntity: Boolean = false
     xToken("NTITY")
     xSpace()
     if ('%' == ch) {
@@ -876,11 +877,11 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       isParameterEntity = true
       xSpace()
     }
-    val n = xName
+    val n: String = xName
     xSpace()
     ch match {
       case 'S' | 'P' => //sy
-        val extID = externalID()
+        val extID: ExternalID = externalID()
         if (isParameterEntity) {
           xSpaceOpt()
           xToken('>')
@@ -890,7 +891,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
           if ('>' != ch) {
             xToken("NDATA")
             xSpace()
-            val notat = xName
+            val notat: String = xName
             xSpaceOpt()
             xToken('>')
             handle.unparsedEntityDecl(n, extID, notat)
@@ -901,7 +902,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
         }
 
       case '"' | '\'' =>
-        val av = xEntityValue()
+        val av: String = xEntityValue()
         xSpaceOpt()
         xToken('>')
         if (isParameterEntity)
@@ -920,18 +921,18 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def notationDecl(): Unit = {
     xToken("OTATION")
     xSpace()
-    val notat = xName
+    val notat: String = xName
     xSpace()
-    val extID = if (ch == 'S') {
+    val extID: ExternalID = if (ch == 'S') {
       externalID()
     } else if (ch == 'P') {
       /* PublicID (without system, only used in NOTATION) */
       nextch()
       xToken("UBLIC")
       xSpace()
-      val pubID = pubidLiteral()
+      val pubID: String = pubidLiteral()
       xSpaceOpt()
-      val sysID = if (ch != '>')
+      val sysID: String = if (ch != '>')
         systemLiteral()
       else
         null

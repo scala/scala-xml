@@ -37,7 +37,7 @@ class Text(data: String) extends Atom[String](data) {
  *  @author  Burak Emir
  */
 object Text {
-  def apply(data: String) = new Text(data)
+  def apply(data: String): Text = new Text(data)
   def unapply(other: Any): Option[String] = other match {
     case x: Text => Some(x.data)
     case _       => None

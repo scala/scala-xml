@@ -52,18 +52,18 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
       case Nil     => stop
       case x :: xs => NamespaceBinding(x, this.getURI(x), fromPrefixList(xs))
     }
-    val ps0 = prefixList(this).reverse
-    val ps = ps0.distinct
+    val ps0: List[String] = prefixList(this).reverse
+    val ps: List[String] = ps0.distinct
     if (ps.size == ps0.size) this
     else fromPrefixList(ps)
   }
 
-  override def canEqual(other: Any) = other match {
+  override def canEqual(other: Any): Boolean = other match {
     case _: NamespaceBinding => true
     case _                   => false
   }
 
-  override def strict_==(other: Equality) = other match {
+  override def strict_==(other: Equality): Boolean = other match {
     case x: NamespaceBinding => (prefix == x.prefix) && (uri == x.uri) && (parent == x.parent)
     case _                   => false
   }
@@ -79,7 +79,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
   private def doBuildString(sb: StringBuilder, stop: NamespaceBinding): Unit = {
     if (List(null, stop, TopScope).contains(this)) return
 
-    val s = " xmlns%s=\"%s\"".format(
+    val s: String = " xmlns%s=\"%s\"".format(
       if (prefix != null) ":" + prefix else "",
       if (uri != null) uri else ""
     )

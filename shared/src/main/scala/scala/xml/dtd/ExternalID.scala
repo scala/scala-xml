@@ -20,16 +20,16 @@ package dtd
  *  @author Burak Emir
  */
 sealed abstract class ExternalID extends parsing.TokenTests {
-  def quoted(s: String) = {
-    val c = if (s contains '"') '\'' else '"'
+  def quoted(s: String): String = {
+    val c: Char = if (s contains '"') '\'' else '"'
     c.toString + s + c
   }
 
   // public != null: PUBLIC " " publicLiteral " " [systemLiteral]
   // public == null: SYSTEM " " systemLiteral
   override def toString: String = {
-    lazy val quotedSystemLiteral = quoted(systemId)
-    lazy val quotedPublicLiteral = quoted(publicId)
+    lazy val quotedSystemLiteral: String = quoted(systemId)
+    lazy val quotedPublicLiteral: String = quoted(publicId)
 
     if (publicId == null) "SYSTEM " + quotedSystemLiteral
     else "PUBLIC " + quotedPublicLiteral +
@@ -49,7 +49,7 @@ sealed abstract class ExternalID extends parsing.TokenTests {
  *  @param  systemId the system identifier literal
  */
 case class SystemID(override val systemId: String) extends ExternalID {
-  override val publicId = null
+  override val publicId: scala.Null = null
 
   if (!checkSysID(systemId))
     throw new IllegalArgumentException("can't use both \" and ' in systemId")
@@ -70,13 +70,13 @@ case class PublicID(override val publicId: String, override val systemId: String
     throw new IllegalArgumentException("can't use both \" and ' in systemId")
 
   /** the constant "#PI" */
-  def label = "#PI"
+  def label: String = "#PI"
 
   /** always empty */
-  def attribute = Node.NoAttributes
+  def attribute: MetaData = Node.NoAttributes
 
   /** always empty */
-  def child = Nil
+  def child: Nil.type = Nil
 }
 
 /**
@@ -85,8 +85,8 @@ case class PublicID(override val publicId: String, override val systemId: String
  *  @author Michael Bayne
  */
 object NoExternalID extends ExternalID {
-  override val publicId = null
-  override val systemId = null
+  override val publicId /* TODO type annotation */ = null
+  override val systemId /* TODO type annotation */ = null
 
-  override def toString = ""
+  override def toString: String = ""
 }

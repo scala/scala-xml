@@ -6,8 +6,8 @@ import org.junit.Assert.assertEquals
 class NodeBufferTest {
 
   @Test
-  def testToString: Unit = {
-    val nodeBuffer = new NodeBuffer
+  def testToString(): Unit = {
+    val nodeBuffer: NodeBuffer = new NodeBuffer
     assertEquals("NodeBuffer()", nodeBuffer.toString)
   }
 }

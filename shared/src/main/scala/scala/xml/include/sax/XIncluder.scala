@@ -26,9 +26,9 @@ import java.io.{ OutputStream, OutputStreamWriter, IOException }
  */
 class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler with LexicalHandler {
 
-  var out = new OutputStreamWriter(outs, encoding)
+  var out: OutputStreamWriter = new OutputStreamWriter(outs, encoding)
 
-  override def setDocumentLocator(locator: Locator): Unit = {}
+  override def setDocumentLocator(locator: Locator): Unit = ()
 
   override def startDocument(): Unit = {
     try {
@@ -49,18 +49,19 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     }
   }
 
-  override def startPrefixMapping(prefix: String, uri: String): Unit = {}
+  override def startPrefixMapping(prefix: String, uri: String): Unit = ()
 
-  override def endPrefixMapping(prefix: String): Unit = {}
+  override def endPrefixMapping(prefix: String): Unit = ()
 
-  override def startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes) = {
+  override def startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes): Unit = {
     try {
       out.write("<" + qualifiedName)
-      var i = 0; while (i < atts.getLength) {
+      var i: Int = 0
+      while (i < atts.getLength) {
         out.write(" ")
         out.write(atts.getQName(i))
         out.write("='")
-        val value = atts.getValue(i)
+        val value: String = atts.getValue(i)
         // @todo Need to use character references if the encoding
         // can't support the character
         out.write(scala.xml.Utility.escape(value))
@@ -87,8 +88,9 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   // encoding using character references????
   override def characters(ch: Array[Char], start: Int, length: Int): Unit = {
     try {
-      var i = 0; while (i < length) {
-        val c = ch(start + i)
+      var i: Int = 0
+      while (i < length) {
+        val c: Char = ch(start + i)
         if (c == '&') out.write("&amp;")
         else if (c == '<') out.write("&lt;")
         // This next fix is normally not necessary.
@@ -135,7 +137,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     inDTD = true
     // if this is the source document, output a DOCTYPE declaration
     if (entities.isEmpty) {
-      var id = ""
+      var id: String = ""
       if (publicID != null) id = " PUBLIC \"" + publicID + "\" \"" + systemID + '"'
       else if (systemID != null) id = " SYSTEM \"" + systemID + '"'
       try {
@@ -146,7 +148,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
       }
     }
   }
-  override def endDTD(): Unit = {}
+  override def endDTD(): Unit = ()
 
   override def startEntity(name: String): Unit = {
     entities =  name :: entities
@@ -156,12 +158,12 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     entities = entities.tail
   }
 
-  override def startCDATA(): Unit = {}
-  override def endCDATA(): Unit = {}
+  override def startCDATA(): Unit = ()
+  override def endCDATA(): Unit = ()
 
   // Just need this reference so we can ask if a comment is
   // inside an include element or not
-  private var filter: XIncludeFilter = null
+  private var filter: XIncludeFilter = _
 
   def setFilter(filter: XIncludeFilter): Unit = {
     this.filter = filter

@@ -26,9 +26,9 @@ object Node {
   final def NoAttributes: MetaData = Null
 
   /** the empty namespace */
-  val EmptyNamespace = ""
+  val EmptyNamespace: String = ""
 
-  def unapplySeq(n: Node) = Some((n.label, n.attributes, n.child.toSeq))
+  def unapplySeq(n: Node) /* TODO type annotation */ = Some((n.label, n.attributes, n.child.toSeq))
 }
 
 /**
@@ -55,11 +55,11 @@ abstract class Node extends NodeSeq {
   /**
    * used internally. Atom/Molecule = -1 PI = -2 Comment = -3 EntityRef = -5
    */
-  def isAtom = this.isInstanceOf[Atom[_]]
+  def isAtom: Boolean = this.isInstanceOf[Atom[_]]
 
   /** The logic formerly found in typeTag$, as best I could infer it. */
-  def doCollectNamespaces = true // if (tag >= 0) DO collect namespaces
-  def doTransform = true // if (tag < 0) DO NOT transform
+  def doCollectNamespaces: Boolean = true // if (tag >= 0) DO collect namespaces
+  def doTransform: Boolean = true // if (tag < 0) DO NOT transform
 
   /**
    *  method returning the namespace bindings of this node. by default, this
@@ -71,7 +71,7 @@ abstract class Node extends NodeSeq {
   /**
    *  convenience, same as `getNamespace(this.prefix)`
    */
-  def namespace = getNamespace(this.prefix)
+  def namespace: String = getNamespace(this.prefix)
 
   /**
    * Convenience method, same as `scope.getURI(pre)` but additionally
@@ -139,7 +139,7 @@ abstract class Node extends NodeSeq {
    */
   def descendant_or_self: List[Node] = this :: descendant
 
-  override def canEqual(other: Any) = other match {
+  override def canEqual(other: Any): Boolean = other match {
     case x: Group => false
     case x: Node  => true
     case _        => false
@@ -148,7 +148,7 @@ abstract class Node extends NodeSeq {
   override protected def basisForHashCode: Seq[Any] =
     prefix :: label :: attributes :: nonEmptyChildren.toList
 
-  override def strict_==(other: Equality) = other match {
+  override def strict_==(other: Equality): Boolean = other match {
     case _: Group => false
     case x: Node =>
       (prefix == x.prefix) &&

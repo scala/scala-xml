@@ -43,7 +43,7 @@ object MetaData {
       } else if (md.value eq null) {
         iterate(md.next, normalized_attribs, set)
       } else {
-        val key = getUniversalKey(md, scope)
+        val key: String = getUniversalKey(md, scope)
         if (set(key)) {
           iterate(md.next, normalized_attribs, set)
         } else {
@@ -57,7 +57,7 @@ object MetaData {
   /**
    * returns key if md is unprefixed, pre+key is md is prefixed
    */
-  def getUniversalKey(attrib: MetaData, scope: NamespaceBinding) = attrib match {
+  def getUniversalKey(attrib: MetaData, scope: NamespaceBinding): String = attrib match {
     case prefixed: PrefixedAttribute     => scope.getURI(prefixed.pre) + prefixed.key
     case unprefixed: UnprefixedAttribute => unprefixed.key
   }
@@ -134,7 +134,7 @@ abstract class MetaData
   /** if owner is the element of this metadata item, returns namespace */
   def getNamespace(owner: Node): String
 
-  def hasNext = Null != next
+  def hasNext: Boolean = Null != next
 
   def length: Int = length(0)
 
@@ -142,11 +142,11 @@ abstract class MetaData
 
   def isPrefixed: Boolean
 
-  override def canEqual(other: Any) = other match {
+  override def canEqual(other: Any): Boolean = other match {
     case _: MetaData => true
     case _           => false
   }
-  override def strict_==(other: Equality) = other match {
+  override def strict_==(other: Equality): Boolean = other match {
     case m: MetaData => this.asAttrMap == m.asAttrMap
     case _           => false
   }
@@ -172,7 +172,7 @@ abstract class MetaData
    * Returns a String containing "prefix:key" if the first key is
    *  prefixed, and "key" otherwise.
    */
-  def prefixedKey = this match {
+  def prefixedKey: String = this match {
     case x: Attribute if x.isPrefixed => x.pre + ":" + key
     case _                            => key
   }

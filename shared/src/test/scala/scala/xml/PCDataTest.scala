@@ -5,33 +5,23 @@ import org.junit.Assert.assertEquals
 
 class PCDataTest {
 
-  @Test
-  def emptyTest = {
-    val pcdata = new PCData("")
-    assertEquals("<![CDATA[]]>", pcdata.toString)
+  def check(pcdata: String, expected: String): Unit = {
+    val actual: PCData = new PCData(pcdata)
+    assertEquals(expected, actual.toString)
   }
 
   @Test
-  def bracketTest = {
-    val pcdata = new PCData("[]")
-    assertEquals("<![CDATA[[]]]>", pcdata.toString)
-  }
+  def emptyTest(): Unit = check("", "<![CDATA[]]>")
 
   @Test
-  def hellaBracketingTest = {
-    val pcdata = new PCData("[[[[[[[[]]]]]]]]")
-    assertEquals("<![CDATA[[[[[[[[[]]]]]]]]]]>", pcdata.toString)
-  }
+  def bracketTest(): Unit = check("[]", "<![CDATA[[]]]>")
 
   @Test
-  def simpleNestingTest = {
-    val pcdata = new PCData("]]>")
-    assertEquals("<![CDATA[]]]]><![CDATA[>]]>", pcdata.toString)
-  }
+  def hellaBracketingTest(): Unit = check("[[[[[[[[]]]]]]]]", "<![CDATA[[[[[[[[[]]]]]]]]]]>")
 
   @Test
-  def recursiveNestingTest = {
-    val pcdata = new PCData("<![CDATA[]]>")
-    assertEquals("<![CDATA[<![CDATA[]]]]><![CDATA[>]]>", pcdata.toString)
-  }
+  def simpleNestingTest(): Unit = check("]]>", "<![CDATA[]]]]><![CDATA[>]]>")
+
+  @Test
+  def recursiveNestingTest(): Unit = check("<![CDATA[]]>", "<![CDATA[<![CDATA[]]]]><![CDATA[>]]>")
 }

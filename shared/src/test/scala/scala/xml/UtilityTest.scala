@@ -9,45 +9,45 @@ import org.junit.Assert.assertNotEquals
 class UtilityTest {
 
   @Test
-  def isNameStart: Unit = {
+  def isNameStart(): Unit = {
     assertTrue(Utility.isNameStart('b'))
     assertTrue(Utility.isNameStart(':'))
   }
 
   @Test
-  def trim: Unit = {
-    val x = <foo>
-                 <toomuchws/>
-              </foo>
-    val y = xml.Utility.trim(x)
+  def trim(): Unit = {
+    val x: Elem = <foo>
+                     <toomuchws/>
+                  </foo>
+    val y: Node = Utility.trim(x)
     assertTrue(y match { case <foo><toomuchws/></foo> => true })
 
-    val x2 = <foo>
+    val x2: Elem = <foo>
       <toomuchws>  a b  b a  </toomuchws>
     </foo>
-    val y2 = xml.Utility.trim(x2)
+    val y2: Node = Utility.trim(x2)
     assertTrue(y2 match { case <foo><toomuchws>a b b a</toomuchws></foo> => true })
   }
 
   @Test
-  def aposEscaping: Unit = {
-    val z = <bar>''</bar>
-    val z1 = z.toString
+  def aposEscaping(): Unit = {
+    val z: Elem = <bar>''</bar>
+    val z1: String = z.toString
     assertEquals("<bar>''</bar>", z1)
   }
 
   @Test
-  def sort: Unit = {
-    assertEquals("", xml.Utility.sort(<a/>.attributes).toString)
-    assertEquals(""" b="c"""", xml.Utility.sort(<a b="c"/>.attributes).toString)
-    val q = xml.Utility.sort(<a g='3' j='2' oo='2' a='2'/>)
-    assertEquals(" a=\"2\" g=\"3\" j=\"2\" oo=\"2\"", xml.Utility.sort(q.attributes).toString)
-    val pp = new xml.PrettyPrinter(80,5)
+  def sort(): Unit = {
+    assertEquals("", Utility.sort(<a/>.attributes).toString)
+    assertEquals(""" b="c"""", Utility.sort(<a b="c"/>.attributes).toString)
+    val q: Node = Utility.sort(<a g='3' j='2' oo='2' a='2'/>)
+    assertEquals(" a=\"2\" g=\"3\" j=\"2\" oo=\"2\"", Utility.sort(q.attributes).toString)
+    val pp: PrettyPrinter = new PrettyPrinter(80,5)
     assertEquals("<a a=\"2\" g=\"3\" j=\"2\" oo=\"2\"/>", pp.format(q))
   }
 
   @Test
-  def issue777: Unit = {
+  def issue777(): Unit = {
     <hi>
       <there/>
       <guys/>
@@ -55,14 +55,14 @@ class UtilityTest {
   }
 
   @Test
-  def issue90: Unit = {
-    val x = <node><leaf></leaf></node>
+  def issue90(): Unit = {
+    val x: Elem = <node><leaf></leaf></node>
     assertEquals("<node><leaf/></node>", Utility.serialize(x, minimizeTags = MinimizeMode.Always).toString)
   }
 
   @Test
-  def issue183: Unit = {
-    val x = <node><!-- comment  --></node>
+  def issue183(): Unit = {
+    val x: Elem = <node><!-- comment  --></node>
     assertEquals("<node></node>", Utility.serialize(x, stripComments = true).toString)
     assertEquals("<node><!-- comment  --></node>", Utility.serialize(x, stripComments = false).toString)
   }
@@ -81,7 +81,7 @@ class UtilityTest {
     Utility.Escapes.escMap.keys.toSeq
 
   @Test
-  def escapePrintablesTest: Unit = {
+  def escapePrintablesTest(): Unit = {
     for {
       char <- printableAscii.diff(escapedChars)
     } yield {
@@ -90,7 +90,7 @@ class UtilityTest {
   }
 
   @Test
-  def escapeEscapablesTest: Unit = {
+  def escapeEscapablesTest(): Unit = {
     for {
       char <- escapedChars
     } yield {
@@ -99,7 +99,7 @@ class UtilityTest {
   }
 
   @Test
-  def escapeAsciiControlCharsTest: Unit = {
+  def escapeAsciiControlCharsTest(): Unit = {
 
     /* Escapes that Scala (Java) doesn't support.
      * \u0007 -> \a  (bell)
@@ -107,18 +107,18 @@ class UtilityTest {
      * \u000B -> \v  (vertical tab)
      * \u007F -> DEL (delete)
      */
-    val input = " \u0007\b\u001B\f\n\r\t\u000B\u007F"
+    val input: String = " \u0007\b\u001B\f\n\r\t\u000B\u007F"
 
-    val expect = " \n\r\t\u007F"
+    val expect: String = " \n\r\t\u007F"
 
-    val result = Utility.escape(input)
+    val result: String = Utility.escape(input)
 
     assertEquals(printfc(expect), printfc(result)) // Pretty,
     assertEquals(expect, result)                   // but verify.
   }
 
   @Test
-  def escapeUnicodeExtendedControlCodesTest: Unit = {
+  def escapeUnicodeExtendedControlCodesTest(): Unit = {
     for {
       char <- '\u0080' to '\u009f' // Extended control codes (C1)
     } yield {
@@ -127,7 +127,7 @@ class UtilityTest {
   }
 
   @Test
-  def escapeUnicodeTwoBytesTest: Unit = {
+  def escapeUnicodeTwoBytesTest(): Unit = {
     for {
       char <- '\u00A0' to '\u07FF' // Two bytes (cont.)
     } yield {
@@ -136,7 +136,7 @@ class UtilityTest {
   }
 
   @Test
-  def escapeUnicodeThreeBytesTest: Unit = {
+  def escapeUnicodeThreeBytesTest(): Unit = {
     for {
       char <- '\u0800' to '\uFFFF' // Three bytes
     } yield {
@@ -151,7 +151,7 @@ class UtilityTest {
    * 
    * Or think of `printf("%c", i)` in C, but a little better.
    */
-  def printfc(str: String) = {
+  def printfc(str: String): String = {
     str.map(prettyChar).mkString
   }
 
@@ -197,26 +197,26 @@ class UtilityTest {
     (key: Char) => key.toString
   }
 
-  def issue73StartsWithAndEndsWithWSInFirst: Unit = {
-    val x = <div>{Text("    My name is ")}{Text("Harry")}</div>
+  def issue73StartsWithAndEndsWithWSInFirst(): Unit = {
+    val x: Elem = <div>{Text("    My name is ")}{Text("Harry")}</div>
     assertEquals(<div>My name is Harry</div>, Utility.trim(x))
   }
 
   @Test
-  def issue73EndsWithWSInLast: Unit = {
-    val x = <div>{Text("My name is ")}{Text("Harry    ")}</div>
+  def issue73EndsWithWSInLast(): Unit = {
+    val x: Elem = <div>{Text("My name is ")}{Text("Harry    ")}</div>
     assertEquals(<div>My name is Harry</div>, Utility.trim(x)) 
   }
 
   @Test
-  def issue73HasWSInMiddle: Unit = {
-    val x = <div>{Text("My name is")}{Text(" ")}{Text("Harry")}</div>
+  def issue73HasWSInMiddle(): Unit = {
+    val x: Elem = <div>{Text("My name is")}{Text(" ")}{Text("Harry")}</div>
     assertEquals(<div>My name is Harry</div>, Utility.trim(x))
   }
 
   @Test
-  def issue73HasWSEverywhere: Unit = {
-    val x = <div>{Text("   My name ")}{Text("  is  ")}{Text("  Harry   ")}</div>
+  def issue73HasWSEverywhere(): Unit = {
+    val x: Elem = <div>{Text("   My name ")}{Text("  is  ")}{Text("  Harry   ")}</div>
     assertEquals(<div>My name is Harry</div>, Utility.trim(x))
   }
 }

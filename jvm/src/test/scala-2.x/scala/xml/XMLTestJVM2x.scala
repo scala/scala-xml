@@ -6,25 +6,25 @@ import scala.xml.parsing.ConstructingParser
 
 class XMLTestJVM2x {
   @UnitTest
-  def t2354: Unit = {
-    val xml_good = "<title><![CDATA[Hello [tag]]]></title>"
-    val xml_bad = "<title><![CDATA[Hello [tag] ]]></title>"
+  def t2354(): Unit = {
+    val xml_good: String = "<title><![CDATA[Hello [tag]]]></title>"
+    val xml_bad: String = "<title><![CDATA[Hello [tag] ]]></title>"
 
-    val parser1 = ConstructingParser.fromSource(io.Source.fromString(xml_good), false)
-    val parser2 = ConstructingParser.fromSource(io.Source.fromString(xml_bad), false)
+    val parser1: ConstructingParser = ConstructingParser.fromSource(io.Source.fromString(xml_good), preserveWS = false)
+    val parser2: ConstructingParser = ConstructingParser.fromSource(io.Source.fromString(xml_bad), preserveWS = false)
 
     parser1.document()
     parser2.document()
   }
 
   @UnitTest
-  def t8253: Unit = {
+  def t8253(): Unit = {
     // `identity(foo)` used to match the overly permissive match in SymbolXMLBuilder
     // which was intended to more specifically match `_root_.scala.xml.Text(...)`
 
     import reflect.runtime.universe._ // not using the XML library in compiler tests
 
-    val ns1 = "ns1"
+    val ns1: String = "ns1"
     assertEquals(reify(ns1).tree.toString, q"ns1".toString)
     assertEquals("<sample xmlns='ns1'/>",
       """|{
@@ -69,10 +69,10 @@ class XMLTestJVM2x {
   }
 
   @UnitTest
-  def t8466lift: Unit = {
+  def t8466lift(): Unit = {
     import scala.reflect.runtime.universe._
 
-    implicit val liftXmlComment = Liftable[Comment] { comment =>
+    implicit val liftXmlComment: Liftable[Comment] = Liftable[Comment] { comment =>
       q"new _root_.scala.xml.Comment(${comment.commentText})"
     }
     liftXmlComment(Comment("foo"))
@@ -80,10 +80,10 @@ class XMLTestJVM2x {
   }
 
   @UnitTest
-  def t8466unlift: Unit = {
+  def t8466unlift(): Unit = {
     import scala.reflect.runtime.universe._
 
-    implicit val unliftXmlComment = Unliftable[Comment] {
+    implicit val unliftXmlComment: Unliftable[Comment] = Unliftable[Comment] {
       case q"new _root_.scala.xml.Comment(${value: String})" => Comment(value)
     }
     unliftXmlComment.unapply(q"<!--foo-->")
@@ -92,7 +92,7 @@ class XMLTestJVM2x {
   }
 
   @UnitTest
-  def t9027: Unit = {
+  def t9027(): Unit = {
     // used to be parsed as .println
 
     import reflect.runtime._, universe._

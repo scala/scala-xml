@@ -25,5 +25,4 @@ class CircularIncludeException(message: String) extends XIncludeException {
    * as its error detail message.
    */
   def this() = this(null)
-
 }

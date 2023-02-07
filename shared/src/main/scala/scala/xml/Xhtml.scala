@@ -39,7 +39,7 @@ object Xhtml {
    * Elements which we believe are safe to minimize if minimizeTags is true.
    *  See http://www.w3.org/TR/xhtml1/guidelines.html#C_3
    */
-  private val minimizableElements =
+  private val minimizableElements: List[String] =
     List("base", "meta", "link", "hr", "br", "param", "img", "area", "input", "col")
 
   def toXhtml(
@@ -51,11 +51,11 @@ object Xhtml {
     preserveWhitespace: Boolean = false,
     minimizeTags: Boolean = true): Unit =
     {
-      def decode(er: EntityRef) = XhtmlEntities.entMap.get(er.entityName) match {
+      def decode(er: EntityRef): StringBuilder = XhtmlEntities.entMap.get(er.entityName) match {
         case Some(chr) if chr.toInt >= 128 => sb.append(chr)
         case _                             => er.buildString(sb)
       }
-      def shortForm =
+      def shortForm: Boolean =
         minimizeTags &&
           (x.child == null || x.child.isEmpty) &&
           (minimizableElements contains x.label)
@@ -99,7 +99,7 @@ object Xhtml {
       if (children.isEmpty)
         return
 
-      val doSpaces = children forall isAtomAndNotText // interleave spaces
+      val doSpaces: Boolean = children forall isAtomAndNotText // interleave spaces
       for (c <- children.take(children.length - 1)) {
         toXhtml(c, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
         if (doSpaces) sb append ' '

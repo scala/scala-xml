@@ -27,7 +27,7 @@ object TextBuffer {
  *  character, and leading and trailing space will be removed completely.
  */
 class TextBuffer {
-  val sb = new StringBuilder()
+  val sb: StringBuilder = new StringBuilder()
 
   /**
    * Appends this string to the text buffer, trimming whitespaces as needed.

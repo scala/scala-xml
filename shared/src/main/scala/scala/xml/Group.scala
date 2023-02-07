@@ -21,29 +21,29 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 final case class Group(nodes: Seq[Node]) extends Node {
-  override def theSeq = nodes
+  override def theSeq: Seq[Node] = nodes
 
-  override def canEqual(other: Any) = other match {
+  override def canEqual(other: Any): Boolean = other match {
     case x: Group => true
     case _        => false
   }
 
-  override def strict_==(other: Equality) = other match {
+  override def strict_==(other: Equality): Boolean = other match {
     case Group(xs) => nodes sameElements xs
     case _         => false
   }
 
-  override protected def basisForHashCode = nodes
+  override protected def basisForHashCode: Seq[Node] = nodes
 
   /**
    * Since Group is very much a hack it throws an exception if you
    *  try to do anything with it.
    */
-  private def fail(msg: String) = throw new UnsupportedOperationException("class Group does not support method '%s'" format msg)
+  private def fail(msg: String): Nothing = throw new UnsupportedOperationException("class Group does not support method '%s'" format msg)
 
-  override def label = fail("label")
-  override def attributes = fail("attributes")
-  override def namespace = fail("namespace")
-  override def child = fail("child")
-  def buildString(sb: StringBuilder) = fail("toString(StringBuilder)")
+  override def label: Nothing = fail("label")
+  override def attributes: Nothing = fail("attributes")
+  override def namespace: Nothing = fail("namespace")
+  override def child /* TODO type annotation */ = fail("child")
+  def buildString(sb: StringBuilder): Nothing = fail("toString(StringBuilder)")
 }

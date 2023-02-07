@@ -29,41 +29,41 @@ private[dtd] abstract class Base {
 
   object Alt {
     /** `Alt( R,R,R* )`. */
-    def apply(rs: _regexpT*) =
+    def apply(rs: _regexpT*): Alt =
       if (rs.size < 2) throw new SyntaxError("need at least 2 branches in Alt")
       else new Alt(rs: _*)
     // Can't enforce that statically without changing the interface
     // def apply(r1: _regexpT, r2: _regexpT, rs: _regexpT*) = new Alt(Seq(r1, r2) ++ rs: _*)
-    def unapplySeq(x: Alt) = Some(x.rs)
+    def unapplySeq(x: Alt): Some[Seq[_regexpT]] = Some(x.rs)
   }
 
   class Alt private (val rs: _regexpT*) extends RegExp {
-    final override val isNullable = rs exists (_.isNullable)
+    final override val isNullable: Boolean = rs exists (_.isNullable)
   }
 
   object Sequ {
     /** Sequ( R,R* ) */
-    def apply(rs: _regexpT*) = if (rs.isEmpty) Eps else new Sequ(rs: _*)
-    def unapplySeq(x: Sequ) = Some(x.rs)
+    def apply(rs: _regexpT*): RegExp = if (rs.isEmpty) Eps else new Sequ(rs: _*)
+    def unapplySeq(x: Sequ): Some[Seq[_regexpT]] = Some(x.rs)
   }
 
   class Sequ private (val rs: _regexpT*) extends RegExp {
-    final override val isNullable = rs forall (_.isNullable)
+    final override val isNullable: Boolean = rs forall (_.isNullable)
   }
 
   case class Star(r: _regexpT) extends RegExp {
-    final override lazy val isNullable = true
+    final override lazy val isNullable: Boolean = true
   }
 
   // The empty Sequ.
   case object Eps extends RegExp {
-    final override lazy val isNullable = true
-    override def toString = "Eps"
+    final override lazy val isNullable: Boolean = true
+    override def toString: String = "Eps"
   }
 
   /** this class can be used to add meta information to regexps. */
   class Meta(r1: _regexpT) extends RegExp {
-    final override val isNullable = r1.isNullable
-    def r = r1
+    final override val isNullable: Boolean = r1.isNullable
+    def r: _regexpT = r1
   }
 }

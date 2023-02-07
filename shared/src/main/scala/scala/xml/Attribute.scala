@@ -22,7 +22,7 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 object Attribute {
-  def unapply(x: Attribute) = x match {
+  def unapply(x: Attribute) /* TODO type annotation */ = x match {
     case PrefixedAttribute(_, key, value, next) => Some((key, value, next))
     case UnprefixedAttribute(key, value, next)  => Some((key, value, next))
     case _                                      => None
@@ -63,11 +63,11 @@ trait Attribute extends MetaData {
   override def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node]
   override def copy(next: MetaData): Attribute
 
-  override def remove(key: String) =
+  override def remove(key: String): MetaData =
     if (!isPrefixed && this.key == key) next
     else copy(next remove key)
 
-  override def remove(namespace: String, scope: NamespaceBinding, key: String) =
+  override def remove(namespace: String, scope: NamespaceBinding, key: String): MetaData =
     if (this.key == key && (scope getURI pre) == namespace) next
     else copy(next.remove(namespace, scope, key))
 
@@ -76,7 +76,7 @@ trait Attribute extends MetaData {
   override def getNamespace(owner: Node): String
 
   override def wellformed(scope: NamespaceBinding): Boolean = {
-    val arg = if (isPrefixed) scope getURI pre else null
+    val arg: String = if (isPrefixed) scope getURI pre else null
     (next(arg, scope, key) == null) && (next wellformed scope)
   }
 
@@ -101,7 +101,7 @@ trait Attribute extends MetaData {
       sb append pre append ':'
 
     sb append key append '='
-    val sb2 = new StringBuilder()
+    val sb2: StringBuilder = new StringBuilder()
     Utility.sequenceToXML(value, TopScope, sb2, stripComments = true)
     Utility.appendQuoted(sb2.toString, sb)
   }

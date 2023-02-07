@@ -6,7 +6,7 @@ import JUnitAssertsForXML.assertEquals
 class PrintEmptyElementsTest {
 
   @Test
-  def representEmptyXMLElementsInShortForm: Unit = {
+  def representEmptyXMLElementsInShortForm(): Unit = {
     val expected: String =
       """|
          |<hi/> <!-- literal short -->
@@ -29,27 +29,26 @@ class PrintEmptyElementsTest {
   }
 
   @Test
-  def programmaticLong: Unit = {
+  def programmaticLong(): Unit = {
     assertEquals("<emptiness></emptiness> <!--programmatic long-->",
-      Elem(null, "emptiness", Null, TopScope, false) ++ Text(" ") ++ Comment("programmatic long"))
+      Elem(null, "emptiness", Null, TopScope, minimizeEmpty = false) ++ Text(" ") ++ Comment("programmatic long"))
   }
 
   @Test
-  def programmaticShort: Unit = {
+  def programmaticShort(): Unit = {
     assertEquals("<vide/> <!--programmatic short-->",
-      Elem(null, "vide", Null, TopScope, true) ++ Text(" ") ++ Comment("programmatic short"))
+      Elem(null, "vide", Null, TopScope, minimizeEmpty = true) ++ Text(" ") ++ Comment("programmatic short"))
   }
 
   @Test
-  def programmaticShortWithAttribute: Unit = {
+  def programmaticShortWithAttribute(): Unit = {
     assertEquals("""<elem attr="value"/> <!--programmatic short with attribute-->""",
-      Elem(null, "elem", Attribute("attr", Text("value"), Null), TopScope, true) ++ Text(" ") ++ Comment ("programmatic short with attribute"))
+      Elem(null, "elem", Attribute("attr", Text("value"), Null), TopScope, minimizeEmpty = true) ++ Text(" ") ++ Comment ("programmatic short with attribute"))
   }
 
   @Test
-  def programmaticLongWithAttribute: Unit = {
+  def programmaticLongWithAttribute(): Unit = {
     assertEquals("""<elem2 attr2="value2"></elem2> <!--programmatic long with attribute-->""",
-      Elem(null, "elem2", Attribute("attr2", Text("value2"), Null), TopScope, false) ++ Text(" ") ++ Comment ("programmatic long with attribute"))
+      Elem(null, "elem2", Attribute("attr2", Text("value2"), Null), TopScope, minimizeEmpty = false) ++ Text(" ") ++ Comment ("programmatic long with attribute"))
   }
-
 }

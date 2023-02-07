@@ -1,43 +1,44 @@
 package scala.xml
 
 import scala.xml.NodeSeq.seqToNodeSeq
-
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 
+import scala.collection.immutable
+
 class NodeSeqTest {
 
   @Test
-  def testAppend: Unit = { // Bug #392.
+  def testAppend(): Unit = { // Bug #392.
     val a: NodeSeq = <a>Hello</a>
-    val b = <b>Hi</b>
+    val b: Elem = <b>Hi</b>
     a ++ <b>Hi</b> match {
       case res: NodeSeq => assertEquals(2, res.size.toLong)
       case res: Seq[Node] => fail("Should be NodeSeq was Seq[Node]") // Unreachable code?
     }
     val res: NodeSeq = a ++ b
-    val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
+    val exp: NodeSeq = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
     assertEquals(exp, res)
   }
 
   @Test
-  def testAppendedAll: Unit = { // Bug #392.
+  def testAppendedAll(): Unit = { // Bug #392.
     val a: NodeSeq = <a>Hello</a>
-    val b = <b>Hi</b>
+    val b: Elem = <b>Hi</b>
     a :+ <b>Hi</b> match {
       case res: Seq[Node] => assertEquals(2, res.size.toLong)
       case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
     val res: NodeSeq = a :+ b
-    val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
+    val exp: NodeSeq = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
     assertEquals(exp, res)
   }
 
   @Test
-  def testPrepended: Unit = {
+  def testPrepended(): Unit = {
     val a: NodeSeq = <a>Hello</a>
-    val b = <b>Hi</b>
+    val b: Elem = <b>Hi</b>
     a +: <b>Hi</b> match {
       case res: Seq[Node] => assertEquals(2, res.size.toLong)
       case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
@@ -50,21 +51,21 @@ class NodeSeqTest {
   }
 
   @Test
-  def testPrependedAll: Unit = {
+  def testPrependedAll(): Unit = {
     val a: NodeSeq = <a>Hello</a>
-    val b = <b>Hi</b>
-    val c = <c>Hey</c>
+    val b: Elem = <b>Hi</b>
+    val c: Elem = <c>Hey</c>
     a ++: <b>Hi</b> ++: <c>Hey</c> match {
       case res: Seq[Node] => assertEquals(3, res.size.toLong)
       case res: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
     val res: NodeSeq = a ++: b ++: c
-    val exp = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>, <c>Hey</c>))
+    val exp: NodeSeq = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>, <c>Hey</c>))
     assertEquals(exp, res)
   }
 
   @Test
-  def testMap: Unit = {
+  def testMap(): Unit = {
     val a: NodeSeq = <a>Hello</a>
     val exp: NodeSeq = Seq(<b>Hi</b>)
     assertEquals(exp, a.map(_ => <b>Hi</b>))
@@ -72,7 +73,7 @@ class NodeSeqTest {
   }
 
   @Test
-  def testFlatMap: Unit = {
+  def testFlatMap(): Unit = {
     val a: NodeSeq = <a>Hello</a>
     val exp: NodeSeq = Seq(<b>Hi</b>)
     assertEquals(exp, a.flatMap(_ => Seq(<b>Hi</b>)))
@@ -81,8 +82,8 @@ class NodeSeqTest {
   }
 
   @Test
-  def testStringProjection: Unit = {
-    val a =
+  def testStringProjection(): Unit = {
+    val a: Elem =
       <a>
         <b>b</b>
         <b>
@@ -93,7 +94,7 @@ class NodeSeqTest {
           <c>c</c>
         </b>
       </a>
-    val res = for {
+    val res: Seq[String] = for {
       b <- a \ "b"
       c <- b.child
       e <- (c \ "e").headOption
