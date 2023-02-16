@@ -20,5 +20,5 @@ package xml
  *  @author  Burak Emir
  */
 object QNode {
-  def unapplySeq(n: Node) /* TODO type annotation */ = Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child.toSeq))
+  def unapplySeq(n: Node): Some[(String, String, MetaData, Seq[Node])] = Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child.toSeq))
 }

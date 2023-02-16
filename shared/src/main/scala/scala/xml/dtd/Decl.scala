@@ -150,22 +150,22 @@ case class PEReference(ent: String) extends MarkupDecl {
 // default declarations for attributes
 
 sealed abstract class DefaultDecl {
-  override def toString(): String
+  def toString: String
   def buildString(sb: StringBuilder): StringBuilder
 }
 
 case object REQUIRED extends DefaultDecl {
-  override def toString(): String = "#REQUIRED"
+  override def toString: String = "#REQUIRED"
   override def buildString(sb: StringBuilder): StringBuilder = sb append "#REQUIRED"
 }
 
 case object IMPLIED extends DefaultDecl {
-  override def toString(): String = "#IMPLIED"
+  override def toString: String = "#IMPLIED"
   override def buildString(sb: StringBuilder): StringBuilder = sb append "#IMPLIED"
 }
 
 case class DEFAULT(fixed: Boolean, attValue: String) extends DefaultDecl {
-  override def toString(): String = sbToString(buildString)
+  override def toString: String = sbToString(buildString)
   override def buildString(sb: StringBuilder): StringBuilder = {
     if (fixed) sb append "#FIXED "
     Utility.appendEscapedQuoted(attValue, sb)

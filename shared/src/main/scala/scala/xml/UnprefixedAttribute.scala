@@ -62,5 +62,5 @@ class UnprefixedAttribute(
     next(namespace, scope, key)
 }
 object UnprefixedAttribute {
-  def unapply(x: UnprefixedAttribute) /* TODO type annotation */ = Some((x.key, x.value, x.next))
+  def unapply(x: UnprefixedAttribute): Some[(String, Seq[Node], MetaData)] = Some((x.key, x.value, x.next))
 }

@@ -85,7 +85,7 @@ trait Equality extends scala.Equals {
    *  which heads off a lot of inconsistency up front.
    */
   override def canEqual(other: Any): Boolean = other match {
-    case x: Equality => true
+    case _: Equality => true
     case _           => false
   }
 
@@ -96,7 +96,7 @@ trait Equality extends scala.Equals {
    *  are final since clearly individual classes cannot be trusted
    *  to maintain a semblance of order.
    */
-  override def hashCode(): Int = basisForHashCode.##
+  override def hashCode: Int = basisForHashCode.##
   override def equals(other: Any): Boolean = doComparison(other, blithe = false)
   final def xml_==(other: Any): Boolean = doComparison(other, blithe = true)
   final def xml_!=(other: Any): Boolean = !xml_==(other)

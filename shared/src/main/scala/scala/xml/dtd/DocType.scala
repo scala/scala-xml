@@ -35,7 +35,7 @@ case class DocType(name: String, extID: ExternalID, intSubset: Seq[dtd.Decl]) {
       if (intSubset.isEmpty) ""
       else intSubset.mkString("[", "", "]")
 
-    """<!DOCTYPE %s %s%s>""".format(name, extID.toString(), intString)
+    """<!DOCTYPE %s %s%s>""".format(name, extID.toString, intString)
   }
 }
 

@@ -36,7 +36,7 @@ sealed abstract class ExternalID extends parsing.TokenTests {
       (if (systemId == null) "" else " " + quotedSystemLiteral)
   }
   def buildString(sb: StringBuilder): StringBuilder =
-    sb.append(this.toString())
+    sb.append(this.toString)
 
   def systemId: String
   def publicId: String
@@ -85,8 +85,8 @@ case class PublicID(override val publicId: String, override val systemId: String
  *  @author Michael Bayne
  */
 object NoExternalID extends ExternalID {
-  override val publicId /* TODO type annotation */ = null
-  override val systemId /* TODO type annotation */ = null
+  override val publicId: scala.Null = null
+  override val systemId: scala.Null = null
 
   override def toString: String = ""
 }

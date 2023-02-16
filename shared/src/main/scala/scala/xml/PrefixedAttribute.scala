@@ -64,5 +64,5 @@ class PrefixedAttribute(
 }
 
 object PrefixedAttribute {
-  def unapply(x: PrefixedAttribute) /* TODO type annotation */ = Some((x.pre, x.key, x.value, x.next))
+  def unapply(x: PrefixedAttribute): Some[(String, String, Seq[Node], MetaData)] = Some((x.pre, x.key, x.value, x.next))
 }

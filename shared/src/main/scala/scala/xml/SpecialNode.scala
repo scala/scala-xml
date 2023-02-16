@@ -24,11 +24,11 @@ abstract class SpecialNode extends Node {
   /** always empty */
   final override def attributes: Null.type = Null
 
-  /** always Node.EmptyNamespace */
+  /** always Node.EmptyNamespace - TODO not really: Node.EmptyNamespace is "", but this is null. */
   final override def namespace: scala.Null = null
 
   /** always empty */
-  final override def child /* TODO type annotation */ = Nil
+  final override def child: Nil.type = Nil
 
   /** Append string representation to the given string buffer argument. */
   def buildString(sb: StringBuilder): StringBuilder

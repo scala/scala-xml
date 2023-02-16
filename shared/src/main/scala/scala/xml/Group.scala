@@ -24,7 +24,7 @@ final case class Group(nodes: Seq[Node]) extends Node {
   override def theSeq: Seq[Node] = nodes
 
   override def canEqual(other: Any): Boolean = other match {
-    case x: Group => true
+    case _: Group => true
     case _        => false
   }
 
@@ -44,6 +44,6 @@ final case class Group(nodes: Seq[Node]) extends Node {
   override def label: Nothing = fail("label")
   override def attributes: Nothing = fail("attributes")
   override def namespace: Nothing = fail("namespace")
-  override def child /* TODO type annotation */ = fail("child")
+  override def child: Nothing = fail("child")
   def buildString(sb: StringBuilder): Nothing = fail("toString(StringBuilder)")
 }

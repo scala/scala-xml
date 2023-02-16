@@ -78,7 +78,22 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
 
         // necessitated by the introduction of new abstract methods in FactoryAdapter:
         exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),  // see #549
-        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createPCData")    // see #558
+        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createPCData"),    // see #558
+
+        // adding type annotations with types different from those inferred by (some versions of) the Scala compiler
+        exclude[DirectAbstractMethodProblem]("scala.xml.Node.child"),
+        exclude[DirectAbstractMethodProblem]("scala.xml.MetaData.value"),
+        exclude[DirectAbstractMethodProblem]("scala.xml.MetaData.apply"),
+        exclude[IncompatibleSignatureProblem]("scala.xml.Node.unapplySeq"),
+        exclude[IncompatibleSignatureProblem]("scala.xml.Elem.unapplySeq"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.Null.apply"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.Null.getNamespace"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.Null.key"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.Null.next"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.Null.remove"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.Null.value"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.dtd.NoExternalID.publicId"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.dtd.NoExternalID.systemId")
       )
     },
     // Mima signature checking stopped working after 3.0.2 upgrade, see #557
@@ -150,7 +165,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           retrieveDir,
           log
         )
-        .fold(w => throw w.resolveException, identity(_))
+        .fold(w => throw w.resolveException, identity)
       val jarPath = cp
         .find(_.toString.contains("junit-plugin"))
         .getOrElse(throw new Exception("Can't find Scala Native junit-plugin jar"))

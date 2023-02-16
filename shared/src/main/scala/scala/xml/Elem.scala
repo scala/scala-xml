@@ -26,7 +26,7 @@ object Elem {
   def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, minimizeEmpty: Boolean, child: Node*): Elem =
     new Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
 
-  def unapplySeq(n: Node) /* TODO type annotation */ = n match {
+  def unapplySeq(n: Node): Option[(String, String, MetaData, NamespaceBinding, scala.collection.immutable.Seq[scala.xml.Node])] = n match {
     case _: SpecialNode | _: Group => None
     case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
   }

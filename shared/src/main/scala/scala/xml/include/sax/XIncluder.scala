@@ -170,7 +170,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   }
 
   override def comment(ch: Array[Char], start: Int, length: Int): Unit = {
-    if (!inDTD && !filter.insideIncludeElement()) {
+    if (!inDTD && !filter.insideIncludeElement) {
       try {
         out.write("<!--")
         out.write(ch, start, length)

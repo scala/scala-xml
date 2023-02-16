@@ -22,7 +22,7 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 object Attribute {
-  def unapply(x: Attribute) /* TODO type annotation */ = x match {
+  def unapply(x: Attribute): Option[(String, Seq[Node], MetaData)] = x match {
     case PrefixedAttribute(_, key, value, next) => Some((key, value, next))
     case UnprefixedAttribute(key, value, next)  => Some((key, value, next))
     case _                                      => None

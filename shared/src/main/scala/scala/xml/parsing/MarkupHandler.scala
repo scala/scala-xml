@@ -35,7 +35,7 @@ abstract class MarkupHandler {
   var ent: mutable.Map[String, EntityDecl] = new mutable.HashMap[String, EntityDecl]()
 
   def lookupElemDecl(Label: String): ElemDecl = {
-    for (z@ElemDecl(Label, _) <- decls)
+    for (case z@ElemDecl(Label, _) <- decls)
       return z
 
     null
