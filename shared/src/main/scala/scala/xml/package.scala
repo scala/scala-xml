@@ -74,7 +74,7 @@ package scala
  * transform XML data with a [[scala.xml.transform.RuleTransformer]].
  */
 package object xml {
-  val XercesClassName = "org.apache.xerces.parsers.SAXParser"
+  val XercesClassName: String = "org.apache.xerces.parsers.SAXParser"
 
   type SAXException = org.xml.sax.SAXException
   type SAXParseException = org.xml.sax.SAXParseException

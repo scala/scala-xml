@@ -6,13 +6,12 @@ import org.junit.Assert.assertEquals
 class XMLEmbeddingTest {
 
   @Test
-  def basic: Unit = {
-    val ya = <x>{{</x>
+  def basic(): Unit = {
+    val ya: Elem = <x>{{</x>
     assertEquals("{", ya.text)
-    val ua = <x>}}</x>
+    val ua: Elem = <x>}}</x>
     assertEquals("}", ua.text)
-    val za = <x>{{}}{{}}{{}}</x>
+    val za: Elem = <x>{{}}{{}}{{}}</x>
     assertEquals("{}{}{}", za.text)
   }
-
 }

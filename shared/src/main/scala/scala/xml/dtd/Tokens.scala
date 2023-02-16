@@ -18,17 +18,17 @@ class Tokens {
 
   // Tokens
 
-  final val TOKEN_PCDATA = 0
-  final val NAME = 1
-  final val LPAREN = 3
-  final val RPAREN = 4
-  final val COMMA = 5
-  final val STAR = 6
-  final val PLUS = 7
-  final val OPT = 8
-  final val CHOICE = 9
-  final val END = 10
-  final val S = 13
+  final val TOKEN_PCDATA: Int = 0
+  final val NAME: Int = 1
+  final val LPAREN: Int = 3
+  final val RPAREN: Int = 4
+  final val COMMA: Int = 5
+  final val STAR: Int = 6
+  final val PLUS: Int = 7
+  final val OPT: Int = 8
+  final val CHOICE: Int = 9
+  final val END: Int = 10
+  final val S: Int = 13
 
   final def token2string(i: Int): String = i match {
     case 0  => "#PCDATA"

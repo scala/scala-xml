@@ -24,7 +24,7 @@ import scala.collection.Seq
  * @author Burak Emir
  */
 object Utility extends AnyRef with parsing.TokenTests {
-  final val SU = '\u001A'
+  final val SU: Char = '\u001A'
 
   // [Martin] This looks dubious. We don't convert StringBuilders to
   // Strings anywhere else, why do it here?
@@ -32,12 +32,12 @@ object Utility extends AnyRef with parsing.TokenTests {
 
   // helper for the extremely oft-repeated sequence of creating a
   // StringBuilder, passing it around, and then grabbing its String.
-  private[xml] def sbToString(f: (StringBuilder) => Unit): String = {
-    val sb = new StringBuilder
+  private[xml] def sbToString(f: StringBuilder => Unit): String = {
+    val sb: StringBuilder = new StringBuilder
     f(sb)
     sb.toString
   }
-  private[xml] def isAtomAndNotText(x: Node) = x.isAtom && !x.isInstanceOf[Text]
+  private[xml] def isAtomAndNotText(x: Node): Boolean = x.isAtom && !x.isInstanceOf[Text]
 
   /**
    * Trims an element - call this method, when you know that it is an
@@ -50,7 +50,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trim(x: Node): Node = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children = combineAdjacentTextNodes(child) flatMap trimProper
+      val children: Seq[Node] = combineAdjacentTextNodes(child) flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
   }
 
@@ -67,7 +67,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trimProper(x: Node): Seq[Node] = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children = combineAdjacentTextNodes(child) flatMap trimProper
+      val children: Seq[Node] = combineAdjacentTextNodes(child) flatMap trimProper
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
     case Text(s) =>
       new TextBuffer().append(s).toText
@@ -77,9 +77,9 @@ object Utility extends AnyRef with parsing.TokenTests {
 
   /** returns a sorted attribute list */
   def sort(md: MetaData): MetaData = if ((md eq Null) || (md.next eq Null)) md else {
-    val key = md.key
-    val smaller = sort(md.filter { m => m.key < key })
-    val greater = sort(md.filter { m => m.key > key })
+    val key: String = md.key
+    val smaller: MetaData = sort(md.filter { m => m.key < key })
+    val greater: MetaData = sort(md.filter { m => m.key > key })
     smaller.foldRight (md copy greater) ((x, xs) => x copy xs)
   }
 
@@ -89,7 +89,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def sort(n: Node): Node = n match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children = child map sort
+      val children: Seq[Node] = child map sort
       Elem(pre, lab, sort(md), scp, children.isEmpty, children: _*)
     case _ => n
   }
@@ -104,15 +104,15 @@ object Utility extends AnyRef with parsing.TokenTests {
      * For reasons unclear escape and unescape are a long ways from
      * being logical inverses.
      */
-    val pairs = Map(
+    val pairs: Map[String, Char] = Map(
       "lt" -> '<',
       "gt" -> '>',
       "amp" -> '&',
       "quot" -> '"',
       "apos"  -> '\''
     )
-    val escMap = (pairs - "apos") map { case (s, c) => c -> ("&%s;" format s) }
-    val unescMap = pairs
+    val escMap: Map[Char, String] = (pairs - "apos") map { case (s, c) => c -> ("&%s;" format s) }
+    val unescMap: Map[String, Char] = pairs
   }
   import Escapes.{ escMap, unescMap }
 
@@ -252,11 +252,11 @@ object Utility extends AnyRef with parsing.TokenTests {
     {
       if (children.isEmpty) ()
       else if (children forall isAtomAndNotText) { // add space
-        val it = children.iterator
-        val f = it.next()
+        val it: Iterator[Node] = children.iterator
+        val f: Node = it.next()
         serialize(f, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
         while (it.hasNext) {
-          val x = it.next()
+          val x: Node = it.next()
           sb.append(' ')
           serialize(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
         }
@@ -274,7 +274,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   /**
    * Returns a hashcode for the given constituents of a node
    */
-  def hashCode(pre: String, label: String, attribHashCode: Int, scpeHash: Int, children: Seq[Node]) =
+  def hashCode(pre: String, label: String, attribHashCode: Int, scpeHash: Int, children: Seq[Node]): Int =
     scala.util.hashing.MurmurHash3.orderedHash(label +: attribHashCode +: scpeHash +: children, pre.##)
 
   def appendQuoted(s: String): String = sbToString(appendQuoted(s, _))
@@ -283,8 +283,8 @@ object Utility extends AnyRef with parsing.TokenTests {
    * Appends &quot;s&quot; if string `s` does not contain &quot;,
    * &apos;s&apos; otherwise.
    */
-  def appendQuoted(s: String, sb: StringBuilder) = {
-    val ch = if (s contains '"') '\'' else '"'
+  def appendQuoted(s: String, sb: StringBuilder): StringBuilder = {
+    val ch: Char = if (s contains '"') '\'' else '"'
     sb.append(ch).append(s).append(ch)
   }
 
@@ -304,7 +304,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   def getName(s: String, index: Int): String = {
     if (index >= s.length) null
     else {
-      val xs = s drop index
+      val xs: String = s drop index
       if (xs.nonEmpty && isNameStart(xs.head)) xs takeWhile isNameChar
       else ""
     }
@@ -315,13 +315,13 @@ object Utility extends AnyRef with parsing.TokenTests {
    * error message if it isn't.
    */
   def checkAttributeValue(value: String): String = {
-    var i = 0
+    var i: Int = 0
     while (i < value.length) {
       value.charAt(i) match {
         case '<' =>
           return "< not allowed in attribute value"
         case '&' =>
-          val n = getName(value, i + 1)
+          val n: String = getName(value, i + 1)
           if (n eq null)
             return "malformed entity reference in attribute value [" + value + "]"
           i = i + n.length + 1
@@ -335,19 +335,19 @@ object Utility extends AnyRef with parsing.TokenTests {
   }
 
   def parseAttributeValue(value: String): Seq[Node] = {
-    val sb = new StringBuilder
+    val sb: StringBuilder = new StringBuilder
     var rfb: StringBuilder = null
-    val nb = new NodeBuffer()
+    val nb: NodeBuffer = new NodeBuffer()
 
-    val it = value.iterator
+    val it: Iterator[Char] = value.iterator
     while (it.hasNext) {
-      var c = it.next()
+      var c: Char = it.next()
       // entity! flush buffer into text node
       if (c == '&') {
         c = it.next()
         if (c == '#') {
           c = it.next()
-          val theChar = parseCharRef ({ () => c }, { () => c = it.next() }, { s => throw new RuntimeException(s) }, { s => throw new RuntimeException(s) })
+          val theChar: String = parseCharRef ({ () => c }, { () => c = it.next() }, { s => throw new RuntimeException(s) }, { s => throw new RuntimeException(s) })
           sb.append(theChar)
         } else {
           if (rfb eq null) rfb = new StringBuilder()
@@ -357,7 +357,7 @@ object Utility extends AnyRef with parsing.TokenTests {
             rfb.append(c)
             c = it.next()
           }
-          val ref = rfb.toString()
+          val ref: String = rfb.toString()
           rfb.clear()
           unescape(ref, sb) match {
             case null =>
@@ -372,7 +372,7 @@ object Utility extends AnyRef with parsing.TokenTests {
       } else sb append c
     }
     if (sb.nonEmpty) { // flush buffer
-      val x = Text(sb.toString())
+      val x: Text = Text(sb.toString())
       if (nb.isEmpty)
         return x
       else
@@ -389,9 +389,9 @@ object Utility extends AnyRef with parsing.TokenTests {
    * See [66]
    */
   def parseCharRef(ch: () => Char, nextch: () => Unit, reportSyntaxError: String => Unit, reportTruncatedError: String => Unit): String = {
-    val hex = (ch() == 'x') && { nextch(); true }
-    val base = if (hex) 16 else 10
-    var i = 0
+    val hex: Boolean = (ch() == 'x') && { nextch(); true }
+    val base: Int = if (hex) 16 else 10
+    var i: Int = 0
     while (ch() != ';') {
       ch() match {
         case '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' =>

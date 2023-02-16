@@ -109,14 +109,14 @@ sealed abstract class EntityDef {
 
 case class IntDef(value: String) extends EntityDef {
   private def validateValue(): Unit = {
-    var tmp = value
-    var ix = tmp indexOf '%'
+    var tmp: String = value
+    var ix: Int = tmp indexOf '%'
     while (ix != -1) {
-      val iz = tmp.indexOf(';', ix)
+      val iz: Int = tmp.indexOf(';', ix)
       if (iz == -1 && iz == ix + 1)
         throw new IllegalArgumentException("no % allowed in entity value, except for parameter-entity-references")
       else {
-        val n = tmp.substring(ix, iz)
+        val n: String = tmp.substring(ix, iz)
 
         if (!Utility.isName(n))
           throw new IllegalArgumentException("internal entity def: \"" + n + "\" must be an XML Name")
@@ -156,12 +156,12 @@ sealed abstract class DefaultDecl {
 
 case object REQUIRED extends DefaultDecl {
   override def toString(): String = "#REQUIRED"
-  override def buildString(sb: StringBuilder) = sb append "#REQUIRED"
+  override def buildString(sb: StringBuilder): StringBuilder = sb append "#REQUIRED"
 }
 
 case object IMPLIED extends DefaultDecl {
   override def toString(): String = "#IMPLIED"
-  override def buildString(sb: StringBuilder) = sb append "#IMPLIED"
+  override def buildString(sb: StringBuilder): StringBuilder = sb append "#IMPLIED"
 }
 
 case class DEFAULT(fixed: Boolean, attValue: String) extends DefaultDecl {

@@ -28,16 +28,16 @@ case class ProcInstr(target: String, proctext: String) extends SpecialNode {
   if (target.toLowerCase == "xml")
     throw new IllegalArgumentException(target + " is reserved")
 
-  final override def doCollectNamespaces = false
-  final override def doTransform = false
+  final override def doCollectNamespaces: Boolean = false
+  final override def doTransform: Boolean = false
 
-  final override def label = "#PI"
-  override def text = ""
+  final override def label: String = "#PI"
+  override def text: String = ""
 
   /**
    * appends &quot;&lt;?&quot; target (&quot; &quot;+text)?+&quot;?&gt;&quot;
    *  to this stringbuffer.
    */
-  override def buildString(sb: StringBuilder) =
+  override def buildString(sb: StringBuilder): StringBuilder =
     sb append "<?%s%s?>".format(target, if (proctext == "") "" else " " + proctext)
 }

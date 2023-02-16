@@ -8,8 +8,7 @@ import org.junit.Assert.assertEquals
 
 class TransformersTest {
 
-
-  def transformer = new RuleTransformer(new RewriteRule {
+  def transformer: RuleTransformer = new RuleTransformer(new RewriteRule {
     override def transform(n: Node): NodeSeq = n match {
       case <t>{ _* }</t> => <q/>
       case n => n
@@ -17,17 +16,17 @@ class TransformersTest {
   })
 
   @Test
-  def transform = // SI-2124
+  def transform(): Unit = // SI-2124
     assertEquals(transformer.transform(<p><lost/><t><s><r></r></s></t></p>),
       <p><lost/><q/></p>)
 
   @Test
-  def transformNamespaced = // SI-2125
+  def transformNamespaced(): Unit = // SI-2125
     assertEquals(transformer.transform(<xml:group><p><lost/><t><s><r></r></s></t></p></xml:group>),
       Group(<p><lost/><q/></p>))
 
   @Test
-  def rewriteRule = { // SI-2276
+  def rewriteRule(): Unit = { // SI-2276
     val inputXml: Node =
       <root>
         <subnode>
@@ -45,7 +44,7 @@ class TransformersTest {
       }
     }
 
-    val ruleTransformer = new RuleTransformer(t1)
+    val ruleTransformer: RuleTransformer = new RuleTransformer(t1)
     JUnitAssertsForXML.assertEquals(ruleTransformer(inputXml).toString, // TODO: why do we need toString?
       <root>
         <subnode>
@@ -58,10 +57,10 @@ class TransformersTest {
   }
 
   @Test
-  def preserveReferentialComplexityInLinearComplexity = { // SI-4528
-    var i = 0
+  def preserveReferentialComplexityInLinearComplexity(): Unit = { // SI-4528
+    var i: Int = 0
 
-    val xmlNode = <a><b><c><h1>Hello Example</h1></c></b></a>
+    val xmlNode: Elem = <a><b><c><h1>Hello Example</h1></c></b></a>
 
     new RuleTransformer(new RewriteRule {
       override def transform(n: Node): Seq[Node] = {
@@ -78,15 +77,15 @@ class TransformersTest {
   }
 
   @Test
-  def appliesRulesRecursivelyOnPreviousChanges = { // #257
-    def add(outer: Elem, inner: Node) = new RewriteRule {
+  def appliesRulesRecursivelyOnPreviousChanges(): Unit = { // #257
+    def add(outer: Elem, inner: Node): RewriteRule = new RewriteRule {
       override def transform(n: Node): Seq[Node] = n match {
         case e: Elem if e.label == outer.label => e.copy(child = e.child ++ inner)
         case other => other
       }
     }
 
-    def transformer = new RuleTransformer(add(<element/>, <new/>), add(<new/>, <thing/>))
+    def transformer: RuleTransformer = new RuleTransformer(add(<element/>, <new/>), add(<new/>, <thing/>))
 
     assertEquals(<element><new><thing/></new></element>, transformer(<element/>))
   }

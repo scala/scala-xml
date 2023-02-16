@@ -14,20 +14,19 @@ package scala
 package xml
 
 import factory.XMLLoader
-import java.io.{File, FileDescriptor, FileInputStream, FileOutputStream}
-import java.io.{InputStream, Reader, StringReader}
+import java.io.{File, FileDescriptor, FileInputStream, FileOutputStream, InputStream, Reader, StringReader, Writer}
 import java.nio.channels.Channels
 import scala.util.control.Exception.ultimately
 
 object Source {
-  def fromFile(file: File) = new InputSource(new FileInputStream(file))
-  def fromFile(fd: FileDescriptor) = new InputSource(new FileInputStream(fd))
-  def fromFile(name: String) = new InputSource(new FileInputStream(name))
+  def fromFile(file: File): InputSource = new InputSource(new FileInputStream(file))
+  def fromFile(fd: FileDescriptor): InputSource = new InputSource(new FileInputStream(fd))
+  def fromFile(name: String): InputSource = new InputSource(new FileInputStream(name))
 
-  def fromInputStream(is: InputStream) = new InputSource(is)
-  def fromReader(reader: Reader) = new InputSource(reader)
-  def fromSysId(sysID: String) = new InputSource(sysID)
-  def fromString(string: String) = fromReader(new StringReader(string))
+  def fromInputStream(is: InputStream): InputSource = new InputSource(is)
+  def fromReader(reader: Reader): InputSource = new InputSource(reader)
+  def fromSysId(sysID: String): InputSource = new InputSource(sysID)
+  def fromString(string: String): InputSource = fromReader(new StringReader(string))
 }
 
 /**
@@ -38,18 +37,18 @@ object MinimizeMode extends Enumeration {
    * Minimize empty tags if they were originally empty when parsed, or if they were constructed
    *  with [[scala.xml.Elem]]`#minimizeEmpty` == true
    */
-  val Default = Value
+  val Default: Value = Value
 
   /**
    * Always minimize empty tags.  Note that this may be problematic for XHTML, in which
    * case [[scala.xml.Xhtml]]`#toXhtml` should be used instead.
    */
-  val Always = Value
+  val Always: Value = Value
 
   /**
    * Never minimize empty tags.
    */
-  val Never = Value
+  val Never: Value = Value
 }
 
 /**
@@ -60,13 +59,13 @@ object MinimizeMode extends Enumeration {
  *  @author  Burak Emir
  */
 object XML extends XMLLoader[Elem] {
-  val xml = "xml"
-  val xmlns = "xmlns"
-  val namespace = "http://www.w3.org/XML/1998/namespace"
-  val preserve = "preserve"
-  val space = "space"
-  val lang = "lang"
-  val encoding = "UTF-8"
+  val xml: String = "xml"
+  val xmlns: String = "xmlns"
+  val namespace: String = "http://www.w3.org/XML/1998/namespace"
+  val preserve: String = "preserve"
+  val space: String = "space"
+  val lang: String = "lang"
+  val encoding: String = "UTF-8"
 
   /** Returns an XMLLoader whose load* methods will use the supplied SAXParser. */
   def withSAXParser(p: SAXParser): XMLLoader[Elem] =
@@ -97,8 +96,8 @@ object XML extends XMLLoader[Elem] {
     xmlDecl: Boolean = false,
     doctype: dtd.DocType = null): Unit =
     {
-      val fos = new FileOutputStream(filename)
-      val w = Channels.newWriter(fos.getChannel, enc)
+      val fos: FileOutputStream = new FileOutputStream(filename)
+      val w: Writer = Channels.newWriter(fos.getChannel, enc)
 
       ultimately(w.close())(
         write(w, node, enc, xmlDecl, doctype)

@@ -40,7 +40,7 @@ class PCData(data: String) extends Atom[String](data) {
  *  @author  Burak Emir
  */
 object PCData {
-  def apply(data: String) = new PCData(data)
+  def apply(data: String): PCData = new PCData(data)
   def unapply(other: Any): Option[String] = other match {
     case x: PCData => Some(x.data)
     case _         => None

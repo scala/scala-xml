@@ -15,13 +15,11 @@ package xml
 package include.sax
 
 import scala.xml.include._
-
 import org.xml.sax.{Attributes, Locator, XMLReader}
 import org.xml.sax.helpers.{AttributesImpl, NamespaceSupport, XMLFilterImpl, XMLReaderFactory}
 
 import java.io.{BufferedInputStream, IOException, InputStreamReader, UnsupportedEncodingException}
-import java.util.Stack
-import java.net.{MalformedURLException, URL}
+import java.net.{MalformedURLException, URL, URLConnection}
 
 /**
  * This is a SAX filter which resolves all XInclude include elements before
@@ -72,10 +70,10 @@ import java.net.{MalformedURLException, URL}
  */
 class XIncludeFilter extends XMLFilterImpl {
 
-  final val XINCLUDE_NAMESPACE = "http://www.w3.org/2001/XInclude"
+  final val XINCLUDE_NAMESPACE: String = "http://www.w3.org/2001/XInclude"
 
-  private val bases = new Stack[URL]()
-  private val locators = new Stack[Locator]()
+  private val bases: java.util.Stack[URL] = new java.util.Stack[URL]()
+  private val locators: java.util.Stack[Locator] = new java.util.Stack[Locator]()
 
   /*    private EntityResolver resolver;
 
@@ -92,7 +90,7 @@ class XIncludeFilter extends XMLFilterImpl {
   // there????
   override def setDocumentLocator(locator: Locator): Unit = {
     locators push locator
-    val base = locator.getSystemId
+    val base: String = locator.getSystemId
     try {
       bases.push(new URL(base))
     } catch {
@@ -103,7 +101,7 @@ class XIncludeFilter extends XMLFilterImpl {
   }
 
   // necessary to throw away contents of non-empty XInclude elements
-  private var level = 0
+  private var level: Int = 0
 
   /**
    * This utility method returns true if and only if this reader is
@@ -118,14 +116,14 @@ class XIncludeFilter extends XMLFilterImpl {
   def insideIncludeElement(): Boolean = level != 0
 
   override def startElement(uri: String, localName: String, qName: String, atts1: Attributes): Unit = {
-    var atts = atts1
+    var atts: Attributes = atts1
     if (level == 0) { // We're not inside an xi:include element
 
       // Adjust bases stack by pushing either the new
       // value of xml:base or the base of the parent
-      val base = atts.getValue(NamespaceSupport.XMLNS, "base")
-      val parentBase = bases.peek()
-      var currentBase = parentBase
+      val base: String = atts.getValue(NamespaceSupport.XMLNS, "base")
+      val parentBase: URL = bases.peek()
+      var currentBase: URL = parentBase
       if (base != null) {
         try {
           currentBase = new URL(parentBase, base)
@@ -139,17 +137,17 @@ class XIncludeFilter extends XMLFilterImpl {
 
       if (uri.equals(XINCLUDE_NAMESPACE) && localName.equals("include")) {
         // include external document
-        val href = atts.getValue("href")
+        val href: String = atts.getValue("href")
         // Verify that there is an href attribute
         if (href == null) {
           throw new SAXException("Missing href attribute")
         }
 
-        var parse = atts getValue "parse"
+        var parse: String = atts getValue "parse"
         if (parse == null) parse = "xml"
 
         if (parse equals "text") {
-          val encoding = atts getValue "encoding"
+          val encoding: String = atts getValue "encoding"
           includeTextDocument(href, encoding)
         } else if (parse equals "xml") {
           includeXMLDocument(href)
@@ -162,7 +160,7 @@ class XIncludeFilter extends XMLFilterImpl {
       } else {
         if (atRoot) {
           // add xml:base attribute if necessary
-          val attsImpl = new AttributesImpl(atts)
+          val attsImpl: AttributesImpl = new AttributesImpl(atts)
           attsImpl.addAttribute(NamespaceSupport.XMLNS, "base",
             "xml:base", "CDATA", currentBase.toExternalForm)
           atts = attsImpl
@@ -183,7 +181,7 @@ class XIncludeFilter extends XMLFilterImpl {
     }
   }
 
-  private var depth = 0
+  private var depth: Int = 0
 
   override def startDocument(): Unit = {
     level = 0
@@ -225,12 +223,12 @@ class XIncludeFilter extends XMLFilterImpl {
 
   // convenience method for error messages
   private def getLocation(): String = {
-    var locationString = ""
-    val locator = locators.peek()
-    var publicID = ""
-    var systemID = ""
-    var column = -1
-    var line = -1
+    var locationString: String = ""
+    val locator: Locator = locators.peek()
+    var publicID: String = ""
+    var systemID: String = ""
+    var column: Int = -1
+    var line: Int = -1
     if (locator != null) {
       publicID = locator.getPublicId
       systemID = locator.getSystemId
@@ -257,25 +255,25 @@ class XIncludeFilter extends XMLFilterImpl {
    * or if the encoding is not recognized
    */
   private def includeTextDocument(url: String, encoding1: String): Unit = {
-    var encoding = encoding1
+    var encoding: String = encoding1
     if (encoding == null || encoding.trim().equals("")) encoding = "UTF-8"
     var source: URL = null
     try {
-      val base = bases.peek()
+      val base: URL = bases.peek()
       source = new URL(base, url)
     } catch {
       case e: MalformedURLException =>
-        val ex = new UnavailableResourceException("Unresolvable URL " + url
+        val ex: UnavailableResourceException = new UnavailableResourceException("Unresolvable URL " + url
           + getLocation())
         ex.setRootCause(e)
         throw new SAXException("Unresolvable URL " + url + getLocation(), ex)
     }
 
     try {
-      val uc = source.openConnection()
-      val in = new BufferedInputStream(uc.getInputStream)
-      val encodingFromHeader = uc.getContentEncoding
-      var contentType = uc.getContentType
+      val uc: URLConnection = source.openConnection()
+      val in: BufferedInputStream = new BufferedInputStream(uc.getInputStream)
+      val encodingFromHeader: String = uc.getContentEncoding
+      var contentType: String = uc.getContentType
       if (encodingFromHeader != null)
         encoding = encodingFromHeader
       else {
@@ -292,8 +290,8 @@ class XIncludeFilter extends XMLFilterImpl {
           }
         }
       }
-      val reader = new InputStreamReader(in, encoding)
-      val c = new Array[Char](1024)
+      val reader: InputStreamReader = new InputStreamReader(in, encoding)
+      val c: Array[Char] = new Array[Char](1024)
       var charsRead: Int = 0 // bogus init value
       while ({ {
         charsRead = reader.read(c, 0, 1024)
@@ -310,7 +308,7 @@ class XIncludeFilter extends XMLFilterImpl {
 
   }
 
-  private var atRoot = false
+  private var atRoot: Boolean = false
 
   /**
    * This utility method reads a document at a specified URL
@@ -323,11 +321,11 @@ class XIncludeFilter extends XMLFilterImpl {
    * be downloaded from the specified URL.
    */
   private def includeXMLDocument(url: String): Unit = {
-    val source =
+    val source: URL =
       try new URL(bases.peek(), url)
       catch {
         case e: MalformedURLException =>
-          val ex = new UnavailableResourceException("Unresolvable URL " + url + getLocation())
+          val ex: UnavailableResourceException = new UnavailableResourceException("Unresolvable URL " + url + getLocation())
           ex setRootCause e
           throw new SAXException("Unresolvable URL " + url + getLocation(), ex)
       }
@@ -342,12 +340,12 @@ class XIncludeFilter extends XMLFilterImpl {
         }
 
       parser setContentHandler this
-      val resolver = this.getEntityResolver
+      val resolver: EntityResolver = this.getEntityResolver
       if (resolver != null)
         parser setEntityResolver resolver
 
       // save old level and base
-      val previousLevel = level
+      val previousLevel: Int = level
       this.level = 0
       if (bases contains source)
         throw new SAXException(

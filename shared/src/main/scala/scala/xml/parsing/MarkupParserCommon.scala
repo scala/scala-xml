@@ -23,7 +23,7 @@ import Utility.SU
  *  All members should be accessed through those.
  */
 private[scala] trait MarkupParserCommon extends TokenTests {
-  protected def unreachable = truncatedError("Cannot be reached.")
+  protected def unreachable: Nothing = truncatedError("Cannot be reached.")
 
   // type HandleType       // MarkupHandler, SymbolicXMLBuilder
   type InputType // Source, CharArrayReader
@@ -41,7 +41,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
    *  [44] EmptyElemTag ::= '<' Name { S Attribute } [S]
    */
   protected def xTag(pscope: NamespaceType): (String, AttributesType) = {
-    val name = xName
+    val name: String = xName
     xSpaceOpt()
 
     (name, mkAttributes(name, pscope))
@@ -53,7 +53,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
    * see [15]
    */
   def xProcInstr: ElementType = {
-    val n = xName
+    val n: String = xName
     xSpaceOpt()
     xTakeUntil(mkProcInstr(_, n, _), () => tmppos, "?>")
   }
@@ -63,7 +63,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
    * @param endCh either `'` or `"`
    */
   def xAttributeValue(endCh: Char): String = {
-    val buf = new StringBuilder
+    val buf: StringBuilder = new StringBuilder
     while (ch != endCh && !eof) {
       // well-formedness constraint
       if (ch == '<') reportSyntaxError("'<' not allowed in attrib value")
@@ -76,13 +76,13 @@ private[scala] trait MarkupParserCommon extends TokenTests {
   }
 
   def xAttributeValue(): String = {
-    val str = xAttributeValue(ch_returning_nextch)
+    val str: String = xAttributeValue(ch_returning_nextch)
     // well-formedness constraint
     normalizeAttributeValue(str)
   }
 
   private def takeUntilChar(it: Iterator[Char], end: Char): String = {
-    val buf = new StringBuilder
+    val buf: StringBuilder = new StringBuilder
     while (it.hasNext) it.next() match {
       case `end` => return buf.toString
       case ch    => buf append ch
@@ -117,7 +117,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     else if (!isNameStart(ch))
       return errorAndResult("name expected, but char '%s' cannot start a name" format ch, "")
 
-    val buf = new StringBuilder
+    val buf: StringBuilder = new StringBuilder
 
     while ({ buf append ch_returning_nextch
     ; isNameChar(ch)}) ()
@@ -128,7 +128,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     } else buf.toString
   }
 
-  private def attr_unescape(s: String) = s match {
+  private def attr_unescape(s: String): String = s match {
     case "lt"    => "<"
     case "gt"    => ">"
     case "amp"   => "&"
@@ -143,8 +143,8 @@ private[scala] trait MarkupParserCommon extends TokenTests {
    *  see spec 3.3.3
    */
   private def normalizeAttributeValue(attval: String): String = {
-    val buf = new StringBuilder
-    val it = attval.iterator.buffered
+    val buf: StringBuilder = new StringBuilder
+    val it: BufferedIterator[Char] = attval.iterator.buffered
 
     while (it.hasNext) buf append (it.next() match {
       case ' ' | '\t' | '\n' | '\r' => " "
@@ -167,7 +167,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     Utility.parseCharRef(ch, nextch, reportSyntaxError, truncatedError)
 
   def xCharRef(it: Iterator[Char]): String = {
-    var c = it.next()
+    var c: Char = it.next()
     Utility.parseCharRef(() => c, () => { c = it.next() }, reportSyntaxError, truncatedError)
   }
 
@@ -211,13 +211,13 @@ private[scala] trait MarkupParserCommon extends TokenTests {
   def xToken(that: Seq[Char]): Unit = { that foreach xToken }
 
   /** scan [S] '=' [S]*/
-  def xEQ() = { xSpaceOpt(); xToken('='); xSpaceOpt() }
+  def xEQ(): Unit = { xSpaceOpt(); xToken('='); xSpaceOpt() }
 
   /** skip optional space S? */
-  def xSpaceOpt() = while (isSpace(ch) && !eof) nextch()
+  def xSpaceOpt(): Unit = while (isSpace(ch) && !eof) nextch()
 
   /** scan [3] S ::= (#x20 | #x9 | #xD | #xA)+ */
-  def xSpace() =
+  def xSpace(): Unit =
     if (isSpace(ch)) { nextch(); xSpaceOpt() }
     else xHandleError(ch, "whitespace expected")
 
@@ -226,7 +226,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
 
   /** Execute body with a variable saved and restored after execution */
   def saving[A, B](getter: A, setter: A => Unit)(body: => B): B = {
-    val saved = getter
+    val saved: A = getter
     try body
     finally setter(saved)
   }
@@ -241,9 +241,9 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     positioner: () => PositionType,
     until: String): T =
     {
-      val sb = new StringBuilder
-      val head = until.head
-      val rest = until.tail
+      val sb: StringBuilder = new StringBuilder
+      val head: Char = until.head
+      val rest: String = until.tail
 
       while (!eof) {
         if (ch == head && peek(rest))

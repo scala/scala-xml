@@ -6,23 +6,23 @@ import org.junit.Test
 final class CommentTest {
 
   @Test(expected=classOf[IllegalArgumentException])
-  def invalidCommentWithTwoDashes: Unit = {
+  def invalidCommentWithTwoDashes(): Unit = {
     Comment("invalid--comment")
   }
 
   @Test(expected=classOf[IllegalArgumentException])
-  def invalidCommentWithFinalDash: Unit = {
+  def invalidCommentWithFinalDash(): Unit = {
     Comment("invalid comment-")
   }
 
   @Test
-  def validCommentWithDash: Unit = {
+  def validCommentWithDash(): Unit = {
     val valid: String = "valid-comment"
     assertEquals(s"<!--$valid-->", Comment(valid).toString)
   }
 
   @Test
-  def validEmptyComment: Unit = {
+  def validEmptyComment(): Unit = {
     val valid: String = ""
     assertEquals(s"<!--$valid-->", Comment(valid).toString)
   }

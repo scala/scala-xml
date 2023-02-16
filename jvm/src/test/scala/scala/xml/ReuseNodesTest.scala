@@ -19,8 +19,8 @@ object ReuseNodesTest {
  
   class OriginalTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
     override def transform(ns: Seq[Node]): Seq[Node] = {
-      val xs = ns.toStream map transform
-      val (xs1, xs2) = xs.zip(ns).span { case (x, n) => unchanged(n, x) }
+      val xs: Seq[Seq[Node]] = ns.toStream map transform
+      val (xs1: Seq[(Seq[Node], Node)], xs2: Seq[(Seq[Node], Node)]) = xs.zip(ns).span { case (x, n) => unchanged(n, x) }
        
       if (xs2.isEmpty) ns
       else xs1.map(_._2) ++ xs2.head._1 ++ transform(ns.drop(xs1.length + 1))
@@ -30,7 +30,7 @@ object ReuseNodesTest {
 
   class ModifiedTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
     override def transform(ns: Seq[Node]): Seq[Node] = {
-      val changed = ns flatMap transform
+      val changed: Seq[Node] = ns flatMap transform
       
       if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
       else ns
@@ -40,8 +40,8 @@ object ReuseNodesTest {
 
   class AlternateTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
     override def transform(ns: Seq[Node]): Seq[Node] = {
-      val xs = ns.toStream.map(transform)
-      val (xs1, xs2) = xs.zip(ns).span { case (x, n) => unchanged(n, x) }
+      val xs: Seq[Seq[Node]] = ns.toStream.map(transform)
+      val (xs1: Seq[(Seq[Node], Node)], xs2: Seq[(Seq[Node], Node)]) = xs.zip(ns).span { case (x, n) => unchanged(n, x) }
        
       if (xs2.isEmpty) ns
       else xs1.map(_._2) ++ xs2.head._1 ++ transform(ns.drop(xs1.length + 1))
@@ -49,7 +49,7 @@ object ReuseNodesTest {
     override def transform(n: Node): Seq[Node] = super.transform(n)
   }
    
-  def rewriteRule = new RewriteRule {
+  def rewriteRule: RewriteRule = new RewriteRule {
     override def transform(n: Node): NodeSeq = n match {
       case n if n.label == "change" => Elem(
            n.prefix, "changed", n.attributes, n.scope, n.child.isEmpty, n.child : _*)
@@ -58,7 +58,7 @@ object ReuseNodesTest {
   }
 
   @DataPoints 
-  def tranformers() = Array(
+  def tranformers(): Array[RuleTransformer] = Array(
       new OriginalTranformr(rewriteRule),
       new ModifiedTranformr(rewriteRule),
       new AlternateTranformr(rewriteRule))
@@ -68,16 +68,16 @@ object ReuseNodesTest {
 class ReuseNodesTest {
    
   @Theory
-  def transformReferentialEquality(rt: RuleTransformer) = {
-    val original = <p><lost/></p>
-    val tranformed = rt.transform(original)
+  def transformReferentialEquality(rt: RuleTransformer): Unit = {
+    val original: Elem = <p><lost/></p>
+    val tranformed: Seq[Node] = rt.transform(original)
     assertSame(original, tranformed)
   }
       
   @Theory
-  def transformReferentialEqualityOnly(rt: RuleTransformer) = {
-    val original = <changed><change><lost/><a><b><c/></b></a></change><a><b><c/></b></a></changed>
-    val transformed = rt.transform(original)
+  def transformReferentialEqualityOnly(rt: RuleTransformer): Unit = {
+    val original: Elem = <changed><change><lost/><a><b><c/></b></a></change><a><b><c/></b></a></changed>
+    val transformed: Seq[Node] = rt.transform(original)
     recursiveAssert(original,transformed)
   }
   

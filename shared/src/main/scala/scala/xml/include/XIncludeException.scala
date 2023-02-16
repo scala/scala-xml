@@ -32,7 +32,7 @@ class XIncludeException(message: String) extends Exception(message) {
    */
   def this() = this(null)
 
-  private var rootCause: Throwable = null
+  private var rootCause: Throwable = _
 
   /**
    * When an `IOException`, `MalformedURLException` or other generic
@@ -58,5 +58,4 @@ class XIncludeException(message: String) extends Exception(message) {
    *                     `XIncludeException` to be thrown
    */
   def getRootCause(): Throwable = this.rootCause
-
 }

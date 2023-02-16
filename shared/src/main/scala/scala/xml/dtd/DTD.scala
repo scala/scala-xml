@@ -23,7 +23,7 @@ import scala.collection.Seq
  *  @author Burak Emir
  */
 abstract class DTD {
-  var externalID: ExternalID = null
+  var externalID: ExternalID = _
   var decls: List[Decl] = Nil
   def notations: Seq[NotationDecl] = Nil
   def unparsedEntities: Seq[EntityDecl] = Nil
@@ -32,7 +32,7 @@ abstract class DTD {
   var attr: mutable.Map[String, AttListDecl] = new mutable.HashMap[String, AttListDecl]()
   var ent: mutable.Map[String, EntityDecl] = new mutable.HashMap[String, EntityDecl]()
 
-  override def toString =
+  override def toString: String =
     "DTD [\n%s%s]".format(
       Option(externalID).getOrElse(""),
       decls.mkString("", "\n", "\n")

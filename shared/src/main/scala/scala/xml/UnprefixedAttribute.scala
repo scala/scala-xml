@@ -25,8 +25,8 @@ class UnprefixedAttribute(
   override val value: Seq[Node],
   next1: MetaData)
   extends Attribute {
-  final override val pre = null
-  override val next = if (value ne null) next1 else next1.remove(key)
+  final override val pre: scala.Null = null
+  override val next: MetaData = if (value ne null) next1 else next1.remove(key)
 
   /** same as this(key, Text(value), next), or no attribute if value is null */
   def this(key: String, value: String, next: MetaData) =
@@ -37,7 +37,7 @@ class UnprefixedAttribute(
     this(key, value.orNull, next)
 
   /** returns a copy of this unprefixed attribute with the given next field*/
-  override def copy(next: MetaData) = new UnprefixedAttribute(key, value, next)
+  override def copy(next: MetaData): UnprefixedAttribute = new UnprefixedAttribute(key, value, next)
 
   final override def getNamespace(owner: Node): String = null
 
@@ -62,5 +62,5 @@ class UnprefixedAttribute(
     next(namespace, scope, key)
 }
 object UnprefixedAttribute {
-  def unapply(x: UnprefixedAttribute) = Some((x.key, x.value, x.next))
+  def unapply(x: UnprefixedAttribute) /* TODO type annotation */ = Some((x.key, x.value, x.next))
 }

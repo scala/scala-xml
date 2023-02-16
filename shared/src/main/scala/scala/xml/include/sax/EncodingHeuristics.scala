@@ -15,6 +15,7 @@ package xml
 package include.sax
 
 import java.io.InputStream
+import scala.util.matching.Regex
 
 /**
  * `EncodingHeuristics` reads from a stream
@@ -29,13 +30,13 @@ import java.io.InputStream
 object EncodingHeuristics {
   object EncodingNames {
     // UCS-4 isn't yet implemented in java releases anyway...
-    val bigUCS4 = "UCS-4"
-    val littleUCS4 = "UCS-4"
-    val unusualUCS4 = "UCS-4"
-    val bigUTF16 = "UTF-16BE"
-    val littleUTF16 = "UTF-16LE"
-    val utf8 = "UTF-8"
-    val default = utf8
+    val bigUCS4: String = "UCS-4"
+    val littleUCS4: String = "UCS-4"
+    val unusualUCS4: String = "UCS-4"
+    val bigUTF16: String = "UTF-16BE"
+    val littleUTF16: String = "UTF-16LE"
+    val utf8: String = "UTF-8"
+    val default: String = utf8
   }
   import EncodingNames._
 
@@ -50,13 +51,13 @@ object EncodingHeuristics {
    */
   def readEncodingFromStream(in: InputStream): String = {
     var ret: String = null
-    val bytesToRead = 1024 // enough to read most XML encoding declarations
-    def resetAndRet = { in.reset(); ret }
+    val bytesToRead: Int = 1024 // enough to read most XML encoding declarations
+    def resetAndRet: String = { in.reset(); ret }
 
     // This may fail if there are a lot of space characters before the end
     // of the encoding declaration
     in mark bytesToRead
-    val bytes = (in.read, in.read, in.read, in.read)
+    val bytes: (Int, Int, Int, Int) = (in.read, in.read, in.read, in.read)
 
     // first look for byte order mark
     ret = bytes match {
@@ -73,12 +74,12 @@ object EncodingHeuristics {
       return resetAndRet
 
     def readASCIIEncoding: String = {
-      val data = new Array[Byte](bytesToRead - 4)
-      val length = in.read(data, 0, bytesToRead - 4)
+      val data: Array[Byte] = new Array[Byte](bytesToRead - 4)
+      val length: Int = in.read(data, 0, bytesToRead - 4)
 
       // Use Latin-1 (ISO-8859-1) because all byte sequences are legal.
-      val declaration = new String(data, 0, length, "ISO-8859-1")
-      val regexp = """(?m).*?encoding\s*=\s*["'](.+?)['"]""".r
+      val declaration: String = new String(data, 0, length, "ISO-8859-1")
+      val regexp: Regex = """(?m).*?encoding\s*=\s*["'](.+?)['"]""".r
       regexp.findFirstMatchIn(declaration) match {
         case None     => default
         case Some(md) => md.subgroups(0)

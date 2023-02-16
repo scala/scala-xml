@@ -10,12 +10,12 @@ class BillionLaughsAttackTest {
    * this is the limit imposed by the JDK.
    */
   @Test(expected=classOf[org.xml.sax.SAXParseException])
-  def lolzTest: Unit = {
+  def lolzTest(): Unit = {
     XML.loadString(lolz)
   }
 
   // Copied from https://msdn.microsoft.com/en-us/magazine/ee335713.aspx
-  val lolz =
+  val lolz: String =
     """<?xml version="1.0"?>
       |<!DOCTYPE lolz [
       | <!ENTITY lol "lol">
@@ -32,5 +32,4 @@ class BillionLaughsAttackTest {
       |]>
       |<lolz>&lol9;</lolz>
       |""".stripMargin
-
 }

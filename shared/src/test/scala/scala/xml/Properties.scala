@@ -14,6 +14,6 @@ package scala
 package xml
 
 object Properties extends util.PropertiesTrait {
-  override protected def propCategory    = "scala-xml"
-  override protected def pickJarBasedOn  = classOf[scala.xml.Node]
+  override protected def propCategory: String = "scala-xml"
+  override protected def pickJarBasedOn: Class[Node] = classOf[Node]
 }

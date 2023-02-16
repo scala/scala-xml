@@ -26,7 +26,7 @@ object Elem {
   def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, minimizeEmpty: Boolean, child: Node*): Elem =
     new Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
 
-  def unapplySeq(n: Node) = n match {
+  def unapplySeq(n: Node) /* TODO type annotation */ = n match {
     case _: SpecialNode | _: Group => None
     case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
   }
@@ -60,10 +60,10 @@ class Elem(
   override val child: Node*
 ) extends Node with Serializable {
 
-  final override def doCollectNamespaces = true
-  final override def doTransform = true
+  final override def doCollectNamespaces: Boolean = true
+  final override def doTransform: Boolean = true
 
-  override val attributes = MetaData.normalize(attributes1, scope)
+  override val attributes: MetaData = MetaData.normalize(attributes1, scope)
 
   if (prefix == "")
     throw new IllegalArgumentException("prefix of zero length, use null instead")
@@ -106,5 +106,5 @@ class Elem(
   /**
    * Returns concatenation of `text(n)` for each child `n`.
    */
-  override def text = (child map (_.text)).mkString
+  override def text: String = (child map (_.text)).mkString
 }

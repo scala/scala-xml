@@ -38,8 +38,8 @@ trait TokenTests {
   final def isSpace(cs: Seq[Char]): Boolean = cs.nonEmpty && (cs forall isSpace)
 
   /** These are 99% sure to be redundant but refactoring on the safe side. */
-  def isAlpha(c: Char) = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
-  def isAlphaDigit(c: Char) = isAlpha(c) || (c >= '0' && c <= '9')
+  def isAlpha(c: Char): Boolean = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+  def isAlphaDigit(c: Char): Boolean = isAlpha(c) || (c >= '0' && c <= '9')
 
   /**
    * {{{
@@ -48,7 +48,7 @@ trait TokenTests {
    *  }}}
    *  See [4] and [4a] of Appendix B of XML 1.0 specification.
    */
-  def isNameChar(ch: Char) = {
+  def isNameChar(ch: Char): Boolean = {
     import java.lang.Character._
     // The constants represent groups Mc, Me, Mn, Lm, and Nd.
 
@@ -70,7 +70,7 @@ trait TokenTests {
    *  We do not allow a name to start with `:`.
    *  See [4] and Appendix B of XML 1.0 specification
    */
-  def isNameStart(ch: Char) = {
+  def isNameStart(ch: Char): Boolean = {
     import java.lang.Character._
 
     getType(ch).toByte match {
@@ -87,7 +87,7 @@ trait TokenTests {
    *  }}}
    *  See [5] of XML 1.0 specification.
    */
-  def isName(s: String) =
+  def isName(s: String): Boolean =
     s.nonEmpty && isNameStart(s.head) && (s.tail forall isNameChar)
 
   def isPubIDChar(ch: Char): Boolean =
@@ -102,13 +102,13 @@ trait TokenTests {
    *
    * @param ianaEncoding The IANA encoding name.
    */
-  def isValidIANAEncoding(ianaEncoding: Seq[Char]) = {
-    def charOK(c: Char) = isAlphaDigit(c) || ("._-" contains c)
+  def isValidIANAEncoding(ianaEncoding: Seq[Char]): Boolean = {
+    def charOK(c: Char): Boolean = isAlphaDigit(c) || ("._-" contains c)
 
     ianaEncoding.nonEmpty && isAlpha(ianaEncoding.head) &&
       (ianaEncoding.tail forall charOK)
   }
 
-  def checkSysID(s: String) = List('"', '\'') exists (c => !(s contains c))
-  def checkPubID(s: String) = s forall isPubIDChar
+  def checkSysID(s: String): Boolean = List('"', '\'') exists (c => !(s contains c))
+  def checkPubID(s: String): Boolean = s forall isPubIDChar
 }

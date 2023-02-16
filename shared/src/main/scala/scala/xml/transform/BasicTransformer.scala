@@ -21,8 +21,8 @@ import scala.collection.Seq
  *
  *  @author  Burak Emir
  */
-abstract class BasicTransformer extends Function1[Node, Node] {
-  protected def unchanged(n: Node, ns: Seq[Node]) =
+abstract class BasicTransformer extends (Node => Node) {
+  protected def unchanged(n: Node, ns: Seq[Node]): Boolean =
     ns.length == 1 && (ns.head == n)
 
   /**
@@ -37,7 +37,7 @@ abstract class BasicTransformer extends Function1[Node, Node] {
    *  otherwise a new sequence of concatenated results.
    */
   def transform(ns: Seq[Node]): Seq[Node] = {
-    val changed = ns flatMap transform
+    val changed: Seq[Node] = ns flatMap transform
     if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
     else ns
 }
@@ -46,8 +46,8 @@ abstract class BasicTransformer extends Function1[Node, Node] {
     if (n.doTransform) n match {
       case Group(xs) => Group(transform(xs)) // un-group the hack Group tag
       case _ =>
-        val ch = n.child
-        val nch = transform(ch)
+        val ch: Seq[Node] = n.child
+        val nch: Seq[Node] = transform(ch)
 
         if (ch eq nch) n
         else Elem(n.prefix, n.label, n.attributes, n.scope, nch.isEmpty, nch: _*)
@@ -56,7 +56,7 @@ abstract class BasicTransformer extends Function1[Node, Node] {
   }
 
   override def apply(n: Node): Node = {
-    val seq = transform(n)
+    val seq: Seq[Node] = transform(n)
     if (seq.length > 1)
       throw new UnsupportedOperationException("transform must return single node for root")
     else seq.head

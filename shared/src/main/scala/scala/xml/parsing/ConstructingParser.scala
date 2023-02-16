@@ -18,10 +18,10 @@ import java.io.File
 import scala.io.Source
 
 object ConstructingParser {
-  def fromFile(inp: File, preserveWS: Boolean) =
+  def fromFile(inp: File, preserveWS: Boolean): ConstructingParser =
     new ConstructingParser(Source.fromFile(inp), preserveWS).initialize
 
-  def fromSource(inp: Source, preserveWS: Boolean) =
+  def fromSource(inp: Source, preserveWS: Boolean): ConstructingParser =
     new ConstructingParser(inp, preserveWS).initialize
 }
 

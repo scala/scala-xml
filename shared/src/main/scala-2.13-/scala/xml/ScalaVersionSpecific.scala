@@ -19,14 +19,14 @@ private[xml] object ScalaVersionSpecific {
   import NodeSeq.Coll
   type CBF[-From, -A, +C] = CanBuildFrom[From, A, C]
   object NodeSeqCBF extends CanBuildFrom[Coll, Node, NodeSeq] {
-    override def apply(from: Coll) = NodeSeq.newBuilder
-    override def apply() = NodeSeq.newBuilder
+    override def apply(from: Coll) /* TODO type annotation */ = NodeSeq.newBuilder
+    override def apply() /* TODO type annotation */ = NodeSeq.newBuilder
   }
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { self: NodeSeq =>
   /** Creates a list buffer as builder for this class */
-  override protected[this] def newBuilder = NodeSeq.newBuilder
+  override protected[this] def newBuilder /* TODO type annotation */ = NodeSeq.newBuilder
 }
 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>

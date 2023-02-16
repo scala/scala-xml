@@ -37,6 +37,6 @@ class Unparsed(data: String) extends Atom[String](data) {
  *  @author  Burak Emir
  */
 object Unparsed {
-  def apply(data: String) = new Unparsed(data)
-  def unapply(x: Unparsed) = Some(x.data)
+  def apply(data: String): Unparsed = new Unparsed(data)
+  def unapply(x: Unparsed): Some[String] = Some(x.data)
 }

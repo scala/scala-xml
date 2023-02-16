@@ -20,7 +20,7 @@ package xml
  */
 object TopScope extends NamespaceBinding(null, null, null) {
 
-  import XML.{ xml, namespace }
+  import XML.{xml, namespace}
 
   override def getURI(prefix1: String): String =
     if (prefix1 == xml) namespace else null
@@ -28,8 +28,8 @@ object TopScope extends NamespaceBinding(null, null, null) {
   override def getPrefix(uri1: String): String =
     if (uri1 == namespace) xml else null
 
-  override def toString() = ""
+  override def toString(): String = ""
 
-  override def buildString(stop: NamespaceBinding) = ""
-  override def buildString(sb: StringBuilder, ignore: NamespaceBinding) = {}
+  override def buildString(stop: NamespaceBinding): String = ""
+  override def buildString(sb: StringBuilder, ignore: NamespaceBinding): Unit = ()
 }

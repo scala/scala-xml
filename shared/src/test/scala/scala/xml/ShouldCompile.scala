@@ -17,15 +17,15 @@ class Foo {
 
 // t2281
 class t2281A {
-  def f(x: Boolean) = if (x) <br/><br/> else <br/>
+  def f(x: Boolean): Seq[Node] = if (x) <br/><br/> else <br/>
 }
 
 class t2281B {
   def splitSentences(text: String): ArrayBuffer[String] = {
-    val outarr = new ArrayBuffer[String]
-    var outstr = new StringBuffer
-    var prevspace = false
-    val ctext = text.replaceAll("\n+", "\n")
+    val outarr: ArrayBuffer[String] = new ArrayBuffer[String]
+    var outstr: StringBuffer = new StringBuffer
+    var prevspace: Boolean = false
+    val ctext: String = text.replaceAll("\n+", "\n")
     ctext foreach { c =>
       outstr append c
       if (c == '.' || c == '!' || c == '?' || c == '\n' || c == ':' || c == ';' || (prevspace && c == '-')) {
@@ -43,15 +43,15 @@ class t2281B {
     outarr
   }
 
-  def spanForSentence(x: String, picktext: String) =
+  def spanForSentence(x: String, picktext: String): Seq[Node] =
     if (x == "\n\n") {
       <br/><br/>
     } else {
       <span class='clicksentence' style={ if (x == picktext) "background-color: yellow" else "" }>{ x }</span>
     }
 
-  def selectableSentences(text: String, picktext: String) = {
-    val sentences = splitSentences(text)
+  def selectableSentences(text: String, picktext: String): ArrayBuffer[Seq[Node]] = {
+    val sentences: ArrayBuffer[String] = splitSentences(text)
     sentences.map(x => spanForSentence(x, picktext))
   }
 }
@@ -62,7 +62,7 @@ object SI_5858 {
 }
 
 class Floozy {
-  def fooz(x: Node => String) = {}
+  def fooz(x: Node => String): Unit = ()
   def foo(m: Node): Unit = fooz {
     case Elem(_, _, _, _, n, _*) if n == m => "gaga"
   }
@@ -82,7 +82,7 @@ object guardedMatch { // SI-3705
 
 // SI-6897
 object shouldCompile {
-  val html = (null: Any) match {
+  val html: Seq[Node] = (null: Any) match {
     case 1 => <xml:group></xml:group>
     case 2 => <p></p>
   }

@@ -28,7 +28,7 @@ private[dtd] abstract class BaseBerrySethi {
   val lang: Base
   import lang.{ Alt, Eps, Meta, RegExp, Sequ, Star }
 
-  protected var pos = 0
+  protected var pos: Int = 0
 
   // results which hold all info for the NondetWordAutomaton
   protected var follow: mutable.HashMap[Int, Set[Int]] = _
@@ -41,12 +41,12 @@ private[dtd] abstract class BaseBerrySethi {
 
   final val emptySet: Set[Int] = Set()
 
-  private def doComp(r: RegExp, compFunction: RegExp => Set[Int]) = r match {
+  private def doComp(r: RegExp, compFunction: RegExp => Set[Int]): Set[Int] = r match {
     case x: Alt  => (x.rs map compFirst).foldLeft(emptySet)(_ ++ _)
     case Eps     => emptySet
     case x: Meta => compFunction(x.r)
     case x: Sequ =>
-      val (l1, l2) = x.rs span (_.isNullable)
+      val (l1: Seq[lang._regexpT], l2: Seq[lang._regexpT]) = x.rs span (_.isNullable)
       ((l1 ++ (l2 take 1)) map compFunction).foldLeft(emptySet)(_ ++ _)
     case Star(t) => compFunction(t)
     case _       => throw new IllegalArgumentException("unexpected pattern " + r.getClass)
@@ -67,7 +67,7 @@ private[dtd] abstract class BaseBerrySethi {
     follow(0) =
       if (rs.isEmpty) emptySet
       else rs.foldRight(Set(pos))((p, fol) => {
-        val first = compFollow1(fol, p)
+        val first: Set[Int] = compFollow1(fol, p)
 
         if (p.isNullable) fol ++ first
         else first
@@ -85,7 +85,7 @@ private[dtd] abstract class BaseBerrySethi {
     case x: Star => compFollow1(fol1 ++ compFirst(x.r), x.r)
     case x: Sequ =>
       x.rs.foldRight(fol1) { (p, fol) =>
-        val first = compFollow1(fol, p)
+        val first: Set[Int] = compFollow1(fol, p)
 
         if (p.isNullable) fol ++ first
         else first

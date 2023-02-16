@@ -26,10 +26,8 @@ abstract class ConstructingHandler extends MarkupHandler {
            pscope: NamespaceBinding, empty: Boolean, nodes: NodeSeq): NodeSeq =
     Elem(pre, label, attrs, pscope, empty, nodes: _*)
 
-  override def procInstr(pos: Int, target: String, txt: String) =
-    ProcInstr(target, txt)
-
-  override def comment(pos: Int, txt: String) = Comment(txt)
-  override def entityRef(pos: Int, n: String) = EntityRef(n)
-  override def text(pos: Int, txt: String) = Text(txt)
+  override def procInstr(pos: Int, target: String, txt: String): ProcInstr = ProcInstr(target, txt)
+  override def comment(pos: Int, txt: String): Comment = Comment(txt)
+  override def entityRef(pos: Int, n: String): EntityRef = EntityRef(n)
+  override def text(pos: Int, txt: String): Text = Text(txt)
 }

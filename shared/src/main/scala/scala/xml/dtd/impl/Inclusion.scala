@@ -29,30 +29,30 @@ private[dtd] trait Inclusion[A <: AnyRef] {
   /**
    * Returns true if `dfa1` is included in `dfa2`.
    */
-  def inclusion(dfa1: DetWordAutom[A], dfa2: DetWordAutom[A]) = {
+  def inclusion(dfa1: DetWordAutom[A], dfa2: DetWordAutom[A]): Boolean = {
 
-    def encode(q1: Int, q2: Int) = 1 + q1 + q2 * dfa1.nstates
-    def decode2(c: Int) = (c - 1) / dfa1.nstates //integer division
-    def decode1(c: Int) = (c - 1) % dfa1.nstates
+    def encode(q1: Int, q2: Int): Int = 1 + q1 + q2 * dfa1.nstates
+    def decode2(c: Int): Int = (c - 1) / dfa1.nstates //integer division
+    def decode1(c: Int): Int = (c - 1) % dfa1.nstates
 
-    var q1 = 0 //dfa1.initstate; // == 0
-    var q2 = 0 //dfa2.initstate; // == 0
+    var q1: Int = 0 //dfa1.initstate; // == 0
+    var q2: Int = 0 //dfa2.initstate; // == 0
 
-    val max = 1 + dfa1.nstates * dfa2.nstates
-    val mark = new Array[Int](max)
+    val max: Int = 1 + dfa1.nstates * dfa2.nstates
+    val mark: Array[Int] = new Array[Int](max)
 
-    var result = true
-    var current = encode(q1, q2)
-    var last = current
+    var result: Boolean = true
+    var current: Int = encode(q1, q2)
+    var last: Int = current
     mark(last) = max // mark (q1,q2)
     while (current != 0 && result) {
       //Console.println("current = [["+q1+" "+q2+"]] = "+current);
       for (letter <- labels) {
-        val r1 = dfa1.next(q1, letter)
-        val r2 = dfa2.next(q2, letter)
+        val r1: Int = dfa1.next(q1, letter)
+        val r2: Int = dfa2.next(q2, letter)
         if (dfa1.isFinal(r1) && !dfa2.isFinal(r2))
           result = false
-        val test = encode(r1, r2)
+        val test: Int = encode(r1, r2)
         //Console.println("test = [["+r1+" "+r2+"]] = "+test);
         if (mark(test) == 0) {
           mark(last) = test
@@ -60,7 +60,7 @@ private[dtd] trait Inclusion[A <: AnyRef] {
           last = test
         }
       }
-      val ncurrent = mark(current)
+      val ncurrent: Int = mark(current)
       if (ncurrent != max) {
         q1 = decode1(ncurrent)
         q2 = decode2(ncurrent)

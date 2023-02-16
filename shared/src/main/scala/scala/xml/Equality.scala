@@ -63,7 +63,7 @@ object Equality {
   }
   def compareBlithely(x1: AnyRef, x2: AnyRef): Boolean = {
     if (x1 == null || x2 == null)
-      return (x1 eq x2)
+      return x1 eq x2
 
     x2 match {
       case s: String => compareBlithely(x1, s)
@@ -78,7 +78,7 @@ trait Equality extends scala.Equals {
   protected def basisForHashCode: Seq[Any]
 
   def strict_==(other: Equality): Boolean
-  def strict_!=(other: Equality) = !strict_==(other)
+  def strict_!=(other: Equality): Boolean = !strict_==(other)
 
   /**
    * We insist we're only equal to other `xml.Equality` implementors,
@@ -96,18 +96,18 @@ trait Equality extends scala.Equals {
    *  are final since clearly individual classes cannot be trusted
    *  to maintain a semblance of order.
    */
-  override def hashCode() = basisForHashCode.##
-  override def equals(other: Any) = doComparison(other, blithe = false)
-  final def xml_==(other: Any) = doComparison(other, blithe = true)
-  final def xml_!=(other: Any) = !xml_==(other)
+  override def hashCode(): Int = basisForHashCode.##
+  override def equals(other: Any): Boolean = doComparison(other, blithe = false)
+  final def xml_==(other: Any): Boolean = doComparison(other, blithe = true)
+  final def xml_!=(other: Any): Boolean = !xml_==(other)
 
   /**
    * The "blithe" parameter expresses the caller's unconcerned attitude
    *  regarding the usual constraints on equals.  The method is thereby
    *  given carte blanche to declare any two things equal.
    */
-  private def doComparison(other: Any, blithe: Boolean) = {
-    val strictlyEqual = other match {
+  private def doComparison(other: Any, blithe: Boolean): Boolean = {
+    val strictlyEqual: Boolean = other match {
       case x: AnyRef if this eq x => true
       case x: Equality            => (x canEqual this) && (this strict_== x)
       case _                      => false

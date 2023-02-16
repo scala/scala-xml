@@ -114,7 +114,7 @@ abstract class MarkupHandler {
     edef match {
       case _: ExtDef if !isValidating => // ignore (cf REC-xml 4.4.1)
       case _ =>
-        val y = f(name, edef)
+        val y: EntityDecl = f(name, edef)
         decls ::= y
         ent.update(name, y)
     }

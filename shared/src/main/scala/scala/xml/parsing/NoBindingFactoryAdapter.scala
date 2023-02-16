@@ -23,7 +23,7 @@ import factory.NodeFactory
  */
 class NoBindingFactoryAdapter extends FactoryAdapter with NodeFactory[Elem] {
   /** True.  Every XML node may contain text that the application needs */
-  override def nodeContainsText(label: String) = true
+  override def nodeContainsText(label: String): Boolean = true
 
   /** From NodeFactory.  Constructs an instance of scala.xml.Elem -- TODO: deprecate as in Elem */
   override protected def create(pre: String, label: String, attrs: MetaData, scope: NamespaceBinding, children: Seq[Node]): Elem =

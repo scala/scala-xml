@@ -7,39 +7,39 @@ import org.junit.Assert.assertEquals
 
 class PatternMatchingTest {
   @Test
-  def unprefixedAttribute: Unit = {
-    val li = List("1", "2", "3", "4")
+  def unprefixedAttribute(): Unit = {
+    val li: List[String] = List("1", "2", "3", "4")
     assertTrue(matchSeq(li))
     assertTrue(matchList(li))
   }
 
-  def matchSeq(args: Seq[String]) = args match {
+  def matchSeq(args: Seq[String]): Boolean = args match {
     case Seq(a, b, c, d @ _*) => true
   }
 
-  def matchList(args: List[String]) =
+  def matchList(args: List[String]): Boolean =
     Elem(null, "bla", Null, TopScope, minimizeEmpty = true, args.map { x => Text(x) }: _*) match {
       case Elem(_, _, _, _, Text("1"), _*) => true
     }
 
   @Test
-  def simpleNode =
+  def simpleNode(): Unit =
     assertTrue(<hello/> match {
       case <hello/> => true
     })
 
   @Test
-  def nameSpaced =
+  def nameSpaced(): Unit =
     assertTrue(<x:ga xmlns:x="z"/> match {
       case <x:ga/> => true
     })
 
-  val cx = <z:hello foo="bar" xmlns:z="z" x:foo="baz" xmlns:x="the namespace from outer space">
-             crazy text world
-           </z:hello>
+  val cx: Elem = <z:hello foo="bar" xmlns:z="z" x:foo="baz" xmlns:x="the namespace from outer space">
+                   crazy text world
+                 </z:hello>
 
   @Test
-  def nodeContents = {
+  def nodeContents(): Unit = {
     assertTrue(Utility.trim(cx) match {
       case n @ <hello>crazy text world</hello> if (n \ "@foo") xml_== "bar" => true
     })
@@ -47,13 +47,12 @@ class PatternMatchingTest {
       case n @ <z:hello>crazy text world</z:hello> if (n \ "@foo") xml_== "bar" => true
     })
     assertTrue(<x:foo xmlns:x="gaga"/> match {
-      case scala.xml.QNode("gaga", "foo", md, child @ _*) => true
+      case QNode("gaga", "foo", md, child @ _*) => true
     })
 
     assertTrue(<x:foo xmlns:x="gaga"/> match {
-      case scala.xml.Node("foo", md, child @ _*) => true
+      case Node("foo", md, child @ _*) => true
     })
-
   }
 
   object SafeNodeSeq {
@@ -67,10 +66,8 @@ class PatternMatchingTest {
   }
 
   @Test
-  def nodeSeq = { // t0646
-    import scala.xml.NodeSeq
-
-    val books =
+  def nodeSeq(): Unit = { // t0646
+    val books: Elem =
       <bks>
         <title>Blabla</title>
         <title>Blubabla</title>
@@ -90,7 +87,7 @@ class PatternMatchingTest {
   }
 
   @Test
-  def SI_4124 = {
+  def SI_4124(): Unit = {
     val body: Node = <elem>hi</elem>
 
     assertTrue((body: AnyRef, "foo") match {

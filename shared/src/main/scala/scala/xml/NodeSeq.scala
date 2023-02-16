@@ -13,8 +13,7 @@
 package scala
 package xml
 
-import scala.collection.{ mutable, immutable, AbstractSeq }
-import mutable.{ Builder, ListBuffer }
+import scala.collection.{mutable, immutable, AbstractSeq}
 import ScalaVersionSpecific.CBF
 import scala.language.implicitConversions
 import scala.collection.Seq
@@ -25,9 +24,9 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 object NodeSeq {
-  final val Empty = fromSeq(Nil)
+  final val Empty: NodeSeq = fromSeq(Nil)
   def fromSeq(s: Seq[Node]): NodeSeq = new NodeSeq {
-    override def theSeq = s
+    override def theSeq: Seq[Node] = s
   }
 
   // ---
@@ -38,7 +37,7 @@ object NodeSeq {
   implicit def canBuildFrom: CBF[Coll, Node, NodeSeq] = ScalaVersionSpecific.NodeSeqCBF
   // ---
 
-  def newBuilder: Builder[Node, NodeSeq] = new ListBuffer[Node] mapResult fromSeq
+  def newBuilder: mutable.Builder[Node, NodeSeq] = new mutable.ListBuffer[Node] mapResult fromSeq
   implicit def seqToNodeSeq(s: Seq[Node]): NodeSeq = fromSeq(s)
 }
 
@@ -50,15 +49,15 @@ object NodeSeq {
  */
 abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with ScalaVersionSpecificNodeSeq with Equality with Serializable {
   def theSeq: Seq[Node]
-  override def length = theSeq.length
-  override def iterator = theSeq.iterator
+  override def length: Int = theSeq.length
+  override def iterator: Iterator[Node] = theSeq.iterator
 
   override def apply(i: Int): Node = theSeq(i)
   def apply(f: Node => Boolean): NodeSeq = filter(f)
 
   def xml_sameElements[A](that: Iterable[A]): Boolean = {
-    val these = this.iterator
-    val those = that.iterator
+    val these: Iterator[Node] = this.iterator
+    val those: Iterator[A] = that.iterator
     while (these.hasNext && those.hasNext)
       if (these.next() xml_!= those.next())
         return false
@@ -68,12 +67,12 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
 
   override protected def basisForHashCode: Seq[Any] = theSeq
 
-  override def canEqual(other: Any) = other match {
+  override def canEqual(other: Any): Boolean = other match {
     case _: NodeSeq => true
     case _          => false
   }
 
-  override def strict_==(other: Equality) = other match {
+  override def strict_==(other: Equality): Boolean = other match {
     case x: NodeSeq => (length == x.length) && (theSeq sameElements x.theSeq)
     case _          => false
   }
@@ -95,15 +94,15 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
    *  The document order is preserved.
    */
   def \(that: String): NodeSeq = {
-    def fail = throw new IllegalArgumentException(that)
-    def atResult = {
-      lazy val y = this(0)
-      val attr =
+    def fail: Nothing = throw new IllegalArgumentException(that)
+    def atResult: NodeSeq = {
+      lazy val y: Node = this(0)
+      val attr: Option[Seq[Node]] =
         if (that.length == 1) fail
         else if (that(1) == '{') {
-          val i = that indexOf '}'
+          val i: Int = that indexOf '}'
           if (i == -1) fail
-          val (uri, key) = (that.substring(2, i), that.substring(i + 1, that.length()))
+          val (uri: String, key: String) = (that.substring(2, i), that.substring(i + 1, that.length()))
           if (uri == "" || key == "") fail
           else y.attribute(uri, key)
         } else y.attribute(that drop 1)
@@ -114,7 +113,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
       }
     }
 
-    def makeSeq(cond: (Node) => Boolean) =
+    def makeSeq(cond: Node => Boolean): NodeSeq =
       NodeSeq fromSeq (this flatMap (_.child) filter cond)
 
     that match {
@@ -144,8 +143,8 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
    *  The document order is preserved.
    */
   def \\(that: String): NodeSeq = {
-    def fail = throw new IllegalArgumentException(that)
-    def filt(cond: (Node) => Boolean) = this flatMap (_.descendant_or_self) filter cond
+    def fail: Nothing = throw new IllegalArgumentException(that)
+    def filt(cond: Node => Boolean): NodeSeq = this flatMap (_.descendant_or_self) filter cond
     that match {
       case ""                  => fail
       case "_"                 => filt(!_.isAtom)

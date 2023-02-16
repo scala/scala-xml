@@ -28,9 +28,9 @@ trait XMLLoader[T <: Node] {
   import scala.xml.Source._
   def adapter: FactoryAdapter = new NoBindingFactoryAdapter()
 
-  private lazy val parserInstance = new ThreadLocal[SAXParser] {
+  private lazy val parserInstance: ThreadLocal[SAXParser] = new ThreadLocal[SAXParser] {
     override def initialValue: SAXParser = {
-      val parser = SAXParserFactory.newInstance()
+      val parser: SAXParserFactory = SAXParserFactory.newInstance()
       parser.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
       parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
       parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)

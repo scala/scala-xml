@@ -21,13 +21,13 @@ import org.xml.sax.ext.DefaultHandler2
 // can be mixed into FactoryAdapter if desired
 trait ConsoleErrorHandler extends DefaultHandler2 {
   // ignore warning, crimson warns even for entity resolution!
-  override def warning(ex: SAXParseException): Unit = {}
+  override def warning(ex: SAXParseException): Unit = ()
   override def error(ex: SAXParseException): Unit = printError("Error", ex)
   override def fatalError(ex: SAXParseException): Unit = printError("Fatal Error", ex)
 
   protected def printError(errtype: String, ex: SAXParseException): Unit =
     Console.withOut(Console.err) {
-      val s = "[%s]:%d:%d: %s".format(
+      val s: String = "[%s]:%d:%d: %s".format(
         errtype, ex.getLineNumber, ex.getColumnNumber, ex.getMessage)
       Console.println(s)
       Console.flush()
@@ -139,10 +139,10 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     else if (!normalizeWhitespace) buffer.appendAll(ch, offset, length)
     // normalizing whitespace is not compliant, but useful
     else {
-      var it = ch.slice(offset, offset + length).iterator
+      var it: Iterator[Char] = ch.slice(offset, offset + length).iterator
       while (it.hasNext) {
-        val c = it.next()
-        val isSpace = c.isWhitespace
+        val c: Char = it.next()
+        val isSpace: Boolean = c.isWhitespace
         buffer append (if (isSpace) ' ' else c)
         if (isSpace)
           it = it dropWhile (_.isWhitespace)
@@ -163,10 +163,11 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
    */
   override def endCDATA(): Unit = captureText()
 
-  private def splitName(s: String): (String, String) = {
-    val idx = s indexOf ':'
-    if (idx < 0) (null, s)
-    else (s take idx, s drop (idx + 1))
+  // TODO move into Utility
+  private def splitName(s: String): (Option[String], String) = {
+    val idx: Int = s indexOf ':'
+    if (idx < 0) (None, s)
+    else (Some(s take idx), s drop (idx + 1))
   }
 
   /* ContentHandler methods */
@@ -189,7 +190,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       tagStack = curTag :: tagStack
       curTag = qname
 
-      val localName = splitName(qname)._2
+      val localName: String = splitName(qname)._2
       capture = nodeContainsText(localName)
 
       hStack = null :: hStack
@@ -199,16 +200,16 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
         else scopeStack.head
 
       for (i <- (0 until attributes.getLength).reverse) {
-        val qname = attributes getQName i
-        val value = attributes getValue i
-        val (pre, key) = splitName(qname)
+        val qname: String = attributes getQName i
+        val value: String = attributes getValue i
+        val (pre: Option[String], key: String) = splitName(qname)
         def nullIfEmpty(s: String): String = if (s == "") null else s
 
-        if (pre == "xmlns" || (pre == null && qname == "xmlns")) {
-          val arg = if (pre == null) null else key
+        if (pre.contains("xmlns") || (pre.isEmpty && qname == "xmlns")) {
+          val arg: String = if (pre.isEmpty) null else key
           scpe = NamespaceBinding(arg, nullIfEmpty(value), scpe)
         } else
-          m = Attribute(Option(pre), key, Text(value), m)
+          m = Attribute(pre, key, Text(value), m)
       }
 
       // Add namespace bindings for the prefix mappings declared by this element
@@ -253,21 +254,21 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
    */
   override def endElement(uri: String, _localName: String, qname: String): Unit = {
     captureText()
-    val metaData = attribStack.head
+    val metaData: MetaData = attribStack.head
     attribStack = attribStack.tail
 
     // reverse order to get it right
-    val v = hStack.takeWhile(_ != null).reverse
+    val v: List[Node] = hStack.takeWhile(_ != null).reverse
     hStack = hStack.dropWhile(_ != null) match {
       case null :: hs => hs
       case hs => hs
     }
-    val (pre, localName) = splitName(qname)
-    val scp = scopeStack.head
+    val (pre: Option[String], localName: String) = splitName(qname)
+    val scp: NamespaceBinding = scopeStack.head
     scopeStack = scopeStack.tail
 
     // create element
-    rootElem = createNode(pre, localName, metaData, scp, v)
+    rootElem = createNode(pre.orNull, localName, metaData, scp, v)
     hStack = rootElem :: hStack
     curTag = tagStack.head
     tagStack = tagStack.tail

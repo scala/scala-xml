@@ -29,7 +29,7 @@ class PrefixedAttribute(
   override val value: Seq[Node],
   val next1: MetaData)
   extends Attribute {
-  override val next = if (value ne null) next1 else next1.remove(key)
+  override val next: MetaData = if (value ne null) next1 else next1.remove(key)
 
   /** same as this(pre, key, Text(value), next), or no attribute if value is null */
   def this(pre: String, key: String, value: String, next: MetaData) =
@@ -43,10 +43,10 @@ class PrefixedAttribute(
    * Returns a copy of this unprefixed attribute with the given
    *  next field.
    */
-  override def copy(next: MetaData) =
+  override def copy(next: MetaData): PrefixedAttribute =
     new PrefixedAttribute(pre, key, value, next)
 
-  override def getNamespace(owner: Node) =
+  override def getNamespace(owner: Node): String =
     owner.getNamespace(pre)
 
   /** forwards the call to next (because caller looks for unprefixed attribute */
@@ -64,5 +64,5 @@ class PrefixedAttribute(
 }
 
 object PrefixedAttribute {
-  def unapply(x: PrefixedAttribute) = Some((x.pre, x.key, x.value, x.next))
+  def unapply(x: PrefixedAttribute) /* TODO type annotation */ = Some((x.pre, x.key, x.value, x.next))
 }
