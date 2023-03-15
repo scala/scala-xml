@@ -392,7 +392,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     val hex: Boolean = (ch() == 'x') && { nextch(); true }
     val base: Int = if (hex) 16 else 10
     var i: Int = 0
-    while (ch() != ';') {
+    while (ch() != ';' && ch() != 0) {
       ch() match {
         case '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' =>
           i = i * base + ch().asDigit
@@ -410,6 +410,6 @@ object Utility extends AnyRef with parsing.TokenTests {
       }
       nextch()
     }
-    new String(Array(i), 0, 1)
+    if (i != 0) new String(Array(i), 0, 1) else ""
   }
 }
