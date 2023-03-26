@@ -30,7 +30,7 @@ trait XMLLoader[T <: Node] {
 
   private lazy val parserInstance: ThreadLocal[SAXParser] = new ThreadLocal[SAXParser] {
     override def initialValue: SAXParser = {
-      val parser: SAXParserFactory = SAXParserFactory.newInstance()
+      val parser: SAXParserFactory = SAXParserFactory.newInstance
       parser.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
       parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
       parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
@@ -39,7 +39,7 @@ trait XMLLoader[T <: Node] {
       parser.setFeature("http://xml.org/sax/features/resolve-dtd-uris", false)
       parser.setXIncludeAware(false)
       parser.setNamespaceAware(false)
-      parser.newSAXParser()
+      parser.newSAXParser
     }
   }
 

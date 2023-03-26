@@ -39,7 +39,7 @@ private[dtd] abstract class DetWordAutom[T <: AnyRef] {
     sb.append(nstates)
     sb.append(" finals=")
     val map: Map[Int, Int] = finals.zipWithIndex.map(_.swap).toMap
-    sb.append(map.toString())
+    sb.append(map.toString)
     sb.append(" delta=\n")
 
     for (i <- 0 until nstates) {

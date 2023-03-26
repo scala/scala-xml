@@ -87,7 +87,7 @@ class XMLTest {
     assertEquals(results1Expected, results1)
 
     {
-      val actual: List[Node] = for (t @ <book><title>Blabla</title></book> <- NodeSeq.fromSeq(books.child).toList)
+      val actual: List[Node] = for (case t @ <book><title>Blabla</title></book> <- NodeSeq.fromSeq(books.child).toList)
         yield t
       val expected: List[Elem] = List(<book><title>Blabla</title></book>)
       assertEquals(expected, actual)
@@ -247,11 +247,11 @@ class XMLTest {
 
   @UnitTest
   def comment(): Unit =
-    assertEquals("<!-- thissa comment -->", <!-- thissa comment --> toString)
+    assertEquals("<!-- thissa comment -->", <!-- thissa comment -->.toString)
 
   @UnitTest
   def weirdElem(): Unit =
-    assertEquals("<?this is a pi foo bar = && {{ ?>", <?this is a pi foo bar = && {{ ?> toString)
+    assertEquals("<?this is a pi foo bar = && {{ ?>", <?this is a pi foo bar = && {{ ?>.toString)
 
   @UnitTest
   def escape(): Unit =
@@ -265,12 +265,12 @@ Ours is the portal of hope, come as you are.&quot;
 Heathen, fire worshipper or idolatrous, come!
 Come even if you broke your penitence a hundred times,
 Ours is the portal of hope, come as you are."
-                              Mevlana Celaleddin Rumi]]> toString) // this guy will escaped, and rightly so
+                              Mevlana Celaleddin Rumi]]>.toString) // this guy will escaped, and rightly so
 
   @UnitTest
   def unparsed2(): Unit = {
     object myBreak extends Unparsed("<br />")
-    assertEquals("<foo><br /></foo>", <foo>{ myBreak }</foo> toString) // shows use of unparsed
+    assertEquals("<foo><br /></foo>", <foo>{ myBreak }</foo>.toString) // shows use of unparsed
   }
 
   @UnitTest
@@ -297,7 +297,7 @@ Ours is the portal of hope, come as you are."
     assertEquals(
       """<entry>
       <elem>a</elem><elem>b</elem><elem>c</elem>
-    </entry>""", f("a,b,c") toString)
+    </entry>""", f("a,b,c").toString)
 
   // t-486
   def wsdlTemplate1(serviceName: String): Node =
@@ -315,11 +315,11 @@ Ours is the portal of hope, come as you are."
   @UnitTest
   def wsdl(): Unit = {
     assertEquals("""<wsdl:definitions name="service1" xmlns:tns="target1">
-    </wsdl:definitions>""", wsdlTemplate1("service1") toString)
+    </wsdl:definitions>""", wsdlTemplate1("service1").toString)
     assertEquals("""<wsdl:definitions name="service2" xmlns:tns="target2">
-    </wsdl:definitions>""", wsdlTemplate2("service2", "target2") toString)
+    </wsdl:definitions>""", wsdlTemplate2("service2", "target2").toString)
     assertEquals("""<wsdl:definitions name="service4" xmlns:tns="target4">
-    </wsdl:definitions>""", wsdlTemplate4("service4", () => "target4") toString)
+    </wsdl:definitions>""", wsdlTemplate4("service4", () => "target4").toString)
   }
 
   @UnitTest
@@ -426,28 +426,28 @@ Ours is the portal of hope, come as you are."
     val bar: Attribute = Attribute(null, "bar", "2", foo)
     val ns: NamespaceBinding = NamespaceBinding(null, "uri", TopScope)
 
-    assertEquals(""" foo="1"""", foo toString)
+    assertEquals(""" foo="1"""", foo.toString)
     assertEquals(null, TopScope.getURI(foo.pre))
-    assertEquals(""" bar="2"""", bar remove "foo" toString)
-    assertEquals(""" foo="1"""", bar remove "bar" toString)
-    assertEquals(""" bar="2"""", bar remove (null, TopScope, "foo") toString)
-    assertEquals(""" foo="1"""", bar remove (null, TopScope, "bar") toString)
-    assertEquals(""" bar="2" foo="1"""", bar toString)
-    assertEquals(""" bar="2" foo="1"""", bar remove (null, ns, "foo") toString)
-    assertEquals(""" bar="2" foo="1"""", bar remove (null, ns, "bar") toString)
+    assertEquals(""" bar="2"""", bar.remove("foo").toString)
+    assertEquals(""" foo="1"""", bar.remove("bar").toString)
+    assertEquals(""" bar="2"""", bar.remove(null, TopScope, "foo").toString)
+    assertEquals(""" foo="1"""", bar.remove(null, TopScope, "bar").toString)
+    assertEquals(""" bar="2" foo="1"""", bar.toString)
+    assertEquals(""" bar="2" foo="1"""", bar.remove(null, ns, "foo").toString)
+    assertEquals(""" bar="2" foo="1"""", bar.remove(null, ns, "bar").toString)
   }
 
   @UnitTest
   def t7074(): Unit = {
-    assertEquals("""<a/>""", sort(<a/>) toString)
-    assertEquals("""<a b="2" c="3" d="1"/>""", sort(<a d="1" b="2" c="3"/>) toString)
-    assertEquals("""<a b="2" c="4" d="1" e="3" f="5"/>""", sort(<a d="1" b="2" e="3" c="4" f="5"/>) toString)
-    assertEquals("""<a b="5" c="4" d="3" e="2" f="1"/>""", sort(<a f="1" e="2" d="3" c="4" b="5"/>) toString)
-    assertEquals("""<a b="1" c="2" d="3" e="4" f="5"/>""", sort(<a b="1" c="2" d="3" e="4" f="5"/>) toString)
-    assertEquals("""<a a:b="2" a:c="3" a:d="1"/>""", sort(<a a:d="1" a:b="2" a:c="3"/>) toString)
-    assertEquals("""<a a:b="2" a:c="4" a:d="1" a:e="3" a:f="5"/>""", sort(<a a:d="1" a:b="2" a:e="3" a:c="4" a:f="5"/>) toString)
-    assertEquals("""<a a:b="5" a:c="4" a:d="3" a:e="2" a:f="1"/>""", sort(<a a:f="1" a:e="2" a:d="3" a:c="4" a:b="5"/>) toString)
-    assertEquals("""<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>""", sort(<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>) toString)
+    assertEquals("""<a/>""", sort(<a/>).toString)
+    assertEquals("""<a b="2" c="3" d="1"/>""", sort(<a d="1" b="2" c="3"/>).toString)
+    assertEquals("""<a b="2" c="4" d="1" e="3" f="5"/>""", sort(<a d="1" b="2" e="3" c="4" f="5"/>).toString)
+    assertEquals("""<a b="5" c="4" d="3" e="2" f="1"/>""", sort(<a f="1" e="2" d="3" c="4" b="5"/>).toString)
+    assertEquals("""<a b="1" c="2" d="3" e="4" f="5"/>""", sort(<a b="1" c="2" d="3" e="4" f="5"/>).toString)
+    assertEquals("""<a a:b="2" a:c="3" a:d="1"/>""", sort(<a a:d="1" a:b="2" a:c="3"/>).toString)
+    assertEquals("""<a a:b="2" a:c="4" a:d="1" a:e="3" a:f="5"/>""", sort(<a a:d="1" a:b="2" a:e="3" a:c="4" a:f="5"/>).toString)
+    assertEquals("""<a a:b="5" a:c="4" a:d="3" a:e="2" a:f="1"/>""", sort(<a a:f="1" a:e="2" a:d="3" a:c="4" a:b="5"/>).toString)
+    assertEquals("""<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>""", sort(<a a:b="1" a:c="2" a:d="3" a:e="4" a:f="5"/>).toString)
   }
 
   @UnitTest
@@ -468,20 +468,20 @@ Ours is the portal of hope, come as you are."
     assertEquals(xml1, xml2)
     assertEquals(xml1, xml3)
 
-    assertEquals("""<t/>""", noAttr toString)
-    assertEquals("""<t/>""", attrNull toString)
-    assertEquals("""<t/>""", attrNone toString)
-    assertEquals("""<t/>""", preAttrNull toString)
-    assertEquals("""<t/>""", preAttrNone toString)
-    assertEquals("""<t b="1" d="2"/>""", xml1 toString)
-    assertEquals("""<t b="1" d="2"/>""", xml2 toString)
-    assertEquals("""<t b="1" d="2"/>""", xml3 toString)
+    assertEquals("""<t/>""", noAttr.toString)
+    assertEquals("""<t/>""", attrNull.toString)
+    assertEquals("""<t/>""", attrNone.toString)
+    assertEquals("""<t/>""", preAttrNull.toString)
+    assertEquals("""<t/>""", preAttrNone.toString)
+    assertEquals("""<t b="1" d="2"/>""", xml1.toString)
+    assertEquals("""<t b="1" d="2"/>""", xml2.toString)
+    assertEquals("""<t b="1" d="2"/>""", xml3.toString)
 
     // Check if attribute order is retained
-    assertEquals("""<t a="1" d="2"/>""", <t a="1" d="2"/> toString)
-    assertEquals("""<t b="1" d="2"/>""", <t b="1" d="2"/> toString)
-    assertEquals("""<t a="1" b="2" c="3"/>""", <t a="1" b="2" c="3"/> toString)
-    assertEquals("""<t g="1" e="2" p:a="3" f:e="4" mgruhu:ji="5"/>""", <t g="1" e="2" p:a="3" f:e="4" mgruhu:ji="5"/> toString)
+    assertEquals("""<t a="1" d="2"/>""", <t a="1" d="2"/>.toString)
+    assertEquals("""<t b="1" d="2"/>""", <t b="1" d="2"/>.toString)
+    assertEquals("""<t a="1" b="2" c="3"/>""", <t a="1" b="2" c="3"/>.toString)
+    assertEquals("""<t g="1" e="2" p:a="3" f:e="4" mgruhu:ji="5"/>""", <t g="1" e="2" p:a="3" f:e="4" mgruhu:ji="5"/>.toString)
   }
 
   @UnitTest

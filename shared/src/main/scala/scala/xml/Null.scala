@@ -13,7 +13,6 @@
 package scala
 package xml
 
-import Utility.isNameStart
 import scala.collection.Iterator
 import scala.collection.Seq
 
@@ -50,13 +49,13 @@ case object Null extends MetaData {
 
   override def apply(namespace: String, scope: NamespaceBinding, key: String) /* TODO type annotation */ = null
   override def apply(key: String) /* TODO type annotation */ =
-    if (isNameStart(key.head)) null
+    if (Utility.isNameStart(key.head)) null
     else throw new IllegalArgumentException("not a valid attribute name '" + key + "', so can never match !")
 
   override protected def toString1(sb: StringBuilder): Unit = ()
-  override protected def toString1(): String = ""
+  override protected def toString1: String = ""
 
-  override def toString(): String = ""
+  override def toString: String = ""
 
   override def buildString(sb: StringBuilder): StringBuilder = sb
 

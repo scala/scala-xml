@@ -17,7 +17,7 @@ import scala.collection.{immutable, mutable}
 import scala.collection.Seq
 
 /**
- * This class turns a regular expression into a [[scala.util.automata.NondetWordAutom]]
+ * This class turns a regular expression into a [[scala.xml.dtd.impl.NondetWordAutom]]
  * celebrated position automata construction (also called ''Berry-Sethi'' or ''Glushkov'').
  *
  *  @author Burak Emir

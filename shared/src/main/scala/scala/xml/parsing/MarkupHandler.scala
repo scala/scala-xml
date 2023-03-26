@@ -34,12 +34,8 @@ abstract class MarkupHandler {
   var decls: List[Decl] = Nil
   var ent: mutable.Map[String, EntityDecl] = new mutable.HashMap[String, EntityDecl]()
 
-  def lookupElemDecl(Label: String): ElemDecl = {
-    for (z@ElemDecl(Label, _) <- decls)
-      return z
-
-    null
-  }
+  def lookupElemDecl(Label: String): ElemDecl =
+    (for (case z@ElemDecl(Label, _) <- decls) yield z).headOption.orNull
 
   def replacementText(entityName: String): Source =
     Source.fromString(ent.get(entityName) match {

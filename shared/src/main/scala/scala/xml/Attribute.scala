@@ -65,10 +65,10 @@ trait Attribute extends MetaData {
 
   override def remove(key: String): MetaData =
     if (!isPrefixed && this.key == key) next
-    else copy(next remove key)
+    else copy(next.remove(key))
 
   override def remove(namespace: String, scope: NamespaceBinding, key: String): MetaData =
-    if (this.key == key && (scope getURI pre) == namespace) next
+    if (this.key == key && scope.getURI(pre) == namespace) next
     else copy(next.remove(namespace, scope, key))
 
   override def isPrefixed: Boolean = pre != null
@@ -76,8 +76,8 @@ trait Attribute extends MetaData {
   override def getNamespace(owner: Node): String
 
   override def wellformed(scope: NamespaceBinding): Boolean = {
-    val arg: String = if (isPrefixed) scope getURI pre else null
-    (next(arg, scope, key) == null) && (next wellformed scope)
+    val arg: String = if (isPrefixed) scope.getURI(pre) else null
+    (next(arg, scope, key) == null) && next.wellformed(scope)
   }
 
   /** Returns an iterator on attributes */
@@ -98,9 +98,9 @@ trait Attribute extends MetaData {
     if (value == null)
       return
     if (isPrefixed)
-      sb append pre append ':'
+      sb.append(pre).append(':')
 
-    sb append key append '='
+    sb.append(key).append('=')
     val sb2: StringBuilder = new StringBuilder()
     Utility.sequenceToXML(value, TopScope, sb2, stripComments = true)
     Utility.appendQuoted(sb2.toString, sb)

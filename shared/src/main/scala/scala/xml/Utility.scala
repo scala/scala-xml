@@ -28,7 +28,7 @@ object Utility extends AnyRef with parsing.TokenTests {
 
   // [Martin] This looks dubious. We don't convert StringBuilders to
   // Strings anywhere else, why do it here?
-  implicit def implicitSbToString(sb: StringBuilder): String = sb.toString()
+  implicit def implicitSbToString(sb: StringBuilder): String = sb.toString
 
   // helper for the extremely oft-repeated sequence of creating a
   // StringBuilder, passing it around, and then grabbing its String.
@@ -50,7 +50,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trim(x: Node): Node = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children: Seq[Node] = combineAdjacentTextNodes(child) flatMap trimProper
+      val children: Seq[Node] = combineAdjacentTextNodes(child).flatMap(trimProper)
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
   }
 
@@ -67,7 +67,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trimProper(x: Node): Seq[Node] = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children: Seq[Node] = combineAdjacentTextNodes(child) flatMap trimProper
+      val children: Seq[Node] = combineAdjacentTextNodes(child).flatMap(trimProper)
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
     case Text(s) =>
       new TextBuffer().append(s).toText
@@ -173,7 +173,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   //   minimizeTags: Boolean = false): String =
   // {
   //   toXMLsb(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-  //   sb.toString()
+  //   sb.toString
   // }
 
   /**
@@ -263,13 +263,16 @@ object Utility extends AnyRef with parsing.TokenTests {
       } else children foreach { serialize(_, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }
     }
 
+  def splitName(name: String): (Option[String], String) = {
+    val colon: Int = name.indexOf(':')
+    if (colon < 0) (None, name)
+    else (Some(name.take(colon)), name.drop(colon + 1))
+  }
+
   /**
    * Returns prefix of qualified name if any.
    */
-  final def prefix(name: String): Option[String] = name.indexOf(':') match {
-    case -1 => None
-    case i  => Some(name.substring(0, i))
-  }
+  final def prefix(name: String): Option[String] = splitName(name)._1
 
   /**
    * Returns a hashcode for the given constituents of a node
@@ -357,12 +360,12 @@ object Utility extends AnyRef with parsing.TokenTests {
             rfb.append(c)
             c = it.next()
           }
-          val ref: String = rfb.toString()
+          val ref: String = rfb.toString
           rfb.clear()
           unescape(ref, sb) match {
             case null =>
               if (sb.nonEmpty) { // flush buffer
-                nb += Text(sb.toString())
+                nb += Text(sb.toString)
                 sb.clear()
               }
               nb += EntityRef(ref) // add entityref
@@ -372,7 +375,7 @@ object Utility extends AnyRef with parsing.TokenTests {
       } else sb append c
     }
     if (sb.nonEmpty) { // flush buffer
-      val x: Text = Text(sb.toString())
+      val x: Text = Text(sb.toString)
       if (nb.isEmpty)
         return x
       else

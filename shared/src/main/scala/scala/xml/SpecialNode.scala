@@ -24,7 +24,7 @@ abstract class SpecialNode extends Node {
   /** always empty */
   final override def attributes: Null.type = Null
 
-  /** always Node.EmptyNamespace */
+  /** always Node.EmptyNamespace - TODO not really: Node.EmptyNamespace is "", but this is null. */
   final override def namespace: scala.Null = null
 
   /** always empty */

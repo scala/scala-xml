@@ -15,7 +15,7 @@ class XMLTest2x {
   @UnitTest
   def wsdl(): Unit = {
     assertEquals("""<wsdl:definitions name="service3" xmlns:tns="target3">
-    </wsdl:definitions>""", wsdlTemplate3("service3") toString)
+    </wsdl:definitions>""", wsdlTemplate3("service3").toString)
   }
 
   @UnitTest

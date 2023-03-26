@@ -367,7 +367,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       nextch()
     }
     nextch()
-    val str: String = cbuf.toString()
+    val str: String = cbuf.toString
     cbuf.setLength(0)
     str
   }
@@ -403,7 +403,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
         sb.setLength(sb.length - 1)
         nextch()
         xToken('>')
-        return handle.comment(pos, sb.toString())
+        return handle.comment(pos, sb.toString)
       } else sb.append(ch)
       nextch()
     }
@@ -582,11 +582,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def element1(pscope: NamespaceBinding): NodeSeq = {
     val pos: Int = this.pos
     val (qname: String, (aMap: MetaData, scope: NamespaceBinding)) = xTag(pscope)
-    // TODO move into Utility
-    val (pre: Option[String], local: String) = Utility.prefix(qname) match {
-      case Some(p) => (Some(p), qname drop p.length + 1)
-      case _       => (None, qname)
-    }
+    val (pre: Option[String], local: String) = Utility.splitName(qname)
     val ts: NodeSeq = {
       if (ch == '/') { // empty element
         xToken("/>")
@@ -640,7 +636,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       nextch()
     }
     nextch()
-    val str: String = cbuf.toString()
+    val str: String = cbuf.toString
     cbuf.setLength(0)
     str
   }
@@ -809,7 +805,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     //Console.println("END["+ch+"]")
     nextch()
-    val cmstr: String = cbuf.toString()
+    val cmstr: String = cbuf.toString
     cbuf.setLength(0)
     handle.elemDecl(n, cmstr)
   }
