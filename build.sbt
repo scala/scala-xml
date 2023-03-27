@@ -67,11 +67,42 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
-      Seq(
+      Seq( // exclusions for all Scala versions
         // necessitated by the introduction of new abstract methods in FactoryAdapter:
         exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),  // see #549
-        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createPCData")    // see #558
+        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createPCData"),    // see #558
+        exclude[IncompatibleResultTypeProblem]("scala.xml.Node.NoAttributes"),
+        exclude[IncompatibleResultTypeProblem]("scala.xml.dtd.PublicID.attribute")
+      ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((3, _)) => Seq( // Scala 3-specific exclusions
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.getNamespace"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.next"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.key"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.value"),
+          // not sure why `Null.value` and `Null.apply` need `DirectAbstractMethodProblem`
+          // exclusion for `MetaData` but `Null.key` etc. do not
+          exclude[DirectAbstractMethodProblem]("scala.xml.MetaData.value"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.remove"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.apply"),
+          exclude[DirectAbstractMethodProblem]("scala.xml.MetaData.apply"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.dtd.NoExternalID.publicId"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.dtd.NoExternalID.systemId"),
+          // for `SpecialNode.child: Nil.type` and `Group.child: Nothing`:
+          exclude[DirectAbstractMethodProblem]("scala.xml.Node.child")
+        )
+        case Some((2, 13)) => Seq( // Scala 2.13-specific exclusions
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.filter"),
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.apply"),
+          exclude[DirectAbstractMethodProblem]("scala.xml.MetaData.apply")
+        )
+        case Some((2, 12)) => Seq( // Scala 2.12-specific exclusions
+          exclude[IncompatibleResultTypeProblem]("scala.xml.Null.filter"),
+          exclude[IncompatibleResultTypeProblem] ("scala.xml.Null.apply"),
+          exclude[DirectAbstractMethodProblem] ("scala.xml.MetaData.apply")
       )
+        case _ => Seq(
+        )
+      })
     },
     // Mima signature checking stopped working after 3.0.2 upgrade, see #557
     mimaReportSignatureProblems := (CrossVersion.partialVersion(scalaVersion.value) match {

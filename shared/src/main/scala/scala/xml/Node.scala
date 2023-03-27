@@ -23,12 +23,12 @@ import scala.collection.Seq
  */
 object Node {
   /** the constant empty attribute sequence */
-  final def NoAttributes: MetaData = Null
+  final def NoAttributes: Null.type = Null
 
   /** the empty namespace */
   val EmptyNamespace: String = ""
 
-  def unapplySeq(n: Node) /* TODO type annotation */ = Some((n.label, n.attributes, n.child.toSeq))
+  def unapplySeq(n: Node) /* TODO type annotation Some[(String, MetaData, Seq[Node])] */ = Some((n.label, n.attributes, n.child.toSeq))
 }
 
 /**
