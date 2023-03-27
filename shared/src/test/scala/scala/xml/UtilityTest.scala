@@ -219,4 +219,15 @@ class UtilityTest {
     val x: Elem = <div>{Text("   My name ")}{Text("  is  ")}{Text("  Harry   ")}</div>
     assertEquals(<div>My name is Harry</div>, Utility.trim(x))
   }
+
+  @Test
+  def issue306InvalidUnclosedCharRef(): Unit = {
+    val entity = "&# test </body></html>"
+    val it: Iterator[Char] = entity.iterator
+    var c = it.next()
+    val next = () => if (it.hasNext) c = it.next() else c = 0.asInstanceOf[Char]
+    val result = Utility.parseCharRef({ () => c }, next, _ => {}, _ => {})
+    assertEquals("", result)
+  }
+
 }
