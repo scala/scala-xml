@@ -221,7 +221,7 @@ class UtilityTest {
   }
 
   @Test
-  def issue306InvalidUnclosedEntity(): Unit = {
+  def issue306InvalidUnclosedCharRef(): Unit = {
     val entity = "&# test </body></html>"
     val it: Iterator[Char] = entity.iterator
     var c = it.next()
