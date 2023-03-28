@@ -24,7 +24,7 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 case object Null extends MetaData {
-  override def iterator /* TODO type annotation */ = Iterator.empty
+  override def iterator: Iterator[Nothing] = Iterator.empty
   override def size: Int = 0
   override def append(m: MetaData, scope: NamespaceBinding = TopScope): MetaData = m
   override def filter(f: MetaData => Boolean): MetaData = this

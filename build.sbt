@@ -68,14 +68,6 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
       Seq(
-        // afaict this is just a JDK 8 vs 16 difference, producing a false positive when
-        // we compare classes built on JDK 16 (which we only do on CI, not at release time)
-        // to previous-version artifacts that were built on 8.  see scala/scala-xml#501
-        exclude[DirectMissingMethodProblem]("scala.xml.include.sax.XIncluder.declaration"),
-
-        // necessitated by the switch from DefaultHandler to DefaultHandler2 in FactoryAdapter:
-        exclude[MissingTypesProblem]("scala.xml.parsing.FactoryAdapter"),                         // see #549
-
         // necessitated by the introduction of new abstract methods in FactoryAdapter:
         exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),  // see #549
         exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createPCData")    // see #558
