@@ -12,21 +12,21 @@
 
 package scala.xml
 
-import scala.collection.SeqLike
+import scala.collection.{SeqLike, mutable}
 import scala.collection.generic.CanBuildFrom
 
 private[xml] object ScalaVersionSpecific {
   import NodeSeq.Coll
   type CBF[-From, -A, +C] = CanBuildFrom[From, A, C]
   object NodeSeqCBF extends CanBuildFrom[Coll, Node, NodeSeq] {
-    override def apply(from: Coll) /* TODO type annotation */ = NodeSeq.newBuilder
-    override def apply() /* TODO type annotation */ = NodeSeq.newBuilder
+    override def apply(from: Coll): mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
+    override def apply(): mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
   }
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { self: NodeSeq =>
   /** Creates a list buffer as builder for this class */
-  override protected[this] def newBuilder /* TODO type annotation */ = NodeSeq.newBuilder
+  override protected[this] def newBuilder: mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
 }
 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
