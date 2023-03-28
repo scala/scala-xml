@@ -140,8 +140,8 @@ abstract class Node extends NodeSeq {
   def descendant_or_self: List[Node] = this :: descendant
 
   override def canEqual(other: Any): Boolean = other match {
-    case x: Group => false
-    case x: Node  => true
+    case _: Group => false
+    case _: Node  => true
     case _        => false
   }
 
@@ -178,7 +178,7 @@ abstract class Node extends NodeSeq {
   /**
    * Same as `toString('''false''')`.
    */
-  override def toString(): String = buildString(stripComments = false)
+  override def toString: String = buildString(stripComments = false)
 
   /**
    * Appends qualified name of this node to `StringBuilder`.
@@ -194,7 +194,7 @@ abstract class Node extends NodeSeq {
   /**
    * Returns a type symbol (e.g. DTD, XSD), default `'''null'''`.
    */
-  def xmlType(): TypeSymbol = null
+  def xmlType: TypeSymbol = null
 
   /**
    * Returns a text representation of this node. Note that this is not equivalent to

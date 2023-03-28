@@ -94,7 +94,7 @@ class XIncludeFilter extends XMLFilterImpl {
     try {
       bases.push(new URL(base))
     } catch {
-      case e: MalformedURLException =>
+      case _: MalformedURLException =>
         throw new UnsupportedOperationException("Unrecognized SYSTEM ID: " + base)
     }
     super.setDocumentLocator(locator)
@@ -113,7 +113,7 @@ class XIncludeFilter extends XMLFilterImpl {
    *
    * @return boolean
    */
-  def insideIncludeElement(): Boolean = level != 0
+  def insideIncludeElement: Boolean = level != 0
 
   override def startElement(uri: String, localName: String, qName: String, atts1: Attributes): Unit = {
     var atts: Attributes = atts1
@@ -222,9 +222,9 @@ class XIncludeFilter extends XMLFilterImpl {
   }
 
   // convenience method for error messages
-  private def getLocation(): String = {
+  private def getLocation: String = {
     var locationString: String = ""
-    val locator: Locator = locators.peek()
+    val locator: Locator = locators.peek
     var publicID: String = ""
     var systemID: String = ""
     var column: Int = -1
@@ -256,21 +256,21 @@ class XIncludeFilter extends XMLFilterImpl {
    */
   private def includeTextDocument(url: String, encoding1: String): Unit = {
     var encoding: String = encoding1
-    if (encoding == null || encoding.trim().equals("")) encoding = "UTF-8"
+    if (encoding == null || encoding.trim.equals("")) encoding = "UTF-8"
     var source: URL = null
     try {
-      val base: URL = bases.peek()
+      val base: URL = bases.peek
       source = new URL(base, url)
     } catch {
       case e: MalformedURLException =>
         val ex: UnavailableResourceException = new UnavailableResourceException("Unresolvable URL " + url
-          + getLocation())
+          + getLocation)
         ex.setRootCause(e)
-        throw new SAXException("Unresolvable URL " + url + getLocation(), ex)
+        throw new SAXException("Unresolvable URL " + url + getLocation, ex)
     }
 
     try {
-      val uc: URLConnection = source.openConnection()
+      val uc: URLConnection = source.openConnection
       val in: BufferedInputStream = new BufferedInputStream(uc.getInputStream)
       val encodingFromHeader: String = uc.getContentEncoding
       var contentType: String = uc.getContentType
@@ -281,7 +281,7 @@ class XIncludeFilter extends XMLFilterImpl {
         // MIME types are case-insensitive
         // Java may be picking this up from file URL
         if (contentType != null) {
-          contentType = contentType.toLowerCase()
+          contentType = contentType.toLowerCase
           if (contentType.equals("text/xml")
             || contentType.equals("application/xml")
             || (contentType.startsWith("text/") && contentType.endsWith("+xml"))
@@ -300,12 +300,11 @@ class XIncludeFilter extends XMLFilterImpl {
     } catch {
       case e: UnsupportedEncodingException =>
         throw new SAXException("Unsupported encoding: "
-          + encoding + getLocation(), e)
+          + encoding + getLocation, e)
       case e: IOException =>
         throw new SAXException("Document not found: "
-          + source.toExternalForm + getLocation(), e)
+          + source.toExternalForm + getLocation, e)
     }
-
   }
 
   private var atRoot: Boolean = false
@@ -322,19 +321,19 @@ class XIncludeFilter extends XMLFilterImpl {
    */
   private def includeXMLDocument(url: String): Unit = {
     val source: URL =
-      try new URL(bases.peek(), url)
+      try new URL(bases.peek, url)
       catch {
         case e: MalformedURLException =>
-          val ex: UnavailableResourceException = new UnavailableResourceException("Unresolvable URL " + url + getLocation())
+          val ex: UnavailableResourceException = new UnavailableResourceException("Unresolvable URL " + url + getLocation)
           ex setRootCause e
-          throw new SAXException("Unresolvable URL " + url + getLocation(), ex)
+          throw new SAXException("Unresolvable URL " + url + getLocation, ex)
       }
 
     try {
       val parser: XMLReader =
         try XMLReaderFactory.createXMLReader()
         catch {
-          case e: SAXException =>
+          case _: SAXException =>
             try XMLReaderFactory.createXMLReader(XercesClassName)
             catch { case _: SAXException => return System.err.println("Could not find an XML parser") }
         }
@@ -350,7 +349,7 @@ class XIncludeFilter extends XMLFilterImpl {
       if (bases contains source)
         throw new SAXException(
           "Circular XInclude Reference",
-          new CircularIncludeException("Circular XInclude Reference to " + source + getLocation())
+          new CircularIncludeException("Circular XInclude Reference to " + source + getLocation)
         )
 
       bases push source
@@ -362,7 +361,7 @@ class XIncludeFilter extends XMLFilterImpl {
       bases.pop()
     } catch {
       case e: IOException =>
-        throw new SAXException("Document not found: " + source.toExternalForm + getLocation(), e)
+        throw new SAXException("Document not found: " + source.toExternalForm + getLocation, e)
     }
   }
 }

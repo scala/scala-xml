@@ -75,7 +75,7 @@ object MetaData {
  *  attributes. Every instance of this class is either
  *  - an instance of `UnprefixedAttribute key,value` or
  *  - an instance of `PrefixedAttribute namespace_prefix,key,value` or
- *  - `Null, the empty attribute list.
+ *  - `Null`, the empty attribute list.
  *
  *  Namespace URIs are obtained by using the namespace scope of the element
  *  owning this attribute (see `getNamespace`).
@@ -204,17 +204,17 @@ abstract class MetaData
    * @param  uri namespace of key
    * @param  scope a namespace scp (usually of the element owning this attribute list)
    * @param  key to be looked fore
-   * @return value as Some[Seq[Node]] if key is found, None otherwise
+   * @return value as `Some[Seq[Node]]` if key is found, None otherwise
    */
   final def get(uri: String, scope: NamespaceBinding, key: String): Option[Seq[Node]] =
     Option(apply(uri, scope, key))
 
-  protected def toString1(): String = sbToString(toString1)
+  protected def toString1: String = sbToString(toString1)
 
   // appends string representations of single attribute to StringBuilder
   protected def toString1(sb: StringBuilder): Unit
 
-  override def toString(): String = sbToString(buildString)
+  override def toString: String = sbToString(buildString)
 
   def buildString(sb: StringBuilder): StringBuilder = {
     sb append ' '

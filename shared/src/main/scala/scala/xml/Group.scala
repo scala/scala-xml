@@ -24,7 +24,7 @@ final case class Group(nodes: Seq[Node]) extends Node {
   override def theSeq: Seq[Node] = nodes
 
   override def canEqual(other: Any): Boolean = other match {
-    case x: Group => true
+    case _: Group => true
     case _        => false
   }
 

@@ -33,7 +33,7 @@ class XMLTestJVM {
   def equality(): Unit = {
     val c: Node = new Node {
       override def label: String = "hello"
-      override def hashCode(): Int =
+      override def hashCode: Int =
         Utility.hashCode(prefix, label, this.attributes.hashCode(), scope.hashCode(), child)
       override def child: Seq[Node] = Elem(null, "world", e, sc)
       //def attributes = e
@@ -54,7 +54,6 @@ class XMLTestJVM {
       Elem(null, "author", e, sc, Text("Peter Buneman")),
       Elem(null, "author", e, sc, Text("Dan Suciu")),
       Elem(null, "title", e, sc, Text("Data on ze web"))), x2p)
-
   }
 
   @UnitTest
@@ -640,7 +639,7 @@ class XMLTestJVM {
     parserFactory.setNamespaceAware(namespaceAware)
     parserFactory.setXIncludeAware(namespaceAware)
 
-    assertEquals(xml, XML.withSAXParser(parserFactory.newSAXParser).loadString(xml).toString())
+    assertEquals(xml, XML.withSAXParser(parserFactory.newSAXParser).loadString(xml).toString)
   }
 
   @UnitTest

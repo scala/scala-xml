@@ -163,13 +163,6 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
    */
   override def endCDATA(): Unit = captureText()
 
-  // TODO move into Utility
-  private def splitName(s: String): (Option[String], String) = {
-    val idx: Int = s indexOf ':'
-    if (idx < 0) (None, s)
-    else (Some(s take idx), s drop (idx + 1))
-  }
-
   /* ContentHandler methods */
 
   /* Start element. */
@@ -190,7 +183,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       tagStack = curTag :: tagStack
       curTag = qname
 
-      val localName: String = splitName(qname)._2
+      val localName: String = Utility.splitName(qname)._2
       capture = nodeContainsText(localName)
 
       hStack = null :: hStack
@@ -202,7 +195,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       for (i <- (0 until attributes.getLength).reverse) {
         val qname: String = attributes getQName i
         val value: String = attributes getValue i
-        val (pre: Option[String], key: String) = splitName(qname)
+        val (pre: Option[String], key: String) = Utility.splitName(qname)
         def nullIfEmpty(s: String): String = if (s == "") null else s
 
         if (pre.contains("xmlns") || (pre.isEmpty && qname == "xmlns")) {
@@ -263,7 +256,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       case null :: hs => hs
       case hs => hs
     }
-    val (pre: Option[String], localName: String) = splitName(qname)
+    val (pre: Option[String], localName: String) = Utility.splitName(qname)
     val scp: NamespaceBinding = scopeStack.head
     scopeStack = scopeStack.tail
 

@@ -57,5 +57,5 @@ class XIncludeException(message: String) extends Exception(message) {
    * @return Throwable   the underlying exception which caused the
    *                     `XIncludeException` to be thrown
    */
-  def getRootCause(): Throwable = this.rootCause
+  def getRootCause: Throwable = this.rootCause
 }

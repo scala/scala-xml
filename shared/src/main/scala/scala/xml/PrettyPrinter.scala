@@ -150,11 +150,11 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
   protected def traverse(node: Node, pscope: NamespaceBinding, ind: Int): Unit = node match {
 
-    case Text(s) if s.trim() == "" =>
+    case Text(s) if s.trim == "" =>
 
     case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr =>
-      makeBox(ind, node.toString().trim())
-    case g@Group(xs) =>
+      makeBox(ind, node.toString.trim)
+    case Group(xs) =>
       traverse(xs.iterator, pscope, ind)
     case _ =>
       val test: String = {

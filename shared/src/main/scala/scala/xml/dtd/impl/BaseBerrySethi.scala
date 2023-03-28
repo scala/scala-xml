@@ -20,7 +20,7 @@ import scala.collection.Seq
 
 /**
  * This class turns a regular expression over `A` into a
- * [[scala.util.automata.NondetWordAutom]] over `A` using the celebrated
+ * [[scala.xml.dtd.impl.NondetWordAutom]] over `A` using the celebrated
  * position automata construction (also called ''Berry-Sethi'' or ''Glushkov'').
  */
 @deprecated("This class will be removed", "2.10.0")

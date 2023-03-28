@@ -102,7 +102,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
         else if (that(1) == '{') {
           val i: Int = that indexOf '}'
           if (i == -1) fail
-          val (uri: String, key: String) = (that.substring(2, i), that.substring(i + 1, that.length()))
+          val (uri: String, key: String) = (that.substring(2, i), that.substring(i + 1, that.length))
           if (uri == "" || key == "") fail
           else y.attribute(uri, key)
         } else y.attribute(that drop 1)
@@ -128,7 +128,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   /**
    * Projection function, which returns elements of `this` sequence and of
    *  all its subsequences, based on the string `that`. Use:
-   *   - `this \\ "foo" to get a list of all elements that are labelled with `"foo"`,
+   *   - `this \\ "foo"` to get a list of all elements that are labelled with "foo"`,
    *     including `this`;
    *   - `this \\ "_"` to get a list of all elements (wildcard), including `this`;
    *   - `this \\ "@foo"` to get all unprefixed attributes `"foo"`;
@@ -159,7 +159,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
    */
   def \@(attributeName: String): String = (this \ ("@" + attributeName)).text
 
-  override def toString(): String = theSeq.mkString
+  override def toString: String = theSeq.mkString
 
   def text: String = (this map (_.text)).mkString
 }
