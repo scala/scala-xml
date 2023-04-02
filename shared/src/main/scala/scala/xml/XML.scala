@@ -19,13 +19,13 @@ import java.nio.channels.Channels
 import scala.util.control.Exception.ultimately
 
 object Source {
-  def fromFile(file: File): InputSource = new InputSource(new FileInputStream(file))
-  def fromFile(fd: FileDescriptor): InputSource = new InputSource(new FileInputStream(fd))
-  def fromFile(name: String): InputSource = new InputSource(new FileInputStream(name))
-
+  def fromFile(name: String): InputSource = fromFile(new File(name))
+  def fromFile(file: File): InputSource = fromUrl(file.toURI.toURL)
+  def fromUrl(url: java.net.URL): InputSource = fromSysId(url.toString)
+  def fromSysId(sysID: String): InputSource = new InputSource(sysID)
+  def fromFile(fd: FileDescriptor): InputSource = fromInputStream(new FileInputStream(fd))
   def fromInputStream(is: InputStream): InputSource = new InputSource(is)
   def fromReader(reader: Reader): InputSource = new InputSource(reader)
-  def fromSysId(sysID: String): InputSource = new InputSource(sysID)
   def fromString(string: String): InputSource = fromReader(new StringReader(string))
 }
 

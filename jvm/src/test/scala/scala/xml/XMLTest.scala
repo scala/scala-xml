@@ -24,10 +24,10 @@ class XMLTestJVM {
   def Elem(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*): Elem =
     scala.xml.Elem.apply(prefix, label, attributes, scope, minimizeEmpty = true, child: _*)
 
-  lazy val parsedxml1: Elem = XML.load(new InputSource(new StringReader("<hello><world/></hello>")))
-  lazy val parsedxml11: Elem = XML.load(new InputSource(new StringReader("<hello><world/></hello>")))
+  lazy val parsedxml1: Elem = XML.loadString("<hello><world/></hello>")
+  lazy val parsedxml11: Elem = XML.loadString("<hello><world/></hello>")
   val xmlFile2: String = "<bib><book><author>Peter Buneman</author><author>Dan Suciu</author><title>Data on ze web</title></book><book><author>John Mitchell</author><title>Foundations of Programming Languages</title></book></bib>"
-  lazy val parsedxml2: Elem = XML.load(new InputSource(new StringReader(xmlFile2)))
+  lazy val parsedxml2: Elem = XML.loadString(xmlFile2)
 
   @UnitTest
   def equality(): Unit = {
@@ -46,9 +46,7 @@ class XMLTestJVM {
     assertTrue(Array(parsedxml1).toList sameElements List(parsedxml11))
 
     val x2: String = "<book><author>Peter Buneman</author><author>Dan Suciu</author><title>Data on ze web</title></book>"
-
-    val i: InputSource = new InputSource(new StringReader(x2))
-    val x2p: Elem = XML.load(i)
+    val x2p: Elem = XML.loadString(x2)
 
     assertEquals(Elem(null, "book", e, sc,
       Elem(null, "author", e, sc, Text("Peter Buneman")),
@@ -146,8 +144,7 @@ class XMLTestJVM {
     val xmlAttrValueNorm: String = "<personne id='p0003' nom='&#x015e;ahingz' />"
 
     {
-      val isrcA: InputSource = new InputSource(new StringReader(xmlAttrValueNorm))
-      val parsedxmlA: Elem = XML.load(isrcA)
+      val parsedxmlA: Elem = XML.loadString(xmlAttrValueNorm)
       val c: Char = (parsedxmlA \ "@nom").text.charAt(0)
       assertTrue(c == '\u015e')
     }
@@ -689,6 +686,17 @@ class XMLTestJVM {
     assertTrue(gotAnError)
   }
 
+  // Here we see that opening InputStream prematurely, as was done previously, breaks XInclude.
+  @UnitTest(expected = classOf[org.xml.sax.SAXParseException]) def xIncludeNeedsSystemId(): Unit = {
+    val parserFactory = xercesInternal
+    parserFactory.setNamespaceAware(true)
+    parserFactory.setXIncludeAware(true)
+    XML
+      .withSAXParser(parserFactory.newSAXParser)
+      .load(getClass.getResource("site.xml").openStream())
+      .toString
+  }
+
   // Now that we can use XML parser configured to be namespace-aware,
   // we can also configure it to be XInclude-aware and process XML Includes:
   def check(
@@ -700,7 +708,7 @@ class XMLTestJVM {
     parserFactory.setXIncludeAware(true)
     val actual: String = XML
       .withSAXParser(parserFactory.newSAXParser)
-      .load(getClass.getResource(resourceName).toString)
+      .load(getClass.getResource(resourceName))
       .toString
 
     assertEquals(expected, actual)
