@@ -1,0 +1,3 @@
+<includer>
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="includee.xml"/>
+</includer>
