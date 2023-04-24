@@ -510,8 +510,15 @@ class XMLTestJVM {
     }
   }
 
+  // With both internal and external Xerces now on the classpath, we explicitly disambiguate which one we want:
+  def xercesInternal: javax.xml.parsers.SAXParserFactory =
+    javax.xml.parsers.SAXParserFactory.newInstance("com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl", null)
+
+  def xercesExternal: javax.xml.parsers.SAXParserFactory =
+    javax.xml.parsers.SAXParserFactory.newInstance("org.apache.xerces.jaxp.SAXParserFactoryImpl", null)
+
   /** Default SAXParserFactory */
-  val defaultParserFactory: javax.xml.parsers.SAXParserFactory = javax.xml.parsers.SAXParserFactory.newInstance
+  val defaultParserFactory: javax.xml.parsers.SAXParserFactory = xercesInternal
 
   @throws(classOf[org.xml.sax.SAXNotRecognizedException])
   def issue17UnrecognizedFeature(): Unit = {
@@ -629,7 +636,7 @@ class XMLTestJVM {
   // using namespace-aware parser, this works with FactoryAdapter enhanced to handle startPrefixMapping() events;
   // see https://github.com/scala/scala-xml/issues/506
   def roundtrip(namespaceAware: Boolean, xml: String): Unit = {
-    val parserFactory: javax.xml.parsers.SAXParserFactory = javax.xml.parsers.SAXParserFactory.newInstance()
+    val parserFactory: javax.xml.parsers.SAXParserFactory = xercesInternal
     parserFactory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
     parserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
     parserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
@@ -656,7 +663,7 @@ class XMLTestJVM {
 
   @UnitTest
   def useXMLReaderWithXMLFilter(): Unit = {
-    val parent: org.xml.sax.XMLReader = javax.xml.parsers.SAXParserFactory.newInstance.newSAXParser.getXMLReader
+    val parent: org.xml.sax.XMLReader = xercesInternal.newSAXParser.getXMLReader
     val filter: org.xml.sax.XMLFilter = new org.xml.sax.helpers.XMLFilterImpl(parent) {
       override def characters(ch: Array[Char], start: Int, length: Int): Unit = {
         for (i <- 0 until length) if (ch(start+i) == 'a') ch(start+i) = 'b'
@@ -681,6 +688,67 @@ class XMLTestJVM {
     }
     assertTrue(gotAnError)
   }
+
+  // Now that we can use XML parser configured to be namespace-aware,
+  // we can also configure it to be XInclude-aware and process XML Includes:
+  def check(
+    parserFactory: javax.xml.parsers.SAXParserFactory,
+    resourceName: String,
+    expected: String
+  ): Unit = {
+    parserFactory.setNamespaceAware(true)
+    parserFactory.setXIncludeAware(true)
+    val actual: String = XML
+      .withSAXParser(parserFactory.newSAXParser)
+      .load(getClass.getResource(resourceName).toString)
+      .toString
+
+    assertEquals(expected, actual)
+  }
+
+  // Here we demonstrate that XInclude works with both the external and the built-in Xerces:
+
+  val includerExpected: String =
+    s"""<includer>
+       |    <includee xml:base="includee.xml">
+       |    <content>Blah!</content>
+       |</includee>
+       |</includer>""".stripMargin
+
+  @UnitTest def xIncludeWithExternalXerces(): Unit = check(xercesExternal, "includer.xml", includerExpected)
+  @UnitTest def xIncludeWithInternalXerces(): Unit = check(xercesInternal, "includer.xml", includerExpected)
+
+  // And here we demonstrate that both external and built-in Xerces report incorrect `xml:base`
+  // when the XML file included contains its own include, and included files are not in the same directory:
+  // `xml:base` on the `<collection>` element is incorrect
+  //           books/book/author/volume/1.xml instead of the correct
+  //   archive/books/book/author/volume/1.xml!
+  val siteUnfortunatelyExpected: String =
+    s"""<site xmlns:xi="http://www.w3.org/2001/XInclude">
+       |    <store xml:base="archive/books.xml" xmlns:xi="http://www.w3.org/2001/XInclude">
+       |    <store xml:base="archive/books/book/author.xml" xmlns:xi="http://www.w3.org/2001/XInclude">
+       |    <collection n="1" xml:base="books/book/author/volume/1.xml"/>
+       |</store>
+       |</store>
+       |</site>""".stripMargin
+
+  // Turns out, this is a known Xerces bug https://issues.apache.org/jira/browse/XERCESJ-1102:
+  // - the bug was reported in October 2005 - more then seventeen years ago;
+  // - a patch fixing it (that I have not verified personally) was submitted many years ago;
+  // - the bug is still not fixed in the 2023 release of Xerces;
+  // - the bug was discussed by the Saxon users in https://saxonica.plan.io/issues/4664,
+  //   and is allegedly fixed in SaxonC 11.1 - although how can this be with Saxon not shipping its own Xerces is not clear.
+  //
+  // In my own application, I had to "fix up" incorrect values produced by Xerces, taking into account
+  // specific directory layout being used. I can only speculate what others do, but none of the alternatives sound great:
+  // - avoid using nested includes altogether or flatten the directory hierarchy to appease the bug;
+  // - use privately patched version of Xerces;
+  // - use Saxon DOM parsing instead of Xerces' SAX.
+  //
+  // I find it utterly incomprehensible that foundational library shipped with JDK and used everywhere
+  // has a bug in its core functionality for years and it never gets fixed, but sadly, it is the state of affairs:
+  @UnitTest def xIncludeFailWithExternalXerces(): Unit = check(xercesExternal, "site.xml", siteUnfortunatelyExpected)
+  @UnitTest def xIncludeFailWithInternalXerces(): Unit = check(xercesInternal, "site.xml", siteUnfortunatelyExpected)
 
   @UnitTest
   def nodeSeqNs(): Unit = {
