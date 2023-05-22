@@ -16,7 +16,7 @@ package xml
 import factory.XMLLoader
 import java.io.{File, FileDescriptor, FileInputStream, FileOutputStream, InputStream, Reader, StringReader, Writer}
 import java.nio.channels.Channels
-import scala.util.control.Exception.ultimately
+import scala.util.control.Exception
 
 object Source {
   def fromFile(name: String): InputSource = fromFile(new File(name))
@@ -25,8 +25,8 @@ object Source {
   def fromSysId(sysID: String): InputSource = new InputSource(sysID)
   def fromFile(fd: FileDescriptor): InputSource = fromInputStream(new FileInputStream(fd))
   def fromInputStream(is: InputStream): InputSource = new InputSource(is)
-  def fromReader(reader: Reader): InputSource = new InputSource(reader)
   def fromString(string: String): InputSource = fromReader(new StringReader(string))
+  def fromReader(reader: Reader): InputSource = new InputSource(reader)
 }
 
 /**
@@ -68,12 +68,14 @@ object XML extends XMLLoader[Elem] {
   val encoding: String = "UTF-8"
 
   /** Returns an XMLLoader whose load* methods will use the supplied SAXParser. */
-  def withSAXParser(p: SAXParser): XMLLoader[Elem] =
-    new XMLLoader[Elem] { override val parser: SAXParser = p }
+  def withSAXParser(p: SAXParser): XMLLoader[Elem] = new XMLLoader[Elem] {
+    override val parser: SAXParser = p
+  }
 
   /** Returns an XMLLoader whose load* methods will use the supplied XMLReader. */
-  def withXMLReader(r: XMLReader): XMLLoader[Elem] =
-    new XMLLoader[Elem] { override val reader: XMLReader = r }
+  def withXMLReader(r: XMLReader): XMLLoader[Elem] = new XMLLoader[Elem] {
+    override val reader: XMLReader = r
+  }
 
   /**
    * Saves a node to a file with given filename using given encoding
@@ -94,15 +96,15 @@ object XML extends XMLLoader[Elem] {
     node: Node,
     enc: String = "UTF-8",
     xmlDecl: Boolean = false,
-    doctype: dtd.DocType = null): Unit =
-    {
-      val fos: FileOutputStream = new FileOutputStream(filename)
-      val w: Writer = Channels.newWriter(fos.getChannel, enc)
+    doctype: dtd.DocType = null
+  ): Unit = {
+    val fos: FileOutputStream = new FileOutputStream(filename)
+    val w: Writer = Channels.newWriter(fos.getChannel, enc)
 
-      ultimately(w.close())(
-        write(w, node, enc, xmlDecl, doctype)
-      )
-    }
+    Exception.ultimately(w.close())(
+      write(w, node, enc, xmlDecl, doctype)
+    )
+  }
 
   /**
    * Writes the given node using writer, optionally with xml decl and doctype.
@@ -114,7 +116,14 @@ object XML extends XMLLoader[Elem] {
    *  @param xmlDecl  if true, write xml declaration
    *  @param doctype  if not null, write doctype declaration
    */
-  final def write(w: java.io.Writer, node: Node, enc: String, xmlDecl: Boolean, doctype: dtd.DocType, minimizeTags: MinimizeMode.Value = MinimizeMode.Default): Unit = {
+  final def write(
+    w: Writer,
+    node: Node,
+    enc: String,
+    xmlDecl: Boolean,
+    doctype: dtd.DocType,
+    minimizeTags: MinimizeMode.Value = MinimizeMode.Default
+  ): Unit = {
     /* TODO: optimize by giving writer parameter to toXML*/
     if (xmlDecl) w.write("<?xml version='1.0' encoding='" + enc + "'?>\n")
     if (doctype ne null) w.write(doctype.toString + "\n")

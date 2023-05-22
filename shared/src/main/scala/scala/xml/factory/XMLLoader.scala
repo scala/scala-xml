@@ -14,9 +14,9 @@ package scala
 package xml
 package factory
 
-import org.xml.sax.{SAXNotRecognizedException, SAXNotSupportedException, XMLReader}
+import org.xml.sax.XMLReader
+import scala.xml.Source
 import javax.xml.parsers.SAXParserFactory
-import parsing.{FactoryAdapter, NoBindingFactoryAdapter}
 import java.io.{File, FileDescriptor, InputStream, Reader}
 import java.net.URL
 
@@ -25,9 +25,6 @@ import java.net.URL
  *  created by "def parser" or the reader created by "def reader".
  */
 trait XMLLoader[T <: Node] {
-  import scala.xml.Source._
-  def adapter: FactoryAdapter = new NoBindingFactoryAdapter()
-
   private def setSafeDefaults(parserFactory: SAXParserFactory): Unit = {
     parserFactory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true)
     parserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
@@ -54,69 +51,49 @@ trait XMLLoader[T <: Node] {
   def reader: XMLReader = parser.getXMLReader
 
   /**
-   * Loads XML from the given InputSource, using the supplied parser.
+   * Loads XML from the given InputSource, using the supplied parser or reader.
    * The methods available in scala.xml.XML use the XML parser in the JDK
    * (unless another parser is present on the classpath).
    */
-  def loadXML(inputSource: InputSource, parser: SAXParser): T = loadXML(inputSource, parser.getXMLReader)
+  private def getDocElem(document: Document): T = document.docElem.asInstanceOf[T]
 
-  def loadXMLNodes(inputSource: InputSource, parser: SAXParser): Seq[Node] = loadXMLNodes(inputSource, parser.getXMLReader)
+  def loadXML(inputSource: InputSource, parser: SAXParser): T = getDocElem(loadDocument(inputSource, parser))
+  def loadXMLNodes(inputSource: InputSource, parser: SAXParser): Seq[Node] = loadDocument(inputSource, parser).children
 
-  private def loadXML(inputSource: InputSource, reader: XMLReader): T = {
-    val result: FactoryAdapter = parse(inputSource, reader)
-    result.rootElem.asInstanceOf[T]
-  }
+  private def loadDocument(inputSource: InputSource, parser: SAXParser): Document = adapter.loadDocument(inputSource, parser)
+  private def loadDocument(inputSource: InputSource, reader: XMLReader): Document = adapter.loadDocument(inputSource, reader)
+  def adapter: parsing.FactoryAdapter = new parsing.NoBindingFactoryAdapter()
 
-  private def loadXMLNodes(inputSource: InputSource, reader: XMLReader): Seq[Node] = {
-    val result: FactoryAdapter = parse(inputSource, reader)
-    result.prolog ++ (result.rootElem :: result.epilogue)
-  }
+  /** Loads XML Document. */
+  def loadDocument(source: InputSource): Document = loadDocument(source, reader)
+  def loadFileDocument(fileName: String): Document = loadDocument(Source.fromFile(fileName))
+  def loadFileDocument(file: File): Document = loadDocument(Source.fromFile(file))
+  def loadDocument(url: URL): Document = loadDocument(Source.fromUrl(url))
+  def loadDocument(sysId: String): Document = loadDocument(Source.fromSysId(sysId))
+  def loadFileDocument(fileDescriptor: FileDescriptor): Document = loadDocument(Source.fromFile(fileDescriptor))
+  def loadDocument(inputStream: InputStream): Document = loadDocument(Source.fromInputStream(inputStream))
+  def loadDocument(reader: Reader): Document = loadDocument(Source.fromReader(reader))
+  def loadStringDocument(string: String): Document = loadDocument(Source.fromString(string))
 
-  private def parse(inputSource: InputSource, xmlReader: XMLReader): FactoryAdapter = {
-    if (inputSource == null) throw new IllegalArgumentException("InputSource cannot be null")
-
-    val result: FactoryAdapter = adapter
-
-    xmlReader.setContentHandler(result)
-    xmlReader.setDTDHandler(result)
-    /* Do not overwrite pre-configured EntityResolver. */
-    if (xmlReader.getEntityResolver == null) xmlReader.setEntityResolver(result)
-    /* Do not overwrite pre-configured ErrorHandler. */
-    if (xmlReader.getErrorHandler == null) xmlReader.setErrorHandler(result)
-
-    try {
-      xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", result)
-    } catch {
-      case _: SAXNotRecognizedException =>
-      case _: SAXNotSupportedException =>
-    }
-
-    result.scopeStack = TopScope :: result.scopeStack
-    xmlReader.parse(inputSource)
-    result.scopeStack = result.scopeStack.tail
-
-    result
-  }
-
-  /** Loads XML. */
-  def load(inputSource: InputSource): T = loadXML(inputSource, reader)
-  def loadFile(fileName: String): T = load(fromFile(fileName))
-  def loadFile(file: File): T = load(fromFile(file))
-  def load(url: URL): T = load(fromUrl(url))
-  def load(sysId: String): T = load(fromSysId(sysId))
-  def loadFile(fileDescriptor: FileDescriptor): T = load(fromFile(fileDescriptor))
-  def load(inputStream: InputStream): T = load(fromInputStream(inputStream))
-  def load(reader: Reader): T = load(fromReader(reader))
-  def loadString(string: String): T = load(fromString(string))
+  /** Loads XML element. */
+  def load(inputSource: InputSource): T = getDocElem(loadDocument(inputSource))
+  def loadFile(fileName: String): T = getDocElem(loadFileDocument(fileName))
+  def loadFile(file: File): T = getDocElem(loadFileDocument(file))
+  def load(url: URL): T = getDocElem(loadDocument(url))
+  def load(sysId: String): T = getDocElem(loadDocument(sysId))
+  def loadFile(fileDescriptor: FileDescriptor): T = getDocElem(loadFileDocument(fileDescriptor))
+  def load(inputStream: InputStream): T = getDocElem(loadDocument(inputStream))
+  def load(reader: Reader): T = getDocElem(loadDocument(reader))
+  def loadString(string: String): T = getDocElem(loadStringDocument(string))
 
   /** Load XML nodes, including comments and processing instructions that precede and follow the root element. */
-  def loadNodes(inputSource: InputSource): Seq[Node] = loadXMLNodes(inputSource, reader)
-  def loadFileNodes(fileName: String): Seq[Node] = loadNodes(fromFile(fileName))
-  def loadFileNodes(file: File): Seq[Node] = loadNodes(fromFile(file))
-  def loadNodes(url: URL): Seq[Node] = loadNodes(fromUrl(url))
-  def loadNodes(sysId: String): Seq[Node] = loadNodes(fromSysId(sysId))
-  def loadFileNodes(fileDescriptor: FileDescriptor): Seq[Node] = loadNodes(fromFile(fileDescriptor))
-  def loadNodes(inputStream: InputStream): Seq[Node] = loadNodes(fromInputStream(inputStream))
-  def loadNodes(reader: Reader): Seq[Node] = loadNodes(fromReader(reader))
-  def loadStringNodes(string: String): Seq[Node] = loadNodes(fromString(string))
+  def loadNodes(inputSource: InputSource): Seq[Node] = loadDocument(inputSource).children
+  def loadFileNodes(fileName: String): Seq[Node] = loadFileDocument(fileName).children
+  def loadFileNodes(file: File): Seq[Node] = loadFileDocument(file).children
+  def loadNodes(url: URL): Seq[Node] = loadDocument(url).children
+  def loadNodes(sysId: String): Seq[Node] = loadDocument(sysId).children
+  def loadFileNodes(fileDescriptor: FileDescriptor): Seq[Node] = loadFileDocument(fileDescriptor).children
+  def loadNodes(inputStream: InputStream): Seq[Node] = loadDocument(inputStream).children
+  def loadNodes(reader: Reader): Seq[Node] = loadDocument(reader).children
+  def loadStringNodes(string: String): Seq[Node] = loadStringDocument(string).children
 }
