@@ -1,14 +1,10 @@
 package scala.xml
 
 import language.postfixOps
-
 import org.junit.{Test => UnitTest}
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertEquals
+import org.junit.Assert.{assertEquals, assertFalse, assertTrue}
 import java.io.StringWriter
 import java.io.ByteArrayOutputStream
-import java.io.StringReader
 import scala.xml.dtd.{DocType, PublicID}
 import scala.xml.parsing.ConstructingParser
 import scala.xml.Utility.sort
@@ -610,7 +606,7 @@ class XMLTestJVM {
                 |    section]]>   </b> suffix</a>""".stripMargin)
   }
 
-  def roundtripNodes(xml: String): Unit = assertEquals(xml, XML.loadStringNodes(xml).map(_.toString).mkString(""))
+  def roundtripNodes(xml: String): Unit = assertEquals(xml, XML.loadStringDocument(xml).children.map(_.toString).mkString(""))
 
   @UnitTest
   def xmlLoaderLoadNodes(): Unit = {
