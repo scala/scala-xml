@@ -95,11 +95,12 @@ case class UnparsedEntityDecl(name: String, extID: ExternalID, notation: String)
     extID.buildString(sb).append(" NDATA ").append(notation).append('>')
   }
 }
+
 /** a notation declaration */
 case class NotationDecl(name: String, extID: ExternalID) extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb.append("<!NOTATION ").append(name).append(' ')
-    extID.buildString(sb)
+    extID.buildString(sb).append('>')
   }
 }
 

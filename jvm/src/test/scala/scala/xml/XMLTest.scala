@@ -1,9 +1,10 @@
 package scala.xml
 
 import org.junit.{Test => UnitTest}
-import org.junit.Assert.{assertEquals, assertFalse, assertTrue}
+import org.junit.Assert.{assertEquals, assertFalse, assertNull, assertThrows, assertTrue}
 import java.io.StringWriter
 import java.io.ByteArrayOutputStream
+import java.net.URL
 import scala.xml.dtd.{DocType, PublicID}
 import scala.xml.parsing.ConstructingParser
 import scala.xml.Utility.sort
@@ -681,6 +682,8 @@ class XMLTestJVM {
     assertTrue(gotAnError)
   }
 
+  def resourceUrl(resourceName: String): URL = getClass.getResource(s"$resourceName.xml")
+
   // Here we see that opening InputStream prematurely, as was done previously, breaks XInclude.
   @UnitTest(expected = classOf[org.xml.sax.SAXParseException]) def xIncludeNeedsSystemId(): Unit = {
     val parserFactory = xercesInternal
@@ -688,7 +691,7 @@ class XMLTestJVM {
     parserFactory.setXIncludeAware(true)
     XML
       .withSAXParser(parserFactory.newSAXParser)
-      .load(getClass.getResource("site.xml").openStream())
+      .load(resourceUrl("site").openStream())
       .toString
   }
 
@@ -703,7 +706,7 @@ class XMLTestJVM {
     parserFactory.setXIncludeAware(true)
     val actual: String = XML
       .withSAXParser(parserFactory.newSAXParser)
-      .load(getClass.getResource(resourceName))
+      .load(resourceUrl(resourceName))
       .toString
 
     assertEquals(expected, actual)
@@ -718,8 +721,8 @@ class XMLTestJVM {
        |</includee>
        |</includer>""".stripMargin
 
-  @UnitTest def xIncludeWithExternalXerces(): Unit = check(xercesExternal, "includer.xml", includerExpected)
-  @UnitTest def xIncludeWithInternalXerces(): Unit = check(xercesInternal, "includer.xml", includerExpected)
+  @UnitTest def xIncludeWithExternalXerces(): Unit = check(xercesExternal, "includer", includerExpected)
+  @UnitTest def xIncludeWithInternalXerces(): Unit = check(xercesInternal, "includer", includerExpected)
 
   // And here we demonstrate that both external and built-in Xerces report incorrect `xml:base`
   // when the XML file included contains its own include, and included files are not in the same directory:
@@ -750,8 +753,170 @@ class XMLTestJVM {
   //
   // I find it utterly incomprehensible that foundational library shipped with JDK and used everywhere
   // has a bug in its core functionality for years and it never gets fixed, but sadly, it is the state of affairs:
-  @UnitTest def xIncludeFailWithExternalXerces(): Unit = check(xercesExternal, "site.xml", siteUnfortunatelyExpected)
-  @UnitTest def xIncludeFailWithInternalXerces(): Unit = check(xercesInternal, "site.xml", siteUnfortunatelyExpected)
+  @UnitTest def xIncludeFailWithExternalXerces(): Unit = check(xercesExternal, "site", siteUnfortunatelyExpected)
+  @UnitTest def xIncludeFailWithInternalXerces(): Unit = check(xercesInternal, "site", siteUnfortunatelyExpected)
+
+  @UnitTest
+  def documentBaseURI(): Unit = {
+    val url: URL = resourceUrl("site")
+    // XMLLoader returns the document's baseURI:
+    assert(XML.withSAXParser(xercesInternal.newSAXParser).loadDocument(url).baseURI.endsWith("/test-classes/scala/xml/site.xml"))
+    assert(XML.withSAXParser(xercesExternal.newSAXParser).loadDocument(url).baseURI.endsWith("/test-classes/scala/xml/site.xml"))
+    // ConstructingParser does not return it of course: since it uses scala.io.Source it has no idea where is the XML coming from:
+    assertNull(ConstructingParser.fromSource(scala.io.Source.fromURI(url.toURI), preserveWS = false).document().baseURI)
+  }
+
+  @UnitTest
+  def xmlStandAlone(): Unit = {
+    val standAlone: String = s"""<?xml version="1.0" standalone="yes"?><a/>"""
+    val nonStandAlone: String = s"""<?xml version="1.0" standalone="no"?><a/>"""
+    val default: String = s"""<?xml version="1.0"?><a/>"""
+    val noXmlDeclaration: String = s"""<a/>"""
+
+    // ConstructingParser returns standAlone status of the document straight from the `xml` declaration:
+    assertEquals(Some(true ), ConstructingParser.fromSource(scala.io.Source.fromString(standAlone), preserveWS = false).document().standAlone)
+    assertEquals(Some(false), ConstructingParser.fromSource(scala.io.Source.fromString(nonStandAlone), preserveWS = false).document().standAlone)
+    assertTrue(ConstructingParser.fromSource(scala.io.Source.fromString(default), preserveWS = false).document().standAlone.isEmpty)
+    // ConstructingParser incorrectly returns null standAlone value when the document does not have the xml declaration:
+    assertNull(ConstructingParser.fromSource(scala.io.Source.fromString(noXmlDeclaration), preserveWS = false).document().standAlone)
+
+    // XMLLoader returns standAlone status of the document straight from the `xml` declaration:
+    assertTrue(XML.withSAXParser(xercesInternal.newSAXParser).loadStringDocument(standAlone).standAlone.contains(true))
+    assertTrue(XML.withSAXParser(xercesInternal.newSAXParser).loadStringDocument(nonStandAlone).standAlone.contains(false))
+    assertTrue(XML.withSAXParser(xercesInternal.newSAXParser).loadStringDocument(default).standAlone.contains(false))
+    assertTrue(XML.withSAXParser(xercesInternal.newSAXParser).loadStringDocument(noXmlDeclaration).standAlone.contains(false))
+  }
+
+  @UnitTest
+  def xmlVersion(): Unit = {
+    val xml10 = s"""<?xml version="1.0"?><a/>"""
+    val xml11 = s"""<?xml version="1.1"?><a/>"""
+    val noXmlDeclaration: String = s"""<a/>"""
+
+    // ConstructingParser returns XML version of the document straight from the `xml` declaration for version="1.0":
+    assertEquals(Some("1.0"), ConstructingParser.fromSource(scala.io.Source.fromString(xml10), preserveWS = false).document().version)
+    // ConstructingParser returns incorrect version value when the the version is "1.1" (and prints "cannot deal with versions != 1.0a"):
+    assertTrue(ConstructingParser.fromSource(scala.io.Source.fromString(xml11), preserveWS = false).document().version.isEmpty)
+    // ConstructingParser incorrectly returns null version value when the document does not have the xml declaration:
+    assertNull(ConstructingParser.fromSource(scala.io.Source.fromString(noXmlDeclaration), preserveWS = false).document().version)
+
+    // XMLLoader returns XML version of the document straight from the `xml` declaration
+    assertTrue(xercesInternal.getFeature("http://xml.org/sax/features/xml-1.1"))
+    assertEquals(Some("1.0"), XML.withSAXParser(xercesInternal.newSAXParser).loadStringDocument(xml10).version)
+    assertEquals(Some("1.1"), XML.withSAXParser(xercesInternal.newSAXParser).loadStringDocument(xml11).version)
+    assertEquals(Some("1.0"), XML.withSAXParser(xercesInternal.newSAXParser).loadStringDocument(noXmlDeclaration).version)
+  }
+
+  @UnitTest
+  def xmlEncoding(): Unit = {
+    val utf8: String = s"""<?xml version="1.0" encoding="UTF-8"?><a/>"""
+    val utf16: String = s"""<?xml version="1.0" encoding="UTF-16"?><a/>"""
+    val default: String = s"""<?xml version="1.0"?><a/>"""
+    val noXmlDeclaration: String = s"""<a/>"""
+
+    // ConstructingParser returns XML encoding name canonicalized from the `xml` declaration:
+    assertEquals(Some("UTF-8" ), ConstructingParser.fromSource(scala.io.Source.fromString(utf8   ), preserveWS = false).document().encoding)
+    assertEquals(Some("UTF-16"), ConstructingParser.fromSource(scala.io.Source.fromString(utf16  ), preserveWS = false).document().encoding)
+    assertEquals(None          , ConstructingParser.fromSource(scala.io.Source.fromString(default), preserveWS = false).document().encoding)
+    // ConstructingParser incorrectly returns null encoding value when the document does not have the xml declaration:
+    assertNull(ConstructingParser.fromSource(scala.io.Source.fromString(noXmlDeclaration), preserveWS = false).document().encoding)
+
+    // XMLLoader does not return the encoding specified in the `xml` declaration:
+    assertEquals(None, XML.loadStringDocument(utf8).encoding)
+    assertEquals(None, XML.loadStringDocument(utf16).encoding)
+    assertEquals(None, XML.loadStringDocument(default).encoding)
+    assertEquals(None, XML.loadStringDocument(noXmlDeclaration).encoding)
+
+    // XMLLoader returns the encoding determined from the Byte Order Mark in the document itself:
+    assertEquals(Some("UTF-8"), XML.loadDocument(resourceUrl("utf8")).encoding)
+    assertEquals(Some("UTF-16BE"), XML.loadDocument(resourceUrl("utf16")).encoding)
+
+    // ConstructingParser doesn't seem to be able to parse XML with Byte Order Mark:
+    assertThrows(
+      classOf[java.nio.charset.MalformedInputException],
+      () => ConstructingParser.fromSource(scala.io.Source.fromURI(resourceUrl("utf16").toURI), preserveWS = false).document().encoding
+    )
+  }
+
+  @UnitTest
+  def loadDtd(): Unit = {
+    val parserFactory: javax.xml.parsers.SAXParserFactory = xercesExternal
+    parserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+
+    val xml: String =
+      s"""<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN" "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd" [
+         |  <!ELEMENT AnyElement ANY>
+         |  <!ELEMENT EmptyElement EMPTY>
+         |  <!ELEMENT PCDataElement (#PCDATA)>
+         |  <!ELEMENT MixedElement (#PCDATA|element|complex)*>
+         |  <!ELEMENT ChildrenElement (element+,complex?)>
+         |  <!ELEMENT element (#PCDATA)>
+         |  <!ELEMENT complex (#PCDATA)>
+         |  <!ATTLIST complex
+         |    implied CDATA #IMPLIED
+         |    required CDATA #REQUIRED
+         |    fixed CDATA #FIXED "fixed"
+         |    default CDATA "default"
+         |    enumerated (InStock|Backordered|Discontinued) "InStock"
+         |  >
+         |  <!ENTITY AUTHOR "John Doe">
+         |  <!NOTATION jpg PUBLIC "JPG 1.0">
+         |]>
+         |<document>&AUTHOR;</document>
+         |""".stripMargin
+
+    val document: Document = XML.withSAXParser(parserFactory.newSAXParser).loadStringDocument(xml)
+
+    // XMLLoader parses and returns DTD.
+    // Note: dtd.ContentModel that DTD uses to represent the element content model lacks fidelity:
+    // occurrence indicators "?" and "+" can not be expressed.
+    // Note: spurious parentheses come from the dtd.ContentModel's toString() methods...
+    assertEquals(
+      """DTD PUBLIC "-//OASIS//DTD DocBook V5.0//EN" "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd" [
+        |<!ELEMENT AnyElement ANY>
+        |<!ELEMENT EmptyElement EMPTY>
+        |<!ELEMENT PCDataElement (#PCDATA)>
+        |<!ELEMENT MixedElement (#PCDATA|(element|complex))*>
+        |<!ELEMENT ChildrenElement ((element)*,(complex)*)>
+        |<!ELEMENT element (#PCDATA)>
+        |<!ELEMENT complex (#PCDATA)>
+        |<!ATTLIST complex
+        |  implied CDATA #IMPLIED
+        |  required CDATA #REQUIRED
+        |  fixed CDATA #FIXED "fixed"
+        |  default CDATA "default"
+        |  enumerated (InStock|Backordered|Discontinued) "InStock">
+        |<!ENTITY AUTHOR "John Doe">
+        |<!NOTATION jpg PUBLIC "JPG 1.0">
+        |]""".stripMargin,
+      document.dtd.toString)
+
+    // XMLLoader resolves entities defined in the DTD -
+    // XML parser parses and uses the DTD internally, so there is no need to install any additional entity resolvers:
+    assertEquals("""<document>John Doe</document>""", document.docElem.toString)
+
+    val document2: Document = ConstructingParser.fromSource(scala.io.Source.fromString(xml), preserveWS = false).document()
+
+    // ConstructingParser
+    // ignores
+    //   element declarations
+    //   attribute list declarations
+    //   some entity declarations
+    //   notations
+    // captures
+    //   decls: List[Decl] - for EntityDecl and PEReference
+    //   ent: Map[String, EntityDecl]
+    // returns only
+    //   decls
+    assertEquals(
+      s"""DTD PUBLIC "-//OASIS//DTD DocBook V5.0//EN" "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd" [
+         |<!ENTITY AUTHOR "John Doe">
+         |]""".stripMargin,
+      document2.dtd.toString)
+
+    // ConstructingParser resolves entities defined in the DTD
+    assertEquals("""<document>John Doe</document>""", document2.docElem.toString)
+  }
 
   @UnitTest
   def nodeSeqNs(): Unit = {

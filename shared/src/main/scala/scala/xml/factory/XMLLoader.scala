@@ -55,17 +55,14 @@ trait XMLLoader[T <: Node] {
    * The methods available in scala.xml.XML use the XML parser in the JDK
    * (unless another parser is present on the classpath).
    */
-  private def getDocElem(document: Document): T = document.docElem.asInstanceOf[T]
 
-  def loadXML(inputSource: InputSource, parser: SAXParser): T = getDocElem(loadDocument(inputSource, parser))
-  def loadXMLNodes(inputSource: InputSource, parser: SAXParser): Seq[Node] = loadDocument(inputSource, parser).children
-
-  private def loadDocument(inputSource: InputSource, parser: SAXParser): Document = adapter.loadDocument(inputSource, parser)
-  private def loadDocument(inputSource: InputSource, reader: XMLReader): Document = adapter.loadDocument(inputSource, reader)
+  // TODO remove
+  def loadXML(inputSource: InputSource, parser: SAXParser): T = getDocElem(adapter.loadDocument(inputSource, parser.getXMLReader))
+  def loadXMLNodes(inputSource: InputSource, parser: SAXParser): Seq[Node] = adapter.loadDocument(inputSource, parser.getXMLReader).children
   def adapter: parsing.FactoryAdapter = new parsing.NoBindingFactoryAdapter()
 
   /** Loads XML Document. */
-  def loadDocument(source: InputSource): Document = loadDocument(source, reader)
+  def loadDocument(inputSource: InputSource): Document = adapter.loadDocument(inputSource, reader)
   def loadFileDocument(fileName: String): Document = loadDocument(Source.fromFile(fileName))
   def loadFileDocument(file: File): Document = loadDocument(Source.fromFile(file))
   def loadDocument(url: URL): Document = loadDocument(Source.fromUrl(url))
@@ -76,6 +73,7 @@ trait XMLLoader[T <: Node] {
   def loadStringDocument(string: String): Document = loadDocument(Source.fromString(string))
 
   /** Loads XML element. */
+  private def getDocElem(document: Document): T = document.docElem.asInstanceOf[T]
   def load(inputSource: InputSource): T = getDocElem(loadDocument(inputSource))
   def loadFile(fileName: String): T = getDocElem(loadFileDocument(fileName))
   def loadFile(file: File): T = getDocElem(loadFileDocument(file))
