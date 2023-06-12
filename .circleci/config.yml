@@ -20,7 +20,7 @@ commands:
     parameters:
       scala_version:
         type: string
-        default: 2.12.17
+        default: 2.12.18
       sbt_tasks:
         type: string
         default: update compile test:compile test doc package osgiBundle
@@ -44,7 +44,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.17
+        default: 2.12.18
         type: string
       java_version:
         description: "Java version"
@@ -61,7 +61,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.17
+        default: 2.12.18
         type: string
     steps:
       - checkout
@@ -75,7 +75,7 @@ jobs:
     parameters:
       scala_version:
         description: "Scala version"
-        default: 2.12.17
+        default: 2.12.18
         type: string
     steps:
       - checkout
@@ -92,15 +92,15 @@ workflows:
   build:
     jobs:
       - scala_job:
-          name: 2.12.17
+          name: 2.12.18
           java_version: jdk8
           scala_version: 2.12.18
       - scala_job:
-          name: 2.13.10
+          name: 2.13.11
           java_version: jdk8
           scala_version: 2.13.11
       - scala_job:
-          name: 3.1.0
+          name: 3.3.0
           java_version: jdk8
           scala_version: 3.3.0
       - scala_job:
@@ -124,7 +124,7 @@ workflows:
           java_version: jdk17
           scala_version: 2.13.11
       - scala_job:
-          name: jdk17_3.1
+          name: jdk17_3.3
           java_version: jdk17
           scala_version: 3.3.0
       - scalajs_job:
@@ -134,7 +134,7 @@ workflows:
           name: sjs1.0_2.13
           scala_version: 2.13.11
       - scalajs_job:
-          name: sjs1.0_3.1
+          name: sjs1.0_3.3
           scala_version: 3.3.0
       - scalanative_job:
           name: native0.4_2.12
