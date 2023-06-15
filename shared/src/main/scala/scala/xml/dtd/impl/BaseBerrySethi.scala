@@ -42,12 +42,12 @@ private[dtd] abstract class BaseBerrySethi {
   final val emptySet: Set[Int] = Set()
 
   private def doComp(r: RegExp, compFunction: RegExp => Set[Int]): Set[Int] = r match {
-    case x: Alt  => (x.rs map compFirst).foldLeft(emptySet)(_ ++ _)
+    case x: Alt  => x.rs.map(compFirst).foldLeft(emptySet)(_ ++ _)
     case Eps     => emptySet
     case x: Meta => compFunction(x.r)
     case x: Sequ =>
-      val (l1: Seq[lang._regexpT], l2: Seq[lang._regexpT]) = x.rs span (_.isNullable)
-      ((l1 ++ (l2 take 1)) map compFunction).foldLeft(emptySet)(_ ++ _)
+      val (l1: Seq[lang._regexpT], l2: Seq[lang._regexpT]) = x.rs.span(_.isNullable)
+      (l1 ++ l2.take(1)).map(compFunction).foldLeft(emptySet)(_ ++ _)
     case Star(t) => compFunction(t)
     case _       => throw new IllegalArgumentException("unexpected pattern " + r.getClass)
   }
@@ -98,8 +98,8 @@ private[dtd] abstract class BaseBerrySethi {
    */
   protected def traverse(r: RegExp): Unit = r match {
     // (is tree automaton stuff, more than Berry-Sethi)
-    case x: Alt  => x.rs foreach traverse
-    case x: Sequ => x.rs foreach traverse
+    case x: Alt  => x.rs.foreach(traverse)
+    case x: Sequ => x.rs.foreach(traverse)
     case x: Meta => traverse(x.r)
     case Star(t) => traverse(t)
     case _       => throw new IllegalArgumentException("unexp pattern " + r.getClass)

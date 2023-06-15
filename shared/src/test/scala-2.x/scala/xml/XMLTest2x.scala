@@ -1,7 +1,5 @@
 package scala.xml
 
-import language.postfixOps
-
 import org.junit.{Test => UnitTest}
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
@@ -30,5 +28,4 @@ class XMLTest2x {
     assertTrue(f)
     assertTrue(g)
   }
-
 }

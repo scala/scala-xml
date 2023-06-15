@@ -19,7 +19,7 @@ object ReuseNodesTest {
  
   class OriginalTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
     override def transform(ns: Seq[Node]): Seq[Node] = {
-      val xs: Seq[Seq[Node]] = ns.toStream map transform
+      val xs: Seq[Seq[Node]] = ns.toStream.map(transform)
       val (xs1: Seq[(Seq[Node], Node)], xs2: Seq[(Seq[Node], Node)]) = xs.zip(ns).span { case (x, n) => unchanged(n, x) }
        
       if (xs2.isEmpty) ns
@@ -30,7 +30,7 @@ object ReuseNodesTest {
 
   class ModifiedTranformr(rules: RewriteRule*) extends RuleTransformer(rules:_*) {
     override def transform(ns: Seq[Node]): Seq[Node] = {
-      val changed: Seq[Node] = ns flatMap transform
+      val changed: Seq[Node] = ns.flatMap(transform)
       
       if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
       else ns
@@ -93,7 +93,7 @@ class ReuseNodesTest {
         recursiveAssert(original.child,transformed.child)
       case _ =>
         assertSame(original, transformed)
-        // No need to check for children, node being immuatable
+        // No need to check for children, node being immutable
         // children can't be different if parents are referentially equal
     }
   }

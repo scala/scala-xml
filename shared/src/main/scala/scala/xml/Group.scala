@@ -29,7 +29,7 @@ final case class Group(nodes: Seq[Node]) extends Node {
   }
 
   override def strict_==(other: Equality): Boolean = other match {
-    case Group(xs) => nodes sameElements xs
+    case Group(xs) => nodes.sameElements(xs)
     case _         => false
   }
 
@@ -39,7 +39,7 @@ final case class Group(nodes: Seq[Node]) extends Node {
    * Since Group is very much a hack it throws an exception if you
    *  try to do anything with it.
    */
-  private def fail(msg: String): Nothing = throw new UnsupportedOperationException("class Group does not support method '%s'" format msg)
+  private def fail(msg: String): Nothing = throw new UnsupportedOperationException("class Group does not support method '%s'".format(msg))
 
   override def label: Nothing = fail("label")
   override def attributes: Nothing = fail("attributes")

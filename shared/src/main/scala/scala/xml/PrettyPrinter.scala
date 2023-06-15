@@ -59,7 +59,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
     val tmp: Int = width - cur
     if (s.length <= tmp)
       return List(Box(ind, s))
-    var i: Int = s indexOf ' '
+    var i: Int = s.indexOf(' ')
     if (i > tmp || i == -1) throw new BrokenException() // cannot break
 
     var last: List[Int] = Nil
@@ -87,7 +87,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
     if (cur + s.length > width) { // fits in this line
       items ::= Box(ind, s)
       cur += s.length
-    } else try cut(s, ind) foreach (items ::= _) // break it up
+    } else try cut(s, ind).foreach(items ::= _) // break it up
     catch { case _: BrokenException => makePara(ind, s) } // give up, para
 
   // dont respect indent in para, but afterwards
@@ -104,10 +104,10 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
   protected def leafTag(n: Node): String = {
     def mkLeaf(sb: StringBuilder): Unit = {
-      sb append '<'
-      n nameToString sb
-      n.attributes buildString sb
-      sb append "/>"
+      sb.append('<')
+      n.nameToString(sb)
+      n.attributes.buildString(sb)
+      sb.append("/>")
     }
     sbToString(mkLeaf)
   }
@@ -115,21 +115,21 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
   protected def startTag(n: Node, pscope: NamespaceBinding): (String, Int) = {
     var i: Int = 0
     def mkStart(sb: StringBuilder): Unit = {
-      sb append '<'
-      n nameToString sb
+      sb.append('<')
+      n.nameToString(sb)
       i = sb.length + 1
-      n.attributes buildString sb
+      n.attributes.buildString(sb)
       n.scope.buildString(sb, pscope)
-      sb append '>'
+      sb.append('>')
     }
     (sbToString(mkStart), i)
   }
 
   protected def endTag(n: Node): String = {
     def mkEnd(sb: StringBuilder): Unit = {
-      sb append "</"
-      n nameToString sb
-      sb append '>'
+      sb.append("</")
+      n.nameToString(sb)
+      sb.append('>')
     }
     sbToString(mkEnd)
   }
@@ -139,7 +139,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
       case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr => true
       case _ => false
     }
-    n.child forall isLeaf
+    n.child.forall(isLeaf)
   }
 
   protected def fits(test: String): Boolean =
@@ -236,20 +236,20 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
         lastwasbreak = true
         cur = 0
       //        while (cur < last) {
-      //          sb append ' '
+      //          sb.append(' ')
       //          cur += 1
       //        }
 
       case Box(i, s) =>
         lastwasbreak = false
         while (cur < i) {
-          sb append ' '
+          sb.append(' ')
           cur += 1
         }
         sb.append(s)
       case Para(s) =>
         lastwasbreak = false
-        sb append s
+        sb.append(s)
     }
   }
 
@@ -284,5 +284,5 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
    *  @param sb     the string buffer to which to append to
    */
   def formatNodes(nodes: Seq[Node], pscope: NamespaceBinding, sb: StringBuilder): Unit =
-    nodes foreach (n => sb append format(n, pscope))
+    nodes.foreach(n => sb.append(format(n, pscope)))
 }

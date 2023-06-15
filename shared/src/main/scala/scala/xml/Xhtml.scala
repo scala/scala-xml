@@ -49,40 +49,40 @@ object Xhtml {
     stripComments: Boolean = false,
     decodeEntities: Boolean = false,
     preserveWhitespace: Boolean = false,
-    minimizeTags: Boolean = true): Unit =
-    {
-      def decode(er: EntityRef): StringBuilder = XhtmlEntities.entMap.get(er.entityName) match {
-        case Some(chr) if chr.toInt >= 128 => sb.append(chr)
-        case _                             => er.buildString(sb)
-      }
-      def shortForm: Boolean =
-        minimizeTags &&
-          (x.child == null || x.child.isEmpty) &&
-          (minimizableElements contains x.label)
-
-      x match {
-        case c: Comment                      => if (!stripComments) c buildString sb
-        case er: EntityRef if decodeEntities => decode(er)
-        case x: SpecialNode                  => x buildString sb
-        case g: Group =>
-          g.nodes foreach { toXhtml(_, x.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }
-
-        case _ =>
-          sb.append('<')
-          x.nameToString(sb)
-          if (x.attributes ne null) x.attributes.buildString(sb)
-          x.scope.buildString(sb, pscope)
-
-          if (shortForm) sb.append(" />")
-          else {
-            sb.append('>')
-            sequenceToXML(x.child, x.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-            sb.append("</")
-            x.nameToString(sb)
-            sb.append('>')
-          }
-      }
+    minimizeTags: Boolean = true
+  ): Unit = {
+    def decode(er: EntityRef): StringBuilder = XhtmlEntities.entMap.get(er.entityName) match {
+      case Some(chr) if chr.toInt >= 128 => sb.append(chr)
+      case _                             => er.buildString(sb)
     }
+    def shortForm: Boolean =
+      minimizeTags &&
+        (x.child == null || x.child.isEmpty) &&
+        minimizableElements.contains(x.label)
+
+    x match {
+      case c: Comment                      => if (!stripComments) c.buildString(sb)
+      case er: EntityRef if decodeEntities => decode(er)
+      case x: SpecialNode                  => x.buildString(sb)
+      case g: Group =>
+        g.nodes.foreach { toXhtml(_, x.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }
+
+      case _ =>
+        sb.append('<')
+        x.nameToString(sb)
+        if (x.attributes.ne(null)) x.attributes.buildString(sb)
+        x.scope.buildString(sb, pscope)
+
+        if (shortForm) sb.append(" />")
+        else {
+          sb.append('>')
+          sequenceToXML(x.child, x.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+          sb.append("</")
+          x.nameToString(sb)
+          sb.append('>')
+        }
+    }
+  }
 
   /**
    * Amounts to calling toXhtml(node, ...) with the given parameters on each node.
@@ -94,16 +94,16 @@ object Xhtml {
     stripComments: Boolean = false,
     decodeEntities: Boolean = false,
     preserveWhitespace: Boolean = false,
-    minimizeTags: Boolean = true): Unit =
-    {
-      if (children.isEmpty)
-        return
+    minimizeTags: Boolean = true
+  ): Unit = {
+    if (children.isEmpty)
+      return
 
-      val doSpaces: Boolean = children forall isAtomAndNotText // interleave spaces
-      for (c <- children.take(children.length - 1)) {
-        toXhtml(c, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-        if (doSpaces) sb append ' '
-      }
-      toXhtml(children.last, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+    val doSpaces: Boolean = children.forall(isAtomAndNotText) // interleave spaces
+    for (c <- children.take(children.length - 1)) {
+      toXhtml(c, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+      if (doSpaces) sb.append(' ')
     }
+    toXhtml(children.last, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+  }
 }

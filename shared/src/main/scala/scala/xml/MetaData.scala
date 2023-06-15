@@ -29,8 +29,8 @@ object MetaData {
    */
   @tailrec
   def concatenate(attribs: MetaData, new_tail: MetaData): MetaData =
-    if (attribs eq Null) new_tail
-    else concatenate(attribs.next, attribs copy new_tail)
+    if (attribs.eq(Null)) new_tail
+    else concatenate(attribs.next, attribs.copy(new_tail))
 
   /**
    * returns normalized MetaData, with all duplicates removed and namespace prefixes resolved to
@@ -38,16 +38,16 @@ object MetaData {
    */
   def normalize(attribs: MetaData, scope: NamespaceBinding): MetaData = {
     def iterate(md: MetaData, normalized_attribs: MetaData, set: Set[String]): MetaData = {
-      if (md eq Null) {
+      if (md.eq(Null)) {
         normalized_attribs
-      } else if (md.value eq null) {
+      } else if (md.value.eq(null)) {
         iterate(md.next, normalized_attribs, set)
       } else {
         val key: String = getUniversalKey(md, scope)
         if (set(key)) {
           iterate(md.next, normalized_attribs, set)
         } else {
-          md copy iterate(md.next, normalized_attribs, set + key)
+          md.copy(iterate(md.next, normalized_attribs, set + key))
         }
       }
     }
@@ -154,8 +154,8 @@ abstract class MetaData
 
   /** filters this sequence of meta data */
   override def filter(f: MetaData => Boolean): MetaData =
-    if (f(this)) copy(next filter f)
-    else next filter f
+    if (f(this)) copy(next.filter(f))
+    else next.filter(f)
 
   def reverse: MetaData =
     foldLeft(Null: MetaData) { (x, xs) =>
@@ -181,7 +181,7 @@ abstract class MetaData
    * Returns a Map containing the attributes stored as key/value pairs.
    */
   def asAttrMap: Map[String, String] =
-    (iterator map (x => (x.prefixedKey, x.value.text))).toMap
+    iterator.map(x => (x.prefixedKey, x.value.text)).toMap
 
   /** returns Null or the next MetaData item */
   def next: MetaData
@@ -217,9 +217,9 @@ abstract class MetaData
   override def toString: String = sbToString(buildString)
 
   def buildString(sb: StringBuilder): StringBuilder = {
-    sb append ' '
+    sb.append(' ')
     toString1(sb)
-    next buildString sb
+    next.buildString(sb)
   }
 
   /**

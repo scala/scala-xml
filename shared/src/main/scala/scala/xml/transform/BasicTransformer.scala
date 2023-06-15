@@ -37,7 +37,7 @@ abstract class BasicTransformer extends (Node => Node) {
    *  otherwise a new sequence of concatenated results.
    */
   def transform(ns: Seq[Node]): Seq[Node] = {
-    val changed: Seq[Node] = ns flatMap transform
+    val changed: Seq[Node] = ns.flatMap(transform)
     if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
     else ns
 }
@@ -49,7 +49,7 @@ abstract class BasicTransformer extends (Node => Node) {
         val ch: Seq[Node] = n.child
         val nch: Seq[Node] = transform(ch)
 
-        if (ch eq nch) n
+        if (ch.eq(nch)) n
         else Elem(n.prefix, n.label, n.attributes, n.scope, nch.isEmpty, nch: _*)
     }
     else n

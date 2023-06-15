@@ -126,7 +126,7 @@ object XML extends XMLLoader[Elem] {
   ): Unit = {
     /* TODO: optimize by giving writer parameter to toXML*/
     if (xmlDecl) w.write("<?xml version='1.0' encoding='" + enc + "'?>\n")
-    if (doctype ne null) w.write(doctype.toString + "\n")
+    if (doctype.ne(null)) w.write(doctype.toString + "\n")
     w.write(Utility.serialize(node, minimizeTags = minimizeTags).toString)
   }
 }

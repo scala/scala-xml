@@ -15,14 +15,14 @@ class XMLSyntaxTest {
   @Test
   def test1(): Unit = {
     val xNull: Elem = <hello>{null}</hello> // these used to be Atom(unit), changed to empty children
-    assertTrue(xNull.child sameElements Nil)
+    assertTrue(xNull.child.sameElements(Nil))
 
     val x0: Elem = <hello>{}</hello> // these used to be Atom(unit), changed to empty children
     val x00: Elem = <hello>{ }</hello> //  dto.
     val xa: Elem = <hello>{ "world" }</hello>
 
-    assertTrue(x0.child sameElements Nil)
-    assertTrue(x00.child sameElements Nil)
+    assertTrue(x0.child.sameElements(Nil))
+    assertTrue(x00.child.sameElements(Nil))
     assertEquals("world", handle[String](xa))
 
     val xb: Elem = <hello>{ 1.5 }</hello>

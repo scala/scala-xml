@@ -143,13 +143,13 @@ class XIncludeFilter extends XMLFilterImpl {
           throw new SAXException("Missing href attribute")
         }
 
-        var parse: String = atts getValue "parse"
+        var parse: String = atts.getValue("parse")
         if (parse == null) parse = "xml"
 
-        if (parse equals "text") {
-          val encoding: String = atts getValue "encoding"
+        if (parse.equals("text")) {
+          val encoding: String = atts.getValue("encoding")
           includeTextDocument(href, encoding)
-        } else if (parse equals "xml") {
+        } else if (parse.equals("xml")) {
           includeXMLDocument(href)
         } // Need to check this also in DOM and JDOM????
         else {
@@ -346,7 +346,7 @@ class XIncludeFilter extends XMLFilterImpl {
       // save old level and base
       val previousLevel: Int = level
       this.level = 0
-      if (bases contains source)
+      if (bases.contains(source))
         throw new SAXException(
           "Circular XInclude Reference",
           new CircularIncludeException("Circular XInclude Reference to " + source + getLocation)

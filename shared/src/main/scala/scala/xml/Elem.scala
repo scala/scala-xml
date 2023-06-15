@@ -106,5 +106,5 @@ class Elem(
   /**
    * Returns concatenation of `text(n)` for each child `n`.
    */
-  override def text: String = (child map (_.text)).mkString
+  override def text: String = child.map(_.text).mkString
 }

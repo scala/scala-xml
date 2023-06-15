@@ -93,7 +93,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
           file(jarPath)
             -> url("http://docs.oracle.com/javase/8/docs/api")
         )
-      } getOrElse {
+      }.getOrElse {
         // If everything fails, jam in Java 11 modules.
         Map(
           file("/modules/java.base")

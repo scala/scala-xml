@@ -17,7 +17,7 @@ import scala.collection.Seq
 import Utility.isSpace
 
 object TextBuffer {
-  def fromString(str: String): TextBuffer = new TextBuffer() append str
+  def fromString(str: String): TextBuffer = new TextBuffer().append(str)
 }
 
 /**
@@ -33,9 +33,9 @@ class TextBuffer {
    * Appends this string to the text buffer, trimming whitespaces as needed.
    */
   def append(cs: Seq[Char]): this.type = {
-    cs foreach { c =>
-      if (!isSpace(c)) sb append c
-      else if (sb.isEmpty || !isSpace(sb.last)) sb append ' '
+    cs.foreach { c =>
+      if (!isSpace(c)) sb.append(c)
+      else if (sb.isEmpty || !isSpace(sb.last)) sb.append(' ')
     }
     this
   }

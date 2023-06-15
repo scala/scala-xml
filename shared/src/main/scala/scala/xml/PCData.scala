@@ -30,7 +30,7 @@ class PCData(data: String) extends Atom[String](data) {
    *  @return the input string buffer with the formatted CDATA section
    */
   override def buildString(sb: StringBuilder): StringBuilder =
-    sb append "<![CDATA[%s]]>".format(data.replaceAll("]]>", "]]]]><![CDATA[>"))
+    sb.append("<![CDATA[%s]]>".format(data.replaceAll("]]>", "]]]]><![CDATA[>")))
 }
 
 /**

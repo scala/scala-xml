@@ -1,6 +1,5 @@
 package scala.xml
 
-import language.postfixOps
 import org.junit.{Test => UnitTest}
 import org.junit.Assert.{assertEquals, assertFalse, assertTrue}
 import java.io.StringWriter
@@ -38,8 +37,8 @@ class XMLTestJVM {
 
     assertEquals(c, parsedxml11)
     assertEquals(parsedxml1, parsedxml11)
-    assertTrue(List(parsedxml1) sameElements List(parsedxml11))
-    assertTrue(Array(parsedxml1).toList sameElements List(parsedxml11))
+    assertTrue(List(parsedxml1).sameElements(List(parsedxml11)))
+    assertTrue(Array(parsedxml1).toList.sameElements(List(parsedxml11)))
 
     val x2: String = "<book><author>Peter Buneman</author><author>Dan Suciu</author><title>Data on ze web</title></book>"
     val x2p: Elem = XML.loadString(x2)
@@ -52,44 +51,44 @@ class XMLTestJVM {
 
   @UnitTest
   def xpath(): Unit = {
-    assertTrue(parsedxml1 \ "_" sameElements List(Elem(null, "world", e, sc)))
+    assertTrue((parsedxml1 \ "_").sameElements(List(Elem(null, "world", e, sc))))
 
-    assertTrue(parsedxml1 \ "world" sameElements List(Elem(null, "world", e, sc)))
+    assertTrue((parsedxml1 \ "world").sameElements(List(Elem(null, "world", e, sc))))
 
     assertTrue(
-      (parsedxml2 \ "_") sameElements List(
+      (parsedxml2 \ "_").sameElements(List(
         Elem(null, "book", e, sc,
           Elem(null, "author", e, sc, Text("Peter Buneman")),
           Elem(null, "author", e, sc, Text("Dan Suciu")),
           Elem(null, "title", e, sc, Text("Data on ze web"))),
         Elem(null, "book", e, sc,
           Elem(null, "author", e, sc, Text("John Mitchell")),
-          Elem(null, "title", e, sc, Text("Foundations of Programming Languages")))))
+          Elem(null, "title", e, sc, Text("Foundations of Programming Languages"))))))
     assertTrue((parsedxml2 \ "author").isEmpty)
 
     assertTrue(
-      (parsedxml2 \ "book") sameElements List(
+      (parsedxml2 \ "book").sameElements(List(
         Elem(null, "book", e, sc,
           Elem(null, "author", e, sc, Text("Peter Buneman")),
           Elem(null, "author", e, sc, Text("Dan Suciu")),
           Elem(null, "title", e, sc, Text("Data on ze web"))),
         Elem(null, "book", e, sc,
           Elem(null, "author", e, sc, Text("John Mitchell")),
-          Elem(null, "title", e, sc, Text("Foundations of Programming Languages")))))
+          Elem(null, "title", e, sc, Text("Foundations of Programming Languages"))))))
 
     assertTrue(
-      (parsedxml2 \ "_" \ "_") sameElements List(
+      (parsedxml2 \ "_" \ "_").sameElements(List(
         Elem(null, "author", e, sc, Text("Peter Buneman")),
         Elem(null, "author", e, sc, Text("Dan Suciu")),
         Elem(null, "title", e, sc, Text("Data on ze web")),
         Elem(null, "author", e, sc, Text("John Mitchell")),
-        Elem(null, "title", e, sc, Text("Foundations of Programming Languages"))))
+        Elem(null, "title", e, sc, Text("Foundations of Programming Languages")))))
 
     assertTrue(
-      (parsedxml2 \ "_" \ "author") sameElements List(
+      (parsedxml2 \ "_" \ "author").sameElements(List(
         Elem(null, "author", e, sc, Text("Peter Buneman")),
         Elem(null, "author", e, sc, Text("Dan Suciu")),
-        Elem(null, "author", e, sc, Text("John Mitchell"))))
+        Elem(null, "author", e, sc, Text("John Mitchell")))))
 
     assertTrue((parsedxml2 \ "_" \ "_" \ "author").isEmpty)
   }
@@ -97,21 +96,21 @@ class XMLTestJVM {
   @UnitTest
   def xpathDESCENDANTS(): Unit = {
     assertTrue(
-      (parsedxml2 \\ "author") sameElements List(
+      (parsedxml2 \\ "author").sameElements(List(
         Elem(null, "author", e, sc, Text("Peter Buneman")),
         Elem(null, "author", e, sc, Text("Dan Suciu")),
-        Elem(null, "author", e, sc, Text("John Mitchell"))))
+        Elem(null, "author", e, sc, Text("John Mitchell")))))
 
     assertTrue(
-      (parsedxml2 \\ "title") sameElements List(
+      (parsedxml2 \\ "title").sameElements(List(
         Elem(null, "title", e, sc, Text("Data on ze web")),
-        Elem(null, "title", e, sc, Text("Foundations of Programming Languages"))))
+        Elem(null, "title", e, sc, Text("Foundations of Programming Languages")))))
 
     assertEquals("<book><author>Peter Buneman</author><author>Dan Suciu</author><title>Data on ze web</title></book>",
       (parsedxml2 \\ "book") { (n: Node) => (n \ "title") xml_== "Data on ze web" }.toString)
 
     assertTrue(
-      (NodeSeq.fromSeq(List(parsedxml2)) \\ "_") sameElements List(
+      (NodeSeq.fromSeq(List(parsedxml2)) \\ "_").sameElements(List(
         Elem(null, "bib", e, sc,
           Elem(null, "book", e, sc,
             Elem(null, "author", e, sc, Text("Peter Buneman")),
@@ -131,7 +130,7 @@ class XMLTestJVM {
           Elem(null, "author", e, sc, Text("John Mitchell")),
           Elem(null, "title", e, sc, Text("Foundations of Programming Languages"))),
         Elem(null, "author", e, sc, Text("John Mitchell")),
-        Elem(null, "title", e, sc, Text("Foundations of Programming Languages"))))
+        Elem(null, "title", e, sc, Text("Foundations of Programming Languages")))))
   }
 
   @UnitTest
@@ -196,7 +195,7 @@ class XMLTestJVM {
       // println("x = " + x)
       // println("y = " + y)
       // println("x equals y: " + (x equals y) + ", y equals x: " + (y equals x))
-      assertTrue((x equals y) && (y equals x))
+      assertTrue(x.equals(y) && y.equals(x))
       // println()
     }
   }
@@ -659,7 +658,7 @@ class XMLTestJVM {
     val parent: org.xml.sax.XMLReader = xercesInternal.newSAXParser.getXMLReader
     val filter: org.xml.sax.XMLFilter = new org.xml.sax.helpers.XMLFilterImpl(parent) {
       override def characters(ch: Array[Char], start: Int, length: Int): Unit = {
-        for (i <- 0 until length) if (ch(start+i) == 'a') ch(start+i) = 'b'
+        for (i <- 0.until(length)) if (ch(start+i) == 'a') ch(start+i) = 'b'
         super.characters(ch, start, length)
       }
     }

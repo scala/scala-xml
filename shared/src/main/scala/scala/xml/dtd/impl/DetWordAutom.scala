@@ -42,10 +42,10 @@ private[dtd] abstract class DetWordAutom[T <: AnyRef] {
     sb.append(map.toString)
     sb.append(" delta=\n")
 
-    for (i <- 0 until nstates) {
-      sb append "%d->%s\n".format(i, delta(i))
+    for (i <- 0.until(nstates)) {
+      sb.append("%d->%s\n".format(i, delta(i)))
       if (i < default.length)
-        sb append "_>%s\n".format(default(i))
+        sb.append("_>%s\n".format(default(i)))
     }
     sb.toString
   }

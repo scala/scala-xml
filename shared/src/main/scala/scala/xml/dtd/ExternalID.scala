@@ -21,7 +21,7 @@ package dtd
  */
 sealed abstract class ExternalID extends parsing.TokenTests {
   def quoted(s: String): String = {
-    val c: Char = if (s contains '"') '\'' else '"'
+    val c: Char = if (s.contains('"')) '\'' else '"'
     c.toString + s + c
   }
 

@@ -109,7 +109,7 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
     this.pos = 0
 
     // determine "Sethi-length" of the regexp
-    subexpr foreach traverse
+    subexpr.foreach(traverse)
 
     this.initials = Set(0)
   }
@@ -119,14 +119,14 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
     deltaq = new Array[mutable.HashMap[_labelT, List[Int]]](pos) // delta
     defaultq = new Array[List[Int]](pos) // default transitions
 
-    for (j <- 0 until pos) {
+    for (j <- 0.until(pos)) {
       deltaq(j) = mutable.HashMap[_labelT, List[Int]]()
       defaultq(j) = Nil
     }
   }
 
   protected def collectTransitions(): Unit = // make transitions
-    for (j <- 0 until pos; fol = follow(j); k <- fol) {
+    for (j <- 0.until(pos); fol = follow(j); k <- fol) {
       if (pos == k) finals = finals.updated(j, finalTag)
       else makeTransition(j, k, labelAt(k))
     }
@@ -149,14 +149,14 @@ private[dtd] abstract class WordBerrySethi extends BaseBerrySethi {
           finals = finals.updated(0, finalTag)
 
         val delta1: immutable.Map[Int, mutable.HashMap[lang._labelT, List[Int]]] = deltaq.zipWithIndex.map(_.swap).toMap
-        val finalsArr: Array[Int] = (0 until pos map (k => finals.getOrElse(k, 0))).toArray // 0 == not final
+        val finalsArr: Array[Int] = 0.until(pos).map(k => finals.getOrElse(k, 0)).toArray // 0 == not final
 
         val deltaArr: Array[mutable.Map[_labelT, immutable.BitSet]] =
-          (0 until pos map { x =>
-            mutable.HashMap(delta1(x).toSeq map { case (k, v) => k -> immutable.BitSet(v: _*) }: _*)
-          }).toArray
+          0.until(pos).map { x =>
+            mutable.HashMap(delta1(x).toSeq.map { case (k, v) => k -> immutable.BitSet(v: _*) }: _*)
+          }.toArray
 
-        val defaultArr: Array[immutable.BitSet] = (0 until pos map (k => immutable.BitSet(defaultq(k): _*))).toArray
+        val defaultArr: Array[immutable.BitSet] = 0.until(pos).map(k => immutable.BitSet(defaultq(k): _*)).toArray
 
         new NondetWordAutom[_labelT] {
           override val nstates: Int = pos

@@ -38,7 +38,7 @@ private[dtd] abstract class Base {
   }
 
   class Alt private (val rs: _regexpT*) extends RegExp {
-    final override val isNullable: Boolean = rs exists (_.isNullable)
+    final override val isNullable: Boolean = rs.exists(_.isNullable)
   }
 
   object Sequ {
@@ -48,7 +48,7 @@ private[dtd] abstract class Base {
   }
 
   class Sequ private (val rs: _regexpT*) extends RegExp {
-    final override val isNullable: Boolean = rs forall (_.isNullable)
+    final override val isNullable: Boolean = rs.forall(_.isNullable)
   }
 
   case class Star(r: _regexpT) extends RegExp {
