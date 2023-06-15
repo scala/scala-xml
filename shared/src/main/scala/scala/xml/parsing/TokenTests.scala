@@ -35,7 +35,7 @@ trait TokenTests {
    *  (#x20 | #x9 | #xD | #xA)+
    *  }}}
    */
-  final def isSpace(cs: Seq[Char]): Boolean = cs.nonEmpty && (cs forall isSpace)
+  final def isSpace(cs: Seq[Char]): Boolean = cs.nonEmpty && cs.forall(isSpace)
 
   /** These are 99% sure to be redundant but refactoring on the safe side. */
   def isAlpha(c: Char): Boolean = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
@@ -56,7 +56,7 @@ trait TokenTests {
       case COMBINING_SPACING_MARK |
         ENCLOSING_MARK | NON_SPACING_MARK |
         MODIFIER_LETTER | DECIMAL_DIGIT_NUMBER => true
-      case _ => ".-:·" contains ch
+      case _ => ".-:·".contains(ch)
     })
   }
 
@@ -88,11 +88,11 @@ trait TokenTests {
    *  See [5] of XML 1.0 specification.
    */
   def isName(s: String): Boolean =
-    s.nonEmpty && isNameStart(s.head) && (s.tail forall isNameChar)
+    s.nonEmpty && isNameStart(s.head) && s.tail.forall(isNameChar)
 
   def isPubIDChar(ch: Char): Boolean =
     isAlphaDigit(ch) || (isSpace(ch) && ch != '\u0009') ||
-      ("""-\()+,./:=?;!*#@$_%""" contains ch)
+      """-\()+,./:=?;!*#@$_%""".contains(ch)
 
   /**
    * Returns `true` if the encoding name is a valid IANA encoding.
@@ -103,12 +103,12 @@ trait TokenTests {
    * @param ianaEncoding The IANA encoding name.
    */
   def isValidIANAEncoding(ianaEncoding: Seq[Char]): Boolean = {
-    def charOK(c: Char): Boolean = isAlphaDigit(c) || ("._-" contains c)
+    def charOK(c: Char): Boolean = isAlphaDigit(c) || "._-".contains(c)
 
     ianaEncoding.nonEmpty && isAlpha(ianaEncoding.head) &&
-      (ianaEncoding.tail forall charOK)
+      ianaEncoding.tail.forall(charOK)
   }
 
-  def checkSysID(s: String): Boolean = List('"', '\'') exists (c => !(s contains c))
-  def checkPubID(s: String): Boolean = s forall isPubIDChar
+  def checkSysID(s: String): Boolean = List('"', '\'').exists(c => !s.contains(c))
+  def checkPubID(s: String): Boolean = s.forall(isPubIDChar)
 }

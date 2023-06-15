@@ -23,7 +23,7 @@ package xml
 case class ProcInstr(target: String, proctext: String) extends SpecialNode {
   if (!Utility.isName(target))
     throw new IllegalArgumentException(target + " must be an XML Name")
-  if (proctext contains "?>")
+  if (proctext.contains("?>"))
     throw new IllegalArgumentException(proctext + " may not contain \"?>\"")
   if (target.toLowerCase == "xml")
     throw new IllegalArgumentException(target + " is reserved")
@@ -39,5 +39,5 @@ case class ProcInstr(target: String, proctext: String) extends SpecialNode {
    *  to this stringbuffer.
    */
   override def buildString(sb: StringBuilder): StringBuilder =
-    sb append "<?%s%s?>".format(target, if (proctext == "") "" else " " + proctext)
+    sb.append("<?%s%s?>".format(target, if (proctext == "") "" else " " + proctext))
 }

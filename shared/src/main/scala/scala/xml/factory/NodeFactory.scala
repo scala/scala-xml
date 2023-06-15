@@ -32,7 +32,7 @@ trait NodeFactory[A <: Node] {
   }
 
   def eqElements(ch1: Seq[Node], ch2: Seq[Node]): Boolean =
-    ch1.view.zipAll(ch2.view, null, null) forall { case (x, y) => x eq y }
+    ch1.view.zipAll(ch2.view, null, null).forall { case (x, y) => x.eq(y) }
 
   def nodeEquals(n: Node, pre: String, name: String, attrSeq: MetaData, scope: NamespaceBinding, children: Seq[Node]): Boolean =
     n.prefix == pre &&

@@ -20,7 +20,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
   import nfa.labels
 
   def selectTag(Q: immutable.BitSet, finals: Array[Int]): Int =
-    (Q map finals filter (_ > 0)).min
+    Q.map(finals).filter(_ > 0).min
 
   def determinize: DetWordAutom[T] = {
     // for assigning numbers to bitsets
@@ -42,7 +42,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
     rest = q0 :: sink :: rest
 
     def addFinal(q: immutable.BitSet): Unit = {
-      if (nfa containsFinal q)
+      if (nfa.containsFinal(q))
         finals(q) = selectTag(q, nfa.finals)
     }
     def add(Q: immutable.BitSet): Unit = {
@@ -67,7 +67,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
       val Pdelta: mutable.HashMap[T, immutable.BitSet] = new mutable.HashMap[T, immutable.BitSet]
       delta.update(P, Pdelta)
 
-      labels foreach { label =>
+      labels.foreach { label =>
         val Q: immutable.BitSet = nfa.next(P, label)
         Pdelta.update(label, Q)
         add(Q)
@@ -102,7 +102,7 @@ private[dtd] class SubsetConstruction[T <: AnyRef](val nfa: NondetWordAutom[T]) 
       defaultR(q) = qDef
     }
 
-    finals foreach { case (k, v) => finalsR(indexMap(k)) = v }
+    finals.foreach { case (k, v) => finalsR(indexMap(k)) = v }
 
     new DetWordAutom[T] {
       override val nstates: Int = nstatesR

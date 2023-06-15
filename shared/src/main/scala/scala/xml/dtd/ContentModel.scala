@@ -38,7 +38,7 @@ object ContentModel extends WordExp {
   }
 
   case class ElemName(name: String) extends Label {
-    override def toString: String = """ElemName("%s")""" format name
+    override def toString: String = """ElemName("%s")""".format(name)
   }
 
   def isMixed(cm: ContentModel): Boolean = cond(cm) { case _: MIXED => true }
@@ -48,8 +48,8 @@ object ContentModel extends WordExp {
     def traverse(r: RegExp): Set[String] = r match { // !!! check for match translation problem
       case Letter(ElemName(name)) => Set(name)
       case Star(x@_)              => traverse(x) // bug if x@_*
-      case Sequ(xs@_*)            => Set(xs flatMap traverse: _*)
-      case Alt(xs@_*)             => Set(xs flatMap traverse: _*)
+      case Sequ(xs@_*)            => Set(xs.flatMap(traverse): _*)
+      case Alt(xs@_*)             => Set(xs.flatMap(traverse): _*)
     }
 
     traverse(r)
@@ -61,16 +61,16 @@ object ContentModel extends WordExp {
   private def buildString(rs: Seq[RegExp], sb: StringBuilder, sep: Char): Unit = {
     buildString(rs.head, sb)
     for (z <- rs.tail) {
-      sb append sep
+      sb.append(sep)
       buildString(z, sb)
     }
   }
 
   def buildString(c: ContentModel, sb: StringBuilder): StringBuilder = c match {
-    case ANY                    => sb append "ANY"
-    case EMPTY                  => sb append "EMPTY"
-    case PCDATA                 => sb append "(#PCDATA)"
-    case ELEMENTS(_) | MIXED(_) => c buildString sb
+    case ANY                    => sb.append("ANY")
+    case EMPTY                  => sb.append("EMPTY")
+    case PCDATA                 => sb.append("(#PCDATA)")
+    case ELEMENTS(_) | MIXED(_) => c.buildString(sb)
   }
 
   def buildString(r: RegExp, sb: StringBuilder): StringBuilder =
@@ -118,11 +118,11 @@ case class MIXED(override val r: RegExp) extends DFAContentModel {
   import ContentModel.Alt
 
   override def buildString(sb: StringBuilder): StringBuilder = {
-    val newAlt: Alt = r match { case Alt(rs@_*) => Alt(rs drop 1: _*) }
+    val newAlt: Alt = r match { case Alt(rs@_*) => Alt(rs.drop(1): _*) }
 
-    sb append "(#PCDATA|"
+    sb.append("(#PCDATA|")
     ContentModel.buildString(newAlt: RegExp, sb)
-    sb append ")*"
+    sb.append(")*")
   }
 }
 

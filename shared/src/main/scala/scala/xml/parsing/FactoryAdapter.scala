@@ -211,7 +211,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
   }
 
   override def startPrefixMapping(prefix: String, uri: String): Unit =
-    prefixMappings ::= (prefix, uri)
+    prefixMappings ::= ((prefix, uri))
 
   override def endPrefixMapping(prefix: String): Unit = ()
 
@@ -242,9 +242,9 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       if (scopeStack.isEmpty) TopScope
       else scopeStack.head
 
-    for (i <- (0 until attributes.getLength).reverse) {
-      val qname: String = attributes getQName i
-      val value: String = attributes getValue i
+    for (i <- 0.until(attributes.getLength).reverse) {
+      val qname: String = attributes.getQName(i)
+      val value: String = attributes.getValue(i)
       val (pre: Option[String], key: String) = Utility.splitName(qname)
       def nullIfEmpty(s: String): String = if (s == "") null else s
 
@@ -316,9 +316,9 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       while (it.hasNext) {
         val c: Char = it.next()
         val isSpace: Boolean = c.isWhitespace
-        buffer append (if (isSpace) ' ' else c)
+        buffer.append(if (isSpace) ' ' else c)
         if (isSpace)
-          it = it dropWhile (_.isWhitespace)
+          it = it.dropWhile(_.isWhitespace)
       }
     }
   }

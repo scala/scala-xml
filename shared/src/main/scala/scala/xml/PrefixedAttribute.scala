@@ -29,11 +29,11 @@ class PrefixedAttribute(
   override val value: Seq[Node],
   val next1: MetaData)
   extends Attribute {
-  override val next: MetaData = if (value ne null) next1 else next1.remove(key)
+  override val next: MetaData = if (value.ne(null)) next1 else next1.remove(key)
 
   /** same as this(pre, key, Text(value), next), or no attribute if value is null */
   def this(pre: String, key: String, value: String, next: MetaData) =
-    this(pre, key, if (value ne null) Text(value) else null: NodeSeq, next)
+    this(pre, key, if (value.ne(null)) Text(value) else null: NodeSeq, next)
 
   /** same as this(pre, key, value.get, next), or no attribute if value is None */
   def this(pre: String, key: String, value: Option[Seq[Node]], next: MetaData) =

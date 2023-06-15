@@ -37,7 +37,7 @@ object NodeSeq {
   implicit def canBuildFrom: CBF[Coll, Node, NodeSeq] = ScalaVersionSpecific.NodeSeqCBF
   // ---
 
-  def newBuilder: mutable.Builder[Node, NodeSeq] = new mutable.ListBuffer[Node] mapResult fromSeq
+  def newBuilder: mutable.Builder[Node, NodeSeq] = new mutable.ListBuffer[Node].mapResult(fromSeq)
   implicit def seqToNodeSeq(s: Seq[Node]): NodeSeq = fromSeq(s)
 }
 
@@ -59,7 +59,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     val these: Iterator[Node] = this.iterator
     val those: Iterator[A] = that.iterator
     while (these.hasNext && those.hasNext)
-      if (these.next() xml_!= those.next())
+      if (these.next().xml_!=(those.next()))
         return false
 
     !these.hasNext && !those.hasNext
@@ -73,7 +73,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
   }
 
   override def strict_==(other: Equality): Boolean = other match {
-    case x: NodeSeq => (length == x.length) && (theSeq sameElements x.theSeq)
+    case x: NodeSeq => (length == x.length) && theSeq.sameElements(x.theSeq)
     case _          => false
   }
 
@@ -100,12 +100,12 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
       val attr: Option[Seq[Node]] =
         if (that.length == 1) fail
         else if (that(1) == '{') {
-          val i: Int = that indexOf '}'
+          val i: Int = that.indexOf('}')
           if (i == -1) fail
           val (uri: String, key: String) = (that.substring(2, i), that.substring(i + 1, that.length))
           if (uri == "" || key == "") fail
           else y.attribute(uri, key)
-        } else y.attribute(that drop 1)
+        } else y.attribute(that.drop(1))
 
       attr match {
         case Some(x) => Group(x)
@@ -114,7 +114,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     }
 
     def makeSeq(cond: Node => Boolean): NodeSeq =
-      NodeSeq fromSeq (this flatMap (_.child) filter cond)
+      NodeSeq.fromSeq(this.flatMap(_.child).filter(cond))
 
     that match {
       case ""                                      => fail
@@ -144,11 +144,11 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
    */
   def \\(that: String): NodeSeq = {
     def fail: Nothing = throw new IllegalArgumentException(that)
-    def filt(cond: Node => Boolean): NodeSeq = this flatMap (_.descendant_or_self) filter cond
+    def filt(cond: Node => Boolean): NodeSeq = this.flatMap(_.descendant_or_self).filter(cond)
     that match {
       case ""                  => fail
       case "_"                 => filt(!_.isAtom)
-      case _ if that(0) == '@' => filt(!_.isAtom) flatMap (_ \ that)
+      case _ if that(0) == '@' => filt(!_.isAtom).flatMap(_ \ that)
       case _                   => filt(x => !x.isAtom && x.label == that)
     }
   }
@@ -161,5 +161,5 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
 
   override def toString: String = theSeq.mkString
 
-  def text: String = (this map (_.text)).mkString
+  def text: String = this.map(_.text).mkString
 }

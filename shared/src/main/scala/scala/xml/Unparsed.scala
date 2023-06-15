@@ -27,7 +27,7 @@ class Unparsed(data: String) extends Atom[String](data) {
    *  specification.
    */
   override def buildString(sb: StringBuilder): StringBuilder =
-    sb append data
+    sb.append(data)
 }
 
 /**

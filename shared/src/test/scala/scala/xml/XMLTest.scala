@@ -1,7 +1,5 @@
 package scala.xml
 
-import language.postfixOps
-
 import org.junit.{Test => UnitTest}
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
@@ -31,8 +29,8 @@ class XMLTest {
     }
 
     val pelems_2: NodeSeq = NodeSeq.fromSeq(List(Text("38!"), Text("58!")))
-    assertTrue(pelems_1 sameElements pelems_2)
-    assertTrue(Text("8") sameElements (p \\ "@bazValue"))
+    assertTrue(pelems_1.sameElements(pelems_2))
+    assertTrue(Text("8").sameElements(p \\ "@bazValue"))
   }
 
   @UnitTest

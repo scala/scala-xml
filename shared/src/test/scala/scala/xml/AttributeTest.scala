@@ -19,9 +19,9 @@ class AttributeTest {
     val z: UnprefixedAttribute = new UnprefixedAttribute("foo", null:NodeSeq, x)
     assertEquals(None, z.get("foo"))
 
-    var appended: MetaData = x append x append x append x
+    var appended: MetaData = x.append(x).append(x).append(x)
     var len: Int = 0
-    while (appended ne Null) {
+    while (appended.ne(Null)) {
       appended = appended.next
       len = len + 1
     }

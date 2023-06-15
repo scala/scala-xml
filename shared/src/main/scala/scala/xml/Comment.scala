@@ -39,5 +39,5 @@ case class Comment(commentText: String) extends SpecialNode {
    * Appends &quot;<!-- text -->&quot; to this string buffer.
    */
   override def buildString(sb: StringBuilder): StringBuilder =
-    sb append "<!--" append commentText append "-->"
+    sb.append("<!--").append(commentText).append("-->")
 }

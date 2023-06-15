@@ -63,7 +63,7 @@ object Equality {
   }
   def compareBlithely(x1: AnyRef, x2: AnyRef): Boolean = {
     if (x1 == null || x2 == null)
-      return x1 eq x2
+      return x1.eq(x2)
 
     x2 match {
       case s: String => compareBlithely(x1, s)
@@ -108,9 +108,9 @@ trait Equality extends scala.Equals {
    */
   private def doComparison(other: Any, blithe: Boolean): Boolean = {
     val strictlyEqual: Boolean = other match {
-      case x: AnyRef if this eq x => true
-      case x: Equality            => (x canEqual this) && (this strict_== x)
-      case _                      => false
+      case x: AnyRef if this.eq(x) => true
+      case x: Equality             => (x canEqual this) && (this strict_== x)
+      case _                       => false
     }
 
     strictlyEqual || (blithe && compareBlithely(this, asRef(other)))

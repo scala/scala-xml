@@ -26,11 +26,11 @@ class UnprefixedAttribute(
   next1: MetaData)
   extends Attribute {
   final override val pre: scala.Null = null
-  override val next: MetaData = if (value ne null) next1 else next1.remove(key)
+  override val next: MetaData = if (value.ne(null)) next1 else next1.remove(key)
 
   /** same as this(key, Text(value), next), or no attribute if value is null */
   def this(key: String, value: String, next: MetaData) =
-    this(key, if (value ne null) Text(value) else null: NodeSeq, next)
+    this(key, if (value.ne(null)) Text(value) else null: NodeSeq, next)
 
   /** same as this(key, value.get, next), or no attribute if value is None */
   def this(key: String, value: Option[Seq[Node]], next: MetaData) =

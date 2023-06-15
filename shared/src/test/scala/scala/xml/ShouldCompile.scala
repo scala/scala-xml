@@ -26,8 +26,8 @@ class t2281B {
     var outstr: StringBuffer = new StringBuffer
     var prevspace: Boolean = false
     val ctext: String = text.replaceAll("\n+", "\n")
-    ctext foreach { c =>
-      outstr append c
+    ctext.foreach { c =>
+      outstr.append(c)
       if (c == '.' || c == '!' || c == '?' || c == '\n' || c == ':' || c == ';' || (prevspace && c == '-')) {
         outarr += outstr.toString
         outstr = new StringBuffer

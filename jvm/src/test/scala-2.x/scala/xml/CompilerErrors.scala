@@ -197,12 +197,12 @@ class CompilerTesting {
 
   def expectXmlError(msg: String, code: String): Unit = {
     val errors: List[String] = xmlErrorMessages(msg, code)
-    assert(errors exists (_ contains msg), errors mkString "\n")
+    assert(errors.exists(_.contains(msg)), errors.mkString("\n"))
   }
 
   def expectXmlErrors(msgCount: Int, msg: String, code: String): Unit = {
     val errors: List[String] = xmlErrorMessages(msg, code)
-    val errorCount: Int = errors.count(_ contains msg)
-    assert(errorCount == msgCount, s"$errorCount occurrences of \'$msg\' found -- expected $msgCount in:\n${errors mkString "\n"}")
+    val errorCount: Int = errors.count(_.contains(msg))
+    assert(errorCount == msgCount, s"$errorCount occurrences of \'$msg\' found -- expected $msgCount in:\n${errors.mkString("\n")}")
   }
 }

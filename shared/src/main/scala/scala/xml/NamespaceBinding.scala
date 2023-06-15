@@ -14,7 +14,6 @@ package scala
 package xml
 
 import scala.collection.Seq
-import Utility.sbToString
 
 /**
  * The class `NamespaceBinding` represents namespace bindings
@@ -30,7 +29,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
     throw new IllegalArgumentException("zero length prefix not allowed")
 
   def getURI(_prefix: String): String =
-    if (prefix == _prefix) uri else parent getURI _prefix
+    if (prefix == _prefix) uri else parent.getURI(_prefix)
 
   /**
    * Returns some prefix that is mapped to the URI.
@@ -40,13 +39,13 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
    * if no prefix is mapped to the URI.
    */
   def getPrefix(_uri: String): String =
-    if (_uri == uri) prefix else parent getPrefix _uri
+    if (_uri == uri) prefix else parent.getPrefix(_uri)
 
-  override def toString: String = sbToString(buildString(_, TopScope))
+  override def toString: String = Utility.sbToString(buildString(_, TopScope))
 
   private def shadowRedefined(stop: NamespaceBinding): NamespaceBinding = {
     def prefixList(x: NamespaceBinding): List[String] =
-      if ((x == null) || (x eq stop)) Nil
+      if ((x == null) || x.eq(stop)) Nil
       else x.prefix :: prefixList(x.parent)
     def fromPrefixList(l: List[String]): NamespaceBinding = l match {
       case Nil     => stop
@@ -70,7 +69,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
 
   override def basisForHashCode: Seq[Any] = List(prefix, uri, parent)
 
-  def buildString(stop: NamespaceBinding): String = sbToString(buildString(_, stop))
+  def buildString(stop: NamespaceBinding): String = Utility.sbToString(buildString(_, stop))
 
   def buildString(sb: StringBuilder, stop: NamespaceBinding): Unit = {
     shadowRedefined(stop).doBuildString(sb, stop)
@@ -83,6 +82,6 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
       if (prefix != null) ":" + prefix else "",
       if (uri != null) uri else ""
     )
-    parent.doBuildString(sb append s, stop) // copy(ignore)
+    parent.doBuildString(sb.append(s), stop) // copy(ignore)
   }
 }

@@ -36,7 +36,7 @@ object MakeValidationException {
   def fromMissingAttribute(allKeys: Set[String]): ValidationException = {
     val sb: StringBuilder = new StringBuilder("missing value for REQUIRED attribute")
     if (allKeys.size > 1) sb.append('s')
-    allKeys foreach (k => sb append "'%s'".format(k))
+    allKeys.foreach(k => sb.append("'%s'".format(k)))
     ValidationException(sb.toString)
   }
 

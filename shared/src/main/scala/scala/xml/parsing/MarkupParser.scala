@@ -202,7 +202,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
     if (m.length - n != 0) {
       val s: String = if (isProlog) "SDDecl? " else ""
-      reportSyntaxError("VersionInfo EncodingDecl? %sor '?>' expected!" format s)
+      reportSyntaxError("VersionInfo EncodingDecl? %sor '?>' expected!".format(s))
     }
 
     (info_ver, info_enc, info_stdl)
@@ -283,7 +283,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   }
 
   /** append Unicode character to name buffer*/
-  protected def putChar(c: Char): StringBuilder = cbuf append c
+  protected def putChar(c: Char): StringBuilder = cbuf.append(c)
 
   /**
    * As the current code requires you to call nextch once manually
@@ -480,7 +480,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
               val n: String = xName
               xToken(';')
 
-              if (unescape contains n) {
+              if (unescape.contains(n)) {
                 handle.entityRef(tmppos, n)
                 ts &+ unescape(n)
               } else push(n)
@@ -523,7 +523,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    */
   def parseDTD(): Unit = { // dirty but fast
     var extID: ExternalID = null
-    if (this.dtd ne null)
+    if (this.dtd.ne(null))
       reportSyntaxError("unexpected character (DOCTYPE already defined")
     xToken("DOCTYPE")
     xSpace()
@@ -562,7 +562,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       /*override val */ decls = handle.decls.reverse
     }
     //this.dtd.initializeEntities();
-    if (doc ne null)
+    if (doc.ne(null))
       doc.dtd = this.dtd
 
     handle.endDTD(n)

@@ -68,7 +68,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
       // well-formedness constraint
       if (ch == '<') reportSyntaxError("'<' not allowed in attrib value")
       else if (ch == SU) truncatedError("")
-      else buf append ch_returning_nextch
+      else buf.append(ch_returning_nextch)
     }
     ch_returning_nextch
     // @todo: normalize attribute value
@@ -85,7 +85,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     val buf: StringBuilder = new StringBuilder
     while (it.hasNext) it.next() match {
       case `end` => return buf.toString
-      case ch    => buf append ch
+      case ch    => buf.append(ch)
     }
     scala.sys.error("Expected '%s'".format(end))
   }
@@ -115,16 +115,16 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     if (ch == SU)
       truncatedError("")
     else if (!isNameStart(ch))
-      return errorAndResult("name expected, but char '%s' cannot start a name" format ch, "")
+      return errorAndResult("name expected, but char '%s' cannot start a name".format(ch), "")
 
     val buf: StringBuilder = new StringBuilder
 
-    while ({ buf append ch_returning_nextch
+    while ({ buf.append(ch_returning_nextch)
     ; isNameChar(ch)}) ()
 
     if (buf.last == ':') {
       reportSyntaxError("name cannot end in ':'")
-      buf.toString dropRight 1
+      buf.toString.dropRight(1)
     } else buf.toString
   }
 
@@ -146,10 +146,9 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     val buf: StringBuilder = new StringBuilder
     val it: BufferedIterator[Char] = attval.iterator.buffered
 
-    while (it.hasNext) buf append (it.next() match {
+    while (it.hasNext) buf.append(it.next() match {
       case ' ' | '\t' | '\n' | '\r' => " "
-      case '&' if it.head == '#'    =>
-        it.next(); xCharRef(it)
+      case '&' if it.head == '#'    => it.next(); xCharRef(it)
       case '&'                      => attr_unescape(takeUntilChar(it, ';'))
       case c                        => c
     })
@@ -208,7 +207,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     if (ch == that) nextch()
     else xHandleError(that, "'%s' expected instead of '%s'".format(that, ch))
   }
-  def xToken(that: Seq[Char]): Unit = { that foreach xToken }
+  def xToken(that: Seq[Char]): Unit = that.foreach(xToken)
 
   /** scan [S] '=' [S]*/
   def xEQ(): Unit = { xSpaceOpt(); xToken('='); xSpaceOpt() }
@@ -251,7 +250,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
         else if (ch == SU || eof)
           truncatedError(s"died parsing until $until") // throws TruncatedXMLControl in compiler
 
-        sb append ch
+        sb.append(ch)
         nextch()
       }
       unreachable
@@ -264,9 +263,9 @@ private[scala] trait MarkupParserCommon extends TokenTests {
    *  and leave input unchanged.
    */
   private def peek(lookingFor: String): Boolean =
-    (lookahead() take lookingFor.length sameElements lookingFor.iterator) && {
+    lookahead().take(lookingFor.length).sameElements(lookingFor.iterator) && {
       // drop the chars from the real reader (all lookahead + orig)
-      (0 to lookingFor.length) foreach (_ => nextch())
+      0.to(lookingFor.length).foreach(_ => nextch())
       true
     }
 }

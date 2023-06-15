@@ -76,11 +76,11 @@ object Utility extends AnyRef with parsing.TokenTests {
   }
 
   /** returns a sorted attribute list */
-  def sort(md: MetaData): MetaData = if ((md eq Null) || (md.next eq Null)) md else {
+  def sort(md: MetaData): MetaData = if (md.eq(Null) || md.next.eq(Null)) md else {
     val key: String = md.key
     val smaller: MetaData = sort(md.filter { m => m.key < key })
     val greater: MetaData = sort(md.filter { m => m.key > key })
-    smaller.foldRight (md copy greater) ((x, xs) => x copy xs)
+    smaller.foldRight(md.copy(greater)) ((x, xs) => x.copy(xs))
   }
 
   /**
@@ -89,7 +89,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def sort(n: Node): Node = n match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children: Seq[Node] = child map sort
+      val children: Seq[Node] = child.map(sort)
       Elem(pre, lab, sort(md), scp, children.isEmpty, children: _*)
     case _ => n
   }
@@ -111,7 +111,7 @@ object Utility extends AnyRef with parsing.TokenTests {
       "quot" -> '"',
       "apos"  -> '\''
     )
-    val escMap: Map[Char, String] = (pairs - "apos") map { case (s, c) => c -> ("&%s;" format s) }
+    val escMap: Map[Char, String] = (pairs - "apos").map { case (s, c) => c -> "&%s;".format(s) }
     val unescMap: Map[String, Char] = pairs
   }
   import Escapes.{ escMap, unescMap }
@@ -138,7 +138,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    * @return    `'''null'''` if `ref` was not a predefined entity.
    */
   final def unescape(ref: String, s: StringBuilder): StringBuilder =
-    ((unescMap get ref) map (s append _)).orNull
+    unescMap.get(ref).map(s.append).orNull
 
   /**
    * Returns a set of all namespaces used in a sequence of nodes
@@ -190,10 +190,10 @@ object Utility extends AnyRef with parsing.TokenTests {
     stripComments: Boolean = false,
     decodeEntities: Boolean = true,
     preserveWhitespace: Boolean = false,
-    minimizeTags: Boolean = false): StringBuilder =
-    {
-      serialize(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, if (minimizeTags) MinimizeMode.Always else MinimizeMode.Never)
-    }
+    minimizeTags: Boolean = false
+  ): StringBuilder = {
+    serialize(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, if (minimizeTags) MinimizeMode.Always else MinimizeMode.Never)
+  }
 
   /**
    * Serialize an XML Node to a StringBuilder.
@@ -210,35 +210,35 @@ object Utility extends AnyRef with parsing.TokenTests {
     stripComments: Boolean = false,
     decodeEntities: Boolean = true,
     preserveWhitespace: Boolean = false,
-    minimizeTags: MinimizeMode.Value = MinimizeMode.Default): StringBuilder =
-    {
-      x match {
-        case c: Comment                   => if (!stripComments) c buildString sb; sb
-        case s: SpecialNode               => s buildString sb
-        case g: Group                     =>
-          for (c <- g.nodes) serialize(c, g.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags); sb
-        case el: Elem =>
-          // print tag with namespace declarations
-          sb.append('<')
+    minimizeTags: MinimizeMode.Value = MinimizeMode.Default
+  ): StringBuilder = {
+    x match {
+      case c: Comment                   => if (!stripComments) c.buildString(sb); sb
+      case s: SpecialNode               => s.buildString(sb)
+      case g: Group                     =>
+        for (c <- g.nodes) serialize(c, g.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags); sb
+      case el: Elem =>
+        // print tag with namespace declarations
+        sb.append('<')
+        el.nameToString(sb)
+        if (el.attributes.ne(null)) el.attributes.buildString(sb)
+        el.scope.buildString(sb, pscope)
+        if (el.child.isEmpty &&
+          (minimizeTags == MinimizeMode.Always ||
+            (minimizeTags == MinimizeMode.Default && el.minimizeEmpty))) {
+          // no children, so use short form: <xyz .../>
+          sb.append("/>")
+        } else {
+          // children, so use long form: <xyz ...>...</xyz>
+          sb.append('>')
+          sequenceToXML(el.child, el.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+          sb.append("</")
           el.nameToString(sb)
-          if (el.attributes ne null) el.attributes.buildString(sb)
-          el.scope.buildString(sb, pscope)
-          if (el.child.isEmpty &&
-            (minimizeTags == MinimizeMode.Always ||
-              (minimizeTags == MinimizeMode.Default && el.minimizeEmpty))) {
-            // no children, so use short form: <xyz .../>
-            sb.append("/>")
-          } else {
-            // children, so use long form: <xyz ...>...</xyz>
-            sb.append('>')
-            sequenceToXML(el.child, el.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-            sb.append("</")
-            el.nameToString(sb)
-            sb.append('>')
-          }
-        case _ => throw new IllegalArgumentException("Don't know how to serialize a " + x.getClass.getName)
-      }
+          sb.append('>')
+        }
+      case _ => throw new IllegalArgumentException("Don't know how to serialize a " + x.getClass.getName)
     }
+  }
 
   def sequenceToXML(
     children: Seq[Node],
@@ -248,20 +248,19 @@ object Utility extends AnyRef with parsing.TokenTests {
     decodeEntities: Boolean = true,
     preserveWhitespace: Boolean = false,
     minimizeTags: MinimizeMode.Value = MinimizeMode.Default
-  ): Unit =
-    {
-      if (children.isEmpty) ()
-      else if (children forall isAtomAndNotText) { // add space
-        val it: Iterator[Node] = children.iterator
-        val f: Node = it.next()
-        serialize(f, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-        while (it.hasNext) {
-          val x: Node = it.next()
-          sb.append(' ')
-          serialize(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-        }
-      } else children foreach { serialize(_, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }
-    }
+  ): Unit = {
+    if (children.isEmpty) ()
+    else if (children.forall(isAtomAndNotText)) { // add space
+      val it: Iterator[Node] = children.iterator
+      val f: Node = it.next()
+      serialize(f, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+      while (it.hasNext) {
+        val x: Node = it.next()
+        sb.append(' ')
+        serialize(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
+      }
+    } else children.foreach { serialize(_, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }
+  }
 
   def splitName(name: String): (Option[String], String) = {
     val colon: Int = name.indexOf(':')
@@ -287,7 +286,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    * &apos;s&apos; otherwise.
    */
   def appendQuoted(s: String, sb: StringBuilder): StringBuilder = {
-    val ch: Char = if (s contains '"') '\'' else '"'
+    val ch: Char = if (s.contains('"')) '\'' else '"'
     sb.append(ch).append(s).append(ch)
   }
 
@@ -307,8 +306,8 @@ object Utility extends AnyRef with parsing.TokenTests {
   def getName(s: String, index: Int): String = {
     if (index >= s.length) null
     else {
-      val xs: String = s drop index
-      if (xs.nonEmpty && isNameStart(xs.head)) xs takeWhile isNameChar
+      val xs: String = s.drop(index)
+      if (xs.nonEmpty && isNameStart(xs.head)) xs.takeWhile(isNameChar)
       else ""
     }
   }
@@ -325,7 +324,7 @@ object Utility extends AnyRef with parsing.TokenTests {
           return "< not allowed in attribute value"
         case '&' =>
           val n: String = getName(value, i + 1)
-          if (n eq null)
+          if (n.eq(null))
             return "malformed entity reference in attribute value [" + value + "]"
           i = i + n.length + 1
           if (i >= value.length || value.charAt(i) != ';')
@@ -353,8 +352,8 @@ object Utility extends AnyRef with parsing.TokenTests {
           val theChar: String = parseCharRef ({ () => c }, { () => c = it.next() }, { s => throw new RuntimeException(s) }, { s => throw new RuntimeException(s) })
           sb.append(theChar)
         } else {
-          if (rfb eq null) rfb = new StringBuilder()
-          rfb append c
+          if (rfb.eq(null)) rfb = new StringBuilder()
+          rfb.append(c)
           c = it.next()
           while (c != ';') {
             rfb.append(c)
@@ -372,7 +371,7 @@ object Utility extends AnyRef with parsing.TokenTests {
             case _ =>
           }
         }
-      } else sb append c
+      } else sb.append(c)
     }
     if (sb.nonEmpty) { // flush buffer
       val x: Text = Text(sb.toString)
