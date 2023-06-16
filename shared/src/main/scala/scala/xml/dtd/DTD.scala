@@ -33,8 +33,5 @@ abstract class DTD {
   var ent: mutable.Map[String, EntityDecl] = new mutable.HashMap[String, EntityDecl]()
 
   override def toString: String =
-    "DTD %s [\n%s]".format(
-      Option(externalID).getOrElse(""),
-      decls.mkString("", "\n", "\n")
-    )
+    s"DTD ${Option(externalID).getOrElse("")} [\n${decls.mkString("\n")}\n]"
 }

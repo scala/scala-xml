@@ -35,17 +35,13 @@ private[dtd] abstract class DetWordAutom[T <: AnyRef] {
   def next(q: Int, label: T): Int = delta(q).getOrElse(label, default(q))
 
   override def toString: String = {
-    val sb: StringBuilder = new StringBuilder("[DetWordAutom  nstates=")
-    sb.append(nstates)
-    sb.append(" finals=")
     val map: Map[Int, Int] = finals.zipWithIndex.map(_.swap).toMap
-    sb.append(map.toString)
-    sb.append(" delta=\n")
+    val sb: StringBuilder = new StringBuilder(s"[DetWordAutom  nstates=$nstates finals=$map delta=\n")
 
     for (i <- 0.until(nstates)) {
-      sb.append("%d->%s\n".format(i, delta(i)))
+      sb.append(s"$i->${delta(i)}\n")
       if (i < default.length)
-        sb.append("_>%s\n".format(default(i)))
+        sb.append(s"_>${default(i)}\n")
     }
     sb.toString
   }

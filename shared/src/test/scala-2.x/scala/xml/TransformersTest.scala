@@ -67,7 +67,7 @@ class TransformersTest {
         n match {
           case t: Text if t.text.trim.nonEmpty =>
             i += 1
-            Text(t.text + "!")
+            Text(s"${t.text}!")
           case _ => n
         }
       }

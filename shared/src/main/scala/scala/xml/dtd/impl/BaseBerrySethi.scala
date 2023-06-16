@@ -49,7 +49,7 @@ private[dtd] abstract class BaseBerrySethi {
       val (l1: Seq[lang._regexpT], l2: Seq[lang._regexpT]) = x.rs.span(_.isNullable)
       (l1 ++ l2.take(1)).map(compFunction).foldLeft(emptySet)(_ ++ _)
     case Star(t) => compFunction(t)
-    case _       => throw new IllegalArgumentException("unexpected pattern " + r.getClass)
+    case _       => throw new IllegalArgumentException(s"unexpected pattern ${r.getClass}")
   }
 
   /** Computes `first(r)` for the word regexp `r`. */
@@ -90,7 +90,7 @@ private[dtd] abstract class BaseBerrySethi {
         if (p.isNullable) fol ++ first
         else first
       }
-    case _ => throw new IllegalArgumentException("unexpected pattern: " + r.getClass)
+    case _ => throw new IllegalArgumentException(s"unexpected pattern: ${r.getClass}")
   }
 
   /**
@@ -102,6 +102,6 @@ private[dtd] abstract class BaseBerrySethi {
     case x: Sequ => x.rs.foreach(traverse)
     case x: Meta => traverse(x.r)
     case Star(t) => traverse(t)
-    case _       => throw new IllegalArgumentException("unexp pattern " + r.getClass)
+    case _       => throw new IllegalArgumentException(s"unexp pattern ${r.getClass}")
   }
 }

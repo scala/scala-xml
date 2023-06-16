@@ -25,7 +25,9 @@ class XMLTest {
                   </foo>
 
     val pelems_1: NodeSeq = for (x <- p \ "bar"; y <- p \ "baz") yield {
-      Text(x.attributes("value").toString + y.attributes("bazValue").toString + "!")
+      val value = x.attributes("value")
+      val bazValue = y.attributes("bazValue")
+      Text(s"$value$bazValue!")
     }
 
     val pelems_2: NodeSeq = NodeSeq.fromSeq(List(Text("38!"), Text("58!")))

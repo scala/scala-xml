@@ -34,6 +34,6 @@ trait ExternalSources {
       case x                          => x.take(x.lastIndexOf(separator) + 1)
     }
 
-    Source.fromFile(fileStr + systemId)
+    Source.fromFile(s"$fileStr$systemId")
   }
 }

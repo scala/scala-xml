@@ -38,7 +38,7 @@ object ContentModel extends WordExp {
   }
 
   case class ElemName(name: String) extends Label {
-    override def toString: String = """ElemName("%s")""".format(name)
+    override def toString: String = s"""ElemName("$name")"""
   }
 
   def isMixed(cm: ContentModel): Boolean = cond(cm) { case _: MIXED => true }

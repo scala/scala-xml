@@ -40,7 +40,7 @@ final case class Group(nodes: Seq[Node]) extends Node {
    * Since Group is very much a hack it throws an exception if you
    *  try to do anything with it.
    */
-  private def fail(msg: String): Nothing = throw new UnsupportedOperationException("class Group does not support method '%s'".format(msg))
+  private def fail(msg: String): Nothing = throw new UnsupportedOperationException(s"class Group does not support method '$msg'")
 
   override def label: Nothing = fail("label")
   override def attributes: Nothing = fail("attributes")

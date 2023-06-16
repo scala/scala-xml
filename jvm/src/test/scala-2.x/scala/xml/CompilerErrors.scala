@@ -193,7 +193,7 @@ class CompilerTesting {
   // note: `code` should have a | margin
   // the import's needed because toolbox compiler does not accumulate imports like the real one (TODO: verify hypothesis)
   def xmlErrorMessages(msg: String, code: String): List[String] =
-    errorMessages(msg)("import scala.xml.{TopScope => $scope}\n"+ code.stripMargin)
+    errorMessages(msg)("import scala.xml.{TopScope => $scope}\n"+ code.stripMargin) // TODO what is this $scope?
 
   def expectXmlError(msg: String, code: String): Unit = {
     val errors: List[String] = xmlErrorMessages(msg, code)
@@ -203,6 +203,6 @@ class CompilerTesting {
   def expectXmlErrors(msgCount: Int, msg: String, code: String): Unit = {
     val errors: List[String] = xmlErrorMessages(msg, code)
     val errorCount: Int = errors.count(_.contains(msg))
-    assert(errorCount == msgCount, s"$errorCount occurrences of \'$msg\' found -- expected $msgCount in:\n${errors.mkString("\n")}")
+    assert(errorCount == msgCount, s"$errorCount occurrences of '$msg' found -- expected $msgCount in:\n${errors.mkString("\n")}")
   }
 }

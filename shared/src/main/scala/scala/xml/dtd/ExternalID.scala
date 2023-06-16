@@ -22,19 +22,16 @@ package dtd
 sealed abstract class ExternalID extends parsing.TokenTests {
   def quoted(s: String): String = {
     val c: Char = if (s.contains('"')) '\'' else '"'
-    c.toString + s + c
+    s"$c$s$c"
   }
 
   // public != null: PUBLIC " " publicLiteral " " [systemLiteral]
   // public == null: SYSTEM " " systemLiteral
-  override def toString: String = {
-    lazy val quotedSystemLiteral: String = quoted(systemId)
-    lazy val quotedPublicLiteral: String = quoted(publicId)
+  override def toString: String =
+    if (publicId == null) s"SYSTEM ${quoted(systemId)}" else
+    if (systemId == null) s"PUBLIC ${quoted(publicId)}" else
+      s"PUBLIC ${quoted(publicId)} ${quoted(systemId)}"
 
-    if (publicId == null) "SYSTEM " + quotedSystemLiteral
-    else "PUBLIC " + quotedPublicLiteral +
-      (if (systemId == null) "" else " " + quotedSystemLiteral)
-  }
   def buildString(sb: StringBuilder): StringBuilder =
     sb.append(this.toString)
 

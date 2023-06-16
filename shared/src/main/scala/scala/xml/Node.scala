@@ -184,13 +184,8 @@ abstract class Node extends NodeSeq {
   /**
    * Appends qualified name of this node to `StringBuilder`.
    */
-  def nameToString(sb: StringBuilder): StringBuilder = {
-    if (null != prefix) {
-      sb.append(prefix)
-      sb.append(':')
-    }
-    sb.append(label)
-  }
+  def nameToString(sb: StringBuilder): StringBuilder =
+    sb.append(s"${if (prefix == null) "" else s"$prefix:"}$label")
 
   /**
    * Returns a type symbol (e.g. DTD, XSD), default `'''null'''`.

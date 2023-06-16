@@ -98,9 +98,9 @@ trait Attribute extends MetaData {
     if (value == null)
       return
     if (isPrefixed)
-      sb.append(pre).append(':')
+      sb.append(s"$pre:")
 
-    sb.append(key).append('=')
+    sb.append(s"$key=")
     val sb2: StringBuilder = new StringBuilder()
     Utility.sequenceToXML(value, TopScope, sb2, stripComments = true)
     Utility.appendQuoted(sb2.toString, sb)
