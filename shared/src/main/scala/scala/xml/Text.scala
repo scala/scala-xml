@@ -20,6 +20,7 @@ package xml
  *  @author Burak Emir
  *  @param data the text contained in this node, may not be null.
  */
+// Note: used by the Scala compiler.
 class Text(data: String) extends Atom[String](data) {
 
   /**
@@ -36,6 +37,7 @@ class Text(data: String) extends Atom[String](data) {
  *
  *  @author  Burak Emir
  */
+// Note: used by the Scala compiler.
 object Text {
   def apply(data: String): Text = new Text(data)
   def unapply(other: Any): Option[String] = other match {

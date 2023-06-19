@@ -22,6 +22,7 @@ import Utility.SU
  *  between the library level XML parser and the compiler's.
  *  All members should be accessed through those.
  */
+// Note: this is no longer true; Scala compiler uses its own copy since at least 2013.
 private[scala] trait MarkupParserCommon extends TokenTests {
   protected def unreachable: Nothing = truncatedError("Cannot be reached.")
 

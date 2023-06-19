@@ -80,6 +80,7 @@ object MetaData {
  *  Namespace URIs are obtained by using the namespace scope of the element
  *  owning this attribute (see `getNamespace`).
  */
+// Note: used by the Scala compiler.
 abstract class MetaData
   extends AbstractIterable[MetaData]
   with Iterable[MetaData]

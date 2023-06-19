@@ -20,6 +20,7 @@ package xml
  *
  *  @author  Burak Emir
  */
+// Note: used by the Scala compiler (before Scala 3).
 class PCData(data: String) extends Atom[String](data) {
 
   /**
@@ -39,6 +40,7 @@ class PCData(data: String) extends Atom[String](data) {
  *
  *  @author  Burak Emir
  */
+// Note: used by the Scala compiler (before Scala 3).
 object PCData {
   def apply(data: String): PCData = new PCData(data)
   def unapply(other: Any): Option[String] = other match {

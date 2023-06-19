@@ -19,6 +19,7 @@ package xml
  * @author  Burak Emir
  * @param   entityName the name of the entity reference, for example `amp`.
  */
+// Note: used by the Scala compiler.
 case class EntityRef(entityName: String) extends SpecialNode {
   final override def doCollectNamespaces: Boolean = false
   final override def doTransform: Boolean = false

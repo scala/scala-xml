@@ -20,6 +20,7 @@ import scala.collection.Seq
  *
  *  @author  Burak Emir
  */
+// Note: used by the Scala compiler.
 final case class Group(nodes: Seq[Node]) extends Node {
   override def theSeq: Seq[Node] = nodes
 
@@ -44,6 +45,6 @@ final case class Group(nodes: Seq[Node]) extends Node {
   override def label: Nothing = fail("label")
   override def attributes: Nothing = fail("attributes")
   override def namespace: Nothing = fail("namespace")
-  override def child /* TODO type annotation */ = fail("child")
+  override def child: ScalaVersionSpecificReturnTypes.GroupChild = fail("child")
   def buildString(sb: StringBuilder): Nothing = fail("toString(StringBuilder)")
 }

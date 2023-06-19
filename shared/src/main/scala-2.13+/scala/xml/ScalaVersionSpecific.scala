@@ -24,6 +24,7 @@ private[xml] object ScalaVersionSpecific {
     def newBuilder(from: Coll): Builder[Node, NodeSeq] = NodeSeq.newBuilder
     def fromSpecific(from: Coll)(it: IterableOnce[Node]): NodeSeq = (NodeSeq.newBuilder ++= from).result()
   }
+  type SeqNodeUnapplySeq = scala.collection.immutable.Seq[Node]
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq

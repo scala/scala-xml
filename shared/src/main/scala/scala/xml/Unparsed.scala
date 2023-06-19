@@ -20,6 +20,7 @@ package xml
  *  @author Burak Emir
  *  @param data content in this node, may not be null.
  */
+// Note: used by the Scala compiler.
 class Unparsed(data: String) extends Atom[String](data) {
 
   /**

@@ -20,6 +20,7 @@ package xml
  * @param  target     target name of this PI
  * @param  proctext   text contained in this node, may not contain "?>"
  */
+// Note: used by the Scala compiler.
 case class ProcInstr(target: String, proctext: String) extends SpecialNode {
   if (!Utility.isName(target))
     throw new IllegalArgumentException(target + " must be an XML Name")
