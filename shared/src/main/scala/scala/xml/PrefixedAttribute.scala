@@ -23,6 +23,7 @@ import scala.collection.Seq
  *  @param value the attribute value
  *  @param next1
  */
+// Note: used by the Scala compiler.
 class PrefixedAttribute(
   override val pre: String,
   override val key: String,
@@ -64,5 +65,5 @@ class PrefixedAttribute(
 }
 
 object PrefixedAttribute {
-  def unapply(x: PrefixedAttribute) /* TODO type annotation */ = Some((x.pre, x.key, x.value, x.next))
+  def unapply(x: PrefixedAttribute): Some[(String, String, Seq[Node], MetaData)] = Some((x.pre, x.key, x.value, x.next))
 }

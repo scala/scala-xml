@@ -23,6 +23,7 @@ import scala.collection.Seq
  *
  *  @author  Burak Emir
  */
+// Note: used by the Scala compiler.
 @SerialVersionUID(0 - 2518644165573446725L)
 case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBinding) extends AnyRef with Equality {
   if (prefix == "")

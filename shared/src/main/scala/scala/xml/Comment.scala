@@ -21,6 +21,7 @@ package xml
  *        and the final character may not be `-` to prevent a closing span of `-->`
  *        which is invalid. [[https://www.w3.org/TR/xml11//#IDA5CES]]
  */
+// Note: used by the Scala compiler.
 case class Comment(commentText: String) extends SpecialNode {
 
   override def label: String = "#REM"

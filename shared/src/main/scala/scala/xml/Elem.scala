@@ -21,15 +21,17 @@ import scala.collection.Seq
  *  any `Node` instance (that is not a `SpecialNode` or a `Group`) using the
  *  syntax `case Elem(prefix, label, attribs, scope, child @ _*) => ...`
  */
+// Note: used by the Scala compiler.
 object Elem {
 
   def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, minimizeEmpty: Boolean, child: Node*): Elem =
     new Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
 
-  def unapplySeq(n: Node) /* TODO type annotation */ = n match {
-    case _: SpecialNode | _: Group => None
-    case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
-  }
+  def unapplySeq(n: Node): Option[(String, String, MetaData, NamespaceBinding, ScalaVersionSpecific.SeqNodeUnapplySeq)] =
+    n match {
+      case _: SpecialNode | _: Group => None
+      case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
+    }
 }
 
 /**
@@ -51,6 +53,7 @@ object Elem {
  *                       empty; `false` if it should be written out in long form.
  *  @param child         the children of this node
  */
+// Note: used by the Scala compiler.
 class Elem(
   override val prefix: String,
   override val label: String,

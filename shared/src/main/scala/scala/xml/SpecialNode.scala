@@ -28,7 +28,7 @@ abstract class SpecialNode extends Node {
   final override def namespace: scala.Null = null
 
   /** always empty */
-  final override def child /* TODO type annotation */ = Nil
+  final override def child: ScalaVersionSpecificReturnTypes.SpecialNodeChild = Nil
 
   /** Append string representation to the given string buffer argument. */
   def buildString(sb: StringBuilder): StringBuilder

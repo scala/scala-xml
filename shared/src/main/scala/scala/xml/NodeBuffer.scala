@@ -23,6 +23,7 @@ package xml
  *
  * @author  Burak Emir
  */
+// Note: used by the Scala compiler.
 class NodeBuffer extends scala.collection.mutable.ArrayBuffer[Node] with ScalaVersionSpecificNodeBuffer {
   /**
    * Append given object to this buffer, returns reference on this

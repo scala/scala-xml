@@ -23,19 +23,20 @@ import scala.collection.Seq
  *
  *  @author  Burak Emir
  */
+// Note: used by the Scala compiler.
 case object Null extends MetaData {
   override def iterator: Iterator[Nothing] = Iterator.empty
   override def size: Int = 0
   override def append(m: MetaData, scope: NamespaceBinding = TopScope): MetaData = m
-  override def filter(f: MetaData => Boolean): MetaData = this
+  override def filter(f: MetaData => Boolean): ScalaVersionSpecificReturnTypes.NullFilter = this
 
   override def copy(next: MetaData): MetaData = next
-  override def getNamespace(owner: Node) /* TODO type annotation */ = null
+  override def getNamespace(owner: Node): ScalaVersionSpecificReturnTypes.NullGetNamespace = null
 
   override def hasNext: Boolean = false
-  override def next /* TODO type annotation */ = null
-  override def key /* TODO type annotation */ = null
-  override def value /* TODO type annotation */ = null
+  override def next: ScalaVersionSpecificReturnTypes.NullNext = null
+  override def key: ScalaVersionSpecificReturnTypes.NullKey = null
+  override def value: ScalaVersionSpecificReturnTypes.NullValue = null
   override def isPrefixed: Boolean = false
 
   override def length: Int = 0
@@ -47,8 +48,8 @@ case object Null extends MetaData {
   }
   override protected def basisForHashCode: Seq[Any] = Nil
 
-  override def apply(namespace: String, scope: NamespaceBinding, key: String) /* TODO type annotation */ = null
-  override def apply(key: String) /* TODO type annotation */ =
+  override def apply(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecificReturnTypes.NullApply3 = null
+  override def apply(key: String): ScalaVersionSpecificReturnTypes.NullApply1 =
     if (Utility.isNameStart(key.head)) null
     else throw new IllegalArgumentException("not a valid attribute name '" + key + "', so can never match !")
 
@@ -61,6 +62,6 @@ case object Null extends MetaData {
 
   override def wellformed(scope: NamespaceBinding): Boolean = true
 
-  override def remove(key: String) /* TODO type annotation */ = this
-  override def remove(namespace: String, scope: NamespaceBinding, key: String) /* TODO type annotation */ = this
+  override def remove(key: String): ScalaVersionSpecificReturnTypes.NullRemove = this
+  override def remove(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecificReturnTypes.NullRemove = this
 }

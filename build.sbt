@@ -9,20 +9,20 @@ ThisBuild / licenses += (("Apache-2.0", url("https://www.apache.org/licenses/LIC
 ThisBuild / libraryDependencySchemes += "org.scala-js" %% "scalajs-library" % "semver-spec"
 ThisBuild / apiURL := Some(url("https://javadoc.io/doc/org.scala-lang.modules/scala-xml_2.13/"))
 
-lazy val configSettings: Seq[Setting[_]] = Seq(
+lazy val configSettings: Seq[Setting[?]] = Seq(
   unmanagedSourceDirectories ++= {
     unmanagedSourceDirectories.value.flatMap { dir =>
-      val sv = scalaVersion.value
-      Seq(
-        CrossVersion.partialVersion(sv) match {
-          case Some((major, minor)) if major > 2 || (major == 2 && minor >= 13)  => file(dir.getPath ++ "-2.13+")
-          case _             => file(dir.getPath ++ "-2.13-")
-        },
-        CrossVersion.partialVersion(sv) match {
-          case Some((2, _))  => file(dir.getPath ++ "-2.x")
-          case _             => file(dir.getPath ++ "-3.x")
-        }
-      )
+      def forVersion(version: String): File = file(dir.getPath ++ "-" ++ version)
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((3, _)) => Seq(forVersion("3"), forVersion("2.13+"))
+        case Some((2, minor)) =>
+          Seq(forVersion("2")) ++ (minor match {
+            case 13 => Seq(forVersion("2.13"), forVersion("2.13+"))
+            case 12 => Seq(forVersion("2.12"))
+            case _ => Seq()
+          })
+        case _ => Seq()
+      }
     }
   }
 )
@@ -65,13 +65,21 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     versionPolicyIntention := Compatibility.BinaryCompatible,
     // Note: See discussion on non-JVM Mima in https://github.com/scala/scala-xml/pull/517
     mimaBinaryIssueFilters ++= {
-      import com.typesafe.tools.mima.core._
-      import com.typesafe.tools.mima.core.ProblemFilters._
-      Seq(
-        // necessitated by the introduction of new abstract methods in FactoryAdapter:
-        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createComment"),  // see #549
-        exclude[ReversedMissingMethodProblem]("scala.xml.parsing.FactoryAdapter.createPCData")    // see #558
-      )
+      //import com.typesafe.tools.mima.core.{}
+      //import com.typesafe.tools.mima.core.ProblemFilters
+      Seq( // exclusions for all Scala versions
+      ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((3, _)) => Seq( // Scala 3-specific exclusions
+        )
+        case Some((2, minor)) => Seq( // Scala 2-specific exclusions
+        ) ++ (minor match {
+          case 13 => Seq( // Scala 2.13-specific exclusions
+          )
+          case 12 => Seq( // Scala 2.12-specific exclusions
+          )
+        })
+        case _ => Seq()
+      })
     },
     // Mima signature checking stopped working after 3.0.2 upgrade, see #557
     mimaReportSignatureProblems := (CrossVersion.partialVersion(scalaVersion.value) match {

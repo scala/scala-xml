@@ -73,7 +73,7 @@ case class PublicID(override val publicId: String, override val systemId: String
   def label: String = "#PI"
 
   /** always empty */
-  def attribute: MetaData = Node.NoAttributes
+  def attribute: ScalaVersionSpecificReturnTypes.ExternalIDAttribute = Node.NoAttributes
 
   /** always empty */
   def child: Nil.type = Nil
@@ -85,8 +85,8 @@ case class PublicID(override val publicId: String, override val systemId: String
  *  @author Michael Bayne
  */
 object NoExternalID extends ExternalID {
-  override val publicId /* TODO type annotation */ = null
-  override val systemId /* TODO type annotation */ = null
+  override val publicId: ScalaVersionSpecificReturnTypes.NoExternalIDId = null
+  override val systemId: ScalaVersionSpecificReturnTypes.NoExternalIDId = null
 
   override def toString: String = ""
 }
