@@ -230,4 +230,10 @@ class UtilityTest {
     assertEquals("", result)
   }
 
+  @Test
+  def toStringStackSafe(): Unit = {
+    val xml = (1 to 5000).foldRight(<x/>) { case (_, n) => <x>{n}</x>}
+    xml.toString
+  }
+
 }
