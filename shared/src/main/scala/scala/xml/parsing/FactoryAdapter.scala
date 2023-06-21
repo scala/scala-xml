@@ -15,8 +15,8 @@ package xml
 package parsing
 
 import scala.collection.Seq
-import org.xml.sax.{Attributes, SAXNotRecognizedException, SAXNotSupportedException}
-import org.xml.sax.ext.DefaultHandler2
+import org.xml.sax.{Attributes, Locator, SAXNotRecognizedException, SAXNotSupportedException}
+import org.xml.sax.ext.{DefaultHandler2, Locator2}
 
 // can be mixed into FactoryAdapter if desired
 trait ConsoleErrorHandler extends DefaultHandler2 {
@@ -42,10 +42,21 @@ trait ConsoleErrorHandler extends DefaultHandler2 {
 abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Node] {
   val normalizeWhitespace: Boolean = false
 
+  // reference to the XMLReader that parses the document; this is used to query
+  // features (e.g., 'is-standalone') and properties (e.g., document-xml-version) -
+  // see http://www.saxproject.org/apidoc/org/xml/sax/package-summary.html
+  private var xmlReader: Option[XMLReader] = None
+
+  private var dtdBuilder: Option[DtdBuilder] = None
+  private def inDtd: Boolean = dtdBuilder.isDefined && !dtdBuilder.get.isDone
+
   private var document: Option[Document] = None
+  private var baseURI: Option[String] = None
+  private var xmlEncoding: Option[String] = None
 
   private var prefixMappings: List[(String, String)] = List.empty
 
+  // TODO all the variables should be private, but - binary compatibility...
   var prolog: List[Node] = List.empty
   var rootElem: Node = _
   var epilogue: List[Node] = List.empty
@@ -100,16 +111,10 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
   }
 
   /**
-   * Load XML document from the source using the parser.
+   * Load XML document from the inputSource using the xmlReader.
    */
-  def loadDocument(source: InputSource, parser: SAXParser): Document =
-    loadDocument(source, parser.getXMLReader)
-
-  /**
-   * Load XML document from the source using the reader.
-   */
-  def loadDocument(source: InputSource, xmlReader: XMLReader): Document = {
-    if (source == null) throw new IllegalArgumentException("InputSource cannot be null")
+  def loadDocument(inputSource: InputSource, xmlReader: XMLReader): Document = {
+    if (inputSource == null) throw new IllegalArgumentException("InputSource cannot be null")
 
     xmlReader.setContentHandler(this)
     xmlReader.setDTDHandler(this)
@@ -126,7 +131,16 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       case _: SAXNotSupportedException =>
     }
 
-    xmlReader.parse(source)
+    /* Use DeclHandler if it is supported by the xmlReader. */
+    try {
+      xmlReader.setProperty("http://xml.org/sax/properties/declaration-handler", this)
+    } catch {
+      case _: SAXNotRecognizedException =>
+      case _: SAXNotSupportedException =>
+    }
+
+    this.xmlReader = Some(xmlReader)
+    xmlReader.parse(inputSource)
 
     document.get
   }
@@ -175,8 +189,25 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
 
   /* ContentHandler methods */
 
+  // Since Java 14, ContentHandler has a method that delivers the values from the XML declaration:
+  //   def declaration(version: String, encoding: String, standalone: String): Unit = ()
+  // but it'll be years until we are all on Java 14 *and* Xerces starts calling this method...
+
+  override def setDocumentLocator(locator: Locator): Unit = {
+    baseURI = Option(locator.getSystemId)
+    locator match {
+      case locator2: Locator2 =>
+        // Note: Xerces calls setDocumentLocator() (and startDocument()) *before* it even reads the XML declaration;
+        // the version delivered here - locator2.getXMLVersion - is always "1.0";
+        // the real version is retrieved as a property of the XML reader in endDocument().
+
+        xmlEncoding = Option(locator2.getEncoding)
+      case _ =>
+    }
+  }
+
   override def startDocument(): Unit = {
-    scopeStack ::= TopScope // TODO remove
+    scopeStack ::= TopScope // TODO turn into a parameter
   }
 
   override def endDocument(): Unit = {
@@ -187,13 +218,33 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     this.document = Some(document)
     document.children = prolog ++ rootElem ++ epilogue
     document.docElem = rootElem
-    document.dtd = null
-    document.baseURI = null
-    document.encoding = None
-    document.standAlone = None
-    document.version = None
+    document.dtd = dtdBuilder.map(_.dtd).orNull
+    document.baseURI = baseURI.orNull
+    document.encoding = xmlEncoding
+
+    document.version =
+      try {
+        Option(xmlReader.get.getProperty("http://xml.org/sax/properties/document-xml-version").asInstanceOf[String])
+      } catch {
+        case _: SAXNotRecognizedException => None
+        case _: SAXNotSupportedException => None
+      }
+
+    document.standAlone =
+      try {
+        Some(xmlReader.get.getFeature("http://xml.org/sax/features/is-standalone"))
+      } catch {
+        case _: SAXNotRecognizedException => None
+        case _: SAXNotSupportedException => None
+      }
 
     // Note: resetting to the freshly-created state; needed only if this instance is reused, which we do not do...
+    dtdBuilder = None
+    xmlReader = None
+
+    baseURI = None
+    xmlEncoding = None
+
     hStack = hStack.last :: Nil // TODO List.empty
     scopeStack = scopeStack.tail // TODO List.empty
 
@@ -322,13 +373,36 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       }
     }
   }
+
+  override def ignorableWhitespace(ch: Array[Char], offset: Int, length: Int): Unit = ()
+
   /**
    * Processing instruction.
    */
-  override def processingInstruction(target: String, data: String): Unit = {
-    captureText()
-    hStack = hStack.reverse_:::(createProcInstr(target, data).toList)
-  }
+  override def processingInstruction(target: String, data: String): Unit =
+    if (inDtd) dtdBuilder.foreach(_.processingInstruction(target, data)) else {
+      captureText()
+      hStack = hStack.reverse_:::(createProcInstr(target, data).toList)
+    }
+
+  override def skippedEntity(name: String): Unit = ()
+
+  /* LexicalHandler methods (see https://docs.oracle.com/javase/8/docs/api/org/xml/sax/ext/LexicalHandler.html) */
+
+  override def startDTD(
+    name: String,
+    publicId: String,
+    systemId: String
+  ): Unit = dtdBuilder = Some(DtdBuilder(
+    name,
+    publicId,
+    systemId
+  ))
+
+  override def endDTD(): Unit = dtdBuilder.foreach(_.endDTD())
+
+  override def startEntity(name: String): Unit = dtdBuilder.foreach(_.startEntity(name))
+  override def endEntity(name: String): Unit = dtdBuilder.foreach(_.endEntity(name))
 
   /**
    * Start of a CDATA section.
@@ -347,8 +421,32 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
    * Comment.
    */
   override def comment(ch: Array[Char], start: Int, length: Int): Unit = {
-    captureText()
     val commentText: String = String.valueOf(ch.slice(start, start + length))
-    hStack = hStack.reverse_:::(createComment(commentText).toList)
+    if (inDtd) dtdBuilder.foreach(_.comment(commentText)) else {
+      captureText()
+      hStack = hStack.reverse_:::(createComment(commentText).toList)
+    }
   }
+
+  /* DTDHandler methods (see https://docs.oracle.com/javase/8/docs/api/org/xml/sax/DTDHandler.html) */
+
+  override def notationDecl(name: String, publicId: String, systemId: String): Unit =
+    dtdBuilder.foreach(_.notationDecl(name, publicId, systemId))
+
+  override def unparsedEntityDecl(name: String, publicId: String, systemId: String, notationName: String): Unit =
+    dtdBuilder.foreach(_.unparsedEntityDecl(name, publicId, systemId, notationName))
+
+  /* DeclHandler methods (see https://docs.oracle.com/javase/8/docs/api/org/xml/sax/ext/DeclHandler.html) */
+
+  override def elementDecl(name: String, model: String): Unit =
+    dtdBuilder.foreach(_.elementDecl(name, model))
+
+  override def attributeDecl(eName: String, aName: String, `type`: String, mode: String, value: String): Unit =
+    dtdBuilder.foreach(_.attributeDecl(eName, aName, `type`, mode, value))
+
+  override def internalEntityDecl(name: String, value: String): Unit =
+    dtdBuilder.foreach(_.internalEntityDecl(name, value))
+
+  override def externalEntityDecl(name: String, publicId: String, systemId: String): Unit =
+    dtdBuilder.foreach(_.externalEntityDecl(name, publicId, systemId))
 }
