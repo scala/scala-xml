@@ -9,6 +9,7 @@
 package scala
 package xml
 
+import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.language.implicitConversions
 import scala.collection.Seq
@@ -187,9 +188,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     decodeEntities: Boolean = true,
     preserveWhitespace: Boolean = false,
     minimizeTags: Boolean = false): StringBuilder =
-    {
       serialize(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, if (minimizeTags) MinimizeMode.Always else MinimizeMode.Never)
-    }
 
   /**
    * Serialize an XML Node to a StringBuilder.
@@ -206,35 +205,67 @@ object Utility extends AnyRef with parsing.TokenTests {
     stripComments: Boolean = false,
     decodeEntities: Boolean = true,
     preserveWhitespace: Boolean = false,
-    minimizeTags: MinimizeMode.Value = MinimizeMode.Default): StringBuilder =
-    {
-      x match {
-        case c: Comment                   => if (!stripComments) c buildString sb; sb
-        case s: SpecialNode               => s buildString sb
-        case g: Group                     =>
-          for (c <- g.nodes) serialize(c, g.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags); sb
-        case el: Elem =>
-          // print tag with namespace declarations
-          sb.append('<')
-          el.nameToString(sb)
-          if (el.attributes ne null) el.attributes.buildString(sb)
-          el.scope.buildString(sb, pscope)
-          if (el.child.isEmpty &&
-            (minimizeTags == MinimizeMode.Always ||
-              (minimizeTags == MinimizeMode.Default && el.minimizeEmpty))) {
-            // no children, so use short form: <xyz .../>
-            sb.append("/>")
-          } else {
-            // children, so use long form: <xyz ...>...</xyz>
-            sb.append('>')
-            sequenceToXML(el.child, el.scope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-            sb.append("</")
-            el.nameToString(sb)
-            sb.append('>')
-          }
-        case _ => throw new IllegalArgumentException("Don't know how to serialize a " + x.getClass.getName)
-      }
+    minimizeTags: MinimizeMode.Value = MinimizeMode.Default
+  ): StringBuilder = {
+    serializeImpl(List(x), pscope, false, stripComments, minimizeTags, sb)
+    sb
+  }
+
+  private def serializeImpl(
+    ns: Seq[Node],
+    pscope: NamespaceBinding,
+    spaced: Boolean,
+    stripComments: Boolean,
+    minimizeTags: MinimizeMode.Value,
+    sb: StringBuilder
+  ): Unit = {
+    @tailrec def ser(nss: List[Seq[Node]], pscopes: List[NamespaceBinding], spaced: List[Boolean], toClose: List[Node]): Unit = nss match {
+      case List(ns) if ns.isEmpty =>
+      case ns :: rests if ns.isEmpty =>
+        if (toClose.head != null) {
+          sb.append("</")
+          toClose.head.nameToString(sb)
+          sb.append('>')
+        }
+        ser(rests, pscopes.tail, spaced.tail, toClose.tail)
+      case ns1 :: r =>
+        val (n, ns) = (ns1.head, ns1.tail)
+        def sp(): Unit = if (ns.nonEmpty && spaced.head) sb.append(' ')
+        n match {
+          case c: Comment =>
+            if (!stripComments) {
+              c.buildString(sb)
+              sp()
+            }
+            ser(ns :: r, pscopes, spaced, toClose)
+          case s: SpecialNode =>
+            s.buildString(sb)
+            sp()
+            ser(ns :: r, pscopes, spaced, toClose)
+          case g: Group =>
+            ser(g.nodes :: ns :: r, g.scope :: pscopes, false :: spaced, null :: toClose)
+          case e: Elem =>
+            sb.append('<')
+            e.nameToString(sb)
+            if (e.attributes.ne(null)) e.attributes.buildString(sb)
+            e.scope.buildString(sb, pscopes.head)
+            if (e.child.isEmpty &&
+              (minimizeTags == MinimizeMode.Always ||
+                (minimizeTags == MinimizeMode.Default && e.minimizeEmpty))) {
+              // no children, so use short form: <xyz .../>
+              sb.append("/>")
+              sp()
+              ser(ns :: r, pscopes, spaced, toClose)
+            } else {
+              sb.append('>')
+              val csp = e.child.forall(isAtomAndNotText)
+              ser(e.child :: ns :: r, e.scope :: pscopes, csp :: spaced, e :: toClose)
+            }
+          case n => throw new IllegalArgumentException("Don't know how to serialize a " + n.getClass.getName)
+        }
     }
+    ser(List(ns), List(pscope), List(spaced), Nil)
+  }
 
   def sequenceToXML(
     children: Seq[Node],
@@ -243,20 +274,11 @@ object Utility extends AnyRef with parsing.TokenTests {
     stripComments: Boolean = false,
     decodeEntities: Boolean = true,
     preserveWhitespace: Boolean = false,
-    minimizeTags: MinimizeMode.Value = MinimizeMode.Default): Unit =
-    {
-      if (children.isEmpty) return
-      else if (children forall isAtomAndNotText) { // add space
-        val it = children.iterator
-        val f = it.next()
-        serialize(f, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-        while (it.hasNext) {
-          val x = it.next()
-          sb.append(' ')
-          serialize(x, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)
-        }
-      } else children foreach { serialize(_, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags) }
-    }
+    minimizeTags: MinimizeMode.Value = MinimizeMode.Default
+  ): Unit = if (children.nonEmpty) {
+    val spaced = children.forall(isAtomAndNotText)
+    serializeImpl(children, pscope, spaced, stripComments, minimizeTags, sb)
+  }
 
   /**
    * Returns prefix of qualified name if any.

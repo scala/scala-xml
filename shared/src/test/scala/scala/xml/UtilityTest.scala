@@ -217,4 +217,10 @@ class UtilityTest {
     val x = <div>{Text("   My name ")}{Text("  is  ")}{Text("  Harry   ")}</div>
     assertEquals(<div>My name is Harry</div>, Utility.trim(x))
   }
+
+  @Test
+  def toStringStackSafe(): Unit = {
+    val xml = (1 to 5000).foldRight(<x/>) { case (_, n) => <x>{n}</x> }
+    xml.toString
+  }
 }
