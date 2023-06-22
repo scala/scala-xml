@@ -91,4 +91,10 @@ class ConstructingParserTest {
     val parser: ConstructingParser = ConstructingParser.fromSource(Source.fromString(xml), preserveWS = true)
     parser.document().docElem  // shouldn't crash
   }
+
+  @Test(expected = classOf[scala.xml.parsing.FatalError])
+  def issue656(): Unit = {
+    // mismatched quotes should not cause an infinite loop
+    XhtmlParser(Source.fromString("""<html><body myAttribute='value"/></html>"""))
+  }
 }
