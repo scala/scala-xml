@@ -32,8 +32,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   override def startDocument(): Unit = {
     try {
-      out.write("<?xml version='1.0' encoding='"
-        + encoding + "'?>\r\n")
+      out.write(s"<?xml version='1.0' encoding='$encoding'?>\r\n")
     } catch {
       case e: IOException =>
         throw new SAXException("Write failed", e)
@@ -55,17 +54,14 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   override def startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes): Unit = {
     try {
-      out.write("<" + qualifiedName)
+      out.write(s"<$qualifiedName")
       var i: Int = 0
       while (i < atts.getLength) {
-        out.write(" ")
-        out.write(atts.getQName(i))
-        out.write("='")
         val value: String = atts.getValue(i)
         // @todo Need to use character references if the encoding
         // can't support the character
-        out.write(scala.xml.Utility.escape(value))
-        out.write("'")
+        val valueStr: String = scala.xml.Utility.escape(value)
+        out.write(s" ${atts.getQName(i)}='$valueStr'")
         i += 1
       }
       out.write(">")
@@ -77,7 +73,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   override def endElement(namespaceURI: String, localName: String, qualifiedName: String): Unit = {
     try {
-      out.write("</" + qualifiedName + ">")
+      out.write(s"</$qualifiedName>")
     } catch {
       case e: IOException =>
         throw new SAXException("Write failed", e)
@@ -113,7 +109,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   // do I need to escape text in PI????
   override def processingInstruction(target: String, data: String): Unit = {
     try {
-      out.write("<?" + target + " " + data + "?>")
+      out.write(s"<?$target $data?>")
     } catch {
       case e: IOException =>
         throw new SAXException("Write failed", e)
@@ -122,7 +118,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   override def skippedEntity(name: String): Unit = {
     try {
-      out.write("&" + name + ";")
+      out.write(s"&$name;")
     } catch {
       case e: IOException =>
         throw new SAXException("Write failed", e)
@@ -138,10 +134,10 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
     // if this is the source document, output a DOCTYPE declaration
     if (entities.isEmpty) {
       var id: String = ""
-      if (publicID != null) id = " PUBLIC \"" + publicID + "\" \"" + systemID + '"'
-      else if (systemID != null) id = " SYSTEM \"" + systemID + '"'
+      if (publicID != null) id = s""" PUBLIC "$publicID" "$systemID""""
+      else if (systemID != null) id = s""" SYSTEM "$systemID""""
       try {
-        out.write("<!DOCTYPE " + name + id + ">\r\n")
+        out.write(s"<!DOCTYPE $name$id>\r\n")
       } catch {
         case e: IOException =>
           throw new SAXException("Error while writing DOCTYPE", e)
@@ -151,7 +147,7 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
   override def endDTD(): Unit = ()
 
   override def startEntity(name: String): Unit = {
-    entities =  name :: entities
+    entities = name :: entities
   }
 
   override def endEntity(name: String): Unit = {

@@ -95,7 +95,7 @@ class XIncludeFilter extends XMLFilterImpl {
       bases.push(new URL(base))
     } catch {
       case _: MalformedURLException =>
-        throw new UnsupportedOperationException("Unrecognized SYSTEM ID: " + base)
+        throw new UnsupportedOperationException(s"Unrecognized SYSTEM ID: $base")
     }
     super.setDocumentLocator(locator)
   }
@@ -129,8 +129,7 @@ class XIncludeFilter extends XMLFilterImpl {
           currentBase = new URL(parentBase, base)
         } catch {
           case e: MalformedURLException =>
-            throw new SAXException("Malformed base URL: "
-              + currentBase, e)
+            throw new SAXException(s"Malformed base URL: $currentBase", e)
         }
       }
       bases push currentBase
@@ -154,7 +153,7 @@ class XIncludeFilter extends XMLFilterImpl {
         } // Need to check this also in DOM and JDOM????
         else {
           throw new SAXException(
-            "Illegal value for parse attribute: " + parse)
+            s"Illegal value for parse attribute: $parse")
         }
         level += 1
       } else {
@@ -235,9 +234,7 @@ class XIncludeFilter extends XMLFilterImpl {
       line = locator.getLineNumber
       column = locator.getColumnNumber
     }
-    locationString = (" in document included from " + publicID
-      + " at " + systemID
-      + " at line " + line + ", column " + column)
+    locationString = s" in document included from $publicID at $systemID at line $line, column $column"
 
     locationString
   }
@@ -263,10 +260,9 @@ class XIncludeFilter extends XMLFilterImpl {
       source = new URL(base, url)
     } catch {
       case e: MalformedURLException =>
-        val ex: UnavailableResourceException = new UnavailableResourceException("Unresolvable URL " + url
-          + getLocation)
+        val ex: UnavailableResourceException = new UnavailableResourceException(s"Unresolvable URL $url$getLocation")
         ex.setRootCause(e)
-        throw new SAXException("Unresolvable URL " + url + getLocation, ex)
+        throw new SAXException(s"Unresolvable URL $url$getLocation", ex)
     }
 
     try {
@@ -299,11 +295,9 @@ class XIncludeFilter extends XMLFilterImpl {
       } ; charsRead != -1}) ()
     } catch {
       case e: UnsupportedEncodingException =>
-        throw new SAXException("Unsupported encoding: "
-          + encoding + getLocation, e)
+        throw new SAXException(s"Unsupported encoding: $encoding$getLocation", e)
       case e: IOException =>
-        throw new SAXException("Document not found: "
-          + source.toExternalForm + getLocation, e)
+        throw new SAXException(s"Document not found: ${source.toExternalForm}$getLocation", e)
     }
   }
 
@@ -324,9 +318,9 @@ class XIncludeFilter extends XMLFilterImpl {
       try new URL(bases.peek, url)
       catch {
         case e: MalformedURLException =>
-          val ex: UnavailableResourceException = new UnavailableResourceException("Unresolvable URL " + url + getLocation)
+          val ex: UnavailableResourceException = new UnavailableResourceException(s"Unresolvable URL $url$getLocation")
           ex setRootCause e
-          throw new SAXException("Unresolvable URL " + url + getLocation, ex)
+          throw new SAXException(s"Unresolvable URL $url$getLocation", ex)
       }
 
     try {
@@ -349,7 +343,7 @@ class XIncludeFilter extends XMLFilterImpl {
       if (bases.contains(source))
         throw new SAXException(
           "Circular XInclude Reference",
-          new CircularIncludeException("Circular XInclude Reference to " + source + getLocation)
+          new CircularIncludeException(s"Circular XInclude Reference to $source$getLocation")
         )
 
       bases push source
@@ -361,7 +355,7 @@ class XIncludeFilter extends XMLFilterImpl {
       bases.pop()
     } catch {
       case e: IOException =>
-        throw new SAXException("Document not found: " + source.toExternalForm + getLocation, e)
+        throw new SAXException(s"Document not found: ${source.toExternalForm}$getLocation", e)
     }
   }
 }

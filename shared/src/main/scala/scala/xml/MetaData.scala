@@ -174,7 +174,7 @@ abstract class MetaData
    *  prefixed, and "key" otherwise.
    */
   def prefixedKey: String = this match {
-    case x: Attribute if x.isPrefixed => x.pre + ":" + key
+    case x: Attribute if x.isPrefixed => s"${x.pre}:$key"
     case _                            => key
   }
 

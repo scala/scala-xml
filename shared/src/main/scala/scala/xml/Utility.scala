@@ -112,7 +112,7 @@ object Utility extends AnyRef with parsing.TokenTests {
       "quot" -> '"',
       "apos"  -> '\''
     )
-    val escMap: Map[Char, String] = (pairs - "apos").map { case (s, c) => c -> "&%s;".format(s) }
+    val escMap: Map[Char, String] = (pairs - "apos").map { case (s, c) => c -> s"&$s;" }
     val unescMap: Map[String, Char] = pairs
   }
   import Escapes.{ escMap, unescMap }
@@ -265,7 +265,7 @@ object Utility extends AnyRef with parsing.TokenTests {
               val csp = e.child.forall(isAtomAndNotText)
               ser(e.child.toList :: ns :: r, e.scope :: pscopes, csp :: spaced, e :: toClose)
             }
-          case n => throw new IllegalArgumentException("Don't know how to serialize a " + n.getClass.getName)
+          case n => throw new IllegalArgumentException(s"Don't know how to serialize a ${n.getClass.getName}")
         }
     }
     ser(List(ns.toList), List(pscope), List(spaced), Nil)
@@ -309,7 +309,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def appendQuoted(s: String, sb: StringBuilder): StringBuilder = {
     val ch: Char = if (s.contains('"')) '\'' else '"'
-    sb.append(ch).append(s).append(ch)
+    sb.append(s"$ch$s$ch")
   }
 
   /**
@@ -347,10 +347,10 @@ object Utility extends AnyRef with parsing.TokenTests {
         case '&' =>
           val n: String = getName(value, i + 1)
           if (n.eq(null))
-            return "malformed entity reference in attribute value [" + value + "]"
+            return s"malformed entity reference in attribute value [$value]"
           i = i + n.length + 1
           if (i >= value.length || value.charAt(i) != ';')
-            return "malformed entity reference in attribute value [" + value + "]"
+            return s"malformed entity reference in attribute value [$value]"
         case _ =>
       }
       i = i + 1
@@ -423,14 +423,13 @@ object Utility extends AnyRef with parsing.TokenTests {
         case 'a' | 'b' | 'c' | 'd' | 'e' | 'f'
           | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' =>
           if (!hex)
-            reportSyntaxError("hex char not allowed in decimal char ref\n" +
-              "Did you mean to write &#x ?")
+            reportSyntaxError("hex char not allowed in decimal char ref\nDid you mean to write &#x ?")
           else
             i = i * base + ch().asDigit
         case SU =>
           reportTruncatedError("")
         case _ =>
-          reportSyntaxError("character '" + ch() + "' not allowed in char ref\n")
+          reportSyntaxError(s"character '${ch()}' not allowed in char ref\n")
       }
       nextch()
     }

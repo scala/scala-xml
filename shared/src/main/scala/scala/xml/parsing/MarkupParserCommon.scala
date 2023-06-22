@@ -88,7 +88,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
       case `end` => return buf.toString
       case ch    => buf.append(ch)
     }
-    scala.sys.error("Expected '%s'".format(end))
+    scala.sys.error(s"Expected '$end'")
   }
 
   /**
@@ -116,7 +116,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     if (ch == SU)
       truncatedError("")
     else if (!isNameStart(ch))
-      return errorAndResult("name expected, but char '%s' cannot start a name".format(ch), "")
+      return errorAndResult(s"name expected, but char '$ch' cannot start a name", "")
 
     val buf: StringBuilder = new StringBuilder
 
@@ -136,7 +136,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
     case "apos"  => "'"
     case "quot"  => "\""
     case "quote" => "\""
-    case _       => "&" + s + ";"
+    case _       => s"&$s;"
   }
 
   /**
@@ -206,7 +206,7 @@ private[scala] trait MarkupParserCommon extends TokenTests {
 
   def xToken(that: Char): Unit = {
     if (ch == that) nextch()
-    else xHandleError(that, "'%s' expected instead of '%s'".format(that, ch))
+    else xHandleError(that, s"'$that' expected instead of '$ch'")
   }
   def xToken(that: Seq[Char]): Unit = that.foreach(xToken)
 

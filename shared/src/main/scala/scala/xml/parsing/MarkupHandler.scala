@@ -40,9 +40,9 @@ abstract class MarkupHandler {
   def replacementText(entityName: String): Source =
     Source.fromString(ent.get(entityName) match {
       case Some(ParsedEntityDecl(_, IntDef(value)))    => value
-      case Some(ParameterEntityDecl(_, IntDef(value))) => " %s ".format(value)
-      case Some(_)                                     => "<!-- %s; -->".format(entityName)
-      case None                                        => "<!-- unknown entity %s; -->".format(entityName)
+      case Some(ParameterEntityDecl(_, IntDef(value))) => s" value "
+      case Some(_)                                     => s"<!-- $entityName; -->"
+      case None                                        => s"<!-- unknown entity $entityName; -->"
     })
 
   def endDTD(n: String): Unit = ()

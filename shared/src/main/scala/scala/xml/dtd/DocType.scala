@@ -27,7 +27,7 @@ import scala.collection.Seq
  */
 case class DocType(name: String, extID: ExternalID, intSubset: Seq[dtd.Decl]) {
   if (!Utility.isName(name))
-    throw new IllegalArgumentException(name + " must be an XML Name")
+    throw new IllegalArgumentException(s"$name must be an XML Name")
 
   /** returns "&lt;!DOCTYPE + name + extID? + ("["+intSubSet+"]")? >" */
   final override def toString: String = {
@@ -35,7 +35,7 @@ case class DocType(name: String, extID: ExternalID, intSubset: Seq[dtd.Decl]) {
       if (intSubset.isEmpty) ""
       else intSubset.mkString("[", "", "]")
 
-    """<!DOCTYPE %s %s%s>""".format(name, extID.toString, intString)
+    s"<!DOCTYPE $name $extID$intString>"
   }
 }
 

@@ -40,7 +40,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   override type NamespaceType = NamespaceBinding
 
   override def truncatedError(msg: String): Nothing = throw FatalError(msg)
-  override def errorNoEnd(tag: String): Nothing = throw FatalError("expected closing tag of " + tag)
+  override def errorNoEnd(tag: String): Nothing = throw FatalError(s"expected closing tag of $tag")
 
   override def xHandleError(that: Char, msg: String): Unit = reportSyntaxError(msg)
 
@@ -182,7 +182,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       case null =>
       case Text(enc) =>
         if (!isValidIANAEncoding(enc))
-          reportSyntaxError("\"" + enc + "\" is not a valid encoding")
+          reportSyntaxError(s""""$enc" is not a valid encoding""")
         else {
           info_enc = Some(enc)
           n += 1
@@ -202,7 +202,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
     if (m.length - n != 0) {
       val s: String = if (isProlog) "SDDecl? " else ""
-      reportSyntaxError("VersionInfo EncodingDecl? %sor '?>' expected!".format(s))
+      reportSyntaxError(s"VersionInfo EncodingDecl? $s or '?>' expected!")
     }
 
     (info_ver, info_enc, info_stdl)
@@ -655,7 +655,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       putChar(ch)
       //println("hello '"+ch+"'"+isPubIDChar(ch))
       if (!isPubIDChar(ch))
-        reportSyntaxError("char '" + ch + "' is not allowed in public id")
+        reportSyntaxError(s"char '$ch' is not allowed in public id")
       nextch()
     }
     nextch()
@@ -752,7 +752,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
           xToken('>')
 
         case _ =>
-          curInput.reportError(pos, "unexpected character '" + ch + "', expected some markupdecl")
+          curInput.reportError(pos, s"unexpected character '$ch', expected some markupdecl")
           while (ch != '>' && !eof)
             nextch()
       }
@@ -776,7 +776,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     case _ if isSpace(ch) =>
       xSpace()
     case _ =>
-      reportSyntaxError("markupdecl: unexpected character '" + ch + "' #" + ch.toInt)
+      reportSyntaxError(s"markupdecl: unexpected character '$ch' #${ch.toInt}")
       nextch()
   }
 

@@ -125,8 +125,8 @@ object XML extends XMLLoader[Elem] {
     minimizeTags: MinimizeMode.Value = MinimizeMode.Default
   ): Unit = {
     /* TODO: optimize by giving writer parameter to toXML*/
-    if (xmlDecl) w.write("<?xml version='1.0' encoding='" + enc + "'?>\n")
-    if (doctype.ne(null)) w.write(doctype.toString + "\n")
+    if (xmlDecl) w.write(s"<?xml version='1.0' encoding='$enc'?>\n")
+    if (doctype.ne(null)) w.write(s"$doctype\n")
     w.write(Utility.serialize(node, minimizeTags = minimizeTags).toString)
   }
 }

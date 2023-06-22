@@ -23,11 +23,11 @@ package xml
 // Note: used by the Scala compiler.
 case class ProcInstr(target: String, proctext: String) extends SpecialNode {
   if (!Utility.isName(target))
-    throw new IllegalArgumentException(target + " must be an XML Name")
+    throw new IllegalArgumentException(s"$target must be an XML Name")
   if (proctext.contains("?>"))
-    throw new IllegalArgumentException(proctext + " may not contain \"?>\"")
+    throw new IllegalArgumentException(s"""$proctext may not contain "?>"""")
   if (target.toLowerCase == "xml")
-    throw new IllegalArgumentException(target + " is reserved")
+    throw new IllegalArgumentException(s"$target is reserved")
 
   final override def doCollectNamespaces: Boolean = false
   final override def doTransform: Boolean = false
@@ -39,6 +39,8 @@ case class ProcInstr(target: String, proctext: String) extends SpecialNode {
    * appends &quot;&lt;?&quot; target (&quot; &quot;+text)?+&quot;?&gt;&quot;
    *  to this stringbuffer.
    */
-  override def buildString(sb: StringBuilder): StringBuilder =
-    sb.append("<?%s%s?>".format(target, if (proctext == "") "" else " " + proctext))
+  override def buildString(sb: StringBuilder): StringBuilder = {
+    val textStr: String = if (proctext == "") "" else s" $proctext"
+    sb.append(s"<?$target$textStr?>")
+  }
 }

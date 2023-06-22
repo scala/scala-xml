@@ -30,8 +30,10 @@ class PCData(data: String) extends Atom[String](data) {
    *  @param  sb the input string buffer associated to some XML element
    *  @return the input string buffer with the formatted CDATA section
    */
-  override def buildString(sb: StringBuilder): StringBuilder =
-    sb.append("<![CDATA[%s]]>".format(data.replaceAll("]]>", "]]]]><![CDATA[>")))
+  override def buildString(sb: StringBuilder): StringBuilder = {
+    val dataStr: String = data.replaceAll("]]>", "]]]]><![CDATA[>")
+    sb.append(s"<![CDATA[$dataStr]]>")
+  }
 }
 
 /**

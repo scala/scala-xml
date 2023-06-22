@@ -51,7 +51,7 @@ case object Null extends MetaData {
   override def apply(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecificReturnTypes.NullApply3 = null
   override def apply(key: String): ScalaVersionSpecificReturnTypes.NullApply1 =
     if (Utility.isNameStart(key.head)) null
-    else throw new IllegalArgumentException("not a valid attribute name '" + key + "', so can never match !")
+    else throw new IllegalArgumentException(s"not a valid attribute name '$key', so can never match !")
 
   override protected def toString1(sb: StringBuilder): Unit = ()
   override protected def toString1: String = ""

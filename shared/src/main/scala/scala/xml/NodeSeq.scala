@@ -157,7 +157,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
    * Convenience method which returns string text of the named attribute. Use:
    *   - `that \@ "foo"` to get the string text of attribute `"foo"`;
    */
-  def \@(attributeName: String): String = (this \ ("@" + attributeName)).text
+  def \@(attributeName: String): String = (this \ s"@$attributeName").text
 
   override def toString: String = theSeq.mkString
 

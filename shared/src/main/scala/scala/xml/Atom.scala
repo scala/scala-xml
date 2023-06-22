@@ -24,7 +24,7 @@ import scala.collection.Seq
  */
 class Atom[+A](val data: A) extends SpecialNode with Serializable {
   if (data == null)
-    throw new IllegalArgumentException("cannot construct " + getClass.getSimpleName + " with null")
+    throw new IllegalArgumentException(s"cannot construct ${getClass.getSimpleName} with null")
 
   override protected def basisForHashCode: Seq[Any] = Seq(data)
 
