@@ -61,18 +61,13 @@ object Equality {
     case x: NodeSeq if x.length == 1 => x2 == x(0)
     case _                           => false
   }
-  def compareBlithely(x1: AnyRef, x2: AnyRef): Boolean = {
-    if (x1 == null || x2 == null)
-      return x1.eq(x2)
-
-    x2 match {
+  def compareBlithely(x1: AnyRef, x2: AnyRef): Boolean =
+    if (x1 == null || x2 == null) x1 == null && x2 == null else x2 match {
       case s: String => compareBlithely(x1, s)
       case n: Node   => compareBlithely(x1, n)
       case _         => false
     }
-  }
 }
-import Equality._
 
 trait Equality extends scala.Equals {
   protected def basisForHashCode: Seq[Any]
@@ -109,10 +104,10 @@ trait Equality extends scala.Equals {
   private def doComparison(other: Any, blithe: Boolean): Boolean = {
     val strictlyEqual: Boolean = other match {
       case x: AnyRef if this.eq(x) => true
-      case x: Equality             => (x canEqual this) && (this strict_== x)
+      case x: Equality             => x.canEqual(this) && this.strict_==(x)
       case _                       => false
     }
 
-    strictlyEqual || (blithe && compareBlithely(this, asRef(other)))
+    strictlyEqual || (blithe && Equality.compareBlithely(this, Equality.asRef(other)))
   }
 }

@@ -55,12 +55,11 @@ object Utility extends AnyRef with parsing.TokenTests {
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
   }
 
-  private def combineAdjacentTextNodes(children: Seq[Node]): Seq[Node] = {
+  private def combineAdjacentTextNodes(children: Seq[Node]): Seq[Node] =
     children.foldRight(Seq.empty[Node]) {
       case (Text(left), Text(right) +: nodes) => Text(left + right) +: nodes
       case (n, nodes) => n +: nodes
     }
-  }
 
   /**
    * trim a child of an element. `Attribute` values and `Atom` nodes that
@@ -77,7 +76,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   }
 
   /** returns a sorted attribute list */
-  def sort(md: MetaData): MetaData = if (md.eq(Null) || md.next.eq(Null)) md else {
+  def sort(md: MetaData): MetaData = if (md.isNull || md.next.isNull) md else {
     val key: String = md.key
     val smaller: MetaData = sort(md.filter { m => m.key < key })
     val greater: MetaData = sort(md.filter { m => m.key > key })
@@ -120,7 +119,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   /**
    * Appends escaped string to `s`.
    */
-  final def escape(text: String, s: StringBuilder): StringBuilder = {
+  final def escape(text: String, s: StringBuilder): StringBuilder =
     // Implemented per XML spec:
     // http://www.w3.org/International/questions/qa-controls
     text.iterator.foldLeft(s) { (s, c) =>
@@ -130,7 +129,6 @@ object Utility extends AnyRef with parsing.TokenTests {
         case _ => s // noop
       }
     }
-  }
 
   /**
    * Appends unescaped string to `s`, `amp` becomes `&amp;`,
@@ -151,7 +149,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   /**
    * Adds all namespaces in node to set.
    */
-  def collectNamespaces(n: Node, set: mutable.Set[String]): Unit = {
+  def collectNamespaces(n: Node, set: mutable.Set[String]): Unit =
     if (n.doCollectNamespaces) {
       set += n.namespace
       for (a <- n.attributes) a match {
@@ -162,7 +160,6 @@ object Utility extends AnyRef with parsing.TokenTests {
       for (i <- n.child)
         collectNamespaces(i, set)
     }
-  }
 
   // def toXML(
   //   x: Node,
@@ -251,7 +248,7 @@ object Utility extends AnyRef with parsing.TokenTests {
           case e: Elem =>
             sb.append('<')
             e.nameToString(sb)
-            if (e.attributes.ne(null)) e.attributes.buildString(sb)
+            if (e.attributes != null) e.attributes.buildString(sb)
             e.scope.buildString(sb, pscopes.head)
             if (e.child.isEmpty &&
               (minimizeTags == MinimizeMode.Always ||
@@ -325,14 +322,12 @@ object Utility extends AnyRef with parsing.TokenTests {
     sb.append('"')
   }
 
-  def getName(s: String, index: Int): String = {
-    if (index >= s.length) null
-    else {
+  def getName(s: String, index: Int): String =
+    if (index >= s.length) null else {
       val xs: String = s.drop(index)
       if (xs.nonEmpty && isNameStart(xs.head)) xs.takeWhile(isNameChar)
       else ""
     }
-  }
 
   /**
    * Returns `'''null'''` if the value is a correct attribute value,
@@ -346,7 +341,7 @@ object Utility extends AnyRef with parsing.TokenTests {
           return "< not allowed in attribute value"
         case '&' =>
           val n: String = getName(value, i + 1)
-          if (n.eq(null))
+          if (n == null)
             return s"malformed entity reference in attribute value [$value]"
           i = i + n.length + 1
           if (i >= value.length || value.charAt(i) != ';')
@@ -374,7 +369,7 @@ object Utility extends AnyRef with parsing.TokenTests {
           val theChar: String = parseCharRef ({ () => c }, { () => c = it.next() }, { s => throw new RuntimeException(s) }, { s => throw new RuntimeException(s) })
           sb.append(theChar)
         } else {
-          if (rfb.eq(null)) rfb = new StringBuilder()
+          if (rfb == null) rfb = new StringBuilder()
           rfb.append(c)
           c = it.next()
           while (c != ';') {

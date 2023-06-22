@@ -39,8 +39,6 @@ case class ProcInstr(target: String, proctext: String) extends SpecialNode {
    * appends &quot;&lt;?&quot; target (&quot; &quot;+text)?+&quot;?&gt;&quot;
    *  to this stringbuffer.
    */
-  override def buildString(sb: StringBuilder): StringBuilder = {
-    val textStr: String = if (proctext == "") "" else s" $proctext"
-    sb.append(s"<?$target$textStr?>")
-  }
+  override def buildString(sb: StringBuilder): StringBuilder =
+    sb.append(s"<?$target${if (proctext.isEmpty) "" else s" $proctext"}?>")
 }

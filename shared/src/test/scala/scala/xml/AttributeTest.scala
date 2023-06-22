@@ -21,7 +21,7 @@ class AttributeTest {
 
     var appended: MetaData = x.append(x).append(x).append(x)
     var len: Int = 0
-    while (appended.ne(Null)) {
+    while (!appended.isNull) {
       appended = appended.next
       len = len + 1
     }

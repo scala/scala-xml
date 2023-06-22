@@ -29,8 +29,8 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
   if (prefix == "")
     throw new IllegalArgumentException("zero length prefix not allowed")
 
-  def getURI(_prefix: String): String =
-    if (prefix == _prefix) uri else parent.getURI(_prefix)
+  def getURI(prefix: String): String =
+    if (this.prefix == prefix) uri else parent.getURI(prefix)
 
   /**
    * Returns some prefix that is mapped to the URI.
@@ -39,8 +39,8 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
    * @return the prefix that is mapped to the input URI, or null
    * if no prefix is mapped to the URI.
    */
-  def getPrefix(_uri: String): String =
-    if (_uri == uri) prefix else parent.getPrefix(_uri)
+  def getPrefix(uri: String): String =
+    if (uri == this.uri) prefix else parent.getPrefix(uri)
 
   override def toString: String = Utility.sbToString(buildString(_, TopScope))
 
@@ -72,9 +72,8 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
 
   def buildString(stop: NamespaceBinding): String = Utility.sbToString(buildString(_, stop))
 
-  def buildString(sb: StringBuilder, stop: NamespaceBinding): Unit = {
+  def buildString(sb: StringBuilder, stop: NamespaceBinding): Unit =
     shadowRedefined(stop).doBuildString(sb, stop)
-  }
 
   private def doBuildString(sb: StringBuilder, stop: NamespaceBinding): Unit = {
     if (List(null, stop, TopScope).contains(this)) return

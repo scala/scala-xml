@@ -81,15 +81,13 @@ trait Attribute extends MetaData {
   }
 
   /** Returns an iterator on attributes */
-  override def iterator: Iterator[MetaData] = {
+  override def iterator: Iterator[MetaData] =
     if (value == null) next.iterator
     else Iterator.single(this) ++ next.iterator
-  }
 
-  override def size: Int = {
+  override def size: Int =
     if (value == null) next.size
     else 1 + next.size
-  }
 
   /**
    * Appends string representation of only this attribute to stringbuffer.
