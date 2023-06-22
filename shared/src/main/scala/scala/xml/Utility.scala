@@ -224,17 +224,16 @@ object Utility extends AnyRef with parsing.TokenTests {
     minimizeTags: MinimizeMode.Value,
     sb: StringBuilder
   ): Unit = {
-    @tailrec def ser(nss: List[Seq[Node]], pscopes: List[NamespaceBinding], spaced: List[Boolean], toClose: List[Node]): Unit = nss match {
-      case List(ns) if ns.isEmpty =>
-      case ns :: rests if ns.isEmpty =>
+    @tailrec def ser(nss: List[List[Node]], pscopes: List[NamespaceBinding], spaced: List[Boolean], toClose: List[Node]): Unit = nss match {
+      case List(Nil) =>
+      case Nil :: rests =>
         if (toClose.head != null) {
           sb.append("</")
           toClose.head.nameToString(sb)
           sb.append('>')
         }
         ser(rests, pscopes.tail, spaced.tail, toClose.tail)
-      case ns1 :: r =>
-        val (n, ns) = (ns1.head, ns1.tail)
+      case (n :: ns) :: r =>
         def sp(): Unit = if (ns.nonEmpty && spaced.head) sb.append(' ')
         n match {
           case c: Comment =>
@@ -248,7 +247,7 @@ object Utility extends AnyRef with parsing.TokenTests {
             sp()
             ser(ns :: r, pscopes, spaced, toClose)
           case g: Group =>
-            ser(g.nodes :: ns :: r, g.scope :: pscopes, false :: spaced, null :: toClose)
+            ser(g.nodes.toList :: ns :: r, g.scope :: pscopes, false :: spaced, null :: toClose)
           case e: Elem =>
             sb.append('<')
             e.nameToString(sb)
@@ -264,12 +263,12 @@ object Utility extends AnyRef with parsing.TokenTests {
             } else {
               sb.append('>')
               val csp = e.child.forall(isAtomAndNotText)
-              ser(e.child :: ns :: r, e.scope :: pscopes, csp :: spaced, e :: toClose)
+              ser(e.child.toList :: ns :: r, e.scope :: pscopes, csp :: spaced, e :: toClose)
             }
           case n => throw new IllegalArgumentException("Don't know how to serialize a " + n.getClass.getName)
         }
     }
-    ser(List(ns), List(pscope), List(spaced), Nil)
+    ser(List(ns.toList), List(pscope), List(spaced), Nil)
   }
 
   def sequenceToXML(
