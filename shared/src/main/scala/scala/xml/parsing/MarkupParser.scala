@@ -523,7 +523,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    */
   def parseDTD(): Unit = { // dirty but fast
     var extID: ExternalID = null
-    if (this.dtd.ne(null))
+    if (dtd != null)
       reportSyntaxError("unexpected character (DOCTYPE already defined")
     xToken("DOCTYPE")
     xSpace()
@@ -562,7 +562,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       /*override val */ decls = handle.decls.reverse
     }
     //this.dtd.initializeEntities();
-    if (doc.ne(null))
+    if (doc != null)
       doc.dtd = this.dtd
 
     handle.endDTD(n)

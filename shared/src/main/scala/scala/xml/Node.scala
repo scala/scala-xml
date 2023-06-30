@@ -82,7 +82,7 @@ abstract class Node extends NodeSeq {
    * @return    the namespace if `scope != null` and prefix was
    *            found, else `null`
    */
-  def getNamespace(pre: String): String = if (scope.eq(null)) null else scope.getURI(pre)
+  def getNamespace(pre: String): String = if (scope == null) null else scope.getURI(pre)
 
   /**
    * Convenience method, looks up an unprefixed attribute in attributes of this node.
@@ -125,7 +125,7 @@ abstract class Node extends NodeSeq {
   /**
    * Children which do not stringify to "" (needed for equality)
    */
-  def nonEmptyChildren: Seq[Node] = child.filterNot(_.toString == "")
+  def nonEmptyChildren: Seq[Node] = child.filterNot(_.toString.isEmpty)
 
   /**
    * Descendant axis (all descendants of this node, not including node itself)

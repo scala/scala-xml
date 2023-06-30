@@ -37,8 +37,7 @@ sealed abstract class MarkupDecl extends Decl {
 /**
  * an element declaration
  */
-case class ElemDecl(name: String, contentModel: ContentModel)
-  extends MarkupDecl {
+case class ElemDecl(name: String, contentModel: ContentModel) extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder = {
     sb.append(s"<!ELEMENT $name ")
     ContentModel.buildString(contentModel, sb)
@@ -46,8 +45,7 @@ case class ElemDecl(name: String, contentModel: ContentModel)
   }
 }
 
-case class AttListDecl(name: String, attrs: List[AttrDecl])
-  extends MarkupDecl {
+case class AttListDecl(name: String, attrs: List[AttrDecl]) extends MarkupDecl {
   override def buildString(sb: StringBuilder): StringBuilder =
     sb.append(s"<!ATTLIST $name\n${attrs.mkString("\n")}>")
 }

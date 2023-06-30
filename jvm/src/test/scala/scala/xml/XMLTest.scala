@@ -2,8 +2,8 @@ package scala.xml
 
 import org.junit.{Test => UnitTest}
 import org.junit.Assert.{assertEquals, assertFalse, assertNull, assertThrows, assertTrue}
-import java.io.StringWriter
-import java.io.ByteArrayOutputStream
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream, InputStreamReader, IOException, ObjectInputStream,
+  ObjectOutputStream, OutputStreamWriter, PrintStream, StringWriter}
 import java.net.URL
 import scala.xml.dtd.{DocType, PublicID}
 import scala.xml.parsing.ConstructingParser
@@ -177,26 +177,26 @@ class XMLTestJVM {
     </entry>""", f("a,b,c").toString)
 
   object Serialize {
-    @throws(classOf[java.io.IOException])
+    @throws(classOf[IOException])
     def write[A](o: A): Array[Byte] = {
       val ba: ByteArrayOutputStream = new ByteArrayOutputStream(512)
-      val out: java.io.ObjectOutputStream = new java.io.ObjectOutputStream(ba)
+      val out: ObjectOutputStream = new ObjectOutputStream(ba)
       out.writeObject(o)
       out.close()
       ba.toByteArray
     }
-    @throws(classOf[java.io.IOException])
+    @throws(classOf[IOException])
     @throws(classOf[ClassNotFoundException])
     def read[A](buffer: Array[Byte]): A = {
-      val in: java.io.ObjectInputStream =
-        new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(buffer))
+      val in: ObjectInputStream =
+        new ObjectInputStream(new ByteArrayInputStream(buffer))
       in.readObject().asInstanceOf[A]
     }
     def check[A, B](x: A, y: B): Unit = {
       // println("x = " + x)
       // println("y = " + y)
-      // println("x equals y: " + (x equals y) + ", y equals x: " + (y equals x))
-      assertTrue(x.equals(y) && y.equals(x))
+      // println("x == y: " + (x == y) + ", y == x: " + (y == x))
+      assertTrue(x == y && y == x)
       // println()
     }
   }
@@ -296,14 +296,14 @@ class XMLTestJVM {
     // scala.xml.XML.save("foo.xml", xml)
     // scala.xml.XML.loadFile("foo.xml").toString
 
-    val outputStream: java.io.ByteArrayOutputStream = new java.io.ByteArrayOutputStream
-    val streamWriter: java.io.OutputStreamWriter = new java.io.OutputStreamWriter(outputStream, "UTF-8")
+    val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream
+    val streamWriter: OutputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8")
 
     XML.write(streamWriter, xml, XML.encoding, xmlDecl = false, null)
     streamWriter.flush()
 
-    val inputStream: java.io.ByteArrayInputStream = new java.io.ByteArrayInputStream(outputStream.toByteArray)
-    val streamReader: java.io.InputStreamReader = new java.io.InputStreamReader(inputStream, XML.encoding)
+    val inputStream: ByteArrayInputStream = new ByteArrayInputStream(outputStream.toByteArray)
+    val streamReader: InputStreamReader = new InputStreamReader(inputStream, XML.encoding)
 
     assertEquals(xml.toString, XML.load(streamReader).toString)
   }
@@ -492,8 +492,6 @@ class XMLTestJVM {
 
   @UnitTest
   def dontLoop(): Unit = {
-    import java.io.{ Console => _, _ }
-
     val xml: String = "<!DOCTYPE xmeml SYSTEM 'uri'> <xmeml> <sequence> </sequence> </xmeml> "
     val sink: PrintStream = new PrintStream(new ByteArrayOutputStream())
     Console.withOut(sink) {
@@ -1026,7 +1024,7 @@ class XMLTestJVM {
 
   def toSource(s: String): scala.io.Source = new scala.io.Source {
     override val iter: Iterator[Char] = s.iterator
-    override def reportError(pos: Int, msg: String, out: java.io.PrintStream = Console.err): Unit = ()
+    override def reportError(pos: Int, msg: String, out: PrintStream = Console.err): Unit = ()
   }
 
   @UnitTest

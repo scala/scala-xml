@@ -134,7 +134,7 @@ class XIncludeFilter extends XMLFilterImpl {
       }
       bases push currentBase
 
-      if (uri.equals(XINCLUDE_NAMESPACE) && localName.equals("include")) {
+      if (uri == XINCLUDE_NAMESPACE && localName == "include") {
         // include external document
         val href: String = atts.getValue("href")
         // Verify that there is an href attribute
@@ -145,16 +145,13 @@ class XIncludeFilter extends XMLFilterImpl {
         var parse: String = atts.getValue("parse")
         if (parse == null) parse = "xml"
 
-        if (parse.equals("text")) {
-          val encoding: String = atts.getValue("encoding")
-          includeTextDocument(href, encoding)
-        } else if (parse.equals("xml")) {
+        if (parse == "text")
+          includeTextDocument(href, atts.getValue("encoding"))
+        else if (parse == "xml")
           includeXMLDocument(href)
-        } // Need to check this also in DOM and JDOM????
-        else {
-          throw new SAXException(
-            s"Illegal value for parse attribute: $parse")
-        }
+        // Need to check this also in DOM and JDOM????
+        else
+          throw new SAXException(s"Illegal value for parse attribute: $parse")
         level += 1
       } else {
         if (atRoot) {
@@ -171,8 +168,7 @@ class XIncludeFilter extends XMLFilterImpl {
   }
 
   override def endElement(uri: String, localName: String, qName: String): Unit = {
-    if (uri.equals(XINCLUDE_NAMESPACE)
-      && localName.equals("include")) {
+    if (uri == XINCLUDE_NAMESPACE && localName == "include") {
       level -= 1
     } else if (level == 0) {
       bases.pop()
@@ -253,7 +249,7 @@ class XIncludeFilter extends XMLFilterImpl {
    */
   private def includeTextDocument(url: String, encoding1: String): Unit = {
     var encoding: String = encoding1
-    if (encoding == null || encoding.trim.equals("")) encoding = "UTF-8"
+    if (encoding == null || encoding.trim.isEmpty) encoding = "UTF-8"
     var source: URL = null
     try {
       val base: URL = bases.peek
@@ -278,8 +274,8 @@ class XIncludeFilter extends XMLFilterImpl {
         // Java may be picking this up from file URL
         if (contentType != null) {
           contentType = contentType.toLowerCase
-          if (contentType.equals("text/xml")
-            || contentType.equals("application/xml")
+          if (contentType == "text/xml"
+            || contentType == "application/xml"
             || (contentType.startsWith("text/") && contentType.endsWith("+xml"))
             || (contentType.startsWith("application/") && contentType.endsWith("+xml"))) {
             encoding = EncodingHeuristics.readEncodingFromStream(in)

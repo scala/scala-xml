@@ -103,7 +103,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
           val i: Int = that.indexOf('}')
           if (i == -1) fail
           val (uri: String, key: String) = (that.substring(2, i), that.substring(i + 1, that.length))
-          if (uri == "" || key == "") fail
+          if (uri.isEmpty || key.isEmpty) fail
           else y.attribute(uri, key)
         } else y.attribute(that.drop(1))
 

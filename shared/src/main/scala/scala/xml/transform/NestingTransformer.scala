@@ -17,7 +17,6 @@ package transform
 import scala.collection.Seq
 
 class NestingTransformer(rule: RewriteRule) extends BasicTransformer {
-  override def transform(n: Node): Seq[Node] = {
+  override def transform(n: Node): Seq[Node] =
     rule.transform(super.transform(n))
-  }
 }

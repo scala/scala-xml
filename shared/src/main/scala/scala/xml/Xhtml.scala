@@ -70,7 +70,7 @@ object Xhtml {
       case _ =>
         sb.append('<')
         x.nameToString(sb)
-        if (x.attributes.ne(null)) x.attributes.buildString(sb)
+        if (x.attributes != null) x.attributes.buildString(sb)
         x.scope.buildString(sb, pscope)
 
         if (shortForm) sb.append(" />")
@@ -95,10 +95,7 @@ object Xhtml {
     decodeEntities: Boolean = false,
     preserveWhitespace: Boolean = false,
     minimizeTags: Boolean = true
-  ): Unit = {
-    if (children.isEmpty)
-      return
-
+  ): Unit = if (children.nonEmpty) {
     val doSpaces: Boolean = children.forall(isAtomAndNotText) // interleave spaces
     for (c <- children.take(children.length - 1)) {
       toXhtml(c, pscope, sb, stripComments, decodeEntities, preserveWhitespace, minimizeTags)

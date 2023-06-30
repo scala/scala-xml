@@ -105,7 +105,7 @@ private[parsing] object ElementContentModel {
         val string: String = removeParentheses(parenthesized)
         if (occurrence == Occurrence.Once && string == PCData.value) PCData else if (occurrence == Occurrence.RepeatOptional) {
           val choice: List[String] = Elements.Choice.split(string)
-          if (choice.length > 1 && choice.head == PCData.value) Mixed(choice.tail.map(Elements.Element))
+          if (choice.length > 1 && choice.head == PCData.value) Mixed(choice.tail.map(Elements.Element.apply))
           else Children.parse(string, occurrence)
         } else Children.parse(string, occurrence)
     }

@@ -42,7 +42,7 @@ abstract class BasicTransformer extends (Node => Node) {
     else ns
 }
 
-  def transform(n: Node): Seq[Node] = {
+  def transform(n: Node): Seq[Node] =
     if (n.doTransform) n match {
       case Group(xs) => Group(transform(xs)) // un-group the hack Group tag
       case _ =>
@@ -53,7 +53,6 @@ abstract class BasicTransformer extends (Node => Node) {
         else Elem(n.prefix, n.label, n.attributes, n.scope, nch.isEmpty, nch: _*)
     }
     else n
-  }
 
   override def apply(n: Node): Node = {
     val seq: Seq[Node] = transform(n)

@@ -150,7 +150,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
   protected def traverse(node: Node, pscope: NamespaceBinding, ind: Int): Unit = node match {
 
-    case Text(s) if s.trim == "" =>
+    case Text(s) if s.trim.isEmpty =>
 
     case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr =>
       makeBox(ind, node.toString.trim)
@@ -163,18 +163,17 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
         if (doPreserve(node)) sb.toString
         else TextBuffer.fromString(sb.toString).toText(0).data
       }
-      if (childrenAreLeaves(node) && fits(test)) {
+      if (childrenAreLeaves(node) && fits(test))
         makeBox(ind, test)
-      } else {
+      else {
         val ((stg: String, len2: Int), etg: String) =
           if (node.child.isEmpty && minimizeEmpty) {
             // force the tag to be self-closing
             val firstAttribute: Int = test.indexOf(' ')
             val firstBreak: Int = if (firstAttribute != -1) firstAttribute else test.lastIndexOf('/')
             ((test, firstBreak), "")
-          } else {
+          } else
             (startTag(node, pscope), endTag(node))
-          }
 
         if (stg.length < width - cur) { // start tag fits
           makeBox(ind, stg)
@@ -221,9 +220,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
    * @param n    the node to be serialized
    * @param sb   the stringbuffer to append to
    */
-  def format(n: Node, sb: StringBuilder): Unit = { // entry point
-    format(n, TopScope, sb)
-  }
+  def format(n: Node, sb: StringBuilder): Unit = format(n, TopScope, sb) // entry point
 
   def format(n: Node, pscope: NamespaceBinding, sb: StringBuilder): Unit = { // entry point
     var lastwasbreak: Boolean = false

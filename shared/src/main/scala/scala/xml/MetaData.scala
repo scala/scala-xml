@@ -29,7 +29,7 @@ object MetaData {
    */
   @tailrec
   def concatenate(attribs: MetaData, new_tail: MetaData): MetaData =
-    if (attribs.eq(Null)) new_tail
+    if (attribs.isNull) new_tail
     else concatenate(attribs.next, attribs.copy(new_tail))
 
   /**
@@ -37,20 +37,19 @@ object MetaData {
    *  namespace URIs via the given scope.
    */
   def normalize(attribs: MetaData, scope: NamespaceBinding): MetaData = {
-    def iterate(md: MetaData, normalized_attribs: MetaData, set: Set[String]): MetaData = {
-      if (md.eq(Null)) {
+    def iterate(md: MetaData, normalized_attribs: MetaData, set: Set[String]): MetaData =
+      if (md.isNull) {
         normalized_attribs
-      } else if (md.value.eq(null)) {
+      } else if (md.value == null)
         iterate(md.next, normalized_attribs, set)
-      } else {
+      else {
         val key: String = getUniversalKey(md, scope)
-        if (set(key)) {
+        if (set(key))
           iterate(md.next, normalized_attribs, set)
-        } else {
+        else
           md.copy(iterate(md.next, normalized_attribs, set + key))
-        }
       }
-    }
+
     iterate(attribs, Null, Set())
   }
 
@@ -85,7 +84,9 @@ abstract class MetaData
   extends AbstractIterable[MetaData]
   with Iterable[MetaData]
   with Equality
-  with Serializable {
+  with Serializable
+{
+  private[xml] def isNull: Boolean = this.eq(Null)
 
   /**
    * Updates this MetaData with the MetaData given as argument. All attributes that occur in updates
