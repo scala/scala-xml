@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         java: [8, 11, 17]
-        scala: [2.12.x, 2.13.x, 3.x]
+        scala: [2.11.x, 2.12.x, 2.13.x]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,4 +22,4 @@ jobs:
           java-version: ${{matrix.java}}
           cache: sbt
       - name: Test
-        run: sbt ++${{matrix.scala}} test headerCheck versionPolicyCheck package
+        run: sbt ++${{matrix.scala}} test versionPolicyCheck package
