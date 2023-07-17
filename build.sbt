@@ -49,7 +49,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform)
           |additional information regarding copyright ownership.
           |""".stripMargin)),
 
-    versionPolicyIntention := Compatibility.BinaryCompatible,
+    versionPolicyIntention := Compatibility.BinaryAndSourceCompatible,
 
     apiMappings ++= scalaInstance.value.libraryJars.filter { file =>
       file.getName.startsWith("scala-library") && file.getName.endsWith(".jar")
