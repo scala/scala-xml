@@ -29,12 +29,12 @@ class Atom[+A](val data: A) extends SpecialNode with Serializable {
   override protected def basisForHashCode: Seq[Any] = Seq(data)
 
   override def strict_==(other: Equality): Boolean = other match {
-    case x: Atom[_] => data == x.data
+    case x: Atom[?] => data == x.data
     case _          => false
   }
 
   override def canEqual(other: Any): Boolean = other match {
-    case _: Atom[_] => true
+    case _: Atom[?] => true
     case _          => false
   }
 

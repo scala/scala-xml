@@ -56,7 +56,7 @@ abstract class Node extends NodeSeq {
   /**
    * used internally. Atom/Molecule = -1 PI = -2 Comment = -3 EntityRef = -5
    */
-  def isAtom: Boolean = this.isInstanceOf[Atom[_]]
+  def isAtom: Boolean = this.isInstanceOf[Atom[?]]
 
   /** The logic formerly found in typeTag$, as best I could infer it. */
   def doCollectNamespaces: Boolean = true // if (tag >= 0) DO collect namespaces
