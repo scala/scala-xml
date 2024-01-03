@@ -136,7 +136,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
   protected def childrenAreLeaves(n: Node): Boolean = {
     def isLeaf(l: Node): Boolean = l match {
-      case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr => true
+      case _: Atom[?] | _: Comment | _: EntityRef | _: ProcInstr => true
       case _ => false
     }
     n.child.forall(isLeaf)
@@ -152,7 +152,7 @@ class PrettyPrinter(width: Int, step: Int, minimizeEmpty: Boolean) {
 
     case Text(s) if s.trim.isEmpty =>
 
-    case _: Atom[_] | _: Comment | _: EntityRef | _: ProcInstr =>
+    case _: Atom[?] | _: Comment | _: EntityRef | _: ProcInstr =>
       makeBox(ind, node.toString.trim)
     case Group(xs) =>
       traverse(xs.iterator, pscope, ind)
