@@ -29,7 +29,7 @@ commands:
           keys:
             - sbt-deps-v1-{{ checksum "build.sbt" }}
             - sbt-deps-v1-
-      - run: sbt ++<< parameters.scala_version >> << parameters.sbt_tasks >>
+      - run: sbt -Dsbt.io.jdktimestamps=true ++<< parameters.scala_version >> << parameters.sbt_tasks >>
       - save_cache:
           key: sbt-deps-v1-{{ checksum "build.sbt" }}
           paths:
