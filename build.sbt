@@ -36,7 +36,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .settings(
     name    := "scala-xml",
     scalaModuleAutomaticModuleName := Some("scala.xml"),
-    crossScalaVersions := Seq("2.13.13", "2.12.19", "3.3.3"),
+    crossScalaVersions := Seq("2.13.14", "2.12.19", "3.3.3"),
     scalaVersion := "2.12.19",
 
     scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
@@ -130,6 +130,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     }),
   )
   .jsSettings(
+    versionPolicyCheck / skip := true,
+    versionCheck       / skip := true,
     // Scala.js cannot run forked tests
     Test / fork := false
   )
