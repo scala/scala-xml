@@ -129,6 +129,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         Seq("org.scala-lang" % "scala-compiler" % scalaVersion.value % Test)
     }),
   )
+  .jvmEnablePlugins(SbtOsgi)
   .jsSettings(
     versionPolicyCheck / skip := true,
     versionCheck       / skip := true,
