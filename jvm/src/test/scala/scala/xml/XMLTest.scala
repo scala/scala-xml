@@ -667,13 +667,14 @@ class XMLTestJVM {
   @UnitTest
   def checkThatErrorHandlerIsNotOverwritten(): Unit = {
     var gotAnError: Boolean = false
-    XML.reader.setErrorHandler(new org.xml.sax.ErrorHandler {
+    val reader = XML.reader
+    reader.setErrorHandler(new org.xml.sax.ErrorHandler {
       override def warning(e: SAXParseException): Unit = gotAnError = true
       override def error(e: SAXParseException): Unit = gotAnError = true
       override def fatalError(e: SAXParseException): Unit = gotAnError = true
     })
     try {
-      XML.loadString("<a>")
+      XML.adapter.loadDocument(Source.fromString("<a>"), reader)
     } catch {
       case _: org.xml.sax.SAXParseException =>
     }
