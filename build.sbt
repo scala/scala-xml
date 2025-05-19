@@ -1,4 +1,5 @@
-import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+import com.typesafe.tools.mima.core._
+import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 
 publish / skip := true  // root project
 
@@ -68,6 +69,12 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       //import com.typesafe.tools.mima.core.{}
       //import com.typesafe.tools.mima.core.ProblemFilters
       Seq( // exclusions for all Scala versions
+        // new method in `Node` with return type `immutable.Seq`
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.Node.child"),
+        // these used to be declared methods, but are now bridges without generic signature
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.nonEmptyChildren"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Group.child"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.SpecialNode.child"),
       ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((3, _)) => Seq( // Scala 3-specific exclusions
         )

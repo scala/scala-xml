@@ -25,6 +25,8 @@ private[xml] object ScalaVersionSpecific {
     def fromSpecific(from: Coll)(it: IterableOnce[Node]): NodeSeq = (NodeSeq.newBuilder ++= from).result()
   }
   type SeqNodeUnapplySeq = scala.collection.immutable.Seq[Node]
+
+  type ChildReturnType = scala.collection.immutable.Seq[Node]
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq
@@ -52,4 +54,11 @@ private[xml] trait ScalaVersionSpecificNodeSeq
 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
   override def className: String = "NodeBuffer"
+}
+
+private[xml] trait ScalaVersionSpecificNode { self: Node =>
+  // These methods are overridden in Node with return type `immutable.Seq`. The declarations here result
+  // in a bridge method in `Node` with result type `collection.Seq` which is needed for binary compatibility.
+  def child: scala.collection.Seq[Node]
+  def nonEmptyChildren: scala.collection.Seq[Node]
 }

@@ -45,7 +45,7 @@ object Node {
  *
  * @author  Burak Emir and others
  */
-abstract class Node extends NodeSeq {
+abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
 
   /** prefix of this node */
   def prefix: String = null
@@ -120,12 +120,12 @@ abstract class Node extends NodeSeq {
    *
    * @return all children of this node
    */
-  def child: Seq[Node]
+  def child: ScalaVersionSpecific.ChildReturnType
 
   /**
    * Children which do not stringify to "" (needed for equality)
    */
-  def nonEmptyChildren: Seq[Node] = child.filterNot(_.toString.isEmpty)
+  def nonEmptyChildren: ScalaVersionSpecific.ChildReturnType = child.filterNot(_.toString.isEmpty)
 
   /**
    * Descendant axis (all descendants of this node, not including node itself)

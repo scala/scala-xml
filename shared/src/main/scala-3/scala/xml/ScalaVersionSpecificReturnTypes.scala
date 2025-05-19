@@ -19,18 +19,18 @@ package scala.xml
  What should have been specified explicitly is given in the comments;
  next time we break binary compatibility the types should be changed in the code and this class removed.
  */
-private[xml] object ScalaVersionSpecificReturnTypes { // should be
-  type ExternalIDAttribute = MetaData                 // Null.type
-  type NoExternalIDId = String                        // scala.Null
-  type NodeNoAttributes = MetaData                    // Null.type
-  type NullFilter = MetaData                          // Null.type
-  type NullGetNamespace = String                      // scala.Null
-  type NullNext = MetaData                            // scala.Null
-  type NullKey = String                               // scala.Null
-  type NullValue = scala.collection.Seq[Node]         // scala.Null
-  type NullApply1 = scala.collection.Seq[Node]        // scala.Null
-  type NullApply3 = scala.collection.Seq[Node]        // scala.Null
-  type NullRemove = MetaData                          // Null.type
-  type SpecialNodeChild = scala.collection.Seq[Node]  // Nil.type
-  type GroupChild = scala.collection.Seq[Node]        // Nothing
+private[xml] object ScalaVersionSpecificReturnTypes {          // should be
+  type ExternalIDAttribute = MetaData                          // Null.type
+  type NoExternalIDId = String                                 // scala.Null
+  type NodeNoAttributes = MetaData                             // Null.type
+  type NullFilter = MetaData                                   // Null.type
+  type NullGetNamespace = String                               // scala.Null
+  type NullNext = MetaData                                     // scala.Null
+  type NullKey = String                                        // scala.Null
+  type NullValue = scala.collection.Seq[Node]                  // scala.Null
+  type NullApply1 = scala.collection.Seq[Node]                 // scala.Null
+  type NullApply3 = scala.collection.Seq[Node]                 // scala.Null
+  type NullRemove = MetaData                                   // Null.type
+  type SpecialNodeChild = scala.collection.immutable.Seq[Node] // Nil.type
+  type GroupChild = scala.collection.immutable.Seq[Node]       // Nothing
 }
