@@ -104,7 +104,7 @@ class Elem(
     scope: NamespaceBinding = this.scope,
     minimizeEmpty: Boolean = this.minimizeEmpty,
     child: Seq[Node] = this.child
-  ): Elem = Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
+  ): Elem = Elem(prefix, label, attributes, scope, minimizeEmpty, child.toSeq: _*)
 
   /**
    * Returns concatenation of `text(n)` for each child `n`.

@@ -1,6 +1,5 @@
 package scala.xml
 
-import scala.xml.NodeSeq.seqToNodeSeq
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
@@ -30,7 +29,7 @@ class NodeSeqTest {
       case res: Seq[Node] => assertEquals(2, res.size.toLong)
       case _: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
-    val res: NodeSeq = a :+ b
+    val res: NodeSeq = a :+ b // implicit seqToNodeSeq
     val exp: NodeSeq = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>))
     assertEquals(exp, res)
   }
@@ -59,7 +58,7 @@ class NodeSeqTest {
       case res: Seq[Node] => assertEquals(3, res.size.toLong)
       case _: NodeSeq => fail("Should be Seq[Node] was NodeSeq") // Unreachable code?
     }
-    val res: NodeSeq = a ++: b ++: c
+    val res: NodeSeq = a ++: b ++: c // implicit seqToNodeSeq
     val exp: NodeSeq = NodeSeq.fromSeq(Seq(<a>Hello</a>, <b>Hi</b>, <c>Hey</c>))
     assertEquals(exp, res)
   }
@@ -67,7 +66,7 @@ class NodeSeqTest {
   @Test
   def testMap(): Unit = {
     val a: NodeSeq = <a>Hello</a>
-    val exp: NodeSeq = Seq(<b>Hi</b>)
+    val exp: NodeSeq = Seq(<b>Hi</b>) // implicit seqToNodeSeq
     assertEquals(exp, a.map(_ => <b>Hi</b>))
     assertEquals(exp, for { _ <- a } yield { <b>Hi</b> })
   }
@@ -75,7 +74,7 @@ class NodeSeqTest {
   @Test
   def testFlatMap(): Unit = {
     val a: NodeSeq = <a>Hello</a>
-    val exp: NodeSeq = Seq(<b>Hi</b>)
+    val exp: NodeSeq = Seq(<b>Hi</b>) // implicit seqToNodeSeq
     assertEquals(exp, a.flatMap(_ => Seq(<b>Hi</b>)))
     assertEquals(exp, for { b <- a; _ <- b } yield { <b>Hi</b> })
     assertEquals(exp, for { b <- a; c <- b; _ <- c } yield { <b>Hi</b> })

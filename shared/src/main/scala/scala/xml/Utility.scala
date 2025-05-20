@@ -17,6 +17,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.language.implicitConversions
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * The `Utility` object provides utility functions for processing instances
@@ -51,12 +52,12 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trim(x: Node): Node = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children: Seq[Node] = combineAdjacentTextNodes(child).flatMap(trimProper)
+      val children = combineAdjacentTextNodes(child).flatMap(trimProper)
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
   }
 
-  private def combineAdjacentTextNodes(children: Seq[Node]): Seq[Node] =
-    children.foldRight(Seq.empty[Node]) {
+  private def combineAdjacentTextNodes(children: ScalaVersionSpecific.SeqOfNode): ScalaVersionSpecific.SeqOfNode =
+    children.foldRight(ISeq.empty[Node]) {
       case (Text(left), Text(right) +: nodes) => Text(left + right) +: nodes
       case (n, nodes) => n +: nodes
     }
@@ -67,7 +68,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def trimProper(x: Node): Seq[Node] = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children: Seq[Node] = combineAdjacentTextNodes(child).flatMap(trimProper)
+      val children = combineAdjacentTextNodes(child).flatMap(trimProper)
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
     case Text(s) =>
       new TextBuffer().append(s).toText
@@ -89,7 +90,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    */
   def sort(n: Node): Node = n match {
     case Elem(pre, lab, md, scp, child@_*) =>
-      val children: Seq[Node] = child.map(sort)
+      val children = child.map(sort)
       Elem(pre, lab, sort(md), scp, children.isEmpty, children: _*)
     case _ => n
   }

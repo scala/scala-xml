@@ -521,7 +521,7 @@ Ours is the portal of hope, come as you are."
   @UnitTest
   def i1976(): Unit = {
     val node: Elem = <node>{ "whatever " }</node>
-    assertEquals("whatever ", node.child.text)
+    assertEquals("whatever ", node.child.text) // implicit seqToNodeSeq
   }
 
   @UnitTest
