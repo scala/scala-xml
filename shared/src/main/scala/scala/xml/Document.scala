@@ -36,7 +36,7 @@ class Document extends NodeSeq with Serializable {
    *  excluded. If there is a document type declaration, the list also
    *  contains a document type declaration information item.
    */
-  var children: Seq[Node] = _
+  var children: Seq[Node] = _ // effectively an `immutable.Seq`, not changed due to binary compatibility
 
   /** The element information item corresponding to the document element. */
   var docElem: Node = _

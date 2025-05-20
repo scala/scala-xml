@@ -242,7 +242,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
 
     nextch() // is prolog ?
-    var children: NodeSeq = null
+    var children: Seq[Node] = null
     if ('?' == ch) {
       nextch()
       info_prolog = prolog()
@@ -255,7 +255,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       val ts: NodeBuffer = new NodeBuffer()
       content1(TopScope, ts) // DTD handled as side effect
       ts &+ content(TopScope)
-      children = NodeSeq.fromSeq(ts)
+      children = ts.toVector
     }
     //println("[MarkupParser::document] children now: "+children.toList)
     var elemCount: Int = 0
@@ -451,8 +451,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   def content(pscope: NamespaceBinding): NodeSeq = {
     val ts: NodeBuffer = new NodeBuffer
     var exit: Boolean = eof
-    // todo: optimize seq repr.
-    def done: NodeSeq = NodeSeq.fromSeq(ts.toList)
+    def done: NodeSeq = NodeSeq.fromSeq(ts.toVector)
 
     while (!exit) {
       tmppos = pos

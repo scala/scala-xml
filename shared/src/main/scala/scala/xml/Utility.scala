@@ -354,6 +354,7 @@ object Utility extends AnyRef with parsing.TokenTests {
     null
   }
 
+  // unused, untested
   def parseAttributeValue(value: String): Seq[Node] = {
     val sb: StringBuilder = new StringBuilder
     var rfb: StringBuilder = null
@@ -398,7 +399,7 @@ object Utility extends AnyRef with parsing.TokenTests {
       else
         nb += x
     }
-    nb
+    nb.toVector
   }
 
   /**
