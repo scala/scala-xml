@@ -22,9 +22,7 @@ private[xml] object ScalaVersionSpecific {
     override def apply(from: Coll): mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
     override def apply(): mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
   }
-  type SeqNodeUnapplySeq = scala.collection.Seq[Node]
-
-  type ChildReturnType = scala.collection.Seq[Node]
+  type SeqOfNode = scala.collection.Seq[Node]
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { self: NodeSeq =>

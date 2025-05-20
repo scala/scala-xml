@@ -28,7 +28,7 @@ object Node {
   /** the empty namespace */
   val EmptyNamespace: String = ""
 
-  def unapplySeq(n: Node): Some[(String, MetaData, ScalaVersionSpecific.SeqNodeUnapplySeq)] =
+  def unapplySeq(n: Node): Some[(String, MetaData, ScalaVersionSpecific.SeqOfNode)] =
     Some((n.label, n.attributes, n.child.toSeq))
 }
 
@@ -120,12 +120,12 @@ abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
    *
    * @return all children of this node
    */
-  def child: ScalaVersionSpecific.ChildReturnType
+  def child: ScalaVersionSpecific.SeqOfNode
 
   /**
    * Children which do not stringify to "" (needed for equality)
    */
-  def nonEmptyChildren: ScalaVersionSpecific.ChildReturnType = child.filterNot(_.toString.isEmpty)
+  def nonEmptyChildren: ScalaVersionSpecific.SeqOfNode = child.filterNot(_.toString.isEmpty)
 
   /**
    * Descendant axis (all descendants of this node, not including node itself)
