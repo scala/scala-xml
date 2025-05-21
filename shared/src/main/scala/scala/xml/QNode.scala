@@ -21,5 +21,5 @@ package xml
  */
 object QNode {
   def unapplySeq(n: Node): Some[(String, String, MetaData, ScalaVersionSpecific.SeqOfNode)] =
-    Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child.toSeq))
+    Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child))
 }

@@ -60,3 +60,11 @@ private[xml] trait ScalaVersionSpecificNode { self: Node =>
   def child: scala.collection.Seq[Node]
   def nonEmptyChildren: scala.collection.Seq[Node]
 }
+
+private[xml] trait ScalaVersionSpecificMetaData { self: MetaData =>
+  def apply(key: String): scala.collection.Seq[Node]
+  def apply(namespace_uri: String, owner: Node, key: String): scala.collection.Seq[Node]
+  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): scala.collection.Seq[Node]
+
+  def value: scala.collection.Seq[Node]
+}

@@ -34,4 +34,6 @@ private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
   override def stringPrefix: String = "NodeBuffer"
 }
 
-private[xml] trait ScalaVersionSpecificNode {self: Node => }
+private[xml] trait ScalaVersionSpecificNode { self: Node => }
+
+private[xml] trait ScalaVersionSpecificMetaData { self: MetaData => }

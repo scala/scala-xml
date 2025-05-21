@@ -71,10 +71,40 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       Seq( // exclusions for all Scala versions
         // new method in `Node` with return type `immutable.Seq`
         ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.Node.child"),
+
         // these used to be declared methods, but are now bridges without generic signature
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.nonEmptyChildren"),
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Group.child"),
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.SpecialNode.child"),
+
+        // new methods with return type immutable.Seq
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.Attribute.apply"),
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.Attribute.value"),
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.MetaData.apply"),
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.MetaData.value"),
+
+        // Synthetic static accessors (for Java interop) have a changed return type
+        ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Null.apply"),
+        ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Null.value"),
+
+        // used to be a declared method, now a bridge without generic signature
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.MetaData.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Null.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Null.value"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.PrefixedAttribute.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.PrefixedAttribute.value"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.UnprefixedAttribute.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.UnprefixedAttribute.value"),
+
+        // Option[c.Seq] => Option[i.Seq] results in a changed generic signature
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.MetaData.get"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Null.get"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.attribute"),
+
+        // trait Attribute now extends trait ScalaVersionSpecificMetaData to ensure the previous signatures
+        // with return type `collection.Seq` remain valid.
+        // (trait Attribute extends MetaData, but that parent is not present in bytecode because it's a class.)
+        ProblemFilters.exclude[InheritedNewAbstractMethodProblem]("scala.xml.Attribute.apply"),
       ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((3, _)) => Seq( // Scala 3-specific exclusions
         )

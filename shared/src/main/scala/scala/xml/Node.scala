@@ -29,7 +29,7 @@ object Node {
   val EmptyNamespace: String = ""
 
   def unapplySeq(n: Node): Some[(String, MetaData, ScalaVersionSpecific.SeqOfNode)] =
-    Some((n.label, n.attributes, n.child.toSeq))
+    Some((n.label, n.attributes, n.child))
 }
 
 /**
@@ -92,7 +92,7 @@ abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
    * @return value of `UnprefixedAttribute` with given key
    *         in attributes, if it exists, otherwise `null`.
    */
-  final def attribute(key: String): Option[Seq[Node]] = attributes.get(key)
+  final def attribute(key: String): Option[ScalaVersionSpecific.SeqOfNode] = attributes.get(key)
 
   /**
    * Convenience method, looks up a prefixed attribute in attributes of this node.
@@ -103,7 +103,7 @@ abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
    * @return value of `PrefixedAttribute` with given namespace
    *         and given key, otherwise `'''null'''`.
    */
-  final def attribute(uri: String, key: String): Option[Seq[Node]] =
+  final def attribute(uri: String, key: String): Option[ScalaVersionSpecific.SeqOfNode] =
     attributes.get(uri, this, key)
 
   /**

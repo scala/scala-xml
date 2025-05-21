@@ -49,7 +49,7 @@ case object Null extends MetaData {
   override protected def basisForHashCode: Seq[Any] = Nil
 
   override def apply(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecificReturnTypes.NullApply3 = null
-  override def apply(key: String): ScalaVersionSpecificReturnTypes.NullApply1 =
+  override def apply(key: String): ScalaVersionSpecific.SeqOfNode =
     if (Utility.isNameStart(key.head)) null
     else throw new IllegalArgumentException(s"not a valid attribute name '$key', so can never match !")
 

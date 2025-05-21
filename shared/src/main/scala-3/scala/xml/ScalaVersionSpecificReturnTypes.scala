@@ -27,9 +27,8 @@ private[xml] object ScalaVersionSpecificReturnTypes {          // should be
   type NullGetNamespace = String                               // scala.Null
   type NullNext = MetaData                                     // scala.Null
   type NullKey = String                                        // scala.Null
-  type NullValue = scala.collection.Seq[Node]                  // scala.Null
-  type NullApply1 = scala.collection.Seq[Node]                 // scala.Null
-  type NullApply3 = scala.collection.Seq[Node]                 // scala.Null
+  type NullValue = scala.collection.immutable.Seq[Node]        // scala.Null
+  type NullApply3 = scala.collection.immutable.Seq[Node]       // scala.Null
   type NullRemove = MetaData                                   // Null.type
   type SpecialNodeChild = scala.collection.immutable.Seq[Node] // Nil.type
   type GroupChild = scala.collection.immutable.Seq[Node]       // Nothing

@@ -30,7 +30,7 @@ object Elem {
   def unapplySeq(n: Node): Option[(String, String, MetaData, NamespaceBinding, ScalaVersionSpecific.SeqOfNode)] =
     n match {
       case _: SpecialNode | _: Group => None
-      case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
+      case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child))
     }
 }
 
