@@ -87,6 +87,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         // Synthetic static accessors (for Java interop) have a changed return type
         ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Null.apply"),
         ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Null.value"),
+        ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Utility.parseAttributeValue"),
+        ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Utility.trimProper"),
 
         // used to be a declared method, now a bridge without generic signature
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.MetaData.apply"),
@@ -99,6 +101,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Document.theSeq"),
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Group.theSeq"),
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.theSeq"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.TextBuffer.toText"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Utility.trimProper"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Utility.parseAttributeValue"),
 
         // Option[c.Seq] => Option[i.Seq] results in a changed generic signature
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.MetaData.get"),

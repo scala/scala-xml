@@ -25,7 +25,7 @@ import scala.collection.immutable.{Seq => ISeq}
  *
  * @author Burak Emir
  */
-object Utility extends AnyRef with parsing.TokenTests {
+object Utility extends AnyRef with parsing.TokenTests with ScalaVersionSpecificUtility {
   final val SU: Char = '\u001A'
 
   // [Martin] This looks dubious. We don't convert StringBuilders to
@@ -66,7 +66,7 @@ object Utility extends AnyRef with parsing.TokenTests {
    * trim a child of an element. `Attribute` values and `Atom` nodes that
    *  are not `Text` nodes are unaffected.
    */
-  def trimProper(x: Node): Seq[Node] = x match {
+  def trimProper(x: Node): ScalaVersionSpecific.SeqOfNode = x match {
     case Elem(pre, lab, md, scp, child@_*) =>
       val children = combineAdjacentTextNodes(child).flatMap(trimProper)
       Elem(pre, lab, md, scp, children.isEmpty, children: _*)
@@ -355,7 +355,7 @@ object Utility extends AnyRef with parsing.TokenTests {
   }
 
   // unused, untested
-  def parseAttributeValue(value: String): Seq[Node] = {
+  def parseAttributeValue(value: String): ScalaVersionSpecific.SeqOfNode = {
     val sb: StringBuilder = new StringBuilder
     var rfb: StringBuilder = null
     val nb: NodeBuffer = new NodeBuffer()

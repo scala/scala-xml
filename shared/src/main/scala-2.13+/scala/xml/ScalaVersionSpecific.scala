@@ -25,6 +25,7 @@ private[xml] object ScalaVersionSpecific {
     def fromSpecific(from: Coll)(it: IterableOnce[Node]): NodeSeq = (NodeSeq.newBuilder ++= from).result()
   }
   type SeqOfNode = scala.collection.immutable.Seq[Node]
+  type SeqOfText = scala.collection.immutable.Seq[Text]
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq
@@ -69,4 +70,13 @@ private[xml] trait ScalaVersionSpecificMetaData { self: MetaData =>
   def apply(namespace_uri: String, scp: NamespaceBinding, k: String): scala.collection.Seq[Node]
 
   def value: scala.collection.Seq[Node]
+}
+
+private[xml] trait ScalaVersionSpecificTextBuffer { self: TextBuffer =>
+  def toText: scala.collection.Seq[Text]
+}
+
+private[xml] trait ScalaVersionSpecificUtility { self: Utility.type =>
+  def trimProper(x: Node): scala.collection.Seq[Node]
+  def parseAttributeValue(value: String): scala.collection.Seq[Node]
 }
