@@ -48,6 +48,8 @@ private[xml] trait ScalaVersionSpecificNodeSeq
     fromSpecific(new View.Map(this, f))
   def flatMap(f: Node => IterableOnce[Node]): NodeSeq =
     fromSpecific(new View.FlatMap(this, f))
+
+  def theSeq: scala.collection.Seq[Node]
 }
 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>

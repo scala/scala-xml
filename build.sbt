@@ -82,6 +82,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.Attribute.value"),
         ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.MetaData.apply"),
         ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.MetaData.value"),
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.NodeSeq.theSeq"),
 
         // Synthetic static accessors (for Java interop) have a changed return type
         ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Null.apply"),
@@ -95,6 +96,9 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.PrefixedAttribute.value"),
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.UnprefixedAttribute.apply"),
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.UnprefixedAttribute.value"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Document.theSeq"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Group.theSeq"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.theSeq"),
 
         // Option[c.Seq] => Option[i.Seq] results in a changed generic signature
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.MetaData.get"),

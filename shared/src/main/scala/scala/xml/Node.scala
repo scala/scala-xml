@@ -166,7 +166,7 @@ abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
   /**
    *  returns a sequence consisting of only this node
    */
-  override def theSeq: Seq[Node] = this :: Nil
+  override def theSeq: ScalaVersionSpecific.SeqOfNode = this :: Nil
 
   /**
    * String representation of this node

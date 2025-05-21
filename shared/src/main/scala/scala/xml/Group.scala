@@ -22,7 +22,7 @@ import scala.collection.Seq
  */
 // Note: used by the Scala compiler.
 final case class Group(nodes: Seq[Node]) extends Node {
-  override def theSeq: Seq[Node] = nodes
+  override def theSeq: ScalaVersionSpecific.SeqOfNode = nodes.toSeq
 
   override def canEqual(other: Any): Boolean = other match {
     case _: Group => true
