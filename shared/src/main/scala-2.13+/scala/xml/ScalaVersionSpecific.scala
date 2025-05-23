@@ -24,7 +24,8 @@ private[xml] object ScalaVersionSpecific {
     def newBuilder(from: Coll): Builder[Node, NodeSeq] = NodeSeq.newBuilder
     def fromSpecific(from: Coll)(it: IterableOnce[Node]): NodeSeq = (NodeSeq.newBuilder ++= from).result()
   }
-  type SeqNodeUnapplySeq = scala.collection.immutable.Seq[Node]
+  type SeqOfNode = scala.collection.immutable.Seq[Node]
+  type SeqOfText = scala.collection.immutable.Seq[Text]
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq
@@ -48,8 +49,34 @@ private[xml] trait ScalaVersionSpecificNodeSeq
     fromSpecific(new View.Map(this, f))
   def flatMap(f: Node => IterableOnce[Node]): NodeSeq =
     fromSpecific(new View.FlatMap(this, f))
+
+  def theSeq: scala.collection.Seq[Node]
 }
 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
   override def className: String = "NodeBuffer"
+}
+
+private[xml] trait ScalaVersionSpecificNode { self: Node =>
+  // These methods are overridden in Node with return type `immutable.Seq`. The declarations here result
+  // in a bridge method in `Node` with result type `collection.Seq` which is needed for binary compatibility.
+  def child: scala.collection.Seq[Node]
+  def nonEmptyChildren: scala.collection.Seq[Node]
+}
+
+private[xml] trait ScalaVersionSpecificMetaData { self: MetaData =>
+  def apply(key: String): scala.collection.Seq[Node]
+  def apply(namespace_uri: String, owner: Node, key: String): scala.collection.Seq[Node]
+  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): scala.collection.Seq[Node]
+
+  def value: scala.collection.Seq[Node]
+}
+
+private[xml] trait ScalaVersionSpecificTextBuffer { self: TextBuffer =>
+  def toText: scala.collection.Seq[Text]
+}
+
+private[xml] trait ScalaVersionSpecificUtility { self: Utility.type =>
+  def trimProper(x: Node): scala.collection.Seq[Node]
+  def parseAttributeValue(value: String): scala.collection.Seq[Node]
 }

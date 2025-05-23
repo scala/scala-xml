@@ -53,14 +53,14 @@ object Attribute {
  *
  *  @author  Burak Emir
  */
-trait Attribute extends MetaData {
+trait Attribute extends MetaData with ScalaVersionSpecificMetaData {
   def pre: String // will be null if unprefixed
   override val key: String
-  override val value: Seq[Node]
+  override val value: ScalaVersionSpecific.SeqOfNode
   override val next: MetaData
 
-  override def apply(key: String): Seq[Node]
-  override def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node]
+  override def apply(key: String): ScalaVersionSpecific.SeqOfNode
+  override def apply(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecific.SeqOfNode
   override def copy(next: MetaData): Attribute
 
   override def remove(key: String): MetaData =

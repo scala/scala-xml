@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 import Utility.isSpace
 
 object TextBuffer {
@@ -26,7 +27,7 @@ object TextBuffer {
  *  appended with the `append` method will be replaced by a single space
  *  character, and leading and trailing space will be removed completely.
  */
-class TextBuffer {
+class TextBuffer extends ScalaVersionSpecificTextBuffer {
   val sb: StringBuilder = new StringBuilder()
 
   /**
@@ -45,8 +46,8 @@ class TextBuffer {
    *
    *  @return the text without whitespaces.
    */
-  def toText: Seq[Text] = sb.toString.trim match {
+  def toText: ScalaVersionSpecific.SeqOfText = sb.toString.trim match {
     case "" => Nil
-    case s  => Seq(Text(s))
+    case s  => ISeq(Text(s))
   }
 }

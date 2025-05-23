@@ -58,7 +58,7 @@ trait XMLLoader[T <: Node] {
 
   // TODO remove
   def loadXML(inputSource: InputSource, parser: SAXParser): T = getDocElem(adapter.loadDocument(inputSource, parser.getXMLReader))
-  def loadXMLNodes(inputSource: InputSource, parser: SAXParser): Seq[Node] = adapter.loadDocument(inputSource, parser.getXMLReader).children
+  def loadXMLNodes(inputSource: InputSource, parser: SAXParser): Seq[Node] = adapter.loadDocument(inputSource, parser.getXMLReader).children.toSeq
   def adapter: parsing.FactoryAdapter = new parsing.NoBindingFactoryAdapter()
 
   /** Loads XML Document. */
@@ -85,13 +85,13 @@ trait XMLLoader[T <: Node] {
   def loadString(string: String): T = getDocElem(loadStringDocument(string))
 
   /** Load XML nodes, including comments and processing instructions that precede and follow the root element. */
-  def loadNodes(inputSource: InputSource): Seq[Node] = loadDocument(inputSource).children
-  def loadFileNodes(fileName: String): Seq[Node] = loadFileDocument(fileName).children
-  def loadFileNodes(file: File): Seq[Node] = loadFileDocument(file).children
-  def loadNodes(url: URL): Seq[Node] = loadDocument(url).children
-  def loadNodes(sysId: String): Seq[Node] = loadDocument(sysId).children
-  def loadFileNodes(fileDescriptor: FileDescriptor): Seq[Node] = loadFileDocument(fileDescriptor).children
-  def loadNodes(inputStream: InputStream): Seq[Node] = loadDocument(inputStream).children
-  def loadNodes(reader: Reader): Seq[Node] = loadDocument(reader).children
-  def loadStringNodes(string: String): Seq[Node] = loadStringDocument(string).children
+  def loadNodes(inputSource: InputSource): Seq[Node] = loadDocument(inputSource).children.toSeq
+  def loadFileNodes(fileName: String): Seq[Node] = loadFileDocument(fileName).children.toSeq
+  def loadFileNodes(file: File): Seq[Node] = loadFileDocument(file).children.toSeq
+  def loadNodes(url: URL): Seq[Node] = loadDocument(url).children.toSeq
+  def loadNodes(sysId: String): Seq[Node] = loadDocument(sysId).children.toSeq
+  def loadFileNodes(fileDescriptor: FileDescriptor): Seq[Node] = loadFileDocument(fileDescriptor).children.toSeq
+  def loadNodes(inputStream: InputStream): Seq[Node] = loadDocument(inputStream).children.toSeq
+  def loadNodes(reader: Reader): Seq[Node] = loadDocument(reader).children.toSeq
+  def loadStringNodes(string: String): Seq[Node] = loadStringDocument(string).children.toSeq
 }

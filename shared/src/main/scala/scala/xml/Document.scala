@@ -36,7 +36,7 @@ class Document extends NodeSeq with Serializable {
    *  excluded. If there is a document type declaration, the list also
    *  contains a document type declaration information item.
    */
-  var children: Seq[Node] = _
+  var children: Seq[Node] = _ // effectively an `immutable.Seq`, not changed due to binary compatibility
 
   /** The element information item corresponding to the document element. */
   var docElem: Node = _
@@ -96,7 +96,7 @@ class Document extends NodeSeq with Serializable {
 
   // methods for NodeSeq
 
-  override def theSeq: Seq[Node] = this.docElem
+  override def theSeq: ScalaVersionSpecific.SeqOfNode = this.docElem
 
   override def canEqual(other: Any): Boolean = other match {
     case _: Document => true

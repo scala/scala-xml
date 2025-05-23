@@ -28,7 +28,6 @@ private[xml] object ScalaVersionSpecificReturnTypes { // should be
   type NullNext = scala.Null
   type NullKey = scala.Null
   type NullValue = scala.Null
-  type NullApply1 = scala.collection.Seq[Node]        // scala.Null
   type NullApply3 = scala.Null
   type NullRemove = Null.type
   type SpecialNodeChild = Nil.type

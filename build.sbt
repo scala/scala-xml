@@ -1,4 +1,5 @@
-import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+import com.typesafe.tools.mima.core._
+import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 
 publish / skip := true  // root project
 
@@ -68,6 +69,51 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       //import com.typesafe.tools.mima.core.{}
       //import com.typesafe.tools.mima.core.ProblemFilters
       Seq( // exclusions for all Scala versions
+        // new method in `Node` with return type `immutable.Seq`
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.Node.child"),
+
+        // these used to be declared methods, but are now bridges without generic signature
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.nonEmptyChildren"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Group.child"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.SpecialNode.child"),
+
+        // new methods with return type immutable.Seq
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.Attribute.apply"),
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.Attribute.value"),
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.MetaData.apply"),
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.MetaData.value"),
+        ProblemFilters.exclude[ReversedMissingMethodProblem]("scala.xml.NodeSeq.theSeq"),
+
+        // Synthetic static accessors (for Java interop) have a changed return type
+        ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Null.apply"),
+        ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Null.value"),
+        ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Utility.parseAttributeValue"),
+        ProblemFilters.exclude[IncompatibleResultTypeProblem]("scala.xml.Utility.trimProper"),
+
+        // used to be a declared method, now a bridge without generic signature
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.MetaData.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Null.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Null.value"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.PrefixedAttribute.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.PrefixedAttribute.value"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.UnprefixedAttribute.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.UnprefixedAttribute.value"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Document.theSeq"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Group.theSeq"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.theSeq"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.TextBuffer.toText"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Utility.trimProper"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Utility.parseAttributeValue"),
+
+        // Option[c.Seq] => Option[i.Seq] results in a changed generic signature
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.MetaData.get"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Null.get"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.attribute"),
+
+        // trait Attribute now extends trait ScalaVersionSpecificMetaData to ensure the previous signatures
+        // with return type `collection.Seq` remain valid.
+        // (trait Attribute extends MetaData, but that parent is not present in bytecode because it's a class.)
+        ProblemFilters.exclude[InheritedNewAbstractMethodProblem]("scala.xml.Attribute.apply"),
       ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((3, _)) => Seq( // Scala 3-specific exclusions
         )

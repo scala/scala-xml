@@ -85,6 +85,7 @@ abstract class MetaData
   with Iterable[MetaData]
   with Equality
   with Serializable
+  with ScalaVersionSpecificMetaData
 {
   private[xml] def isNull: Boolean = this.eq(Null)
 
@@ -106,7 +107,7 @@ abstract class MetaData
    * @param  key
    * @return value as Seq[Node] if key is found, null otherwise
    */
-  def apply(key: String): Seq[Node]
+  def apply(key: String): ScalaVersionSpecific.SeqOfNode
 
   /**
    * convenience method, same as `apply(namespace, owner.scope, key)`.
@@ -115,7 +116,7 @@ abstract class MetaData
    *  @param owner the element owning this attribute list
    *  @param key   the attribute key
    */
-  final def apply(namespace_uri: String, owner: Node, key: String): Seq[Node] =
+  final def apply(namespace_uri: String, owner: Node, key: String): ScalaVersionSpecific.SeqOfNode =
     apply(namespace_uri, owner.scope, key)
 
   /**
@@ -126,7 +127,7 @@ abstract class MetaData
    * @param  k   to be looked for
    * @return value as Seq[Node] if key is found, null otherwise
    */
-  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): Seq[Node]
+  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): ScalaVersionSpecific.SeqOfNode
 
   /**
    * returns a copy of this MetaData item with next field set to argument.
@@ -168,7 +169,7 @@ abstract class MetaData
   def key: String
 
   /** returns value of this MetaData item */
-  def value: Seq[Node]
+  def value: ScalaVersionSpecific.SeqOfNode
 
   /**
    * Returns a String containing "prefix:key" if the first key is
@@ -183,7 +184,7 @@ abstract class MetaData
    * Returns a Map containing the attributes stored as key/value pairs.
    */
   def asAttrMap: Map[String, String] =
-    iterator.map(x => (x.prefixedKey, x.value.text)).toMap
+    iterator.map(x => (x.prefixedKey, NodeSeq.fromSeq(x.value).text)).toMap
 
   /** returns Null or the next MetaData item */
   def next: MetaData
@@ -194,10 +195,10 @@ abstract class MetaData
    * @param  key
    * @return value in Some(Seq[Node]) if key is found, None otherwise
    */
-  final def get(key: String): Option[Seq[Node]] = Option(apply(key))
+  final def get(key: String): Option[ScalaVersionSpecific.SeqOfNode] = Option(apply(key))
 
   /** same as get(uri, owner.scope, key) */
-  final def get(uri: String, owner: Node, key: String): Option[Seq[Node]] =
+  final def get(uri: String, owner: Node, key: String): Option[ScalaVersionSpecific.SeqOfNode] =
     get(uri, owner.scope, key)
 
   /**
@@ -208,7 +209,7 @@ abstract class MetaData
    * @param  key to be looked fore
    * @return value as `Some[Seq[Node]]` if key is found, None otherwise
    */
-  final def get(uri: String, scope: NamespaceBinding, key: String): Option[Seq[Node]] =
+  final def get(uri: String, scope: NamespaceBinding, key: String): Option[ScalaVersionSpecific.SeqOfNode] =
     Option(apply(uri, scope, key))
 
   protected def toString1: String = sbToString(toString1)

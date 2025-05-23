@@ -23,11 +23,16 @@ import scala.collection.Seq
 // Note: used by the Scala compiler.
 class UnprefixedAttribute(
   override val key: String,
-  override val value: Seq[Node],
+  _value: Seq[Node],
   next1: MetaData
 )
   extends Attribute
 {
+  override val value: ScalaVersionSpecific.SeqOfNode = if (_value == null) null else _value match {
+    case ns: ScalaVersionSpecific.SeqOfNode => ns
+    case _ => _value.toVector
+  }
+
   final override val pre: scala.Null = null
   override val next: MetaData = if (value != null) next1 else next1.remove(key)
 
@@ -50,7 +55,7 @@ class UnprefixedAttribute(
    * @param  key
    * @return value as Seq[Node] if key is found, null otherwise
    */
-  override def apply(key: String): Seq[Node] =
+  override def apply(key: String): ScalaVersionSpecific.SeqOfNode =
     if (key == this.key) value else next(key)
 
   /**
@@ -61,7 +66,7 @@ class UnprefixedAttribute(
    * @param  key
    * @return ..
    */
-  override def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] =
+  override def apply(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecific.SeqOfNode =
     next(namespace, scope, key)
 }
 object UnprefixedAttribute {

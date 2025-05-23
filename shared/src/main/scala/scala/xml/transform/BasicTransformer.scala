@@ -46,11 +46,11 @@ abstract class BasicTransformer extends (Node => Node) {
     if (n.doTransform) n match {
       case Group(xs) => Group(transform(xs)) // un-group the hack Group tag
       case _ =>
-        val ch: Seq[Node] = n.child
-        val nch: Seq[Node] = transform(ch)
+        val ch = n.child
+        val nch = transform(ch)
 
         if (ch.eq(nch)) n
-        else Elem(n.prefix, n.label, n.attributes, n.scope, nch.isEmpty, nch: _*)
+        else Elem(n.prefix, n.label, n.attributes, n.scope, nch.isEmpty, nch.toSeq: _*)
     }
     else n
 
