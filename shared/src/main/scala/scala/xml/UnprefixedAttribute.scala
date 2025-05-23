@@ -28,7 +28,10 @@ class UnprefixedAttribute(
 )
   extends Attribute
 {
-  override val value: ScalaVersionSpecific.SeqOfNode = if (_value == null) null else _value.toSeq
+  override val value: ScalaVersionSpecific.SeqOfNode = if (_value == null) null else _value match {
+    case ns: ScalaVersionSpecific.SeqOfNode => ns
+    case _ => _value.toVector
+  }
 
   final override val pre: scala.Null = null
   override val next: MetaData = if (value != null) next1 else next1.remove(key)
