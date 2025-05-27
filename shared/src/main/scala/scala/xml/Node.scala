@@ -28,8 +28,8 @@ object Node {
   /** the empty namespace */
   val EmptyNamespace: String = ""
 
-  def unapplySeq(n: Node): Some[(String, MetaData, ScalaVersionSpecific.SeqNodeUnapplySeq)] =
-    Some((n.label, n.attributes, n.child.toSeq))
+  def unapplySeq(n: Node): Some[(String, MetaData, ScalaVersionSpecific.SeqOfNode)] =
+    Some((n.label, n.attributes, n.child))
 }
 
 /**
@@ -45,7 +45,7 @@ object Node {
  *
  * @author  Burak Emir and others
  */
-abstract class Node extends NodeSeq {
+abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
 
   /** prefix of this node */
   def prefix: String = null
@@ -92,7 +92,7 @@ abstract class Node extends NodeSeq {
    * @return value of `UnprefixedAttribute` with given key
    *         in attributes, if it exists, otherwise `null`.
    */
-  final def attribute(key: String): Option[Seq[Node]] = attributes.get(key)
+  final def attribute(key: String): Option[ScalaVersionSpecific.SeqOfNode] = attributes.get(key)
 
   /**
    * Convenience method, looks up a prefixed attribute in attributes of this node.
@@ -103,7 +103,7 @@ abstract class Node extends NodeSeq {
    * @return value of `PrefixedAttribute` with given namespace
    *         and given key, otherwise `'''null'''`.
    */
-  final def attribute(uri: String, key: String): Option[Seq[Node]] =
+  final def attribute(uri: String, key: String): Option[ScalaVersionSpecific.SeqOfNode] =
     attributes.get(uri, this, key)
 
   /**
@@ -120,12 +120,12 @@ abstract class Node extends NodeSeq {
    *
    * @return all children of this node
    */
-  def child: Seq[Node]
+  def child: ScalaVersionSpecific.SeqOfNode
 
   /**
    * Children which do not stringify to "" (needed for equality)
    */
-  def nonEmptyChildren: Seq[Node] = child.filterNot(_.toString.isEmpty)
+  def nonEmptyChildren: ScalaVersionSpecific.SeqOfNode = child.filterNot(_.toString.isEmpty)
 
   /**
    * Descendant axis (all descendants of this node, not including node itself)
@@ -166,7 +166,7 @@ abstract class Node extends NodeSeq {
   /**
    *  returns a sequence consisting of only this node
    */
-  override def theSeq: Seq[Node] = this :: Nil
+  override def theSeq: ScalaVersionSpecific.SeqOfNode = this :: Nil
 
   /**
    * String representation of this node

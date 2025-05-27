@@ -167,7 +167,7 @@ class AttributeTest {
 
   @Test(expected=classOf[IllegalArgumentException])
   def invalidAttributeFailForMany(): Unit = {
-    <x><y/><z/></x>.child \ "@"
+    <x><y/><z/></x>.child \ "@" // implicit seqToNodeSeq
   }
 
   @Test(expected=classOf[IllegalArgumentException])
@@ -177,6 +177,6 @@ class AttributeTest {
 
   @Test(expected=classOf[IllegalArgumentException])
   def invalidEmptyAttributeFailForMany(): Unit = {
-    <x><y/><z/></x>.child \@ ""
+    <x><y/><z/></x>.child \@ "" // implicit seqToNodeSeq
   }
 }

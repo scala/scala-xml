@@ -26,7 +26,10 @@ import scala.collection.Seq
 object NodeSeq {
   final val Empty: NodeSeq = fromSeq(Nil)
   def fromSeq(s: Seq[Node]): NodeSeq = new NodeSeq {
-    override def theSeq: Seq[Node] = s
+    override val theSeq: ScalaVersionSpecific.SeqOfNode = s match {
+      case ns: ScalaVersionSpecific.SeqOfNode => ns
+      case _ => s.toVector
+    }
   }
 
   // ---
@@ -48,7 +51,7 @@ object NodeSeq {
  *  @author  Burak Emir
  */
 abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with ScalaVersionSpecificNodeSeq with Equality with Serializable {
-  def theSeq: Seq[Node]
+  def theSeq: ScalaVersionSpecific.SeqOfNode
   override def length: Int = theSeq.length
   override def iterator: Iterator[Node] = theSeq.iterator
 

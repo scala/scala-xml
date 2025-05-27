@@ -22,7 +22,11 @@ import scala.collection.Seq
  */
 // Note: used by the Scala compiler.
 final case class Group(nodes: Seq[Node]) extends Node {
-  override def theSeq: Seq[Node] = nodes
+  // Ideally, the `immutable.Seq` would be stored as a field.
+  // But evolving the case class and remaining binary compatible is very difficult
+  // Since `Group` is used rarely, call `toSeq` on the field.
+  // In practice, it should not matter - the `nodes` field anyway contains an `immutable.Seq`.
+  override def theSeq: ScalaVersionSpecific.SeqOfNode = nodes.toSeq
 
   override def canEqual(other: Any): Boolean = other match {
     case _: Group => true

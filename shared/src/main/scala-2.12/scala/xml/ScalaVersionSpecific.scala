@@ -22,7 +22,8 @@ private[xml] object ScalaVersionSpecific {
     override def apply(from: Coll): mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
     override def apply(): mutable.Builder[Node, NodeSeq] = NodeSeq.newBuilder
   }
-  type SeqNodeUnapplySeq = scala.collection.Seq[Node]
+  type SeqOfNode = scala.collection.Seq[Node]
+  type SeqOfText = scala.collection.Seq[Text]
 }
 
 private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { self: NodeSeq =>
@@ -33,3 +34,11 @@ private[xml] trait ScalaVersionSpecificNodeSeq extends SeqLike[Node, NodeSeq] { 
 private[xml] trait ScalaVersionSpecificNodeBuffer { self: NodeBuffer =>
   override def stringPrefix: String = "NodeBuffer"
 }
+
+private[xml] trait ScalaVersionSpecificNode { self: Node => }
+
+private[xml] trait ScalaVersionSpecificMetaData { self: MetaData => }
+
+private[xml] trait ScalaVersionSpecificTextBuffer { self: TextBuffer => }
+
+private[xml] trait ScalaVersionSpecificUtility { self: Utility.type => }

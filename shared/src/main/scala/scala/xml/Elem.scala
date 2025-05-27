@@ -27,10 +27,10 @@ object Elem {
   def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, minimizeEmpty: Boolean, child: Node*): Elem =
     new Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
 
-  def unapplySeq(n: Node): Option[(String, String, MetaData, NamespaceBinding, ScalaVersionSpecific.SeqNodeUnapplySeq)] =
+  def unapplySeq(n: Node): Option[(String, String, MetaData, NamespaceBinding, ScalaVersionSpecific.SeqOfNode)] =
     n match {
       case _: SpecialNode | _: Group => None
-      case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
+      case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child))
     }
 }
 
@@ -104,7 +104,7 @@ class Elem(
     scope: NamespaceBinding = this.scope,
     minimizeEmpty: Boolean = this.minimizeEmpty,
     child: Seq[Node] = this.child
-  ): Elem = Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
+  ): Elem = Elem(prefix, label, attributes, scope, minimizeEmpty, child.toSeq: _*)
 
   /**
    * Returns concatenation of `text(n)` for each child `n`.

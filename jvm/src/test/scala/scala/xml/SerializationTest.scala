@@ -25,7 +25,7 @@ class SerializationTest {
   def implicitConversion(): Unit = {
     val parent: Elem = <parent><child></child><child/></parent>
     val children: Seq[Node] = parent.child
-    val asNodeSeq: NodeSeq = children
+    val asNodeSeq: NodeSeq = children // implicit seqToNodeSeq
     assertEquals(asNodeSeq, JavaByteSerialization.roundTrip(asNodeSeq))
   }
 }

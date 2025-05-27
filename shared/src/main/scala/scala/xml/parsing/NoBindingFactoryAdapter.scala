@@ -27,7 +27,7 @@ class NoBindingFactoryAdapter extends FactoryAdapter with NodeFactory[Elem] {
 
   /** From NodeFactory.  Constructs an instance of scala.xml.Elem -- TODO: deprecate as in Elem */
   override protected def create(pre: String, label: String, attrs: MetaData, scope: NamespaceBinding, children: Seq[Node]): Elem =
-    Elem(pre, label, attrs, scope, children.isEmpty, children: _*)
+    Elem(pre, label, attrs, scope, children.isEmpty, children.toSeq: _*)
 
   /** From FactoryAdapter.  Creates a node. never creates the same node twice, using hash-consing.
      TODO: deprecate as in Elem, or forward to create?? */
