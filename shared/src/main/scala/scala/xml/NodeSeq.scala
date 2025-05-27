@@ -26,7 +26,7 @@ import scala.collection.Seq
 object NodeSeq {
   final val Empty: NodeSeq = fromSeq(Nil)
   def fromSeq(s: Seq[Node]): NodeSeq = new NodeSeq {
-    override def theSeq: ScalaVersionSpecific.SeqOfNode = s match {
+    override val theSeq: ScalaVersionSpecific.SeqOfNode = s match {
       case ns: ScalaVersionSpecific.SeqOfNode => ns
       case _ => s.toVector
     }
