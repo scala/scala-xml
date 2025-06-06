@@ -43,16 +43,39 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
   // reference to the XMLReader that parses the document; this is used to query
   // features (e.g., 'is-standalone') and properties (e.g., document-xml-version) -
   // see http://www.saxproject.org/apidoc/org/xml/sax/package-summary.html
-  private var xmlReader: Option[XMLReader] = None
+  private[this] var xmlReader: Option[XMLReader] = None
 
-  private var dtdBuilder: Option[DtdBuilder] = None
+  private[this] var dtdBuilder: Option[DtdBuilder] = None
   private def inDtd: Boolean = dtdBuilder.isDefined && !dtdBuilder.get.isDone
 
-  private var document: Option[Document] = None
-  private var baseURI: Option[String] = None
-  private var xmlEncoding: Option[String] = None
 
-  private var prefixMappings: List[(String, String)] = List.empty
+  /**
+   * The [[Document]] built during [[endDocument]]. This allows using [[FactoryAdapter]] (or [[NoBindingFactoryAdapter]])
+   * for converting other XML representations accepting an [[org.xml.sax.ContentHandler]] to scala.xml.
+   *
+   * {{{
+   *   // using org.jdom:jdom2:2.0.6.1
+   *
+   *   import scala.xml._
+   *   import org.jdom2._
+   *   import org.jdom2.output._
+   *
+   *   def jd2s(d: Document): Node = {
+   *     val out = new SAXOutputter
+   *     val h = new parsing.NoBindingFactoryAdapter
+   *     out.setContentHandler(h)
+   *     out.output(d)
+   *     h.document.docElem
+   *   }
+   * }}}
+   */
+  def document: Document = _document
+
+  private[this] var _document: Document = null
+  private[this] var baseURI: Option[String] = None
+  private[this] var xmlEncoding: Option[String] = None
+
+  private[this] var prefixMappings: List[(String, String)] = List.empty
 
   // TODO all the variables should be private, but - binary compatibility...
   var prolog: List[Node] = List.empty
@@ -60,7 +83,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
   var epilogue: List[Node] = List.empty
 
   val buffer: StringBuilder = new StringBuilder()
-  private var inCDATA: Boolean = false
+  private[this] var inCDATA: Boolean = false
 
   /** List of attributes
     * 
@@ -140,7 +163,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     this.xmlReader = Some(xmlReader)
     xmlReader.parse(inputSource)
 
-    document.get
+    _document
   }
 
   // abstract methods
@@ -213,7 +236,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     epilogue = hStack.init.reverse
 
     val document = new Document
-    this.document = Some(document)
+    this._document = document
     document.children = prolog ++ rootElem ++ epilogue
     document.docElem = rootElem
     document.dtd = dtdBuilder.map(_.dtd).orNull
@@ -222,7 +245,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
 
     document.version =
       try {
-        Option(xmlReader.get.getProperty("http://xml.org/sax/properties/document-xml-version").asInstanceOf[String])
+        xmlReader.map(_.getProperty("http://xml.org/sax/properties/document-xml-version").asInstanceOf[String])
       } catch {
         case _: SAXNotRecognizedException => None
         case _: SAXNotSupportedException => None
@@ -230,7 +253,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
 
     document.standAlone =
       try {
-        Some(xmlReader.get.getFeature("http://xml.org/sax/features/is-standalone"))
+        xmlReader.map(_.getFeature("http://xml.org/sax/features/is-standalone"))
       } catch {
         case _: SAXNotRecognizedException => None
         case _: SAXNotSupportedException => None

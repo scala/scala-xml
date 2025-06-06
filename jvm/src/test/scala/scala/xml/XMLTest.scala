@@ -2,8 +2,8 @@ package scala.xml
 
 import org.junit.{Test => UnitTest}
 import org.junit.Assert.{assertEquals, assertFalse, assertNull, assertThrows, assertTrue}
-import java.io.{ByteArrayInputStream, ByteArrayOutputStream, InputStreamReader, IOException, ObjectInputStream,
-  ObjectOutputStream, OutputStreamWriter, PrintStream, StringWriter}
+
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream, IOException, InputStream, InputStreamReader, ObjectInputStream, ObjectOutputStream, OutputStreamWriter, PrintStream, StringWriter}
 import java.net.URL
 import scala.xml.dtd.{DocType, PublicID}
 import scala.xml.parsing.ConstructingParser
@@ -1080,5 +1080,16 @@ class XMLTestJVM {
     val x: ConstructingParser = ConstructingParser.fromSource(toSource(""), preserveWS = false)
 
     assertEquals("", x.xEntityValue())
+  }
+
+  @UnitTest
+  def factoryAdapterAsContentHandler(): Unit = {
+    // scala-xml#764
+    val p = defaultParserFactory.newSAXParser()
+    val handler = new parsing.NoBindingFactoryAdapter
+    val input = new ByteArrayInputStream("<hello>world</hello>".getBytes("UTF-8"))
+    p.parse(input, handler)
+    val n: Node = handler.document.docElem
+    assert(n.text == "world")
   }
 }
