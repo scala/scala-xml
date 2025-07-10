@@ -166,7 +166,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
 
     libraryDependencies += "junit" % "junit" % "4.13.2" % Test,
     libraryDependencies += "com.github.sbt" % "junit-interface" % "0.13.3" % Test,
-    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.17.0" % Test,
+    libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.18.0" % Test,
     libraryDependencies += "xerces" % "xercesImpl" % "2.12.2" % Test,
     libraryDependencies ++= (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((3, _)) =>
