@@ -60,7 +60,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   // See ticket #3720 for motivations.
   // As for why it's `private[parsing]` rather than merely `private`, see
   // https://github.com/scala/scala-xml/issues/541 ; the broader access is necessary,
-  // for now anyway, to work around https://github.com/lampepfl/dotty/issues/13096
+  // for now anyway, to work around https://github.com/scala/scala3/issues/13096
   private[parsing] class WithLookAhead(underlying: Source) extends Source {
     private val queue: scala.collection.mutable.Queue[Char] = scala.collection.mutable.Queue[Char]()
     def lookahead(): BufferedIterator[Char] = {
@@ -99,7 +99,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
   /** holds temporary values of pos */
   // Note: if marked as an override, this causes a "...cannot override a mutable variable" error with Scala 3;
-  // SethTisue noted on Oct 14, 2021 that lampepfl/dotty#13744 should fix it - and it probably did,
+  // SethTisue noted on Oct 14, 2021 that scala/scala3#13744 should fix it - and it probably did,
   // but Scala XML still builds against Scala 3 version that has this bug, so this still can not be marked as an override :(
   var tmppos: Int = _
 

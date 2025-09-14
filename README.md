@@ -4,7 +4,7 @@ scala-xml
 [![latest release for 3.0](https://img.shields.io/maven-central/v/org.scala-lang.modules/scala-xml_3.svg?label=scala+3)](http://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_3)
 =========
 
-The standard Scala XML library. Please file XML issues here, not at https://github.com/scala/bug/issues or http://github.com/lampepfl/dotty/issues.
+The standard Scala XML library. Please file XML issues here, not at https://github.com/scala/bug/issues or http://github.com/scala/scala3/issues.
 
 The decoupling of scala-xml from the Scala compiler and standard library is possible because the compiler desugars XML literals in Scala source code into a set of method calls.
 Alternative implementations of these calls are welcome!
@@ -12,7 +12,7 @@ Compiler code that shows the calls needed:
   [Scala 2.11](https://github.com/scala/scala/blob/2.11.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala),
   [Scala 2.12](https://github.com/scala/scala/blob/2.12.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala),
   [Scala 2.13](https://github.com/scala/scala/blob/2.13.x/src/compiler/scala/tools/nsc/ast/parser/SymbolicXMLBuilder.scala),
-  [Scala 3](https://github.com/lampepfl/dotty/blob/main/compiler/src/dotty/tools/dotc/parsing/xml/SymbolicXMLBuilder.scala).
+  [Scala 3](https://github.com/scala/scala3/blob/main/compiler/src/dotty/tools/dotc/parsing/xml/SymbolicXMLBuilder.scala).
 
 API documentation is available [here](https://javadoc.io/doc/org.scala-lang.modules/scala-xml_2.13/).
 
