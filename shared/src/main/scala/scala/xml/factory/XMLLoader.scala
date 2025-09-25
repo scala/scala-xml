@@ -45,7 +45,11 @@ trait XMLLoader[T <: Node] {
   }
 
   /* Override this to use a different SAXParser. */
-  def parser: SAXParser = parserInstance.get
+  def parser: SAXParser = {
+    val p = parserInstance.get
+    p.reset()
+    p
+  }
 
   /* Override this to use a different XMLReader. */
   def reader: XMLReader = parser.getXMLReader
