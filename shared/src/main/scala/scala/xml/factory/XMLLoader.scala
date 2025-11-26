@@ -47,7 +47,7 @@ trait XMLLoader[T <: Node] {
   /* Override this to use a different SAXParser. */
   def parser: SAXParser = {
     val p = parserInstance.get
-    p.reset()
+    try { p.reset() } catch { case _: UnsupportedOperationException => }
     p
   }
 
