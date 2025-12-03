@@ -5,6 +5,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 
 import scala.collection.immutable
+import xml.Nullables._
 
 class NodeSeqTest {
 

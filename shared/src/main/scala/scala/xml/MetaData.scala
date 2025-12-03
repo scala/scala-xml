@@ -17,6 +17,7 @@ import Utility.sbToString
 import scala.annotation.tailrec
 import scala.collection.AbstractIterable
 import scala.collection.Seq
+import xml.Nullables._
 
 object MetaData {
   /**
@@ -37,13 +38,13 @@ object MetaData {
    *  namespace URIs via the given scope.
    */
   def normalize(attribs: MetaData, scope: NamespaceBinding): MetaData = {
-    def iterate(md: MetaData, normalized_attribs: MetaData, set: Set[String]): MetaData =
+    def iterate(md: MetaData, normalized_attribs: MetaData, set: Set[Nullable[String]]): MetaData =
       if (md.isNull) {
         normalized_attribs
       } else if (md.value == null)
         iterate(md.next, normalized_attribs, set)
       else {
-        val key: String = getUniversalKey(md, scope)
+        val key: Nullable[String] = getUniversalKey(md, scope)
         if (set(key))
           iterate(md.next, normalized_attribs, set)
         else
@@ -56,8 +57,8 @@ object MetaData {
   /**
    * returns key if md is unprefixed, pre+key is md is prefixed
    */
-  def getUniversalKey(attrib: MetaData, scope: NamespaceBinding): String = attrib match {
-    case prefixed: PrefixedAttribute     => scope.getURI(prefixed.pre) + prefixed.key
+  def getUniversalKey(attrib: MetaData, scope: NamespaceBinding): Nullable[String] = attrib match {
+    case prefixed: PrefixedAttribute     => scope.getURI(prefixed.pre).asInstanceOf[String] + prefixed.key
     case unprefixed: UnprefixedAttribute => unprefixed.key
   }
 
@@ -107,7 +108,7 @@ abstract class MetaData
    * @param  key
    * @return value as Seq[Node] if key is found, null otherwise
    */
-  def apply(key: String): ScalaVersionSpecific.SeqOfNode
+  def apply(key: String): Nullable[ScalaVersionSpecific.SeqOfNode]
 
   /**
    * convenience method, same as `apply(namespace, owner.scope, key)`.
@@ -116,7 +117,7 @@ abstract class MetaData
    *  @param owner the element owning this attribute list
    *  @param key   the attribute key
    */
-  final def apply(namespace_uri: String, owner: Node, key: String): ScalaVersionSpecific.SeqOfNode =
+  final def apply(namespace_uri: String, owner: Node, key: Nullable[String]): Nullable[ScalaVersionSpecific.SeqOfNode] =
     apply(namespace_uri, owner.scope, key)
 
   /**
@@ -127,7 +128,7 @@ abstract class MetaData
    * @param  k   to be looked for
    * @return value as Seq[Node] if key is found, null otherwise
    */
-  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): ScalaVersionSpecific.SeqOfNode
+  def apply(namespace_uri: Nullable[String], scp: NamespaceBinding, k: Nullable[String]): Nullable[ScalaVersionSpecific.SeqOfNode]
 
   /**
    * returns a copy of this MetaData item with next field set to argument.
@@ -135,7 +136,7 @@ abstract class MetaData
   def copy(next: MetaData): MetaData
 
   /** if owner is the element of this metadata item, returns namespace */
-  def getNamespace(owner: Node): String
+  def getNamespace(owner: Node): Nullable[String]
 
   def hasNext: Boolean = Null != next
 
@@ -166,16 +167,16 @@ abstract class MetaData
     }
 
   /** returns key of this MetaData item */
-  def key: String
+  def key: Nullable[String]
 
   /** returns value of this MetaData item */
-  def value: ScalaVersionSpecific.SeqOfNode
+  def value: Nullable[ScalaVersionSpecific.SeqOfNode]
 
   /**
    * Returns a String containing "prefix:key" if the first key is
    *  prefixed, and "key" otherwise.
    */
-  def prefixedKey: String = this match {
+  def prefixedKey: Nullable[String] = this match {
     case x: Attribute if x.isPrefixed => s"${x.pre}:$key"
     case _                            => key
   }
@@ -183,8 +184,8 @@ abstract class MetaData
   /**
    * Returns a Map containing the attributes stored as key/value pairs.
    */
-  def asAttrMap: Map[String, String] =
-    iterator.map(x => (x.prefixedKey, NodeSeq.fromSeq(x.value).text)).toMap
+  def asAttrMap: Map[Nullable[String], String] =
+    iterator.map(x => (x.prefixedKey, NodeSeq.fromSeq(x.value.nn).text)).toMap
 
   /** returns Null or the next MetaData item */
   def next: MetaData
@@ -195,7 +196,7 @@ abstract class MetaData
    * @param  key
    * @return value in Some(Seq[Node]) if key is found, None otherwise
    */
-  final def get(key: String): Option[ScalaVersionSpecific.SeqOfNode] = Option(apply(key))
+  final def get(key: String): Option[ScalaVersionSpecific.SeqOfNode] = Option(apply(key).asInstanceOf[ScalaVersionSpecific.SeqOfNode])
 
   /** same as get(uri, owner.scope, key) */
   final def get(uri: String, owner: Node, key: String): Option[ScalaVersionSpecific.SeqOfNode] =
@@ -209,8 +210,8 @@ abstract class MetaData
    * @param  key to be looked fore
    * @return value as `Some[Seq[Node]]` if key is found, None otherwise
    */
-  final def get(uri: String, scope: NamespaceBinding, key: String): Option[ScalaVersionSpecific.SeqOfNode] =
-    Option(apply(uri, scope, key))
+  final def get(uri: Nullable[String], scope: NamespaceBinding, key: String): Option[ScalaVersionSpecific.SeqOfNode] =
+    Option(apply(uri, scope, key).asInstanceOf[ScalaVersionSpecific.SeqOfNode])
 
   protected def toString1: String = sbToString(toString1)
 
@@ -229,9 +230,9 @@ abstract class MetaData
    */
   def wellformed(scope: NamespaceBinding): Boolean
 
-  def remove(key: String): MetaData
+  def remove(key: Nullable[String]): MetaData
 
-  def remove(namespace: String, scope: NamespaceBinding, key: String): MetaData
+  def remove(namespace: Nullable[String], scope: NamespaceBinding, key: String): MetaData
 
   final def remove(namespace: String, owner: Node, key: String): MetaData =
     remove(namespace, owner.scope, key)

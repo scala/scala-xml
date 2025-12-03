@@ -17,6 +17,7 @@ import factory.XMLLoader
 import java.io.{File, FileDescriptor, FileInputStream, FileOutputStream, InputStream, Reader, StringReader, Writer}
 import java.nio.channels.Channels
 import scala.util.control.Exception
+import xml.Nullables._
 
 object Source {
   def fromFile(name: String): InputSource = fromFile(new File(name))
@@ -96,7 +97,7 @@ object XML extends XMLLoader[Elem] {
     node: Node,
     enc: String = "UTF-8",
     xmlDecl: Boolean = false,
-    doctype: dtd.DocType = null
+    doctype: Nullable[dtd.DocType] = null
   ): Unit = {
     val fos: FileOutputStream = new FileOutputStream(filename)
     val w: Writer = Channels.newWriter(fos.getChannel, enc)
@@ -121,7 +122,7 @@ object XML extends XMLLoader[Elem] {
     node: Node,
     enc: String,
     xmlDecl: Boolean,
-    doctype: dtd.DocType,
+    doctype: Nullable[dtd.DocType],
     minimizeTags: MinimizeMode.Value = MinimizeMode.Default
   ): Unit = {
     /* TODO: optimize by giving writer parameter to toXML*/

@@ -14,6 +14,8 @@ package scala
 package xml
 package parsing
 
+import xml.Nullables._
+
 /**
  * Implementation of MarkupHandler that constructs nodes.
  *
@@ -22,7 +24,7 @@ package parsing
 abstract class ConstructingHandler extends MarkupHandler {
   val preserveWS: Boolean
 
-  override def elem(pos: Int, pre: String, label: String, attrs: MetaData,
+  override def elem(pos: Int, pre: Nullable[String], label: String, attrs: MetaData,
            pscope: NamespaceBinding, empty: Boolean, nodes: NodeSeq): NodeSeq =
     Elem(pre, label, attrs, pscope, empty, nodes: _*)
 

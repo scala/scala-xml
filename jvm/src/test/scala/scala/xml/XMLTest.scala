@@ -8,6 +8,7 @@ import java.net.URL
 import scala.xml.dtd.{DocType, PublicID}
 import scala.xml.parsing.ConstructingParser
 import scala.xml.Utility.sort
+import xml.Nullables._
 
 object XMLTestJVM {
   val e: MetaData = Null //Node.NoAttributes
@@ -17,7 +18,7 @@ object XMLTestJVM {
 class XMLTestJVM {
   import XMLTestJVM.{e, sc}
 
-  def Elem(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*): Elem =
+  def Elem(prefix: Nullable[String], label: String, attributes: MetaData, scope: NamespaceBinding, child: Node*): Elem =
     scala.xml.Elem.apply(prefix, label, attributes, scope, minimizeEmpty = true, child: _*)
 
   lazy val parsedxml1: Elem = XML.loadString("<hello><world/></hello>")
@@ -385,9 +386,9 @@ class XMLTestJVM {
 
   @UnitTest
   def t5052(): Unit = {
-    assertTrue(<elem attr={ null: String }/> xml_== <elem/>)
+    assertTrue(<elem attr={ null: Nullable[String] }/> xml_== <elem/>)
     assertTrue(<elem attr={ None }/> xml_== <elem/>)
-    assertTrue(<elem/> xml_== <elem attr={ null: String }/>)
+    assertTrue(<elem/> xml_== <elem attr={ null: Nullable[String] }/>)
     assertTrue(<elem/> xml_== <elem attr={ None }/>)
   }
 
@@ -400,9 +401,9 @@ class XMLTestJVM {
     assertHonorsIterableContract(<a y={ None }/>.attributes)
     assertHonorsIterableContract(<a y={ None } x=""/>.attributes)
     assertHonorsIterableContract(<a a="" y={ None }/>.attributes)
-    assertHonorsIterableContract(<a y={ null: String }/>.attributes)
-    assertHonorsIterableContract(<a y={ null: String } x=""/>.attributes)
-    assertHonorsIterableContract(<a a="" y={ null: String }/>.attributes)
+    assertHonorsIterableContract(<a y={ null: Nullable[String] }/>.attributes)
+    assertHonorsIterableContract(<a y={ null: Nullable[String] } x=""/>.attributes)
+    assertHonorsIterableContract(<a a="" y={ null: Nullable[String] }/>.attributes)
   }
 
   @UnitTest
@@ -459,9 +460,9 @@ class XMLTestJVM {
   @UnitTest
   def attributes(): Unit = {
     val noAttr: Elem = <t/>
-    val attrNull: Elem = <t a={ null: String }/>
+    val attrNull: Elem = <t a={ null: Nullable[String] }/>
     val attrNone: Elem = <t a={ None: Option[Seq[Node]] }/>
-    val preAttrNull: Elem = <t p:a={ null: String }/>
+    val preAttrNull: Elem = <t p:a={ null: Nullable[String] }/>
     val preAttrNone: Elem = <t p:a={ None: Option[Seq[Node]] }/>
     assertEquals(noAttr, attrNull)
     assertEquals(noAttr, attrNone)
@@ -469,8 +470,8 @@ class XMLTestJVM {
     assertEquals(noAttr, preAttrNone)
 
     val xml1: Elem = <t b="1" d="2"/>
-    val xml2: Elem = <t a={ null: String } p:a={ null: String } b="1" c={ null: String } d="2"/>
-    val xml3: Elem = <t b="1" c={ null: String } d="2" a={ null: String } p:a={ null: String }/>
+    val xml2: Elem = <t a={ null: Nullable[String] } p:a={ null: Nullable[String] } b="1" c={ null: Nullable[String] } d="2"/>
+    val xml3: Elem = <t b="1" c={ null: Nullable[String] } d="2" a={ null: Nullable[String] } p:a={ null: Nullable[String] }/>
     assertEquals(xml1, xml2)
     assertEquals(xml1, xml3)
 
@@ -759,8 +760,8 @@ class XMLTestJVM {
   def documentBaseURI(): Unit = {
     val url: URL = resourceUrl("site")
     // XMLLoader returns the document's baseURI:
-    assert(XML.withSAXParser(xercesInternal.newSAXParser).loadDocument(url).baseURI.endsWith("/test-classes/scala/xml/site.xml"))
-    assert(XML.withSAXParser(xercesExternal.newSAXParser).loadDocument(url).baseURI.endsWith("/test-classes/scala/xml/site.xml"))
+    assert(XML.withSAXParser(xercesInternal.newSAXParser).loadDocument(url).baseURI.nn.endsWith("/test-classes/scala/xml/site.xml"))
+    assert(XML.withSAXParser(xercesExternal.newSAXParser).loadDocument(url).baseURI.nn.endsWith("/test-classes/scala/xml/site.xml"))
     // ConstructingParser does not return it of course: since it uses scala.io.Source it has no idea where is the XML coming from:
     assertNull(ConstructingParser.fromSource(scala.io.Source.fromURI(url.toURI), preserveWS = false).document().baseURI)
   }

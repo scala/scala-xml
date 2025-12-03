@@ -13,6 +13,7 @@
 package scala
 package xml
 
+import xml.Nullables._
 /**
  * This object provides an extractor method to match a qualified node with
  *  its namespace URI
@@ -20,6 +21,6 @@ package xml
  *  @author  Burak Emir
  */
 object QNode {
-  def unapplySeq(n: Node): Some[(String, String, MetaData, ScalaVersionSpecific.SeqOfNode)] =
+  def unapplySeq(n: Node): Some[(Nullable[String], Nullable[String], MetaData, ScalaVersionSpecific.SeqOfNode)] =
     Some((n.scope.getURI(n.prefix), n.label, n.attributes, n.child))
 }
