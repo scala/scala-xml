@@ -16,6 +16,7 @@ package parsing
 
 import scala.collection.Seq
 import factory.NodeFactory
+import xml.Nullables._
 
 /**
  * nobinding adaptor providing callbacks to parser to create elements.
@@ -31,7 +32,7 @@ class NoBindingFactoryAdapter extends FactoryAdapter with NodeFactory[Elem] {
 
   /** From FactoryAdapter.  Creates a node. never creates the same node twice, using hash-consing.
      TODO: deprecate as in Elem, or forward to create?? */
-  override def createNode(pre: String, label: String, attrs: MetaData, scope: NamespaceBinding, children: List[Node]): Elem =
+  override def createNode(pre: Nullable[String], label: String, attrs: MetaData, scope: NamespaceBinding, children: List[Node]): Elem =
     Elem(pre, label, attrs, scope, children.isEmpty, children: _*)
 
   /** Creates a text node. */

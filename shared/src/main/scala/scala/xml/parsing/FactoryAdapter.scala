@@ -14,6 +14,7 @@ package scala
 package xml
 package parsing
 
+import xml.Nullables._
 import scala.collection.Seq
 import org.xml.sax.{Attributes, Locator, SAXNotRecognizedException, SAXNotSupportedException}
 import org.xml.sax.ext.{DefaultHandler2, Locator2}
@@ -75,7 +76,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     * 
     * @since 2.0.0 
     */
-  var hStack: List[Node] = List.empty // [ element ] contains siblings
+  var hStack: List[Nullable[Node]] = List.empty // [ element ] contains siblings
   /** List of element names
     * 
     * Previously was a mutable [[scala.collection.mutable.Stack Stack]], but is now a mutable reference to an immutable [[scala.collection.immutable.List List]].
@@ -158,7 +159,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
    * @param chIter
    * @return a new XML element.
    */
-  def createNode(pre: String, elemName: String, attribs: MetaData,
+  def createNode(pre: Nullable[String], elemName: String, attribs: MetaData,
                  scope: NamespaceBinding, chIter: List[Node]): Node // abstract
 
   /**
@@ -210,7 +211,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
 
   override def endDocument(): Unit = {
     // capture the epilogue at the end of the document
-    epilogue = hStack.init.reverse
+    epilogue = hStack.init.reverse.map(_.nn)
 
     val document = new Document
     this.document = Some(document)
@@ -246,14 +247,14 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     hStack = hStack.last :: Nil // TODO List.empty
     scopeStack = scopeStack.tail // TODO List.empty
 
-    rootElem = null
+    rootElem = null.asInstanceOf[Node]
     prolog = List.empty
     epilogue = List.empty
 
     buffer.clear()
     inCDATA = false
     capture = false
-    curTag = null
+    curTag = null.asInstanceOf[String]
 
     attribStack = List.empty
     tagStack = List.empty
@@ -275,7 +276,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
 
     // capture the prolog at the start of the root element
     if (tagStack.isEmpty) {
-      prolog = hStack.reverse
+      prolog = hStack.reverse.asInstanceOf[List[Node]]
       hStack = List.empty
     }
 
@@ -295,13 +296,13 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
       val qname: String = attributes.getQName(i)
       val value: String = attributes.getValue(i)
       val (pre: Option[String], key: String) = Utility.splitName(qname)
-      def nullIfEmpty(s: String): String = if (s == "") null else s
+      def nullIfEmpty(s: String): Nullable[String] = if (s == "") null else s
 
       if (pre.contains("xmlns") || (pre.isEmpty && qname == "xmlns")) {
-        val arg: String = if (pre.isEmpty) null else key
+        val arg: Nullable[String] = if (pre.isEmpty) null else key
         scpe = NamespaceBinding(arg, nullIfEmpty(value), scpe)
       } else
-        m = Attribute(pre, key, Text(value), m)
+        m = Attribute(pre.orNull, key, Text(value), m)
     }
 
     // Add namespace bindings for the prefix mappings declared by this element
@@ -331,7 +332,7 @@ abstract class FactoryAdapter extends DefaultHandler2 with factory.XMLLoader[Nod
     attribStack = attribStack.tail
 
     // reverse order to get it right
-    val v: List[Node] = hStack.takeWhile(_ != null).reverse
+    val v: List[Node] = hStack.takeWhile(_ != null).reverse.asInstanceOf[List[Node]]
     hStack = hStack.dropWhile(_ != null) match {
       case null :: hs => hs
       case hs => hs
