@@ -13,6 +13,7 @@
 package scala
 package xml
 
+import xml.Nullables._
 /**
  * top level namespace scope. only contains the predefined binding
  *  for the &quot;xml&quot; prefix which is bound to
@@ -20,10 +21,10 @@ package xml
  */
 object TopScope extends NamespaceBinding(null, null, null) {
 
-  override def getURI(prefix1: String): String =
+  override def getURI(prefix1: Nullable[String]): Nullable[String] =
     if (prefix1 == XML.xml) XML.namespace else null
 
-  override def getPrefix(uri1: String): String =
+  override def getPrefix(uri1: String): Nullable[String] =
     if (uri1 == XML.namespace) XML.xml else null
 
   override def toString: String = ""
