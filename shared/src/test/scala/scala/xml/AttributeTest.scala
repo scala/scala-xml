@@ -1,6 +1,7 @@
 package scala.xml
 
 import scala.collection.Seq
+import xml.Nullables._
 import org.junit.Test
 import org.junit.Assert.assertEquals
 
@@ -16,7 +17,7 @@ class AttributeTest {
     val y: MetaData = x.remove("foo")
     assertEquals(Null, y)
 
-    val z: UnprefixedAttribute = new UnprefixedAttribute("foo", null:NodeSeq, x)
+    val z: UnprefixedAttribute = new UnprefixedAttribute("foo", null: Nullable[NodeSeq], x)
     assertEquals(None, z.get("foo"))
 
     var appended: MetaData = x.append(x).append(x).append(x)
