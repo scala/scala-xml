@@ -35,7 +35,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
   /**
    * Returns some prefix that is mapped to the URI.
    *
-   * @param _uri the input URI
+   * @param uri the input URI
    * @return the prefix that is mapped to the input URI, or null
    * if no prefix is mapped to the URI.
    */
