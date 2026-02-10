@@ -14,6 +14,7 @@ package scala
 package xml
 package dtd
 
+import xml.Nullables._
 import scala.collection.mutable
 import scala.collection.Seq
 
@@ -23,7 +24,7 @@ import scala.collection.Seq
  *  @author Burak Emir
  */
 abstract class DTD {
-  var externalID: ExternalID = _
+  var externalID: Nullable[ExternalID] = _
   var decls: List[Decl] = Nil
   def notations: Seq[NotationDecl] = Nil
   def unparsedEntities: Seq[EntityDecl] = Nil
