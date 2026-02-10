@@ -20,7 +20,7 @@ import scala.collection.Seq
  *
  *  @param pre
  *  @param key
- *  @param value the attribute value
+ *  @param _value the attribute value
  *  @param next1
  */
 // Note: used by the Scala compiler.
