@@ -13,6 +13,7 @@
 package scala
 package xml
 
+import xml.Nullables._
 import scala.collection.Seq
 
 /**
@@ -28,7 +29,7 @@ object Node {
   /** the empty namespace */
   val EmptyNamespace: String = ""
 
-  def unapplySeq(n: Node): Some[(String, MetaData, ScalaVersionSpecific.SeqOfNode)] =
+  def unapplySeq(n: Node): Some[(Nullable[String], MetaData, ScalaVersionSpecific.SeqOfNode)] =
     Some((n.label, n.attributes, n.child))
 }
 
@@ -48,10 +49,10 @@ object Node {
 abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
 
   /** prefix of this node */
-  def prefix: String = null
+  def prefix: Nullable[String] = null
 
   /** label of this node. I.e. "foo" for &lt;foo/&gt;) */
-  def label: String
+  def label: Nullable[String]
 
   /**
    * used internally. Atom/Molecule = -1 PI = -2 Comment = -3 EntityRef = -5
@@ -72,7 +73,7 @@ abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
   /**
    *  convenience, same as `getNamespace(this.prefix)`
    */
-  def namespace: String = getNamespace(this.prefix)
+  def namespace: Nullable[String]  = getNamespace(this.prefix)
 
   /**
    * Convenience method, same as `scope.getURI(pre)` but additionally
@@ -82,7 +83,7 @@ abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
    * @return    the namespace if `scope != null` and prefix was
    *            found, else `null`
    */
-  def getNamespace(pre: String): String = if (scope == null) null else scope.getURI(pre)
+  def getNamespace(pre: Nullable[String]): Nullable[String] = if (scope == null) null else scope.getURI(pre)
 
   /**
    * Convenience method, looks up an unprefixed attribute in attributes of this node.
@@ -190,7 +191,7 @@ abstract class Node extends NodeSeq with ScalaVersionSpecificNode {
   /**
    * Returns a type symbol (e.g. DTD, XSD), default `'''null'''`.
    */
-  def xmlType: TypeSymbol = null
+  def xmlType: Nullable[TypeSymbol] = null
 
   /**
    * Returns a text representation of this node. Note that this is not equivalent to

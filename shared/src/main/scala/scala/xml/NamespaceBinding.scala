@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import xml.Nullables._
 
 /**
  * The class `NamespaceBinding` represents namespace bindings
@@ -25,12 +26,12 @@ import scala.collection.Seq
  */
 // Note: used by the Scala compiler.
 @SerialVersionUID(0 - 2518644165573446725L)
-case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBinding) extends AnyRef with Equality {
+case class NamespaceBinding(prefix: Nullable[String], uri: Nullable[String], parent: Nullable[NamespaceBinding]) extends AnyRef with Equality {
   if (prefix == "")
     throw new IllegalArgumentException("zero length prefix not allowed")
 
-  def getURI(prefix: String): String =
-    if (this.prefix == prefix) uri else parent.getURI(prefix)
+  def getURI(prefix: Nullable[String]): Nullable[String] =
+    if (this.prefix == prefix) uri else parent.nn.getURI(prefix)
 
   /**
    * Returns some prefix that is mapped to the URI.
@@ -39,21 +40,21 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
    * @return the prefix that is mapped to the input URI, or null
    * if no prefix is mapped to the URI.
    */
-  def getPrefix(uri: String): String =
-    if (uri == this.uri) prefix else parent.getPrefix(uri)
+  def getPrefix(uri: String): Nullable[String] =
+    if (uri == this.uri) prefix else parent.nn.getPrefix(uri)
 
   override def toString: String = Utility.sbToString(buildString(_, TopScope))
 
   private def shadowRedefined(stop: NamespaceBinding): NamespaceBinding = {
-    def prefixList(x: NamespaceBinding): List[String] =
+    def prefixList(x: Nullable[NamespaceBinding]): List[Nullable[String]] =
       if ((x == null) || x.eq(stop)) Nil
       else x.prefix :: prefixList(x.parent)
-    def fromPrefixList(l: List[String]): NamespaceBinding = l match {
+    def fromPrefixList(l: List[Nullable[String]]): NamespaceBinding = l match {
       case Nil     => stop
       case x :: xs => NamespaceBinding(x, this.getURI(x), fromPrefixList(xs))
     }
-    val ps0: List[String] = prefixList(this).reverse
-    val ps: List[String] = ps0.distinct
+    val ps0: List[Nullable[String]] = prefixList(this).reverse
+    val ps: List[Nullable[String]] = ps0.distinct
     if (ps.size == ps0.size) this
     else fromPrefixList(ps)
   }
@@ -80,6 +81,6 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
 
     val prefixStr: String = if (prefix != null) s":$prefix" else ""
     val uriStr: String = if (uri != null) uri else ""
-    parent.doBuildString(sb.append(s""" xmlns$prefixStr="$uriStr""""), stop) // copy(ignore)
+    parent.nn.doBuildString(sb.append(s""" xmlns$prefixStr="$uriStr""""), stop) // copy(ignore)
   }
 }
