@@ -4,19 +4,19 @@ executors:
   scala_jdk8_executor:
     docker:
       - image: cimg/openjdk:8.0-node
-    resource_class: small
+    resource_class: medium
   scala_jdk11_executor:
     docker:
       - image: cimg/openjdk:11.0-node
-    resource_class: small
+    resource_class: medium
   scala_jdk17_executor:
     docker:
       - image: cimg/openjdk:17.0-node
-    resource_class: small
+    resource_class: medium
   scala_jdk21_executor:
     docker:
       - image: cimg/openjdk:21.0-node
-    resource_class: small
+    resource_class: medium
 
 commands:
   sbt_cmd:
