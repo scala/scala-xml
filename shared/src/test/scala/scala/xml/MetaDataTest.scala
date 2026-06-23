@@ -2,13 +2,14 @@ package scala.xml
 
 import org.junit.Test
 import org.junit.Assert.assertEquals
+import xml.Nullables._
 
 class MetaDataTest {
 
   @Test
   def absentElementPrefixed1(): Unit = {
     // type ascription to help overload resolution pick the right variant
-    assertEquals(null: Object, Null("za://foo.com", TopScope, "bar"))
+    assertEquals(null: Nullable[Object], Null("za://foo.com", TopScope, "bar"))
     assertEquals(null, Null("bar"))
   }
 
@@ -43,8 +44,8 @@ class MetaDataTest {
   def attributeExtractor(): Unit = {
     def domatch(x: Node): Node = {
       x match {
-            case Node("foo", md @ UnprefixedAttribute(_, value, _), _*) if value.nonEmpty =>
-                 md("bar")(0)
+            case Node("foo", md @ UnprefixedAttribute(_, value, _), _*) if value.nn.nonEmpty =>
+                 md("bar").asInstanceOf[Seq[Node]](0)
             case _ => new Atom(3)
       }
     }
