@@ -37,7 +37,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .settings(
     name    := "scala-xml",
     scalaModuleAutomaticModuleName := Some("scala.xml"),
-    crossScalaVersions := Seq("2.13.18", "2.12.21", "3.3.8"),
+    crossScalaVersions := Seq("2.13.18", "2.12.21", "3.8.4"),
     scalaVersion := "2.12.21",
 
     scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
