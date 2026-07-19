@@ -15,6 +15,7 @@ package xml
 package include.sax
 
 import scala.xml.include._
+import xml.Nullables._
 import org.xml.sax.{Attributes, Locator, XMLReader}
 import org.xml.sax.helpers.{AttributesImpl, NamespaceSupport, XMLFilterImpl, XMLReaderFactory}
 
@@ -250,7 +251,7 @@ class XIncludeFilter extends XMLFilterImpl {
   private def includeTextDocument(url: String, encoding1: String): Unit = {
     var encoding: String = encoding1
     if (encoding == null || encoding.trim.isEmpty) encoding = "UTF-8"
-    var source: URL = null
+    var source: Nullable[URL] = null
     try {
       val base: URL = bases.peek
       source = new URL(base, url)
@@ -262,7 +263,7 @@ class XIncludeFilter extends XMLFilterImpl {
     }
 
     try {
-      val uc: URLConnection = source.openConnection
+      val uc: URLConnection = source.nn.openConnection
       val in: BufferedInputStream = new BufferedInputStream(uc.getInputStream)
       val encodingFromHeader: String = uc.getContentEncoding
       var contentType: String = uc.getContentType
@@ -293,7 +294,7 @@ class XIncludeFilter extends XMLFilterImpl {
       case e: UnsupportedEncodingException =>
         throw new SAXException(s"Unsupported encoding: $encoding$getLocation", e)
       case e: IOException =>
-        throw new SAXException(s"Document not found: ${source.toExternalForm}$getLocation", e)
+        throw new SAXException(s"Document not found: ${source.nn.toExternalForm}$getLocation", e)
     }
   }
 
