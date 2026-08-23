@@ -14,11 +14,13 @@ package scala
 package xml
 package include
 
+import xml.Nullables._
+
 /**
  * An `UnavailableResourceException` is thrown when an included document
  * cannot be found or loaded.
  */
-class UnavailableResourceException(message: String)
+class UnavailableResourceException(message: Nullable[String])
   extends XIncludeException(message) {
   def this() = this(null)
 }

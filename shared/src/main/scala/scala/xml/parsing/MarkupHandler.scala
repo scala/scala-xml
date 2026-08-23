@@ -17,6 +17,7 @@ package parsing
 import scala.collection.mutable
 import scala.io.Source
 import scala.xml.dtd._
+import xml.Nullables._
 
 /**
  * class that handles markup - provides callback methods to MarkupParser.
@@ -34,8 +35,8 @@ abstract class MarkupHandler {
   var decls: List[Decl] = Nil
   var ent: mutable.Map[String, EntityDecl] = new mutable.HashMap[String, EntityDecl]()
 
-  def lookupElemDecl(Label: String): ElemDecl =
-    (for (case z@ElemDecl(Label, _) <- decls) yield z).headOption.orNull
+  def lookupElemDecl(Label: String): Nullable[ElemDecl] =
+    (for (case z @ ElemDecl(Label, _) <- decls) yield z).headOption.orNull
 
   def replacementText(entityName: String): Source =
     Source.fromString(ent.get(entityName) match {
@@ -55,7 +56,7 @@ abstract class MarkupHandler {
    *  @param label    the local name
    *  @param attrs    the attributes (metadata)
    */
-  def elemStart(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding): Unit = ()
+  def elemStart(pos: Int, pre: Nullable[String], label: String, attrs: MetaData, scope: NamespaceBinding): Unit = ()
 
   /**
    * callback method invoked by MarkupParser after end-tag of element.
@@ -64,7 +65,7 @@ abstract class MarkupHandler {
    *  @param pre      the prefix
    *  @param label    the local name
    */
-  def elemEnd(pos: Int, pre: String, label: String): Unit = ()
+  def elemEnd(pos: Int, pre: Nullable[String], label: String): Unit = ()
 
   /**
    * callback method invoked by MarkupParser after parsing an element,
@@ -77,7 +78,7 @@ abstract class MarkupHandler {
    *  @param empty    `true` if the element was previously empty; `false` otherwise.
    *  @param args     the children of this element
    */
-  def elem(pos: Int, pre: String, label: String, attrs: MetaData, scope: NamespaceBinding, empty: Boolean, args: NodeSeq): NodeSeq
+  def elem(pos: Int, pre: Nullable[String], label: String, attrs: MetaData, scope: NamespaceBinding, empty: Boolean, args: NodeSeq): NodeSeq
 
   /**
    * callback method invoked by MarkupParser after parsing PI.

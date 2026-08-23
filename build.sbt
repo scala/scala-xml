@@ -110,6 +110,16 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Null.get"),
         ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Node.attribute"),
 
+        // Nullable types result in a raw Seq, is fixed in 3.8
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Attribute.unapply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Attribute.apply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Attribute.value"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.MetaData.value"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.PrefixedAttribute.unapply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.PrefixedAttribute.this"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.UnprefixedAttribute.unapply"),
+        ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.UnprefixedAttribute.this"),
+
         // trait Attribute now extends trait ScalaVersionSpecificMetaData to ensure the previous signatures
         // with return type `collection.Seq` remain valid.
         // (trait Attribute extends MetaData, but that parent is not present in bytecode because it's a class.)

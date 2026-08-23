@@ -13,6 +13,7 @@
 package scala
 package xml
 package dtd
+import xml.Nullables._
 
 /**
  * an ExternalIDs - either PublicID or SystemID
@@ -20,8 +21,8 @@ package dtd
  *  @author Burak Emir
  */
 sealed abstract class ExternalID extends parsing.TokenTests {
-  def quoted(s: String): String = {
-    val c: Char = if (s.contains('"')) '\'' else '"'
+  def quoted(s: Nullable[String]): String = {
+    val c: Char = if (s.nn.contains('"')) '\'' else '"'
     s"$c$s$c"
   }
 
@@ -35,8 +36,8 @@ sealed abstract class ExternalID extends parsing.TokenTests {
   def buildString(sb: StringBuilder): StringBuilder =
     sb.append(this.toString)
 
-  def systemId: String
-  def publicId: String
+  def systemId: Nullable[String]
+  def publicId: Nullable[String]
 }
 
 /**
@@ -59,7 +60,7 @@ case class SystemID(override val systemId: String) extends ExternalID {
  *  @param  publicId the public identifier literal
  *  @param  systemId (can be null for notation pubIDs) the system identifier literal
  */
-case class PublicID(override val publicId: String, override val systemId: String) extends ExternalID {
+case class PublicID(override val publicId: String, override val systemId: Nullable[String]) extends ExternalID {
   if (!checkPubID(publicId))
     throw new IllegalArgumentException("publicId must consist of PubidChars")
 
@@ -82,8 +83,8 @@ case class PublicID(override val publicId: String, override val systemId: String
  *  @author Michael Bayne
  */
 object NoExternalID extends ExternalID {
-  override val publicId: ScalaVersionSpecificReturnTypes.NoExternalIDId = null
-  override val systemId: ScalaVersionSpecificReturnTypes.NoExternalIDId = null
+  override val publicId: Nullable[ScalaVersionSpecificReturnTypes.NoExternalIDId] = null
+  override val systemId: Nullable[ScalaVersionSpecificReturnTypes.NoExternalIDId] = null
 
   override def toString: String = ""
 }
