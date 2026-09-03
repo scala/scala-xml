@@ -61,11 +61,15 @@ jobs:
           scala_version: << parameters.scala_version >>
           sbt_tasks: xml/update xml/compile xml/Test/compile xml/test xml/doc xml/package xml/osgiBundle
   scalajs_job:
-    executor: scala_jdk8_executor
+    executor: scala_<<parameters.java_version>>_executor
     parameters:
       scala_version:
         description: "Scala version"
         default: 2.12.18
+        type: string
+      java_version:
+        description: "Java version"
+        default: jdk8
         type: string
     steps:
       - checkout
@@ -75,11 +79,15 @@ jobs:
           scala_version: << parameters.scala_version >>
           sbt_tasks: xmlJS/update xmlJS/compile xmlJS/Test/compile xmlJS/test xmlJS/doc xmlJS/package
   scalanative_job:
-    executor: scala_jdk8_executor
+    executor: scala_<<parameters.java_version>>_executor
     parameters:
       scala_version:
         description: "Scala version"
         default: 2.12.18
+        type: string
+      java_version:
+        description: "Java version"
+        default: jdk8
         type: string
     steps:
       - checkout
@@ -104,10 +112,6 @@ workflows:
           java_version: jdk8
           scala_version: 2.13.18
       - scala_job:
-          name: 3.x
-          java_version: jdk8
-          scala_version: 3.3.8
-      - scala_job:
           name: jdk11_2.12.x
           java_version: jdk11
           scala_version: 2.12.21
@@ -115,10 +119,6 @@ workflows:
           name: jdk11_2.13.x
           java_version: jdk11
           scala_version: 2.13.18
-      - scala_job:
-          name: jdk11_3.x
-          java_version: jdk11
-          scala_version: 3.3.8
       - scala_job:
           name: jdk17_2.12.x
           java_version: jdk17
@@ -151,6 +151,7 @@ workflows:
           scala_version: 2.13.18
       - scalajs_job:
           name: sjs1.0_3.x
+          java_version: jdk17
           scala_version: 3.3.8
       - scalanative_job:
           name: native0.4_2.12.x
@@ -160,4 +161,5 @@ workflows:
           scala_version: 2.13.18
       - scalanative_job:
           name: native0.4_3.x
+          java_version: jdk17
           scala_version: 3.3.8

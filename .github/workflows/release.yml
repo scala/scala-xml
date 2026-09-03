@@ -4,6 +4,15 @@ on:
     tags: ["*"]
 jobs:
   publish:
+    strategy:
+      matrix:
+        include:
+          - scala: 2.12.x
+            java: 8
+          - scala: 2.13.x
+            java: 8
+          - scala: 3.x
+            java: 17
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -12,10 +21,12 @@ jobs:
       - uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: 8
+          java-version: ${{matrix.java}}
       - uses: sbt/setup-sbt@v1
-      - run: sbt versionCheck ci-release
+      - run: sbt "++${{matrix.scala}} versionCheck" ci-release
         env:
+          # ci-release runs `+publishSigned` by default, this restricts it to one Scala version
+          CI_RELEASE: ++${{matrix.scala}} publishSigned
           PGP_PASSPHRASE: ${{secrets.PGP_PASSPHRASE}}
           PGP_SECRET: ${{secrets.PGP_SECRET}}
           SONATYPE_PASSWORD: ${{secrets.SONATYPE_PASSWORD}}
