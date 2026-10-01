@@ -14,6 +14,7 @@ package scala
 package xml
 package include.sax
 
+import xml.Nullables._
 import org.xml.sax.{ ContentHandler, Locator, Attributes }
 import org.xml.sax.ext.LexicalHandler
 import java.io.{ OutputStream, OutputStreamWriter, IOException }
@@ -159,14 +160,14 @@ class XIncluder(outs: OutputStream, encoding: String) extends ContentHandler wit
 
   // Just need this reference so we can ask if a comment is
   // inside an include element or not
-  private var filter: XIncludeFilter = _
+  private var filter: Nullable[XIncludeFilter] = _
 
   def setFilter(filter: XIncludeFilter): Unit = {
     this.filter = filter
   }
 
   override def comment(ch: Array[Char], start: Int, length: Int): Unit = {
-    if (!inDTD && !filter.insideIncludeElement) {
+    if (!inDTD && !filter.nn.insideIncludeElement) {
       try {
         out.write("<!--")
         out.write(ch, start, length)

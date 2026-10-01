@@ -14,6 +14,8 @@ package scala
 package xml
 package include
 
+import xml.Nullables._
+
 /**
  * `XIncludeException` is the generic superclass for all checked exceptions
  * that may be thrown as a result of a violation of XInclude's rules.
@@ -25,14 +27,14 @@ package include
  *
  * @param   message   the detail message.
  */
-class XIncludeException(message: String) extends Exception(message) {
+class XIncludeException(message: Nullable[String]) extends Exception(message) {
 
   /**
    * uses `'''null'''` as its error detail message.
    */
   def this() = this(null)
 
-  private var rootCause: Throwable = _
+  private var rootCause: Nullable[Throwable] = _
 
   /**
    * When an `IOException`, `MalformedURLException` or other generic
@@ -57,5 +59,5 @@ class XIncludeException(message: String) extends Exception(message) {
    * @return Throwable   the underlying exception which caused the
    *                     `XIncludeException` to be thrown
    */
-  def getRootCause: Throwable = this.rootCause
+  def getRootCause: Nullable[Throwable] = this.rootCause
 }

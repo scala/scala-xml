@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import xml.Nullables._
 
 /**
  * This singleton object contains the `apply` and `unapplySeq` methods for
@@ -24,10 +25,10 @@ import scala.collection.Seq
 // Note: used by the Scala compiler.
 object Elem {
 
-  def apply(prefix: String, label: String, attributes: MetaData, scope: NamespaceBinding, minimizeEmpty: Boolean, child: Node*): Elem =
+  def apply(prefix: Nullable[String], label: Nullable[String], attributes: MetaData, scope: NamespaceBinding, minimizeEmpty: Boolean, child: Node*): Elem =
     new Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
 
-  def unapplySeq(n: Node): Option[(String, String, MetaData, NamespaceBinding, ScalaVersionSpecific.SeqOfNode)] =
+  def unapplySeq(n: Node): Option[(Nullable[String], Nullable[String], MetaData, NamespaceBinding, ScalaVersionSpecific.SeqOfNode)] =
     n match {
       case _: SpecialNode | _: Group => None
       case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child))
@@ -55,8 +56,8 @@ object Elem {
  */
 // Note: used by the Scala compiler.
 class Elem(
-  override val prefix: String,
-  override val label: String,
+  override val prefix: Nullable[String],
+  override val label: Nullable[String],
   attributes1: MetaData,
   override val scope: NamespaceBinding,
   val minimizeEmpty: Boolean,
@@ -98,8 +99,8 @@ class Elem(
    *  @return a new symbol with updated attributes
    */
   def copy(
-    prefix: String = this.prefix,
-    label: String = this.label,
+    prefix: Nullable[String] = this.prefix,
+    label: Nullable[String] = this.label,
     attributes: MetaData = this.attributes,
     scope: NamespaceBinding = this.scope,
     minimizeEmpty: Boolean = this.minimizeEmpty,

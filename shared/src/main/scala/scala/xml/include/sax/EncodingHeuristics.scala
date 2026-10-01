@@ -16,6 +16,7 @@ package include.sax
 
 import java.io.InputStream
 import scala.util.matching.Regex
+import xml.Nullables._
 
 /**
  * `EncodingHeuristics` reads from a stream
@@ -50,9 +51,9 @@ object EncodingHeuristics {
    * @return         the name of the encoding.
    */
   def readEncodingFromStream(in: InputStream): String = {
-    var ret: String = null
+    var ret: Nullable[String] = null
     val bytesToRead: Int = 1024 // enough to read most XML encoding declarations
-    def resetAndRet: String = { in.reset(); ret }
+    def resetAndRet: Nullable[String] = { in.reset(); ret }
 
     // This may fail if there are a lot of space characters before the end
     // of the encoding declaration
@@ -71,7 +72,7 @@ object EncodingHeuristics {
       case _                        => null
     }
     if (ret != null)
-      return resetAndRet
+      return resetAndRet.nn
 
     def readASCIIEncoding: String = {
       val data: Array[Byte] = new Array[Byte](bytesToRead - 4)
@@ -98,6 +99,6 @@ object EncodingHeuristics {
       case (0x4C, 0x6F, 0xA7, 0x94) => utf8 // XXX EBCDIC
       case _                        => utf8 // no XML or text declaration present
     }
-    resetAndRet
+    resetAndRet.nn
   }
 }
