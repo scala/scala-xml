@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import xml.Nullables._
 
 /**
  * A document information item (according to InfoSet spec). The comments
@@ -42,7 +43,7 @@ class Document extends NodeSeq with Serializable {
   var docElem: Node = _
 
   /** The dtd that comes with the document, if any */
-  var dtd: scala.xml.dtd.DTD = _
+  var dtd: Nullable[scala.xml.dtd.DTD] = _
 
   /**
    * An unordered set of notation information items, one for each notation
@@ -50,17 +51,17 @@ class Document extends NodeSeq with Serializable {
    *  has no value.
    */
   def notations: Seq[scala.xml.dtd.NotationDecl] =
-    dtd.notations
+    dtd.nn.notations
 
   /**
    * An unordered set of unparsed entity information items, one for each
    *  unparsed entity declared in the DTD.
    */
   def unparsedEntities: Seq[scala.xml.dtd.EntityDecl] =
-    dtd.unparsedEntities
+    dtd.nn.unparsedEntities
 
   /** The base URI of the document entity. */
-  var baseURI: String = _
+  var baseURI: Nullable[String] = _
 
   /**
    * The name of the character encoding scheme in which the document entity

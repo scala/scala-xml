@@ -13,6 +13,7 @@
 package scala
 package xml
 
+import xml.Nullables._
 import scala.collection.Seq
 
 /**
@@ -22,21 +23,21 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 object Attribute {
-  def unapply(x: Attribute): Option[(String, Seq[Node], MetaData)] = x match {
+  def unapply(x: Attribute): Option[(Nullable[String], Nullable[Seq[Node]], MetaData)] = x match {
     case PrefixedAttribute(_, key, value, next) => Some((key, value, next))
     case UnprefixedAttribute(key, value, next)  => Some((key, value, next))
     case _                                      => None
   }
 
   /** Convenience functions which choose Un/Prefixedness appropriately */
-  def apply(key: String, value: Seq[Node], next: MetaData): Attribute =
+  def apply(key: Nullable[String], value: Seq[Node], next: MetaData): Attribute =
     new UnprefixedAttribute(key, value, next)
 
-  def apply(pre: String, key: String, value: String, next: MetaData): Attribute =
+  def apply(pre: Nullable[String], key: String, value: String, next: MetaData): Attribute =
     if (pre == null || pre == "") new UnprefixedAttribute(key, value, next)
     else new PrefixedAttribute(pre, key, value, next)
 
-  def apply(pre: String, key: String, value: Seq[Node], next: MetaData): Attribute =
+  def apply(pre: Nullable[String], key: String, value: Seq[Node], next: MetaData): Attribute =
     if (pre == null || pre == "") new UnprefixedAttribute(key, value, next)
     else new PrefixedAttribute(pre, key, value, next)
 
@@ -54,29 +55,29 @@ object Attribute {
  *  @author  Burak Emir
  */
 trait Attribute extends MetaData with ScalaVersionSpecificMetaData {
-  def pre: String // will be null if unprefixed
-  override val key: String
-  override val value: ScalaVersionSpecific.SeqOfNode
+  def pre: Nullable[String] // will be null if unprefixed
+  override val key: Nullable[String]
+  override val value: Nullable[ScalaVersionSpecific.SeqOfNode]
   override val next: MetaData
 
-  override def apply(key: String): ScalaVersionSpecific.SeqOfNode
-  override def apply(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecific.SeqOfNode
+  override def apply(key: String): Nullable[ScalaVersionSpecific.SeqOfNode]
+  override def apply(namespace: Nullable[String], scope: NamespaceBinding, key: Nullable[String]): Nullable[ScalaVersionSpecific.SeqOfNode]
   override def copy(next: MetaData): Attribute
 
-  override def remove(key: String): MetaData =
+  override def remove(key: Nullable[String]): MetaData =
     if (!isPrefixed && this.key == key) next
     else copy(next.remove(key))
 
-  override def remove(namespace: String, scope: NamespaceBinding, key: String): MetaData =
+  override def remove(namespace: Nullable[String], scope: NamespaceBinding, key: String): MetaData =
     if (this.key == key && scope.getURI(pre) == namespace) next
     else copy(next.remove(namespace, scope, key))
 
   override def isPrefixed: Boolean = pre != null
 
-  override def getNamespace(owner: Node): String
+  override def getNamespace(owner: Node): Nullable[String]
 
   override def wellformed(scope: NamespaceBinding): Boolean = {
-    val arg: String = if (isPrefixed) scope.getURI(pre) else null
+    val arg: Nullable[String] = if (isPrefixed) scope.getURI(pre) else null
     (next(arg, scope, key) == null) && next.wellformed(scope)
   }
 
