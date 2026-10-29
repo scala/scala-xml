@@ -37,7 +37,7 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .settings(
     name    := "scala-xml",
     scalaModuleAutomaticModuleName := Some("scala.xml"),
-    crossScalaVersions := Seq("2.13.18", "2.12.21", "3.3.8"),
+    crossScalaVersions := Seq("2.13.18", "2.12.21", "3.3.9"),
     scalaVersion := "2.12.21",
 
     scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
@@ -116,6 +116,8 @@ lazy val xml = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         ProblemFilters.exclude[InheritedNewAbstractMethodProblem]("scala.xml.Attribute.apply"),
       ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((3, _)) => Seq( // Scala 3-specific exclusions
+          // static forwarder had a raw generic signature before Scala 3.3.9
+          ProblemFilters.exclude[IncompatibleSignatureProblem]("scala.xml.Null.sizeIs"),
         )
         case Some((2, minor)) => Seq( // Scala 2-specific exclusions
         ) ++ (minor match {
