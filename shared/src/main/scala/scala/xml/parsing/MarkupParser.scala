@@ -14,6 +14,7 @@ package scala
 package xml
 package parsing
 
+import xml.Nullables._
 import scala.io.Source
 import scala.xml.dtd._
 import Utility.Escapes.{ pairs => unescape }
@@ -131,9 +132,9 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   /** character buffer, for names */
   protected val cbuf: StringBuilder = new StringBuilder()
 
-  var dtd: DTD = _
+  var dtd: Nullable[DTD] = _
 
-  protected var doc: Document = _
+  protected var doc: Nullable[Document] = _
 
   override def eof: Boolean = { ch; reachedEof }
 
@@ -238,17 +239,17 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     var info_prolog: (Option[String], Option[String], Option[Boolean]) = (None, None, None)
     if ('<' != ch) {
       reportSyntaxError("< expected")
-      return null
+      return null.asInstanceOf[Document]
     }
 
     nextch() // is prolog ?
-    var children: Seq[Node] = null
+    var children: Nullable[Seq[Node]] = null
     if ('?' == ch) {
       nextch()
       info_prolog = prolog()
-      doc.version = info_prolog._1
-      doc.encoding = info_prolog._2
-      doc.standAlone = info_prolog._3
+      doc.nn.version = info_prolog._1
+      doc.nn.encoding = info_prolog._2
+      doc.nn.standAlone = info_prolog._3
 
       children = content(TopScope) // DTD handled as side effect
     } else {
@@ -259,7 +260,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     //println("[MarkupParser::document] children now: "+children.toList)
     var elemCount: Int = 0
-    var theNode: Node = null
+    var theNode: Nullable[Node] = null
     for (c <- children) c match {
       case _: ProcInstr =>
       case _: Comment   =>
@@ -277,9 +278,9 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       //Console.println(children.toList)
     }
 
-    doc.children = children
-    doc.docElem = theNode
-    doc
+    doc.nn.children = children
+    doc.nn.docElem = theNode.nn
+    doc.nn
   }
 
   /** append Unicode character to name buffer*/
@@ -521,7 +522,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
    *  }}}
    */
   def parseDTD(): Unit = { // dirty but fast
-    var extID: ExternalID = null
+    var extID: Nullable[ExternalID] = null
     if (dtd != null)
       reportSyntaxError("unexpected character (DOCTYPE already defined")
     xToken("DOCTYPE")
@@ -539,7 +540,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
 
     if ((null != extID) && isValidating) {
 
-      pushExternal(extID.systemId)
+      pushExternal(extID.systemId.nn)
       extIndex = inpStack.length
 
       extSubset()
@@ -562,7 +563,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
     }
     //this.dtd.initializeEntities();
     if (doc != null)
-      doc.dtd = this.dtd
+      doc.nn.dtd = this.dtd
 
     handle.endDTD(n)
   }
@@ -668,7 +669,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
   //
 
   def extSubset(): Unit = {
-    var textdecl: (Option[String], Option[String]) = null
+    var textdecl: Nullable[(Option[String], Option[String])] = null
     if (ch == '<') {
       nextch()
       if (ch == '?') {
@@ -834,7 +835,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       val atpe: String = cbuf.toString
       cbuf.setLength(0)
 
-      val defdecl: DefaultDecl = ch match {
+      val defdecl: Nullable[DefaultDecl] = ch match {
         case '\'' | '"' =>
           DEFAULT(fixed = false, xAttributeValue())
 
@@ -927,7 +928,7 @@ trait MarkupParser extends MarkupParserCommon with TokenTests {
       xSpace()
       val pubID: String = pubidLiteral()
       xSpaceOpt()
-      val sysID: String = if (ch != '>')
+      val sysID: Nullable[String] = if (ch != '>')
         systemLiteral()
       else
         null
