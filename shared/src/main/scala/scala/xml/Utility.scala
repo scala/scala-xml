@@ -18,6 +18,7 @@ import scala.collection.mutable
 import scala.language.implicitConversions
 import scala.collection.Seq
 import scala.collection.immutable.{Seq => ISeq}
+import xml.Nullables._
 
 /**
  * The `Utility` object provides utility functions for processing instances
@@ -78,9 +79,9 @@ object Utility extends AnyRef with parsing.TokenTests with ScalaVersionSpecificU
 
   /** returns a sorted attribute list */
   def sort(md: MetaData): MetaData = if (md.isNull || md.next.isNull) md else {
-    val key: String = md.key
-    val smaller: MetaData = sort(md.filter { m => m.key < key })
-    val greater: MetaData = sort(md.filter { m => m.key > key })
+    val key: String = md.key.nn
+    val smaller: MetaData = sort(md.filter { m => m.key.nn < key })
+    val greater: MetaData = sort(md.filter { m => m.key.nn > key })
     smaller.foldRight(md.copy(greater)) ((x, xs) => x.copy(xs))
   }
 
@@ -137,20 +138,20 @@ object Utility extends AnyRef with parsing.TokenTests with ScalaVersionSpecificU
    *
    * @return    `'''null'''` if `ref` was not a predefined entity.
    */
-  final def unescape(ref: String, s: StringBuilder): StringBuilder =
+  final def unescape(ref: String, s: StringBuilder): Nullable[StringBuilder] =
     unescMap.get(ref).map(s.append).orNull
 
   /**
    * Returns a set of all namespaces used in a sequence of nodes
    * and all their descendants, including the empty namespaces.
    */
-  def collectNamespaces(nodes: Seq[Node]): mutable.Set[String] =
-    nodes.foldLeft(new mutable.HashSet[String]) { (set, x) => collectNamespaces(x, set); set }
+  def collectNamespaces(nodes: Seq[Node]): mutable.Set[Nullable[String]] =
+    nodes.foldLeft(new mutable.HashSet[Nullable[String]]) { (set, x) => collectNamespaces(x, set); set }
 
   /**
    * Adds all namespaces in node to set.
    */
-  def collectNamespaces(n: Node, set: mutable.Set[String]): Unit =
+  def collectNamespaces(n: Node, set: mutable.Set[Nullable[String]]): Unit =
     if (n.doCollectNamespaces) {
       set += n.namespace
       for (a <- n.attributes) a match {
@@ -222,12 +223,12 @@ object Utility extends AnyRef with parsing.TokenTests with ScalaVersionSpecificU
     minimizeTags: MinimizeMode.Value,
     sb: StringBuilder
   ): Unit = {
-    @tailrec def ser(nss: List[List[Node]], pscopes: List[NamespaceBinding], spaced: List[Boolean], toClose: List[Node]): Unit = nss match {
+    @tailrec def ser(nss: List[List[Node]], pscopes: List[NamespaceBinding], spaced: List[Boolean], toClose: List[Nullable[Node]]): Unit = nss match {
       case List(Nil) =>
       case Nil :: rests =>
         if (toClose.head != null) {
           sb.append("</")
-          toClose.head.nameToString(sb)
+          toClose.head.nn.nameToString(sb)
           sb.append('>')
         }
         ser(rests, pscopes.tail, spaced.tail, toClose.tail)
@@ -296,7 +297,7 @@ object Utility extends AnyRef with parsing.TokenTests with ScalaVersionSpecificU
   /**
    * Returns a hashcode for the given constituents of a node
    */
-  def hashCode(pre: String, label: String, attribHashCode: Int, scpeHash: Int, children: Seq[Node]): Int =
+  def hashCode(pre: Nullable[String], label: Nullable[String], attribHashCode: Int, scpeHash: Int, children: Seq[Node]): Int =
     scala.util.hashing.MurmurHash3.orderedHash(label +: attribHashCode +: scpeHash +: children, pre.##)
 
   def appendQuoted(s: String): String = sbToString(appendQuoted(s, _))
@@ -323,7 +324,7 @@ object Utility extends AnyRef with parsing.TokenTests with ScalaVersionSpecificU
     sb.append('"')
   }
 
-  def getName(s: String, index: Int): String =
+  def getName(s: String, index: Int): Nullable[String] =
     if (index >= s.length) null else {
       val xs: String = s.drop(index)
       if (xs.nonEmpty && isNameStart(xs.head)) xs.takeWhile(isNameChar)
@@ -334,14 +335,14 @@ object Utility extends AnyRef with parsing.TokenTests with ScalaVersionSpecificU
    * Returns `'''null'''` if the value is a correct attribute value,
    * error message if it isn't.
    */
-  def checkAttributeValue(value: String): String = {
+  def checkAttributeValue(value: String): Nullable[String] = {
     var i: Int = 0
     while (i < value.length) {
       value.charAt(i) match {
         case '<' =>
           return "< not allowed in attribute value"
         case '&' =>
-          val n: String = getName(value, i + 1)
+          val n: Nullable[String] = getName(value, i + 1)
           if (n == null)
             return s"malformed entity reference in attribute value [$value]"
           i = i + n.length + 1
@@ -357,7 +358,7 @@ object Utility extends AnyRef with parsing.TokenTests with ScalaVersionSpecificU
   // unused, untested
   def parseAttributeValue(value: String): ScalaVersionSpecific.SeqOfNode = {
     val sb: StringBuilder = new StringBuilder
-    var rfb: StringBuilder = null
+    var rfb: Nullable[StringBuilder] = null
     val nb: NodeBuffer = new NodeBuffer()
 
     val it: Iterator[Char] = value.iterator

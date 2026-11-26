@@ -13,6 +13,7 @@
 package scala
 package xml
 
+import xml.Nullables._
 import scala.collection.Iterator
 import scala.collection.Seq
 
@@ -31,12 +32,12 @@ case object Null extends MetaData {
   override def filter(f: MetaData => Boolean): ScalaVersionSpecificReturnTypes.NullFilter = this
 
   override def copy(next: MetaData): MetaData = next
-  override def getNamespace(owner: Node): ScalaVersionSpecificReturnTypes.NullGetNamespace = null
+  override def getNamespace(owner: Node): ScalaVersionSpecificReturnTypes.NullGetNamespace = null.asInstanceOf[ScalaVersionSpecificReturnTypes.NullGetNamespace]
 
   override def hasNext: Boolean = false
-  override def next: ScalaVersionSpecificReturnTypes.NullNext = null
-  override def key: ScalaVersionSpecificReturnTypes.NullKey = null
-  override def value: ScalaVersionSpecificReturnTypes.NullValue = null
+  override def next: ScalaVersionSpecificReturnTypes.NullNext = null.asInstanceOf[ScalaVersionSpecificReturnTypes.NullNext]
+  override def key: ScalaVersionSpecificReturnTypes.NullKey = null.asInstanceOf[ScalaVersionSpecificReturnTypes.NullKey]
+  override def value: ScalaVersionSpecificReturnTypes.NullValue = null.asInstanceOf[ScalaVersionSpecificReturnTypes.NullValue]
   override def isPrefixed: Boolean = false
 
   override def length: Int = 0
@@ -48,8 +49,8 @@ case object Null extends MetaData {
   }
   override protected def basisForHashCode: Seq[Any] = Nil
 
-  override def apply(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecificReturnTypes.NullApply3 = null
-  override def apply(key: String): ScalaVersionSpecific.SeqOfNode =
+  override def apply(namespace: Nullable[String], scope: NamespaceBinding, key: Nullable[String]): ScalaVersionSpecificReturnTypes.NullApply3 = null.asInstanceOf[ScalaVersionSpecificReturnTypes.NullApply3]
+  override def apply(key: String): Nullable[ScalaVersionSpecific.SeqOfNode] =
     if (Utility.isNameStart(key.head)) null
     else throw new IllegalArgumentException(s"not a valid attribute name '$key', so can never match !")
 
@@ -62,6 +63,6 @@ case object Null extends MetaData {
 
   override def wellformed(scope: NamespaceBinding): Boolean = true
 
-  override def remove(key: String): ScalaVersionSpecificReturnTypes.NullRemove = this
-  override def remove(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecificReturnTypes.NullRemove = this
+  override def remove(key: Nullable[String]): ScalaVersionSpecificReturnTypes.NullRemove = this
+  override def remove(namespace: Nullable[String], scope: NamespaceBinding, key: String): ScalaVersionSpecificReturnTypes.NullRemove = this
 }

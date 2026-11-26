@@ -12,6 +12,8 @@
 
 package scala.xml
 
+
+import xml.Nullables._
 import scala.collection.immutable.StrictOptimizedSeqOps
 import scala.collection.{View, SeqOps, IterableOnce, immutable, mutable}
 import scala.collection.BuildFrom
@@ -65,11 +67,11 @@ private[xml] trait ScalaVersionSpecificNode { self: Node =>
 }
 
 private[xml] trait ScalaVersionSpecificMetaData { self: MetaData =>
-  def apply(key: String): scala.collection.Seq[Node]
-  def apply(namespace_uri: String, owner: Node, key: String): scala.collection.Seq[Node]
-  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): scala.collection.Seq[Node]
+  def apply(key: String): Nullable[scala.collection.Seq[Node]]
+  def apply(namespace_uri: String, owner: Node, key: Nullable[String]): Nullable[scala.collection.Seq[Node]]
+  def apply(namespace_uri: Nullable[String], scp: NamespaceBinding, k: Nullable[String]): Nullable[scala.collection.Seq[Node]]
 
-  def value: scala.collection.Seq[Node]
+  def value: Nullable[scala.collection.Seq[Node]]
 }
 
 private[xml] trait ScalaVersionSpecificTextBuffer { self: TextBuffer =>

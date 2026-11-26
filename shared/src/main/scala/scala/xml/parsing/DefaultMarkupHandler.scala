@@ -14,10 +14,12 @@ package scala
 package xml
 package parsing
 
+import xml.Nullables._
+
 /** Default implementation of markup handler always returns `NodeSeq.Empty` */
 abstract class DefaultMarkupHandler extends MarkupHandler {
 
-  override def elem(pos: Int, pre: String, label: String, attrs: MetaData,
+  override def elem(pos: Int, pre: Nullable[String], label: String, attrs: MetaData,
            scope: NamespaceBinding, empty: Boolean, args: NodeSeq): NodeSeq = NodeSeq.Empty
 
   override def procInstr(pos: Int, target: String, txt: String): NodeSeq = NodeSeq.Empty

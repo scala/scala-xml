@@ -15,6 +15,7 @@ package xml
 package dtd
 
 import Utility.sbToString
+import xml.Nullables._
 
 /**
  * XML declarations
@@ -55,12 +56,12 @@ case class AttListDecl(name: String, attrs: List[AttrDecl]) extends MarkupDecl {
  *  versions might provide a way to access the attribute types more
  *  directly.
  */
-case class AttrDecl(name: String, tpe: String, default: DefaultDecl) {
+case class AttrDecl(name: String, tpe: String, default: Nullable[DefaultDecl]) {
   override def toString: String = sbToString(buildString)
 
   def buildString(sb: StringBuilder): StringBuilder = {
     sb.append(s"  $name $tpe ")
-    default.buildString(sb)
+    default.nn.buildString(sb)
   }
 }
 
